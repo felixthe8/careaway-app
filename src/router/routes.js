@@ -5,6 +5,8 @@ import Router from 'vue-router';
 import {store} from '../store/store'
 import homepage from '../components/homepage/homepage.vue';
 import medicHome from '../components/medic-home/medic-homepage.vue';
+import medicCalendar from '../components/medic-home/calendar.vue';
+import medicDataAnalysis from '../components/medic-home/dataAnalysis.vue';
 import patientHome from '../components/patient-home/patient-homepage.vue';
 import error from '../components/error/error.vue';
 
@@ -24,9 +26,6 @@ const router = new Router ({
         {
             path: '/MedicHome',
             name: 'MedicHome',
-            meta: {
-                title: "CareAway Medic Home"
-            },
             beforeEnter: (to, from, next) => {
                 console.log(store.getters.authenticationStatusMP);
                 if(!(store.getters.authenticationStatusMP)) {
@@ -37,7 +36,15 @@ const router = new Router ({
                     next()
                 }
             },
-            component: medicHome
+            component: medicHome,
+            children:[ 
+                {path: '/MedicHome', component: medicCalendar, name: 'medicCalendar',  meta: {
+                    title: "CareAway Medic Home"
+                }},
+                {path: '/MedicHome/Report', component: medicDataAnalysis, name: 'medicReport', meta: {
+                    title: "CareAway Patient Reports"
+                }}
+            ]
         },
 
         {

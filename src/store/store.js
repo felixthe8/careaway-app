@@ -19,6 +19,7 @@ export const store = new Vuex.Store({
     showAdmin: false,
     username: '',
     validPassword: '',
+    authenticatedUsername: '',
     isAuthenticatedMP: false,
     isAuthenticatedPatient: false,
     isAuthenticatedAdmin: false,
@@ -37,6 +38,9 @@ export const store = new Vuex.Store({
     authenticationStatusAdmin: (state)  => {
       return state.isAuthenticatedAdmin;
     },
+    authenticatedUsername: (state) => {
+      return state.authenticatedUsername;
+    }
   }, 
   mutations: {
     // function to flip the value of showLogin 
@@ -84,6 +88,9 @@ export const store = new Vuex.Store({
     },
     alternateSSORegistration: (state) =>{
       state.ssoRegistration = !state.ssoRegistration;
+    },
+    authenticatedUsername: (state, payload) =>  {
+      state.authenticatedUsername = payload;
     }
   },
 
@@ -130,6 +137,9 @@ export const store = new Vuex.Store({
     },
     alternateSSORegistration:(context) =>{
       context.commit('alternateSSORegistration');
+    },
+    authenticatedUsername: (context, payload) => {
+      context.commit('authenticatedUsername', payload);
     }
   }
 });

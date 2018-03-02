@@ -101,12 +101,14 @@ import resetPassword from './reset-password.vue';
                 // if the login credential is a patient, take this route
                 if(response.data.accountType == 'patient') {
                   self.$store.dispatch('signInPatient');
+                  self.$store.dispatch('authenticatedUsername', self.username);
                   self.routePatientHome();
                   self.closeLogin();
                 } //  if the user is a medical professional, take this route
                 else if (response.data.accountType == 'medical-professional') {
                   self.$store.dispatch('signInMP');
                   self.routeMedicHome();
+                  self.$store.dispatch('authenticatedUsername', self.username);
                   self.closeLogin();
                 } //if the user is a system admin, take this route
                 else if (response.data.accountType == 'system-admin') {
