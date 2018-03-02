@@ -1,0 +1,57 @@
+/*************************/
+/* Global Style Settings */
+/*************************/
+
+/* Colors */
+$white: #FCFBFD;
+$purple: #69217C;
+$purple-dark: #2A243A;
+$purple-light: #BAA8EA;
+$blue: #B8DBD9;
+$blue-dark: #639996;
+$blue-light: #D1F9F7;
+$green: #92CC92;
+$green-dark: #568956;
+$green-light: #D6F8D6;
+
+/* App Default */
+#app {
+  overflow: hidden;
+  background: $white;
+  color: $purple-dark;
+}
+
+img {
+  user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Global Classes */
+.nopad {
+  padding: 0;
+}
+
+/* Template Classes */
+.button {
+  color: $purple-dark;
+  border: none;
+  background: none;
+
+  &:hover {
+    color: $purple-light;
+  }
+}
+
+/* Media Queries */
+$largeMobile: "screen and (min-width: 375px)";
+$smallTablet: "screen and (min-width: 500px)";
+$tablet: "screen and (min-width: 760px)";
+$desktop: "screen and (min-width: 1023px)";
+$medDesktop: "screen and (min-width: 1240px)";
+$largeDesktop: "screen and (min-width: 1440px)";
+$widescreen: "screen and (min-width: 1800px)";
+$landscape: "all and (orientation: landscape)";
