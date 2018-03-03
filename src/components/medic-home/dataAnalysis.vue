@@ -1,7 +1,7 @@
 <template>
 
     <div class = "aggregate-graphs">
-        <div class = "breadown">
+        <div class = "breakdown">
             <h1 class = "title is-3"> Patient Breakdown by Diagnosis </h1>
           <canvas id = "patient-breakdown" width = "450" height = "300"> </canvas>
         </div>
@@ -27,24 +27,22 @@ export default {
                // return patients who are associated with the medical professional
                axios.get('http://localhost:4400/treatment_plan/api/get-patient-breakdown?medicalcode='+mc)
                .then(function(response) {
-                
+                // object that will hold the diagnosis count
                 var conditionCount = {};
+                
                 for(var i = 0; i < response.data.patients.length; i++) {
-                    console.log(response.data.patients[i].accountType.diagnosis);
-                    if(!(response.data.patients[i].accountType.diagnosis in conditionCount)) {
-                        conditionCount[response.data.patients[i].accountType.diagnosis] = 1
-                    } else {
-                        conditionCount[response.data.patients[i].accountType.diagnosis]+=1;
+                    // if the diagnosis hasn't been encountered, add it to the object as a key and initialize it with a value of 1
+                    if(!(response.data.patients[i].diagnosis in conditionCount)) {
+                        conditionCount[response.data.patients[i].diagnosis] = 1
+                    } else { // otherwise, increment the existing value by 1
+                        conditionCount[response.data.patients[i].diagnosis]+=1;
                     }
                 }
                 console.log(conditionCount);
-                // console.log(Object.keys(conditionCount));
-                // console.log(Object.values(conditionCount));
 
                 var ctx = document.getElementById("patient-breakdown").getContext('2d');
-                var breadown = new Chart (ctx, {
+                var breakdown = new Chart (ctx, {
                     type: 'pie',
-                    
                     data: {
                         labels: Object.keys(conditionCount),
                         datasets: [{
@@ -88,7 +86,7 @@ export default {
 
   mounted() {
       this.showBreakdown();
-  }
+  },
 }
 
 </script>
@@ -99,7 +97,7 @@ export default {
 
   .aggregate-graphs {
       padding-top: 2%;
-      padding-left: 5%;
+      padding-left: 3%;
   }
 
 </style>
