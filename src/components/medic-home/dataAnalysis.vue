@@ -3,7 +3,7 @@
     <div class = "aggregate-graphs">
         <div class = "breadown">
             <h1 class = "title is-3"> Patient Breakdown by Diagnosis </h1>
-          <canvas id = "patient-breakdown" width = "450" height = "250"> </canvas>
+          <canvas id = "patient-breakdown" width = "450" height = "300"> </canvas>
         </div>
     </div>
 
@@ -29,12 +29,12 @@ export default {
                .then(function(response) {
                 
                 var conditionCount = {};
-                for(var i = 0; i < response.data.length; i++) {
-                    console.log(response.data[i].accountType.diagnosis);
-                    if(!(response.data[i].accountType.diagnosis in conditionCount)) {
-                        conditionCount[response.data[i].accountType.diagnosis] = 1
+                for(var i = 0; i < response.data.patients.length; i++) {
+                    console.log(response.data.patients[i].accountType.diagnosis);
+                    if(!(response.data.patients[i].accountType.diagnosis in conditionCount)) {
+                        conditionCount[response.data.patients[i].accountType.diagnosis] = 1
                     } else {
-                        conditionCount[response.data[i].accountType.diagnosis]+=1;
+                        conditionCount[response.data.patients[i].accountType.diagnosis]+=1;
                     }
                 }
                 console.log(conditionCount);
