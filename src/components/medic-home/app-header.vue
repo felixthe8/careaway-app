@@ -19,6 +19,7 @@ export default {
           document.onmousemove = null;
           document.onkeypress = null;
           document.onclick = null;
+          this.$store.dispatch('authenticatedUsername', '');
           this.$store.dispatch('signOutMP');
           this.$router.push('/');
       },

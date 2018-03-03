@@ -39,10 +39,10 @@ const router = new Router ({
             component: medicHome,
             children:[ 
                 {path: '/MedicHome', component: medicCalendar, name: 'medicCalendar',  meta: {
-                    title: "CareAway Medic Home"
+                    title: "CareAway Medical Home"
                 }},
                 {path: '/MedicHome/Report', component: medicDataAnalysis, name: 'medicReport', meta: {
-                    title: "CareAway Patient Reports"
+                    title: "CareAway Medical Reports"
                 }}
             ]
         },

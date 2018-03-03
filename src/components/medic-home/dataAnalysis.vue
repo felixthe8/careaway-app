@@ -1,11 +1,9 @@
 <template>
 
-    <div>
-        
-        <a class="nav-bar__button button is-link is-rounded" @click="showBreakdown"> Test Button </a>
-
-        <div class = "report-graph">
-            <canvas id = "patient-breakdown"> </canvas>
+    <div class = "aggregate-graphs">
+        <div class = "breadown">
+            <h1 class = "title is-3"> Patient Breakdown by Diagnosis </h1>
+          <canvas id = "patient-breakdown" width = "450" height = "250"> </canvas>
         </div>
     </div>
 
@@ -31,17 +29,17 @@ export default {
                .then(function(response) {
                 
                 var conditionCount = {};
-                for(var i = 0; i < response.data.patients.length; i++) {
-                    console.log(response.data.patients[i].accountType.diagnosis);
-                    if(!(response.data.patients[i].accountType.diagnosis in conditionCount)) {
-                        conditionCount[response.data.patients[i].accountType.diagnosis] = 1
+                for(var i = 0; i < response.data.length; i++) {
+                    console.log(response.data[i].accountType.diagnosis);
+                    if(!(response.data[i].accountType.diagnosis in conditionCount)) {
+                        conditionCount[response.data[i].accountType.diagnosis] = 1
                     } else {
-                        conditionCount[response.data.patients[i].accountType.diagnosis]+=1;
+                        conditionCount[response.data[i].accountType.diagnosis]+=1;
                     }
                 }
                 console.log(conditionCount);
-                console.log(Object.keys(conditionCount));
-                console.log(Object.values(conditionCount));
+                // console.log(Object.keys(conditionCount));
+                // console.log(Object.values(conditionCount));
 
                 var ctx = document.getElementById("patient-breakdown").getContext('2d');
                 var breadown = new Chart (ctx, {
@@ -52,7 +50,6 @@ export default {
                         datasets: [{
                             data: Object.values(conditionCount),
                             backgroundColor: ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9", "#FFDC00", "#001f3f", "#39CCCC", "#01FF70", "#85144b", "#F012BE", "#3D9970", "#111111", "#AAAAAA"],
-                           
                         }]
                     },
                     options: {
@@ -60,6 +57,10 @@ export default {
                         maintainAspectRatio: true,
                         animation: {
                             duration: 1000
+                        },
+                        legend: {
+                            display: true,
+                            position: "left"
                         }
                     }
                 })
@@ -88,9 +89,10 @@ export default {
 
 
 <style lang="scss" scoped>
-  #patient-breakdown{
-      width: 40%;
-  }
 
+  .aggregate-graphs {
+      padding-top: 2%;
+      padding-left: 5%;
+  }
 
 </style>
