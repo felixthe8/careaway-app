@@ -61,6 +61,13 @@ export default {
                         legend: {
                             display: true,
                             position: "left"
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItems, data) {
+                                    return ' '+data.datasets[0].data[tooltipItems.index] + ' patient(s)'
+                                }
+                            }
                         }
                     }
                 })
