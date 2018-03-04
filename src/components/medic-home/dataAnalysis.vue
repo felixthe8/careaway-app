@@ -20,12 +20,12 @@ export default {
       showBreakdown(){
           
           // return the medical code for the MP based on their username
-          axios.get('http://localhost:4400/treatment_plan/api/returnCode?username='+this.$store.getters.authenticatedUsername)
+          axios.get('http://localhost:8080/returnCode?username='+this.$store.getters.authenticatedUsername)
           .then(function(response) {
               // extract out medical code
               const mc = response.data.medicalcode;
                // return patients who are associated with the medical professional
-               axios.get('http://localhost:4400/treatment_plan/api/get-patient-breakdown?medicalcode='+mc)
+               axios.get('http://localhost:8080/patientBreakdown?medicalcode='+mc)
                .then(function(response) {
                 // object that will hold the diagnosis count
                 var conditionCount = {};
@@ -42,7 +42,7 @@ export default {
 
                 var ctx = document.getElementById("patient-breakdown").getContext('2d');
                 var breakdown = new Chart (ctx, {
-                    type: 'pie',
+                    type: 'doughnut',
                     data: {
                         labels: Object.keys(conditionCount),
                         datasets: [{
@@ -58,7 +58,10 @@ export default {
                         },
                         legend: {
                             display: true,
-                            position: "left"
+                            position: "left",
+                            labels: {
+                                fontSize: 14
+                            }
                         },
                         tooltips: {
                             callbacks: {
