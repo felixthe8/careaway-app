@@ -107,8 +107,8 @@ import resetPassword from './reset-password.vue';
                 } //  if the user is a medical professional, take this route
                 else if (response.data.accountType == 'medical-professional') {
                   self.$store.dispatch('signInMP');
-                  self.routeMedicHome();
                   self.$store.dispatch('authenticatedUsername', self.username);
+                  self.routeMedicHome();
                   self.closeLogin();
                 } //if the user is a system admin, take this route
                 else if (response.data.accountType == 'system-admin') {
