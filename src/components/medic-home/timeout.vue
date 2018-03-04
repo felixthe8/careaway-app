@@ -74,6 +74,7 @@
             }
             // when the timer has run through its cycle, log the user out
             if(self.count == "0:00") {
+              self.$store.dispatch('deauthenticatedUsername', '');
               self.logOut();
             }
           }

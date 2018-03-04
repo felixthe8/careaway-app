@@ -51,9 +51,11 @@ export default {
     // beforeDestroy will run when the user leaves the component. 
     // (ie. when they logout, when they leave the view without logging out)
     beforeDestroy() {
+      this.$store.dispatch('deauthenticatedUsername', '');
       this.$store.dispatch('signOutMP');
       this.$router.push('/');
-    }
+    },
+
   
 }
 </script>

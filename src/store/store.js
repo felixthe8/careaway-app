@@ -140,6 +140,9 @@ export const store = new Vuex.Store({
     },
     authenticatedUsername: (context, payload) => {
       context.commit('authenticatedUsername', payload);
-    }
+    },
+    deauthenticatedUsername: (context, payload) => {
+      context.commit('authenticatedUsername', payload);
+    },
   }
 });
