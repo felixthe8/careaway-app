@@ -19,6 +19,7 @@ export default {
           document.onmousemove = null;
           document.onkeypress = null;
           document.onclick = null;
+          this.$store.dispatch('deauthenticatedUsername', '');
           this.$store.dispatch('signOutPatient');
           this.$router.push('/');
       }

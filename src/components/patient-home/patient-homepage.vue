@@ -28,21 +28,21 @@ export default {
     // if the user is interacting with the page or not. Timer will
     // begin after the DOM elements are created
     mounted () { 
-    var self = this;
-    var time;
-    document.onmousemove = resetTimer;
-    document.onkeypress = resetTimer;
-    document.onclick = resetTimer;
-        
-    function resetTimer() {
+      var self = this;
+      var time;
+      document.onmousemove = resetTimer;
+      document.onkeypress = resetTimer;
+      document.onclick = resetTimer;
+      // function to reset the timer on the page is called when the 
+      // event listeners go off  
+      function resetTimer() {
        clearTimeout(time);
        // after 15 minutes of inacitivity, showWarning will be set to true
        // and the warning will display
        time = setTimeout(self.DisplaySessionWarning, 15*60*1000);
      }
-
-    // call the resetTimer function to kick-start the event timer. 
-    resetTimer();
+      // call the resetTimer function to kick-start the event timer. 
+      resetTimer();
     },
 
     methods: {
@@ -53,6 +53,7 @@ export default {
     // beforeDestroy will run when the user leaves the component. 
     // (ie. when they logout, when they leave the view without logging out)
     beforeDestroy() {
+      this.$store.dispatch('deauthenticatedUsername', '');
       this.$store.dispatch('signOutPatient');
       this.$router.push('/');
     }

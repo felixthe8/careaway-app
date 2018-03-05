@@ -74,7 +74,6 @@
             }
             // when the timer has run through its cycle, log the user out
             if(self.count == "0:00") {
-              self.$store.dispatch('deauthenticatedUsername', '');
               self.logOut();
             }
           }
@@ -87,6 +86,7 @@
           document.onmousemove = null;
           document.onkeypress = null;
           document.onclick = null;
+          this.$store.dispatch('deauthenticatedUsername', '');
           this.$store.dispatch('signOutMP');
           this.$router.push('/');
         }
