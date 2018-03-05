@@ -1,115 +1,54 @@
 <template>
-
-    <div class = "aggregate-graphs">
-        <div class = "breakdown">
-            <h1 class = "title is-3 is-spaced"> Patient Breakdown by Diagnosis </h1>
-            <h2 class="subtitle"> {{breakdownWarning}} </h2>
-            <canvas id = "patient-breakdown" width = "450" height = "300"> </canvas>
-        </div>
-    </div>
-
+  <div class = "aggregate-graphs">
+    <h1 class = "title"> {{graphWarning}} </h1>
+    <breakdownGraph v-if="ready" :code="medicalcode"/>
+  </div>
 </template>
 
-
-
 <script>
+import breakdownGraph from './reports/breakdownGraph'
 import axios from 'axios'
 export default {
   name: 'aggregateReport',
+  components: {breakdownGraph},
   data() {
       return {
-        breakdownWarning: ''
+        medicalcode: '',
+        graphWarning: '',
+        ready: false
       }
   },
 
   methods: {
-      showBreakdown(){
-          var self = this;
-          // return the medical code for the MP based on their username
-          axios.get('http://localhost:8080/returnCode?username='+this.$store.getters.authenticatedUsername)
+     getCode(){
+       var self = this;
+        // return the medical code for the MP based on their username
+        axios.get('http://localhost:8080/returnCode?username='+this.$store.getters.authenticatedUsername)
           .then(function(response) {
-              // extract out medical code
-              const mc = response.data.medicalcode;
-               // return patients who are associated with the medical professional
-               axios.get('http://localhost:8080/patientBreakdown?medicalcode='+mc)
-               .then(function(response) {
-                  // object that will hold the diagnosis count
-                  var conditionCount = {};
-                
-                  for(var i = 0; i < response.data.patients.length; i++) {
-                      // if the diagnosis hasn't been encountered, add it to the object as a key and initialize it with a value of 1
-                      if(!(response.data.patients[i].diagnosis in conditionCount)) {
-                          conditionCount[response.data.patients[i].diagnosis] = 1
-                        } else { // otherwise, increment the existing value by 1
-                          conditionCount[response.data.patients[i].diagnosis]+=1;
-                      }
-                  }
-                  console.log(conditionCount);
-
-                  var ctx = document.getElementById("patient-breakdown").getContext('2d');
-                  var breakdown = new Chart (ctx, {
-                      type: 'doughnut',
-                      data: {
-                          labels: Object.keys(conditionCount),
-                          datasets: [{
-                              data: Object.values(conditionCount),
-                              backgroundColor: ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9", "#FFDC00", "#001f3f", "#39CCCC", "#01FF70", "#85144b", "#F012BE", "#3D9970", "#111111", "#AAAAAA"],
-                          }]
-                      },
-                      options: {
-                          responsive: false,
-                          maintainAspectRatio: true,
-                          animation: {
-                              duration: 1000
-                          },
-                          legend: {
-                              display: true,
-                              position: "left",
-                              labels: {
-                                  fontSize: 14
-                              }
-                          },
-                          tooltips: {
-                              callbacks: {
-                                    label: function(tooltipItems, data) {
-                                    return ' '+data.datasets[0].data[tooltipItems.index] + ' patient(s)'
-                                  }
-                              }
-                          }
-                      }
-                  })
-               
-               })
-                 .catch(function (err) {
-                 self.breakdownWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
-              })
-              
-            })
-            .catch(function(err) {
-              console.log(err);
+            // extract out medical code from the response
+            self.medicalcode = response.data.medicalcode;
+            // set flag to true after code has been returned, so graphs can start pulling 
+            // necessary data
+            self.ready = true;
           })
-         
+          .catch(function(err) {
+            console.log(err);
+            self.graphWarning = "Reports cannot be displayed at this time. Please try again."
+          })
         }
   },
 
   mounted() {
-      this.showBreakdown();
+      // return the MP's code
+      this.getCode();
   },
 }
 
 </script>
 
-
-
 <style lang="scss" scoped>
-
   .aggregate-graphs {
       padding-top: 2%;
       padding-left: 3%;
   }
-
-  .subtitle {
-      margin-left: 2%;
-  }
-
 </style>
