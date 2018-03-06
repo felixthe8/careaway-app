@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.17.1",
     "bulma": "^0.6.2",
+    "chart.piecelabel.js": "^0.9.0",
     "font-awesome": "^4.7.0",
     "vue": "^2.5.11",
     "vue-router": "^3.0.1",

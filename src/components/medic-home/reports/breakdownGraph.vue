@@ -49,6 +49,16 @@ export default {
               animation: {
                 duration: 1000
               },
+              pieceLabel: {
+                render: 'percentage',
+                precision: 2,
+                position: 'border',
+                fontSize: 14,
+                fontStyle: 'bold',
+                fontColor: '#fff',
+
+
+              },
               legend: {
                 display: true,
                 position: "left",

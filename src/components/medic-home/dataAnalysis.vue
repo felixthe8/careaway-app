@@ -6,8 +6,10 @@
 </template>
 
 <script>
-import breakdownGraph from './reports/breakdownGraph'
-import axios from 'axios'
+import breakdownGraph from './reports/breakdownGraph';
+import axios from 'axios';
+import pieceLabel from 'chart.piecelabel.js';
+import Chart from 'chart.js';
 export default {
   name: 'aggregateReport',
   components: {breakdownGraph},
