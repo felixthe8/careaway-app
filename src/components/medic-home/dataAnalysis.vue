@@ -2,17 +2,22 @@
   <div class = "aggregate-graphs">
     <h1 class = "title"> {{graphWarning}} </h1>
     <breakdownGraph v-if="ready" :code="medicalcode"/>
+    <br>
+    <aggregateWellness v-if="ready" :code="medicalcode"/>
+    <br>
+    <aggregateComplete v-if="ready" :code="medicalcode"/>
   </div>
 </template>
 
 <script>
-import breakdownGraph from './reports/breakdownGraph';
 import axios from 'axios';
 import pieceLabel from 'chart.piecelabel.js';
-import Chart from 'chart.js';
+import breakdownGraph from './reports/breakdownGraph';
+import aggregateWellness from './reports/aggregateWellness';
+import aggregateComplete from './reports/aggregateCompletion';
 export default {
   name: 'aggregateReport',
-  components: {breakdownGraph},
+  components: {breakdownGraph, aggregateWellness, aggregateComplete},
   data() {
       return {
         medicalcode: '',

@@ -12,11 +12,10 @@
 <script>
 import navbar from './app-header';
 import timeout from './timeout';
-import calendar from './calendar';
 import Chart from 'chart.js';
 export default {
     name: 'medicHome',
-    components: {navbar, calendar, timeout},
+    components: {navbar, timeout},
     data() {
       return {
         showWarning: false
