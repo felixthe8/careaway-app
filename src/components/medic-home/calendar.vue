@@ -55,16 +55,23 @@ export default {
     return {
       months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
       week: ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"],
-      calendar: []
+      calendar: [],
+      state: 0
     }
   },
   // use vue.set to update array (Vue.$set)
   methods: {
     next: function(event) {
-      this.calendar = this.$renderCalendar(1);
+      if(this.state < 1)
+        this.state = this.state + 1;
+      console.log(this.state);
+      this.calendar = this.$renderCalendar(this.state);
     },
     previous: function(event) {
-      this.calendar = this.$renderCalendar(-1);
+      if(this.state > -1)
+        this.state = this.state - 1;
+      console.log(this.state);
+      this.calendar = this.$renderCalendar(this.state);
     },
     weekly: function(event) {
       let days = document.getElementsByClassName("monthly")[0].children;
