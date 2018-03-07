@@ -8,18 +8,13 @@
               <div class="card-content">
                 <img id = "header-image" src = "../../assets/images/careaway-full1.png"><br>
                   <h2 id = "form-title"> Please Sign In to Continue</h2>
-
                     <p id = "warning" v-show="showWarning">{{inputWarning}}</p>
-
                     <p class="control">
                       <input class="input" type="name" v-model="username" :class="validUsername" @keyup="validUsername = checkEmpty(username)" placeholder="Username">
                     </p> 
-
-
                     <p class="control">
                       <input class="input" type="password" id = "password" :class="validPassword" @keyup="validPassword = checkEmpty(getPassword())" placeholder="Password">
                     </p> 
-
                     <p class="control">
                       <button class="button is-primary is-medium is-fullwidth is-rounded" @click = "userSignIn()">
                         Sign In <i class="fas fa-sign-in-alt" id = "sign-in-icon"></i>
@@ -100,21 +95,20 @@ import resetPassword from './reset-password.vue';
               if(response.data.success) {
                 // if the login credential is a patient, take this route
                 if(response.data.accountType == 'patient') {
-                  self.$store.dispatch('signInPatient');
+                  self.$store.dispatch('signIn', response.data.accountType);
                   self.$store.dispatch('authenticatedUsername', self.username);
                   self.routePatientHome();
                   self.closeLogin();
                 } //  if the user is a medical professional, take this route
                 else if (response.data.accountType == 'medical-professional') {
-                  self.$store.dispatch('signInMP');
                   self.$store.dispatch('authenticatedUsername', self.username);
+                  self.$store.dispatch('signIn', response.data.accountType);
                   self.routeMedicHome();
                   self.closeLogin();
                 } //if the user is a system admin, take this route
                 else if (response.data.accountType == 'system-admin') {
-                  self.$store.dispatch('signInAdmin');
+                  self.$store.dispatch('signIn', response.data.accountType);
                   self.displayAdmin();
-                 // TODO : Need to add route for patient after Vue is created. 
                   self.closeLogin();
                 }
                 else if(response.data.accountType =='SSO'){
@@ -158,7 +152,6 @@ import resetPassword from './reset-password.vue';
     }
   }
 </script>
-
 
 <style lang = "scss">
   @import "../../assets/sass/settings.scss";

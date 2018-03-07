@@ -35,7 +35,7 @@ export default {
     methods:{
         //closes admin page
     closeAdmin() {
-        this.$store.dispatch('signOutAdmin');
+        this.$store.dispatch('signOut', '');
         this.$store.dispatch('alternateAdmin');
       },
       //shuts down and notifies user

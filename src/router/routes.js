@@ -27,13 +27,12 @@ const router = new Router ({
             path: '/MedicHome',
             name: 'MedicHome',
             beforeEnter: (to, from, next) => {
-                console.log(store.getters.authenticationStatusMP);
-                if(!(store.getters.authenticationStatusMP)) {
-                    console.log("Not Authenticated");
-                    next({path: '/',});
-                } else {
+                if((store.getters.authStatus) == 'medical-professional') {
                     console.log("Secure entry");
                     next()
+                } else {
+                    console.log("Not Authenticated");
+                    next({path: '/',});
                 }
             },
             component: medicHome,
@@ -54,13 +53,12 @@ const router = new Router ({
                 title: "CareAway Patient Home"
             },
             beforeEnter: (to, from, next) => {
-                console.log(store.getters.authenticationStatusPatient);
-                if(!(store.getters.authenticationStatusPatient)) {
-                    console.log("Not Authenticated");
-                    next({path: '/',});
-                } else {
+                if((store.getters.authStatus) == 'patient') {
                     console.log("Secure entry");
                     next()
+                } else {
+                    console.log("Not Authenticated");
+                    next({path: '/',});
                 }
             },
             component: patientHome

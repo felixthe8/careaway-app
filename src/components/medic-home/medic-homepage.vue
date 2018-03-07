@@ -74,7 +74,7 @@ export default {
     // (ie. when they logout, when they leave the view without logging out)
     beforeDestroy() {
       this.$store.dispatch('deauthenticatedUsername', '');
-      this.$store.dispatch('signOutMP');
+      this.$store.dispatch('signOut', '');
       this.$router.push('/');
     },
 

@@ -21,44 +21,27 @@ export const store = new Vuex.Store({
     validPassword: '',
     authenticatedUsername: '',
     medicalCode: '',
-    isAuthenticatedMP: false,
-    isAuthenticatedPatient: false,
-    isAuthenticatedAdmin: false,
-    ssoRegistration: false
+    ssoRegistration: false,
+    authStatus: ''
   },
   getters: {
     showLogin: (state) => {
       return state.showLogin;
-    },
-    authenticationStatusMP: (state)  => {
-      return state.isAuthenticatedMP;
-    },
-    authenticationStatusPatient: (state)  => {
-      return state.isAuthenticatedPatient;
-    },
-    authenticationStatusAdmin: (state)  => {
-      return state.isAuthenticatedAdmin;
     },
     authenticatedUsername: (state) => {
       return state.authenticatedUsername;
     },
     medicalCode: (state) => {
       return state.medicalCode;
+    },
+    authStatus: (state) => {
+      return state.authStatus;
     }
   }, 
   mutations: {
     // function to flip the value of showLogin 
     alternateLogin: (state) => {
        state.showLogin = !state.showLogin;
-    },
-    updateAuthStatusMP: (state, payload) => {
-      state.isAuthenticatedMP = payload.authStatus;
-    },
-    updateAuthStatusPatient: (state, payload) => {
-      state.isAuthenticatedPatient = payload.authStatus;
-    },
-    updateAuthStatusAdmin: (state, payload) => {
-      state.isAuthenticatedAdmin = payload.authStatus;
     },
     alternateRegistration: (state) =>{
       state.showRegistration = !state.showRegistration;
@@ -98,7 +81,11 @@ export const store = new Vuex.Store({
     },
     medicalCode: (state, payload) => {
       state.medicalCode = payload;
+    },
+    authStatus: (state,payload) => {
+      state.authStatus = payload;
     }
+
   },
 
   actions: {
@@ -108,24 +95,6 @@ export const store = new Vuex.Store({
     },
     alternateRegistration: (context) =>{
       context.commit('alternateRegistration');
-    },
-    signInMP: (context , payload) => {
-      context.commit('updateAuthStatusMP', {authStatus: true});
-    },
-    signOutMP: (context) => {
-      context.commit('updateAuthStatusMP', {authStatus: false});
-    },
-    signInPatient: (context , payload) => {
-      context.commit('updateAuthStatusPatient', {authStatus: true});
-    },
-    signOutPatient: (context) => {
-      context.commit('updateAuthStatusPatient', {authStatus: false});
-    },
-    signInAdmin: (context , payload) => {
-      context.commit('updateAuthStatusAdmin', {authStatus: true});
-    }, 
-    signOutAdmin: (context) => {
-      context.commit('updateAuthStatusAdmin', {authStatus: false});
     },
     alternateReset: (context) => {
       context.commit('alternateReset');
@@ -153,6 +122,12 @@ export const store = new Vuex.Store({
     },
     medicalCode: (context, payload) => {
       context.commit('medicalCode', payload);
+    },
+    signIn: (context, payload) => {
+      context.commit('authStatus', payload)
+    },
+    signOut: (context,payload) => {
+      context.commit('authStatus', payload);
     }
   }
 });

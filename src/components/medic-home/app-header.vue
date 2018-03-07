@@ -21,7 +21,7 @@ export default {
           document.onclick = null;
           this.$store.dispatch('deauthenticatedUsername', '');
           this.$store.dispatch('medicalCode', '');
-          this.$store.dispatch('signOutMP');
+          this.$store.dispatch('signOut', '');
           this.$router.push('/');
       },
       viewReport(){

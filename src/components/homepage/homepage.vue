@@ -6,7 +6,6 @@
       <div class="button signin" @click ="displayLogin">Sign In</div>
       <div class="button register" @click="displayRegistration">Register</div>
     </nav>
-   
     <registration-menu v-if="showRegistration" ></registration-menu>
     <login v-if="showLogin"> </login>
     <reset-username v-if = "showReset"></reset-username>

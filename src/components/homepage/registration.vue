@@ -247,8 +247,9 @@
           axios.post('http://localhost:8080/registerPatient', newPatient).then((
             function(response){
               if(response.data.success){
+                self.$store.dispatch('authenticatedUsername', newPatient.username);
                 //This allows the user to be signed in as a patient
-                self.$store.dispatch('signInPatient');
+                self.$store.dispatch('signIn', 'patient');
                 //This navigates the user to the patient account page
                 self.routePatientHome();
                 self.closeRegistration();
@@ -302,7 +303,7 @@
               if(response.data.success){
                 //This allows the user to sign in as a medical professional
                 self.$store.dispatch('authenticatedUsername', newMedicalProfessional.username);
-                self.$store.dispatch('signInMP');
+                self.$store.dispatch('signIn', 'medical-professional');
                 //This reroutes the user to the medical professional account page
                 self.routeMedicHome();
                 self.closeRegistration();
