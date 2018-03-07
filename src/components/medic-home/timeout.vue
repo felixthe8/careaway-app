@@ -56,7 +56,6 @@
             var current_minutes = minutes - 1;
 
             // subtract 1 from the seconds value
-            // timer will display at 59 seconds initially
             seconds--;
             self.count = current_minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
             if(seconds > 0) {

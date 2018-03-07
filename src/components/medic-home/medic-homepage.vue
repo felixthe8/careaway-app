@@ -5,8 +5,6 @@
     <p class = "subtitle" id = "code-display">CareAway Medical Code: {{medicalcode}} </p>
     <router-view></router-view>
   </div>
-
-
 </template>
 
 
@@ -73,6 +71,9 @@ export default {
     // beforeDestroy will run when the user leaves the component. 
     // (ie. when they logout, when they leave the view without logging out)
     beforeDestroy() {
+      document.onmousemove = null;
+      document.onkeypress = null;
+      document.onclick = null;
       this.$store.dispatch('deauthenticatedUsername', '');
       this.$store.dispatch('signOut', '');
       this.$router.push('/');
