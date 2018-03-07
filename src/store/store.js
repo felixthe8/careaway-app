@@ -20,6 +20,7 @@ export const store = new Vuex.Store({
     username: '',
     validPassword: '',
     authenticatedUsername: '',
+    medicalCode: '',
     isAuthenticatedMP: false,
     isAuthenticatedPatient: false,
     isAuthenticatedAdmin: false,
@@ -40,6 +41,9 @@ export const store = new Vuex.Store({
     },
     authenticatedUsername: (state) => {
       return state.authenticatedUsername;
+    },
+    medicalCode: (state) => {
+      return state.medicalCode;
     }
   }, 
   mutations: {
@@ -91,6 +95,9 @@ export const store = new Vuex.Store({
     },
     authenticatedUsername: (state, payload) =>  {
       state.authenticatedUsername = payload;
+    },
+    medicalCode: (state, payload) => {
+      state.medicalCode = payload;
     }
   },
 
@@ -144,5 +151,8 @@ export const store = new Vuex.Store({
     deauthenticatedUsername: (context, payload) => {
       context.commit('authenticatedUsername', payload);
     },
+    medicalCode: (context, payload) => {
+      context.commit('medicalCode', payload);
+    }
   }
 });

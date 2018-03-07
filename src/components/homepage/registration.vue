@@ -301,6 +301,7 @@
             function(response){
               if(response.data.success){
                 //This allows the user to sign in as a medical professional
+                self.$store.dispatch('authenticatedUsername', newMedicalProfessional.username);
                 self.$store.dispatch('signInMP');
                 //This reroutes the user to the medical professional account page
                 self.routeMedicHome();

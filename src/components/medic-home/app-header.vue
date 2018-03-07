@@ -20,6 +20,7 @@ export default {
           document.onkeypress = null;
           document.onclick = null;
           this.$store.dispatch('deauthenticatedUsername', '');
+          this.$store.dispatch('medicalCode', '');
           this.$store.dispatch('signOutMP');
           this.$router.push('/');
       },

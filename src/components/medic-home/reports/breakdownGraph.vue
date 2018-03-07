@@ -12,16 +12,19 @@ export default {
   name: 'breakdown',
   data() {
       return {
-        breakdownWarning: ''
+        breakdownWarning: '',
       }
   },
-  props: ['code'],
   methods: {
       getInfo() {
+        var self = this;
         // return patients who are associated with the medical professional
-        axios.get('http://localhost:8080/patientBreakdown?medicalcode='+this.code)
+        axios.get('http://localhost:8080/patientBreakdown?medicalcode='+this.$store.getters.medicalCode)
         .then(function(response) {
-          // object that will hold the diagnosis count
+          if(response.data.patients.length == 0) {
+            self.breakdownWarning = 'Sorry, you need to add patients before you can view reports';
+          } else {
+                      // object that will hold the diagnosis count
           var conditionCount = {};
                 
           for(var i = 0; i < response.data.patients.length; i++) {
@@ -72,7 +75,9 @@ export default {
                 }
               }
             }
-          })       
+          })
+        }
+       
         })
         .catch(function (err) {
           self.breakdownWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
