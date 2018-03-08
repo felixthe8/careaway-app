@@ -10,7 +10,7 @@
 
 <script>
 import navbar from './app-header';
-import timeout from './timeout';
+import timeout from '../shared/timeout';
 import Chart from 'chart.js';
 import axios from 'axios';
 export default {
@@ -36,7 +36,7 @@ export default {
        clearTimeout(time);
        // after 15 minutes of inacitivity, showWarning will be set to true
        // and the warning will display
-       time = setTimeout(self.DisplaySessionWarning, 15*60*1000);
+       time = setTimeout(self.displaySessionwarning, 15*60*1000);
      }
 
     // call the resetTimer function to kick-start the event timer. 
@@ -45,7 +45,7 @@ export default {
     },
 
     methods: {
-      DisplaySessionWarning() {
+      displaySessionwarning() {
         this.showWarning = true;
       },
       getCode(){
@@ -69,7 +69,6 @@ export default {
     },
 
     // beforeDestroy will run when the user leaves the component. 
-    // (ie. when they logout, when they leave the view without logging out)
     beforeDestroy() {
       document.onmousemove = null;
       document.onkeypress = null;

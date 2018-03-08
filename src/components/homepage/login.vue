@@ -91,32 +91,26 @@ import resetPassword from './reset-password.vue';
             axios.post('http://localhost:8080/login', newContact)
             // runs after the request has been answered
             .then(function(response) {
-              // if the is successful, that means an account exists.   
+              // if the response is successful, that means an account exists.   
               if(response.data.success) {
                 // if the login credential is a patient, take this route
+                self.$store.dispatch('signIn', response.data.accountType);
+                self.$store.dispatch('authenticatedUsername', self.username);
                 if(response.data.accountType == 'patient') {
-                  self.$store.dispatch('signIn', response.data.accountType);
-                  self.$store.dispatch('authenticatedUsername', self.username);
                   self.routePatientHome();
-                  self.closeLogin();
                 } //  if the user is a medical professional, take this route
                 else if (response.data.accountType == 'medical-professional') {
-                  self.$store.dispatch('authenticatedUsername', self.username);
-                  self.$store.dispatch('signIn', response.data.accountType);
                   self.routeMedicHome();
-                  self.closeLogin();
                 } //if the user is a system admin, take this route
                 else if (response.data.accountType == 'system-admin') {
-                  self.$store.dispatch('signIn', response.data.accountType);
                   self.displayAdmin();
-                  self.closeLogin();
                 }
                 else if(response.data.accountType =='SSO'){
-                  self.closeLogin();
                   self.$store.dispatch('saveUsername',self.username);
                   self.$store.dispatch('alternateSSORegistration');
                   self.$store.dispatch('alternateRegistration');
                 }
+                self.closeLogin();
               } else {
                  // if the credentials are bad, update the login vue and prompt the user of their error
                   self.inputWarning = 'The username and password you have provided are invalid.';

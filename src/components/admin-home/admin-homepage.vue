@@ -16,26 +16,57 @@
         </div>
       </div>
        <button class="modal-close is-large" aria-label="close" @click="closeAdmin"></button>
+       <timeout v-if ="showTime" @close = "showTime = false" @stopAdmin = "closeAdmin"/>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import timeout from '../shared/timeout';
 export default {
     name: 'breach',
+    components: {timeout},
      data() {
       return {
         //warning 
         showWarning: false,
         inputWarning: '',
+        showTime: false
 
       }
     },
+
+    mounted () { 
+      var self = this;
+      var time;
+      document.onmousemove = resetTimer;
+      document.onkeypress = resetTimer;
+      document.onclick = resetTimer;
+        
+      function resetTimer() {
+       clearTimeout(time);
+       // after 15 minutes of inacitivity, showWarning will be set to true
+       // and the warning will display
+       time = setTimeout(self.displaySessionwarning, 15*60*1000);
+     }
+
+    // call the resetTimer function to kick-start the event timer. 
+    resetTimer();
+  
+    },
     
     methods:{
+      displaySessionwarning() {
+        this.showTime = true;
+      },
         //closes admin page
     closeAdmin() {
+        console.log("closeAdmin");
+        document.onmousemove = null;
+        document.onkeypress = null;
+        document.onclick = null;
         this.$store.dispatch('signOut', '');
+        this.$store.dispatch('deauthenticatedUsername', '');
         this.$store.dispatch('alternateAdmin');
       },
       //shuts down and notifies user
@@ -51,8 +82,7 @@ export default {
               self.showWarning = true;
             });
     }
-    }
-  
+    },
 }
 </script>
 

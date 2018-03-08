@@ -29,6 +29,7 @@ const router = new Router ({
             beforeEnter: (to, from, next) => {
                 if((store.getters.authStatus) == 'medical-professional') {
                     console.log("Secure entry");
+                    console.log(store.getters.authStatus);
                     next()
                 } else {
                     console.log("Not Authenticated");
@@ -55,6 +56,7 @@ const router = new Router ({
             beforeEnter: (to, from, next) => {
                 if((store.getters.authStatus) == 'patient') {
                     console.log("Secure entry");
+                    console.log(store.getters.authStatus);
                     next()
                 } else {
                     console.log("Not Authenticated");

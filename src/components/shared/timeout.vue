@@ -5,7 +5,6 @@
       <header class = "modal-card-head">
         <img src = "../../assets/images/careaway-full1.png">
       </header>
-
       <section class = "modal-card-body">
          <p id = "warning-text"> <i class="fas fa-exclamation-triangle fa-2x"></i>
             You have been inactive for 15 minutes. Click 'Resume' below to remain logged in 
@@ -16,7 +15,6 @@
           The session will terminate in <p id = "countdown"> {{count}} </p> unless you click 'Resume'
         </div>
       </section>
-
       <footer class = "modal-card-foot">
         <button class = "button is-link" @click="resumeSession"> Resume </button>
       </footer>
@@ -56,7 +54,6 @@
             var current_minutes = minutes - 1;
 
             // subtract 1 from the seconds value
-            // timer will display at 59 seconds initially
             seconds--;
             self.count = current_minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
             if(seconds > 0) {
@@ -87,8 +84,17 @@
           document.onkeypress = null;
           document.onclick = null;
           this.$store.dispatch('deauthenticatedUsername', '');
+          this.$store.dispatch('medicalCode', '');
+          
+          console.log(this.$store.getters.authStatus);
+          if(this.$store.getters.authStatus == "system-admin"){
+            console.log("Should take System Admin route");
+            this.$emit('stopAdmin')
+          } else {
+            this.$router.push('/');
+          }
           this.$store.dispatch('signOut', '');
-          this.$router.push('/');
+          
         }
       },
 
@@ -99,8 +105,8 @@
 </script>
 
 
-<style lang= "scss">
-  @import "../../assets/sass/settings.scss";
+<style lang= "scss" scoped>
+  @import "../../assets/sass/main.scss";
    img {
     width: 25%;
   }
@@ -114,7 +120,7 @@
   }
 
   .modal-card-head {
-    background-color: $purple-light;
+    background-color:#BAA8EA;
   }
 
   #countdown-text {
