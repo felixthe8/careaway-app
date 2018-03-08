@@ -1,34 +1,35 @@
 <template>
-  <div class="modal is-active">
-    <div class="modal-background"></div>
-      <div class="modal-content">
-        <div id="appointment-box" class = "box">
-          <div id="appointment-card" class = "card">
-            <div class = "card-content">
-              <h2 id = "form-title"> Appointments</h2>
+  <div class='modal is-active'>
+    <div class='modal-background'></div>
+      <div class='modal-content'>
+        <div id='appointment-box' class = 'box'>
+          <div id='appointment-card' class = 'card'>
+            <div class = 'card-content'>
+              <h2 id = 'form-title'> Appointments</h2>
               Date: {{getDate}}<br>
               Time: {{getTime}}<br>
               Requested by: {{initiator}}<br>
               Scheduled with: {{appointee}}<br>
-              <div id="appointment-status">
-                <div v-if="getStatus">
+              <div id='appointment-status'>
+                <div v-if='getStatus'>
                   Status: {{status}}<br>
                 </div>
-                <div v-if="!getStatus">
-                  <a id="appointment-button" class="button is-rounded"> Accept </a>
-                  <a id="appointment-button" class="button is-rounded" @click="declineAppointment"> Decline </a>
+                <div v-if='!getStatus'>
+                  <a id='appointment-button' class='button is-rounded' @click="sendResponse('accepting')"> Accept </a>
+                  <a id='appointment-button' class='button is-rounded' @click="sendResponse('declined')"> Decline </a>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    <button class="modal-close is-large" aria-label="close" @click="closeAppointment"></button>
+    <button class='modal-close is-large' aria-label='close' @click='closeAppointment'></button>
   </div> 
 </template>
 
 
 <script>
+  import axios from 'axios';
   export default {
     name: 'appointment',
     props: ['appointmentObject'],
@@ -42,11 +43,11 @@
     },
     computed: {
       getStatus(){
-        if(this.status==="pending")
+        if(this.status === 'pending')
         {
           return true;
         }
-        else if(this.status =="accepting"){
+        else if(this.status =='accepting'){
           return false;
         }
       },
@@ -56,30 +57,35 @@
       getTime()
       {
         return `${this.date.getHours() === 0 ? 
-                "1" : this.date.getHours()>12 ? 
+                '1' : this.date.getHours()>12 ? 
                 this.date.getHours() - 12 : this.date.getHours()
-                }:${this.date.getMinutes()<10 ? "0" + this.date.getMinutes() : 
+                }:${this.date.getMinutes()<10 ? '0' + this.date.getMinutes() : 
                 this.date.getMinutes()} 
-                ${this.date.getHours()>12 ? "P.M.":"A.M."}`;
+                ${this.date.getHours()>12 ? 'P.M.':'A.M.'}`;
       }
     },
     methods: {
       closeAppointment() {
-         this.$store.commit("alternateAppointment");
+         this.$store.commit('alternateAppointment');
       }, 
-      acceptAppointment(){
+      sendResponse(status){
+        this.appointmentObject.status = status;
+        // TODO:: PUT THIS ROUTE INTO THE VUEX
+        axios.post('http://localhost:8080/updateApptStatus',this.appointmentObject).then(
+          function(response)
+          {
+            console.log(response.data.SUCCESS);
+          }).catch(function(err){
 
-      },
-      declineAppointment(){
-
+          })
       }
     }
   }
 </script>
 
 
-<style lang="scss">
-@import "../assets/sass/settings.scss";
+<style lang='scss'>
+@import '../assets/sass/settings.scss';
   #appointment
   {
     &-box
