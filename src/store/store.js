@@ -5,26 +5,77 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    // boolean value for controlling if the login modal will display 
-    showRegistration: false,
-    showLogin: false,
-    resetRegistrationForm: false,
+    
+    // The user's selected security questions during registration
     questionSelected1:0,
     questionSelected2:0,
     questionSelected3:0,
-    validUsername: '',
+
+    // Boolean value for controlling if the modals will display 
+    showRegistration: false,
+    showLogin: false,
+    resetRegistrationForm: false,
     showReset: false,
     showQuestions: false,
     showPassword: false,
     showAdmin: false,
+    ssoRegistration: false,
+
+    // URLS
+    checkBreachURL: 'http://localhost:8080/isBreached',
+    breachURL: 'http://localhost:8080/breach',
+    loginURL: 'http://localhost:8080/login',
+    registerPatientURL: 'http://localhost:8080/registerPatient',
+    registerMedicalProURL: 'http://localhost:8080/registerMed',
+    resetCredURL: 'http://localhost:8080/reset-creds',
+    getSecurityQURL:'http://localhost:4100/account/api/security-questions?username=',
+    validateAnswerURL: 'http://localhost:4100/account/api/validate-answers',
+    validateUsernameURL: 'http://localhost:8080/validate-username',
+    ssoRegisterPatientURL: 'http://localhost:8080/ssoRegisterPatient',
+    ssoRegisterMedicalURL: 'http://localhost:8080/ssoRegisterMed',
+
+    validUsername: '',
     username: '',
     validPassword: '',
     authenticatedUsername: '',
     medicalCode: '',
-    ssoRegistration: false,
     authStatus: ''
   },
   getters: {
+    checkBreachURL: (state) => {
+      return state.checkBreachURL;
+    },
+    breachURL: (state) => {
+      return state.breachURL;
+    },
+    loginURL: (state) => {
+      return state.loginURL
+    },
+    registerPatientURL: (state) => {
+      return state.registerPatientURL;
+    },
+    registerMedicalProURL:(state) => {
+      return state.registerMedicalProURL;
+    },
+    resetCredURL: (state) => {
+      return state.resetCredURL;
+    },
+    getSecurityQURL: (state) => {
+      return state.getSecurityQURL;
+    },
+    validateAnswerURL: (state) => {
+      return state.validateAnswerURL;
+    }, 
+    validateUsernameURL:  (state) => {
+      return state.validateUsernameURL;
+    },
+    ssoRegisterPatientURL:  (state) => {
+      return  state.ssoRegisterPatientURL;
+    },
+    ssoRegisterMedicalURL:  (state) => {
+      return state.ssoRegisterMedicalURL;
+    },
+
     showLogin: (state) => {
       return state.showLogin;
     },

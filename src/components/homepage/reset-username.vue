@@ -67,7 +67,7 @@ import axios from 'axios'
           var self = this;
             //need to post username
             // Send a POST request to the following route   IMPORTANT: route must be changed before deployment
-          axios.post('http://localhost:8080/validate-username', nameCheck)
+          axios.post(this.$store.getters.validateUsernameURL, nameCheck)
           // runs after the request has been answered
           .then(function(response) {
           // if the response exists, then do something.   IMPORTANT: This is just a console.log() because routes has not been defined

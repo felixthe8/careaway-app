@@ -67,7 +67,7 @@ export default {
         },
       // Shuts down and notifies user
     breachNotification(){
-        axios.post('http://localhost:8080/breach', {breach:'breach'})
+        axios.post(this.$store.getters.breachURL, {breach:'breach'})
           // runs after the request has been answered
           .then(function(response) {
             })

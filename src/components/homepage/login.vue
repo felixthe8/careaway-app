@@ -85,7 +85,7 @@ import resetPassword from './reset-password.vue';
               password: this.getPassword()
             }
             // Send a POST request to the following route   
-            axios.post('http://localhost:8080/login', newContact)
+            axios.post(this.$store.getters.loginURL, newContact)
             // Runs after the request has been answered
             .then(function(response) {
               // If the response is successful, that means an account exists.   

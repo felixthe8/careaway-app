@@ -71,7 +71,7 @@
       checkBreach(){
         var self = this;
         //get method to see if brach
-         axios.get('http://localhost:8080/isBreached')
+         axios.get(this.$store.getters.checkBreachURL)
          .then(response => {
                 if(response.data.down){
                   //show breach warning
