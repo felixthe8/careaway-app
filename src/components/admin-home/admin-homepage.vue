@@ -37,6 +37,7 @@ export default {
     },
 
     mounted () { 
+      // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
       var self = this;
       var time;
       document.onmousemove = resetTimer;
@@ -45,31 +46,27 @@ export default {
         
       function resetTimer() {
        clearTimeout(time);
-       // after 15 minutes of inacitivity, showWarning will be set to true
-       // and the warning will display
+       // After 15 minutes of inacitivity, the session timeout warning will display
        time = setTimeout(self.displaySessionwarning, 15*60*1000);
      }
-
-    // call the resetTimer function to kick-start the event timer. 
+    // Call the resetTimer function to kick-start the inactivity timer. 
     resetTimer();
-  
     },
-    
     methods:{
       displaySessionwarning() {
         this.showTime = true;
       },
-        //closes admin page
-    closeAdmin() {
-        console.log("closeAdmin");
-        document.onmousemove = null;
-        document.onkeypress = null;
-        document.onclick = null;
-        this.$store.dispatch('signOut', '');
-        this.$store.dispatch('deauthenticatedUsername', '');
-        this.$store.dispatch('alternateAdmin');
-      },
-      //shuts down and notifies user
+        // Call to close admin page
+      closeAdmin() {
+          console.log("closeAdmin");
+          document.onmousemove = null;
+          document.onkeypress = null;
+          document.onclick = null;
+          this.$store.dispatch('signOut', '');
+          this.$store.dispatch('deauthenticatedUsername', '');
+          this.$store.dispatch('alternateAdmin');
+        },
+      // Shuts down and notifies user
     breachNotification(){
         axios.post('http://localhost:8080/breach', {breach:'breach'})
           // runs after the request has been answered

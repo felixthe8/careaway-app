@@ -23,24 +23,20 @@ export default {
         showWarning: false
       }
     },
-    // a 15 minute session inactivity timer will run to keep track of
-    // if the user is interacting with the page or not. Timer will
-    // begin after the DOM elements are created
     mounted () { 
+      // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
       var self = this;
       var time;
       document.onmousemove = resetTimer;
       document.onkeypress = resetTimer;
       document.onclick = resetTimer;
-      // function to reset the timer on the page is called when the 
-      // event listeners go off  
+
       function resetTimer() {
        clearTimeout(time);
-       // after 15 minutes of inacitivity, showWarning will be set to true
-       // and the warning will display
+      // After 15 minutes of inacitivity, the session timeout warning will display
        time = setTimeout(self.displaySessionwarning, 15*60*1000);
      }
-      // call the resetTimer function to kick-start the event timer. 
+      // Call the resetTimer function to kick-start the inactivity timer. 
       resetTimer();
     },
 

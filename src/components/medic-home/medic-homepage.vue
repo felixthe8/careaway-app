@@ -7,7 +7,6 @@
   </div>
 </template>
 
-
 <script>
 import navbar from './app-header';
 import timeout from '../shared/timeout';
@@ -22,38 +21,32 @@ export default {
         medicalcode: this.$store.getters.medicalCode
       }
     },
-    // a 15 minute session inactivity timer will run to keep track of
-    // if the user is interacting with the page or not. Timer will
-    // begin after the DOM elements are created
     mounted () { 
-    var self = this;
-    var time;
-    document.onmousemove = resetTimer;
-    document.onkeypress = resetTimer;
-    document.onclick = resetTimer;
-        
-    function resetTimer() {
-       clearTimeout(time);
-       // after 15 minutes of inacitivity, showWarning will be set to true
-       // and the warning will display
-       time = setTimeout(self.displaySessionwarning, 15*60*1000);
-     }
-
-    // call the resetTimer function to kick-start the event timer. 
-    resetTimer();
-  
+      // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
+      var self = this;
+      var time;
+      document.onmousemove = resetTimer;
+      document.onkeypress = resetTimer;
+      document.onclick = resetTimer;
+          
+      function resetTimer() {
+        clearTimeout(time);
+       // After 15 minutes of inacitivity, the session timeout warning will display
+        time = setTimeout(self.displaySessionwarning, 15*60*1000);
+      }
+      // Call the resetTimer function to kick-start the inactivity timer. 
+      resetTimer();
     },
-
     methods: {
       displaySessionwarning() {
         this.showWarning = true;
       },
       getCode(){
        var self = this;
-        // return the medical code for the MP based on their username
+        // Return the medical code for the MP based on their username
         axios.get('http://localhost:8080/returnCode?username='+this.$store.getters.authenticatedUsername)
           .then(function(response) {
-            // extract out medical code from the response
+            // Extract out medical code from the response
             self.medicalcode = response.data.medicalcode;
             self.$store.dispatch('medicalCode', self.medicalcode);
           })
@@ -63,11 +56,9 @@ export default {
         }
 
     },
-
     created() {
       this.getCode();
     },
-
     // beforeDestroy will run when the user leaves the component. 
     beforeDestroy() {
       document.onmousemove = null;
