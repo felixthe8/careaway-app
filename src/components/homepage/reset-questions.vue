@@ -103,7 +103,7 @@
           }
           var self = this;
             //needs to post questions to validate
-          axios.post('http://localhost:4100/account/api/validate-answers', questionCheck)
+          axios.post(this.$store.getters.validateAnswerURL, questionCheck)
           // runs after the request has been answered
           .then(function(response) {
           // if the response exists, then do something.   IMPORTANT: This is just a console.log() because routes has not been defined
@@ -140,7 +140,7 @@
         var self = this;
         
           //need to change url ot valid server url
-           axios.get('http://localhost:4100/account/api/security-questions?username='+this.getUserName()).then(response => {
+           axios.get(this.$store.getters.getSecurityQURL+this.getUserName()).then(response => {
                 this.question1 = this.Questions.get(parseInt(response.data.result[0]));
                 this.question2 = this.Questions.get(parseInt(response.data.result[1]));
                 this.question3 = this.Questions.get(parseInt(response.data.result[2]));

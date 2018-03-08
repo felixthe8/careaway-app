@@ -5,6 +5,7 @@ import Router from 'vue-router';
 import {store} from '../store/store'
 import homepage from '../components/homepage/homepage.vue';
 import medicHome from '../components/medic-home/medic-homepage.vue';
+import medicCalendar from '../components/medic-home/calendar.vue';
 import patientHome from '../components/patient-home/patient-homepage.vue';
 import error from '../components/error/error.vue';
 
@@ -24,20 +25,22 @@ const router = new Router ({
         {
             path: '/MedicHome',
             name: 'MedicHome',
-            meta: {
-                title: "CareAway Medic Home"
-            },
             beforeEnter: (to, from, next) => {
-                console.log(store.getters.authenticationStatusMP);
-                if(!(store.getters.authenticationStatusMP)) {
+                if((store.getters.authStatus) == 'medical-professional') {
+                    console.log("Secure entry");
+                    console.log(store.getters.authStatus);
+                    next()
+                } else {
                     console.log("Not Authenticated");
                     next({path: '/',});
-                } else {
-                    console.log("Secure entry");
-                    next()
                 }
             },
-            component: medicHome
+            component: medicHome,
+            children:[ 
+                {path: '/MedicHome', component: medicCalendar, name: 'medicCalendar',  meta: {
+                    title: "CareAway Medical Home"
+                }}
+            ]
         },
 
         {
@@ -47,13 +50,13 @@ const router = new Router ({
                 title: "CareAway Patient Home"
             },
             beforeEnter: (to, from, next) => {
-                console.log(store.getters.authenticationStatusPatient);
-                if(!(store.getters.authenticationStatusPatient)) {
+                if((store.getters.authStatus) == 'patient') {
+                    console.log("Secure entry");
+                    console.log(store.getters.authStatus);
+                    next()
+                } else {
                     console.log("Not Authenticated");
                     next({path: '/',});
-                } else {
-                    console.log("Secure entry");
-                    next()
                 }
             },
             component: patientHome
