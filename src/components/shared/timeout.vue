@@ -5,7 +5,6 @@
       <header class = "modal-card-head">
         <img src = "../../assets/images/careaway-full1.png">
       </header>
-
       <section class = "modal-card-body">
          <p id = "warning-text"> <i class="fas fa-exclamation-triangle fa-2x"></i>
             You have been inactive for 15 minutes. Click 'Resume' below to remain logged in 
@@ -16,7 +15,6 @@
           The session will terminate in <p id = "countdown"> {{count}} </p> unless you click 'Resume'
         </div>
       </section>
-
       <footer class = "modal-card-foot">
         <button class = "button is-link" @click="resumeSession"> Resume </button>
       </footer>
@@ -24,15 +22,13 @@
   </div>
 </template>
 
-
 <script>
   export default {
       name: 'timeout',
       data() {
           return {
             count: '',
-            // boolean flag to determine if the timeout modal is being shown
-            // by default this is true
+            // Flag to determine if the timeout modal is being shown. Value is true by default
             showTimeout: true
           }
       },
@@ -40,66 +36,70 @@
       methods: {
         resumeSession(){
           this.count = '';
-          // when the user clicks Resume, change the flag to false
+          // When the user clicks Resume, change the flag to false
           this.showTimeout = false;
           this.$emit('close');
         },
-
-        // function to perform countdown.
-        // takes in a number of minutes as a parameter
+        // Function to perform countdown. Takes in a number of minutes (integer) as a parameter
         Timer: function(minutes) {
           var self = this;
           var seconds = 60;
-          //function to decrement the seconds on the countdown
+          // Function to decrement the seconds on the countdown
           function tick() {
-            // subtract 1 from desired time in minutes
+            // Subtract 1 from desired time in minutes
             var current_minutes = minutes - 1;
-
-            // subtract 1 from the seconds value
-            // timer will display at 59 seconds initially
+            // Subtract 1 from the seconds value
             seconds--;
-            self.count = current_minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
+            self.count = current_minutes.toString() + ":" + (seconds < 10 ? "0" : "") + seconds.toString();
             if(seconds > 0) {
               setTimeout(tick, 1000);
             } else {
-              // if seconds is 00, then decrement the minutes value and continue the countdown
+              // If seconds is 00, then decrement the minutes value and continue the countdown
               if(minutes > 1) {
                 setTimeout(function() {self.Timer(current_minutes)},1000);
               }
             }
-            // if the show timeout flag is false, then clear out the timer
+            // If the show timeout flag is false, then clear out the timer
             if(self.showTimeout === false) {
               self.count = '';
               return;
             }
-            // when the timer has run through its cycle, log the user out
+            // When the timer has run through its cycle, log the user out
             if(self.count == "0:00") {
               self.logOut();
             }
           }
-            // run method to decrement countdown timer
+            // Call to decrement countdown timer
             tick();
           },
 
         logOut() {
-          // clear the event listeners when the user selects to logout
+          // Clear the event listeners when the user timer ends
           document.onmousemove = null;
           document.onkeypress = null;
           document.onclick = null;
-          this.$store.dispatch('signOutMP');
-          this.$router.push('/');
+          this.$store.dispatch('deauthenticatedUsername', '');
+          this.$store.dispatch('medicalCode', '');
+          // Check if account is system-admin needed because system-admin homepage is a child of the CareAway homepage
+          if(this.$store.getters.authStatus == "system-admin"){
+            // Call to close the admin homepage
+            this.$emit('stopAdmin')
+          } else {
+            // Redirect to CareAway Homepage
+            this.$router.push('/');
+          }
+          // Clear the username in the Vue store
+          this.$store.dispatch('signOut', '');
         }
       },
-
       mounted() {
         this.Timer(2);
       }
   }
 </script>
 
-
-<style lang= "scss">
-  @import "../../assets/sass/settings.scss";
+<style lang= "scss" scoped>
+  @import "../../assets/sass/main.scss";
    img {
     width: 25%;
   }
@@ -113,7 +113,7 @@
   }
 
   .modal-card-head {
-    background-color: $purple-light;
+    background-color:#BAA8EA;
   }
 
   #countdown-text {
