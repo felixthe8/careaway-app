@@ -27,7 +27,6 @@ export default {
           } else {
           // object that will hold the diagnosis count
           var conditionCount = {};
-                
           for(var i = 0; i < response.data.patients.length; i++) {
             // if the diagnosis hasn't been encountered, add it to the object as a key and initialize it with a value of 1
             if(!(response.data.patients[i].diagnosis in conditionCount)) {

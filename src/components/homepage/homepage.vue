@@ -59,11 +59,11 @@
 
     },
     methods:{
-      //Calls the store to display the registration
+      // Calls the store to display the registration
       displayRegistration(){
         this.$store.commit('alternateRegistration');
       },
-      //Calls the store to display the login
+      // Calls the store to display the login
       displayLogin() {
         this.$store.dispatch('alternateLogin');
       },

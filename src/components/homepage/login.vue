@@ -40,7 +40,7 @@ import resetPassword from './reset-password.vue';
     },
     data() {
       return {
-        // User inputs on the login form
+        // User input on the login form
         username: '',
         // Data values to notify the user of an invalid input on login 
         validUsername: '',
@@ -60,7 +60,7 @@ import resetPassword from './reset-password.vue';
       },
       // Method to check if a field is empty. 
       checkEmpty(data){
-        if(data.length == 0 || data == '') {
+        if(data == '') {
           return 'is-danger'
         } 
       },
@@ -77,8 +77,6 @@ import resetPassword from './reset-password.vue';
           this.inputWarning = "You must provide a username and password to sign in";
           this.showWarning = true;
         } else {
-            this.showWarning = false;
-            this.inputWarning = '';
             // Represent the 'this' of the outside function scope
             var self = this;
             // Create an object to hold the data that we want to send for the request to verify user at login. 
@@ -137,9 +135,6 @@ import resetPassword from './reset-password.vue';
       },
     },
     computed: {
-      showLogin() {
-        return this.$store.getters.showLogin;
-      },
       showReset(){
         return this.$store.state.showReset;
       },

@@ -58,7 +58,6 @@ export default {
       },
         // Call to close admin page
       closeAdmin() {
-          console.log("closeAdmin");
           document.onmousemove = null;
           document.onkeypress = null;
           document.onclick = null;

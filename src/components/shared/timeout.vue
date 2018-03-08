@@ -50,7 +50,7 @@
             var current_minutes = minutes - 1;
             // Subtract 1 from the seconds value
             seconds--;
-            self.count = current_minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
+            self.count = current_minutes.toString() + ":" + (seconds < 10 ? "0" : "") + seconds.toString();
             if(seconds > 0) {
               setTimeout(tick, 1000);
             } else {
