@@ -84,7 +84,7 @@ import axios from 'axios'
             this.inputWarning = '';
              var self = this;
             //need to post and confirm
-            axios.put('http://localhost:8080/reset-creds', passwordReset)
+            axios.put(this.$store.getters.resetCredURL, passwordReset)
           // runs after the request has been answered
          
           .then(function(response) {

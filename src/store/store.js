@@ -5,52 +5,94 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    // boolean value for controlling if the login modal will display 
-    showRegistration: false,
-    showLogin: false,
-    resetRegistrationForm: false,
+    
+    // The user's selected security questions during registration
     questionSelected1:0,
     questionSelected2:0,
     questionSelected3:0,
-    validUsername: '',
+
+    // Boolean value for controlling if the modals will display 
+    showRegistration: false,
+    showLogin: false,
+    resetRegistrationForm: false,
     showReset: false,
     showQuestions: false,
     showPassword: false,
     showAdmin: false,
+    ssoRegistration: false,
+
+    // URLS
+    checkBreachURL: 'http://localhost:8080/isBreached',
+    breachURL: 'http://localhost:8080/breach',
+    loginURL: 'http://localhost:8080/login',
+    registerPatientURL: 'http://localhost:8080/registerPatient',
+    registerMedicalProURL: 'http://localhost:8080/registerMed',
+    resetCredURL: 'http://localhost:8080/reset-creds',
+    getSecurityQURL:'http://localhost:4100/account/api/security-questions?username=',
+    validateAnswerURL: 'http://localhost:4100/account/api/validate-answers',
+    validateUsernameURL: 'http://localhost:8080/validate-username',
+    ssoRegisterPatientURL: 'http://localhost:8080/ssoRegisterPatient',
+    ssoRegisterMedicalURL: 'http://localhost:8080/ssoRegisterMed',
+
+    validUsername: '',
     username: '',
     validPassword: '',
-    isAuthenticatedMP: false,
-    isAuthenticatedPatient: false,
-    isAuthenticatedAdmin: false,
-    ssoRegistration: false
+    authenticatedUsername: '',
+    medicalCode: '',
+    authStatus: ''
   },
   getters: {
+    checkBreachURL: (state) => {
+      return state.checkBreachURL;
+    },
+    breachURL: (state) => {
+      return state.breachURL;
+    },
+    loginURL: (state) => {
+      return state.loginURL
+    },
+    registerPatientURL: (state) => {
+      return state.registerPatientURL;
+    },
+    registerMedicalProURL:(state) => {
+      return state.registerMedicalProURL;
+    },
+    resetCredURL: (state) => {
+      return state.resetCredURL;
+    },
+    getSecurityQURL: (state) => {
+      return state.getSecurityQURL;
+    },
+    validateAnswerURL: (state) => {
+      return state.validateAnswerURL;
+    }, 
+    validateUsernameURL:  (state) => {
+      return state.validateUsernameURL;
+    },
+    ssoRegisterPatientURL:  (state) => {
+      return  state.ssoRegisterPatientURL;
+    },
+    ssoRegisterMedicalURL:  (state) => {
+      return state.ssoRegisterMedicalURL;
+    },
+
     showLogin: (state) => {
       return state.showLogin;
     },
-    authenticationStatusMP: (state)  => {
-      return state.isAuthenticatedMP;
+    authenticatedUsername: (state) => {
+      return state.authenticatedUsername;
     },
-    authenticationStatusPatient: (state)  => {
-      return state.isAuthenticatedPatient;
+    medicalCode: (state) => {
+      return state.medicalCode;
     },
-    authenticationStatusAdmin: (state)  => {
-      return state.isAuthenticatedAdmin;
-    },
+    authStatus: (state) => {
+      return state.authStatus;
+    }
   }, 
   mutations: {
     // function to flip the value of showLogin 
     alternateLogin: (state) => {
        state.showLogin = !state.showLogin;
-    },
-    updateAuthStatusMP: (state, payload) => {
-      state.isAuthenticatedMP = payload.authStatus;
-    },
-    updateAuthStatusPatient: (state, payload) => {
-      state.isAuthenticatedPatient = payload.authStatus;
-    },
-    updateAuthStatusAdmin: (state, payload) => {
-      state.isAuthenticatedAdmin = payload.authStatus;
     },
     alternateRegistration: (state) =>{
       state.showRegistration = !state.showRegistration;
@@ -84,7 +126,17 @@ export const store = new Vuex.Store({
     },
     alternateSSORegistration: (state) =>{
       state.ssoRegistration = !state.ssoRegistration;
+    },
+    authenticatedUsername: (state, payload) =>  {
+      state.authenticatedUsername = payload;
+    },
+    medicalCode: (state, payload) => {
+      state.medicalCode = payload;
+    },
+    authStatus: (state,payload) => {
+      state.authStatus = payload;
     }
+
   },
 
   actions: {
@@ -94,24 +146,6 @@ export const store = new Vuex.Store({
     },
     alternateRegistration: (context) =>{
       context.commit('alternateRegistration');
-    },
-    signInMP: (context , payload) => {
-      context.commit('updateAuthStatusMP', {authStatus: true});
-    },
-    signOutMP: (context) => {
-      context.commit('updateAuthStatusMP', {authStatus: false});
-    },
-    signInPatient: (context , payload) => {
-      context.commit('updateAuthStatusPatient', {authStatus: true});
-    },
-    signOutPatient: (context) => {
-      context.commit('updateAuthStatusPatient', {authStatus: false});
-    },
-    signInAdmin: (context , payload) => {
-      context.commit('updateAuthStatusAdmin', {authStatus: true});
-    }, 
-    signOutAdmin: (context) => {
-      context.commit('updateAuthStatusAdmin', {authStatus: false});
     },
     alternateReset: (context) => {
       context.commit('alternateReset');
@@ -130,6 +164,21 @@ export const store = new Vuex.Store({
     },
     alternateSSORegistration:(context) =>{
       context.commit('alternateSSORegistration');
+    },
+    authenticatedUsername: (context, payload) => {
+      context.commit('authenticatedUsername', payload);
+    },
+    deauthenticatedUsername: (context, payload) => {
+      context.commit('authenticatedUsername', payload);
+    },
+    medicalCode: (context, payload) => {
+      context.commit('medicalCode', payload);
+    },
+    signIn: (context, payload) => {
+      context.commit('authStatus', payload)
+    },
+    signOut: (context,payload) => {
+      context.commit('authStatus', payload);
     }
   }
 });

@@ -137,7 +137,7 @@
             medicalCode: this.medicalProfessionalCode
           }
           //Sends data to the proxy server on this route
-          axios.post('http://localhost:8080/ssoRegisterPatient', newPatient).then((
+          axios.post(this.$store.getters.ssoRegisterPatientURL, newPatient).then((
             function(response){
               if(response.data.success){
                 //This allows the user to be signed in as a patient
@@ -178,7 +178,7 @@
           }
           console.log(newMedicalProfessional)
           //Sends data to the proxy server on this route
-          axios.post('http://localhost:8080/ssoRegisterMed',newMedicalProfessional).then((
+          axios.post(this.$store.getters.ssoRegisterMedicalURL,newMedicalProfessional).then((
             function(response){
               //This allows the user to sign in as a medical professional
               self.$store.dispatch('signInMP');
