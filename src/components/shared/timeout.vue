@@ -88,7 +88,7 @@
           
           console.log(this.$store.getters.authStatus);
           if(this.$store.getters.authStatus == "system-admin"){
-            console.log("Should take System Admin route");
+            // this.$router.go(this.$router.currentRoute);
             this.$emit('stopAdmin')
           } else {
             this.$router.push('/');
