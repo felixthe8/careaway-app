@@ -32,6 +32,7 @@ export default {
       document.onclick = resetTimer;
 
       function resetTimer() {
+        // Remove the timer ID instance created by setTimeout
        clearTimeout(time);
       // After 15 minutes of inacitivity, the session timeout warning will display
        time = setTimeout(self.displaySessionwarning, 15*60*1000);
