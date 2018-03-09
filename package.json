@@ -16,6 +16,7 @@
     "chart.piecelabel.js": "^0.9.0",
     "color-scheme": "^1.0.0",
     "font-awesome": "^4.7.0",
+    "moment": "^2.21.0",
     "randomcolor": "^0.5.3",
     "vue": "^2.5.11",
     "vue-router": "^3.0.1",

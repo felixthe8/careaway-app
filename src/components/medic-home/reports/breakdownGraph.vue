@@ -19,22 +19,25 @@ export default {
   methods: {
       getInfo() {
         var self = this;
-        // return patients who are associated with the medical professional
-        axios.get('http://localhost:8080/patientBreakdown?medicalcode='+this.$store.getters.medicalCode)
+        // Return patients who are associated with the medical professional
+        axios.get(this.$store.getters.patientBreakdownURL+this.$store.getters.medicalCode)
         .then(function(response) {
-          if(response.data.patients.length == 0) {
+          if(response.data.patientDiagnoses.length == 0) {
             self.breakdownWarning = 'Sorry, you need to add patients before you can view reports';
           } else {
-          // object that will hold the diagnosis count
+          // Object that will hold the diagnosis count
           var conditionCount = {};
-          for(var i = 0; i < response.data.patients.length; i++) {
-            // if the diagnosis hasn't been encountered, add it to the object as a key and initialize it with a value of 1
-            if(!(response.data.patients[i].diagnosis in conditionCount)) {
-              conditionCount[response.data.patients[i].diagnosis] = 1
-            }  else { // otherwise, increment the existing value by 1
-                conditionCount[response.data.patients[i].diagnosis]+=1;
-                }
+          // Loop through the patient diagnoses that was returned. In the conditionCount object, use the diagnoses as keys
+          for (var d of response.data.patientDiagnoses) {
+            if(!(d in conditionCount)) {
+              // If the diagnosis does not exist as a key, add it and set the initial value to 1
+              conditionCount[d] = 1;
+            } else {
+              // Increment an value of a condition
+              conditionCount[d]+=1;
+            }
           }
+          
           var ctx = document.getElementById("patient-breakdown").getContext('2d');
           var breakdown = new Chart (ctx, {
             type: 'doughnut',
@@ -42,7 +45,7 @@ export default {
               labels: Object.keys(conditionCount),
               datasets: [{
                 data: Object.values(conditionCount),
-                backgroundColor: randomColor({count: Object.keys(conditionCount).length, hue: 'green'})
+                backgroundColor: randomColor({count: Object.keys(conditionCount).length, luminosity: 'bright'})
               }]
             },
             options: {

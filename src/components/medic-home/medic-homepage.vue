@@ -28,6 +28,8 @@ export default {
       document.onmousemove = resetTimer;
       document.onkeypress = resetTimer;
       document.onclick = resetTimer;
+      // start event timer when the user stops typing, or clicking
+      // debouncing an event
           
       function resetTimer() {
         clearTimeout(time);
@@ -44,7 +46,7 @@ export default {
       getCode(){
        var self = this;
         // Return the medical code for the MP based on their username
-        axios.get('http://localhost:8080/returnCode?username='+this.$store.getters.authenticatedUsername)
+        axios.get(this.$store.getters.returnCodeURL+this.$store.getters.authenticatedUsername)
           .then(function(response) {
             // Extract out medical code from the response
             self.medicalcode = response.data.medicalcode;

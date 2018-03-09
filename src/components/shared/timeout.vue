@@ -84,6 +84,8 @@
           if(this.$store.getters.authStatus == "system-admin"){
             // Call to close the admin homepage
             this.$emit('stopAdmin')
+            // look into router.replace
+            
           } else {
             // Redirect to CareAway Homepage
             this.$router.push('/');
