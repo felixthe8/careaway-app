@@ -31,14 +31,15 @@
 <script>
   import axios from 'axios';
   export default {
-    name: 'appointment',
-    props: ['appointmentObject'],
+    name: 'appointment-status',
+    // TODO: Remove testBool
+    props: ['appointment','testBool'],
     data() {
       return {
-        date: this.appointmentObject.date,
-        initiator: this.appointmentObject.initiator,
-        appointee: this.appointmentObject.appointee,
-        status: this.appointmentObject.status
+        date: this.appointment.date,
+        initiator: this.appointment.initiator,
+        appointee: this.appointment.appointee,
+        status: this.appointment.status,
       }
     },
     computed: {
@@ -69,15 +70,17 @@
          this.$store.commit('alternateAppointment');
       }, 
       sendResponse(status){
-        this.appointmentObject.status = status;
-        // TODO:: PUT THIS ROUTE INTO THE VUEX
-        axios.post('http://localhost:8080/updateApptStatus',this.appointmentObject).then(
+        this.appointment.status = status;
+        //TODO:: PUT THIS ROUTE INTO THE VUEX
+        axios.post(this.$store.getters.updateApptURL,{"appointment" : this.appointment}).then(
           function(response)
           {
-            console.log(response.data.SUCCESS);
+            console.log(response.data.tyler);
           }).catch(function(err){
 
           })
+        // TODO: Remove this test variable
+        this.testBool.received = false;
       }
     }
   }
@@ -90,7 +93,6 @@
   {
     &-box
     {
-      width: 50%;
       background: $blue;
       margin: auto;
     }
@@ -103,7 +105,7 @@
       padding: 15px 10px 10px 10px;
     }
     &-button{
-      padding: 0px 15px 0px 15px;
+      width: 100%;
       margin: 5px 10px 0px 10px;
       background: $purple-dark;
       color: $white;
@@ -115,13 +117,17 @@
   .modal-content {
     overflow: hidden;
     max-height: none;
+    font-family: cursive;
   }
   #form-title {
+    font-size: 5em;
+    margin-bottom: .5em;
+    font-weight: bolder;
+    border-style: groove;
+    border-width: 5px;
+    @media #{$tablet}{
       font-size: 1.5em;
-      margin-bottom: .5em;
-      font-weight: bolder;
-      border-style: groove;
-      border-width: 5px;
+    }
   } 
   .input{
     margin: 5px 0px 5px 0px;

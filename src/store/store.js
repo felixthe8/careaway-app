@@ -33,6 +33,7 @@ export const store = new Vuex.Store({
     validateUsernameURL: 'http://localhost:8080/validate-username',
     ssoRegisterPatientURL: 'http://localhost:8080/ssoRegisterPatient',
     ssoRegisterMedicalURL: 'http://localhost:8080/ssoRegisterMed',
+    updateApptURL: 'http://localhost:8080/updateAppt',
 
     validUsername: '',
     username: '',
