@@ -38,8 +38,7 @@ export default {
             }
           }
           
-          var ctx = document.getElementById("patient-breakdown").getContext('2d');
-          var breakdown = new Chart (ctx, {
+         new Chart (document.getElementById("patient-breakdown").getContext('2d'), {
             type: 'doughnut',
             data: {
               labels: Object.keys(conditionCount),
