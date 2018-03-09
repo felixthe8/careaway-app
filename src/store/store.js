@@ -43,6 +43,7 @@ export const store = new Vuex.Store({
     authStatus: ''
   },
   getters: {
+
     checkBreachURL: (state) => {
       return state.checkBreachURL;
     },
@@ -88,6 +89,9 @@ export const store = new Vuex.Store({
     },
     authStatus: (state) => {
       return state.authStatus;
+    },
+    updateApptURL: (state) => {
+      return state.updateApptURL;
     }
   }, 
   mutations: {
