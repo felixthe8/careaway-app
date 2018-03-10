@@ -14,7 +14,7 @@
                 <div v-if='getStatus'>
                   Status: {{status}}<br>
                 </div>
-                <div v-if='!getStatus && !isInitiator'>
+                <div v-if='!getStatus '>
                   <a id='appointment-button' class='button is-rounded' @click="sendResponse('Accepted')"> Accept </a>
                   <a id='appointment-button' class='button is-rounded' @click="sendResponse('Declined')"> Decline </a>
                 </div>
@@ -25,6 +25,7 @@
                 <div v-if='isInitiator && isRejected'>
                   <a id='appointment-button' class='button is-rounded' > Okay </a>
                 </div>
+                <div class = 'appointment-warning' v-show='showWarning'> {{warning}} </div>
               </div>
             </div>
           </div>
@@ -49,6 +50,8 @@
         initiator: this.appointment.initiator,
         appointee: this.appointment.appointee,
         status: this.appointment.status,
+        showWarning: false,
+        warning: 'Connection error has occurred. Please try again.',
       }
     },
     computed: {
@@ -61,9 +64,9 @@
       },
       isRejected(){
         if(this.status === "declined" && !this.isInitiator){
-          return false;
-        } else{
           return true;
+        } else{
+          return false;
         }
       },
       getStatus(){
@@ -91,20 +94,27 @@
          this.$store.commit('alternateAppointment');
       }, 
       sendResponse(status){
-        this.status = status;
+        var self = this;
         var appointmentObject = {
-          date: this.appointment.date,
-          initiator: this.appointment.initiator,
-          appointee: this.appointment.appointee,
-          status: this.appointment.status
+          date: this.date,
+          initiator: this.initiator,
+          appointee: this.appointee,
+          status: status
         }
-        //TODO:: PUT THIS ROUTE INTO THE VUEX
-        axios.post(this.$store.getters.modifyAppt,appointmentObject).then(
+        axios.post(this.$store.getters.modifyAppt,{'appointmentDate' : this.date, 'appointment': appointmentObject}).then(
           function(response)
           {
-            console.log(response.data.tyler);
+            if(response.data.response === 'success'){
+              console.log("Success");
+              self.status = status;
+              self.showWarning = false; 
+            } else {
+              console.log(response.data.response);
+              self.showWarning = true;     
+            }
           }).catch(function(err){
             console.log("There was an error handling the request");
+            self.showWarning = true;      
           })
       }
     }
@@ -121,6 +131,9 @@
       background: $blue;
       margin: auto;
       width: 75%;
+    }
+    &-warning{
+      color: red;
     }
     &-card{
       background: $blue-light;
@@ -139,6 +152,7 @@
     &-button:hover{
       background: $purple;
     }
+
   }
   .modal-content {
     overflow: hidden;

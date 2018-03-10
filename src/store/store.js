@@ -79,7 +79,7 @@ export const store = new Vuex.Store({
       return state.ssoRegisterMedicalURL;
     },
     modifyAppt: (state) => {
-      return state.updateApptURL;
+      return state.modifyAppt;
     },
     showLogin: (state) => {
       return state.showLogin;
