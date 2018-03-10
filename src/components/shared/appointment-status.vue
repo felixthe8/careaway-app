@@ -63,14 +63,14 @@
         }
       },
       isRejected(){
-        if(this.status === "declined" && !this.isInitiator){
+        if(this.status === "Declined" && !this.isInitiator){
           return true;
         } else{
           return false;
         }
       },
       getStatus(){
-        if(this.status === "pending" && !this.isInitiator){
+        if(this.status === "Pending" && !this.isInitiator){
           return false;
         } else{
           return true;
