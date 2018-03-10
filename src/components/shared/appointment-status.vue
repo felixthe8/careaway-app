@@ -14,9 +14,16 @@
                 <div v-if='getStatus'>
                   Status: {{status}}<br>
                 </div>
-                <div v-if='!getStatus'>
-                  <a id='appointment-button' class='button is-rounded' @click="sendResponse('accepting')"> Accept </a>
-                  <a id='appointment-button' class='button is-rounded' @click="sendResponse('declined')"> Decline </a>
+                <div v-if='!getStatus && !isInitiator'>
+                  <a id='appointment-button' class='button is-rounded' @click="sendResponse('Accepted')"> Accept </a>
+                  <a id='appointment-button' class='button is-rounded' @click="sendResponse('Declined')"> Decline </a>
+                </div>
+                <div v-if='isInitiator && !isRejected'>
+                  <a id='appointment-button' class='button is-rounded' > Edit </a>
+                  <a id='appointment-button' class='button is-rounded' > Delete </a>
+                </div>
+                <div v-if='isInitiator && isRejected'>
+                  <a id='appointment-button' class='button is-rounded' > Okay </a>
                 </div>
               </div>
             </div>
@@ -30,10 +37,12 @@
 
 <script>
   import axios from 'axios';
+  import messageBox from './message-box.vue';
+
   export default {
     name: 'appointment-status',
     // TODO: Remove testBool
-    props: ['appointment','testBool'],
+    props: ['appointment'],
     data() {
       return {
         date: this.appointment.date,
@@ -43,13 +52,25 @@
       }
     },
     computed: {
-      getStatus(){
-        if(this.status === 'pending')
-        {
+      isInitiator(){
+        if(this.initiator === this.$store.getters.authenticatedUsername){
+          return true;
+        } else {
+          return false;
+        }
+      },
+      isRejected(){
+        if(this.status === "declined" && !this.isInitiator){
+          return false;
+        } else{
           return true;
         }
-        else if(this.status =='accepting'){
+      },
+      getStatus(){
+        if(this.status === "pending" && !this.isInitiator){
           return false;
+        } else{
+          return true;
         }
       },
       getDate(){
@@ -70,17 +91,21 @@
          this.$store.commit('alternateAppointment');
       }, 
       sendResponse(status){
-        this.appointment.status = status;
+        this.status = status;
+        var appointmentObject = {
+          date: this.appointment.date,
+          initiator: this.appointment.initiator,
+          appointee: this.appointment.appointee,
+          status: this.appointment.status
+        }
         //TODO:: PUT THIS ROUTE INTO THE VUEX
-        axios.post(this.$store.getters.updateApptURL,{"appointment" : this.appointment}).then(
+        axios.post(this.$store.getters.modifyAppt,appointmentObject).then(
           function(response)
           {
             console.log(response.data.tyler);
           }).catch(function(err){
-
+            console.log("There was an error handling the request");
           })
-        // TODO: Remove this test variable
-        this.testBool.received = false;
       }
     }
   }
@@ -95,6 +120,7 @@
     {
       background: $blue;
       margin: auto;
+      width: 75%;
     }
     &-card{
       background: $blue-light;
@@ -120,7 +146,7 @@
     font-family: cursive;
   }
   #form-title {
-    font-size: 5em;
+    font-size: 2em;
     margin-bottom: .5em;
     font-weight: bolder;
     border-style: groove;
@@ -131,5 +157,8 @@
   } 
   .input{
     margin: 5px 0px 5px 0px;
+  }
+  .hidden{
+    display: none;
   }
 </style>

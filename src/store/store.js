@@ -20,6 +20,7 @@ export const store = new Vuex.Store({
     showPassword: false,
     showAdmin: false,
     ssoRegistration: false,
+    showAppointment: false,
 
     // URLS
     checkBreachURL: 'http://localhost:8080/isBreached',
@@ -33,7 +34,7 @@ export const store = new Vuex.Store({
     validateUsernameURL: 'http://localhost:8080/validate-username',
     ssoRegisterPatientURL: 'http://localhost:8080/ssoRegisterPatient',
     ssoRegisterMedicalURL: 'http://localhost:8080/ssoRegisterMed',
-    updateApptURL: 'http://localhost:8080/updateAppt',
+    modifyAppt: 'http://localhost:8080/updateAppt',
 
     validUsername: '',
     username: '',
@@ -77,7 +78,9 @@ export const store = new Vuex.Store({
     ssoRegisterMedicalURL:  (state) => {
       return state.ssoRegisterMedicalURL;
     },
-
+    modifyAppt: (state) => {
+      return state.updateApptURL;
+    },
     showLogin: (state) => {
       return state.showLogin;
     },
@@ -90,9 +93,9 @@ export const store = new Vuex.Store({
     authStatus: (state) => {
       return state.authStatus;
     },
-    updateApptURL: (state) => {
-      return state.updateApptURL;
-    }
+    showAppointment: (state) => {
+      return state.showAppointment;
+    },
   }, 
   mutations: {
     // function to flip the value of showLogin 
@@ -140,7 +143,10 @@ export const store = new Vuex.Store({
     },
     authStatus: (state,payload) => {
       state.authStatus = payload;
-    }
+    },
+    alternateAppointment: (state) => {
+      state.showAppointment = !state.showAppointment;
+  }
 
   },
 
@@ -184,6 +190,9 @@ export const store = new Vuex.Store({
     },
     signOut: (context,payload) => {
       context.commit('authStatus', payload);
+    },
+    alternateAppointment: (context) => {
+      context.commit("alternateAppointment");
     }
   }
 });
