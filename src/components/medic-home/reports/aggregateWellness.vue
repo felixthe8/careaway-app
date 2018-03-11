@@ -32,98 +32,99 @@ export default {
           counter: 0,
         }  
       }
+      var self = this;
       // Request to return meter widget data
       axios.get(this.$store.getters.getTreatmentmeterURL+this.$store.getters.medicalCode)
-      .then(function (response) {
-        // Loop through each array inside the encompassing response array
-        for (var patient of response.data) {
-          for (var meter of patient) {
-            // Write the sum of the meter widget data 
-            wellness_obj[meter.due_date].value += (parseInt(meter.patient_input) / parseInt(meter.scale[1]) ) * 100
-            // Increment the counter
-            wellness_obj[meter.due_date].counter+=1
+      .then(function (response) { 
+        // If there is no treatment data. Check each individual array in the response to see if they are empty
+        if(response.data.every((item) => { return item.length == 0})) {
+          self.wellnessWarning = 'Sorry, you need to add patients and have a full week of data (Monday - Friday) before you can view reports'
+        } else {
+          // Loop through each array inside the encompassing response array
+          for (var patient of response.data) {
+            for (var meter of patient) {
+              // Write the sum of the meter widget data 
+              wellness_obj[meter.due_date].value += (parseInt(meter.patient_input) / parseInt(meter.scale[1]) ) * 100
+              // Increment the counter
+              wellness_obj[meter.due_date].counter+=1
+            }
           }
-        }
-      // Compute the average of the meter widget data for each day
-      for(var key in wellness_obj) {
-        if(wellness_obj.hasOwnProperty(key)) {
-          // If no patients had a meter widget that day, set the average to 0 for that day
-          if(wellness_obj[key].counter == 0) {
-            wellness_obj[key].average = 0;
-          } else {
-              // Average is the sum of meter widget data divided by the number of patients who had data for that day 
-              wellness_obj[key].average = wellness_obj[key].value / wellness_obj[key].counter
+          // Compute the average of the meter widget data for each day
+          for(var key in wellness_obj) {
+            if(wellness_obj.hasOwnProperty(key)) {
+              // If no patients had a meter widget that day, set the average to 0 for that day
+              if(wellness_obj[key].counter == 0) {
+                wellness_obj[key].average = 0;
+              } else {
+                // Average is the sum of meter widget data divided by the number of patients who had data for that day 
+                wellness_obj[key].average = wellness_obj[key].value / wellness_obj[key].counter
+              }
+            }
           }
-        }
-      }
 
-        new Chart(document.getElementById("aggregate-wellness"), {
-          type: 'bar',
-          data: {
-            labels: days,
-            datasets: [{
-              label: "Average Wellness",
-              backgroundColor: Array(days.length).fill("#2e4053"),
-              // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
-              data: Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse()
-            }, 
-            {
-              // Create the 'Severe Pain' line
-              data: Array(days.length).fill(20),
-              type: 'line',
-              label: "Severe Pain",
-              borderColor: "#ff0000",
-              backgroundColor: "#e6b0aa",
-              borderWidth: 3,
-              fill: true,
-           },
-           {
-             // Create the 'Moderate Pain' line
-              data: Array(days.length).fill(50),
-              type: 'line',
-              label: "Moderate Pain",
-              borderColor: "#f4d03f",
-              backgroundColor: "#fcf3cf",
-              borderWidth: 3,
-              fill: true,
-            
-           },
-           {
-             // Create the 'Some Pain' line
-              data: Array(days.length).fill(80),
-              type: 'line',
-              label: "Some Pain",
-              borderColor: "#3273dc",
-              backgroundColor: "#d6eaf8",
-              borderWidth: 3,
-              fill: true,
-           },
-           {
-              // Create the 'Little Pain' line 
-              data: Array(days.length).fill(99),
-              type: 'line',
-              label: "Little Pain",
-              borderColor: "#117a65",
-              backgroundColor: "#d4efdf",
-              borderWidth: 3,
-           }]
-         },
-         options: {
-           responsive: false,
-           maintainAspectRatio: true,
-           hover: {mode: null},
-            scales: {
-              xAxes: [{barPercentage: 0.55}],
-              yAxes: [{
-                ticks: {
-                  beginAtZero: true,
-                  suggestedMax: 100,
-                }
+          new Chart(document.getElementById("aggregate-wellness"), {
+            type: 'bar',
+            data: {
+              labels: days,
+              datasets: [{
+                label: "Average Wellness",
+                backgroundColor: Array(days.length).fill("#2e4053"),
+                // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
+                data: Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse()
+              }, {
+                // Create the 'Severe Pain' line
+                data: Array(days.length).fill(20),
+                type: 'line',
+                label: "Severe Pain",
+                borderColor: "#ff0000",
+                backgroundColor: "#e6b0aa",
+                borderWidth: 3,
+                fill: true,
+              }, {
+                // Create the 'Moderate Pain' line
+                data: Array(days.length).fill(50),
+                type: 'line',
+                label: "Moderate Pain",
+                borderColor: "#f4d03f",
+                backgroundColor: "#fcf3cf",
+                borderWidth: 3,
+                fill: true,
+              }, {
+                // Create the 'Some Pain' line
+                data: Array(days.length).fill(80),
+                type: 'line',
+                label: "Some Pain",
+                borderColor: "#3273dc",
+                backgroundColor: "#d6eaf8",
+                borderWidth: 3,
+                fill: true,
+              }, {
+                // Create the 'Little Pain' line 
+                data: Array(days.length).fill(99),
+                type: 'line',
+                label: "Little Pain",
+                borderColor: "#117a65",
+                backgroundColor: "#d4efdf",
+                borderWidth: 3,
               }]
             },
-            elements: {point: {radius: 0}}           
-         }
-      });
+            options: {
+             responsive: false,
+             maintainAspectRatio: true,
+             hover: {mode: null},
+             scales: {
+               xAxes: [{barPercentage: 0.55}],
+               yAxes: [{
+                 ticks: {
+                    beginAtZero: true,
+                    suggestedMax: 100,
+                  }
+                }]
+              },
+              elements: {point: {radius: 0}}           
+            }
+          });
+        }
       })
       .catch(function(err) {
         console.log(err)

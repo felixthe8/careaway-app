@@ -22,6 +22,7 @@ export default {
         // Return patients who are associated with the medical professional
         axios.get(this.$store.getters.patientBreakdownURL+this.$store.getters.medicalCode)
         .then(function(response) {
+          // If there are no diagnoses returned
           if(response.data.length == 0) {
             self.breakdownWarning = 'Sorry, you need to add patients before you can view reports';
           } else {
@@ -88,7 +89,6 @@ export default {
   mounted() {
     this.getInfo();
   }
-  
 }
 </script>
 
