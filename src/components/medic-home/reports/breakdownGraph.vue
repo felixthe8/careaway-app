@@ -8,7 +8,7 @@
 
 <script>
 import axios from 'axios';
-import randomColor from 'randomcolor';
+import colorScheme from 'color-scheme';
 export default {
   name: 'breakdown',
   data() {
@@ -39,6 +39,13 @@ export default {
             }
           }
           
+         var scheme = new colorScheme;
+         var palette = scheme.from_hue(21).scheme('triade').variation('default').colors();
+         // Need to append a '#' at the front of each hex code generated because it is required for the colors on Chart JS and color-scheme does not do this
+         for(var i = 0; i < palette.length; i++) {
+           palette[i] = '#'+palette[i];
+         }
+         
          new Chart (document.getElementById("patient-breakdown").getContext('2d'), {
             type: 'doughnut',
             data: {
@@ -47,7 +54,7 @@ export default {
               datasets: [{
                 // Use the number of patients with that condition as the data values
                 data: Object.values(conditionCount),
-                backgroundColor: randomColor({count: Object.keys(conditionCount).length, luminosity: 'bright'})
+                backgroundColor: palette
               }]
             },
             options: {

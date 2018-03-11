@@ -20,7 +20,7 @@ export default {
     getInfo() {
      var days = [];
      // Create a wellness object to hold and store the wellness data computations
-     var wellness_obj = {}
+     var wellness_obj = {};
      // generate the 5 days of the previous week
       for(var i = 0; i <=4; i++) {
         // Loop will begin from the previous Friday and count backwards 1 day at a time till the Monday of that week
@@ -33,11 +33,13 @@ export default {
           counter: 0,
         }  
       }
+     
       var self = this;
       // Request to return meter widget data
       axios.get(this.$store.getters.getTreatmentmeterURL+this.$store.getters.medicalCode)
       .then(function (response) { 
         // If there is no treatment data. Check each individual array in the response to see if they are empty
+        
         if(response.data.every((item) => { return item.length == 0})) {
           self.wellnessWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
         } else {
@@ -63,7 +65,7 @@ export default {
               }
             }
           }
-
+          
           new Chart(document.getElementById("aggregate-wellness"), {
             type: 'bar',
             data: {
@@ -130,6 +132,7 @@ export default {
       })
       .catch(function(err) {
          self.wellnessWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
+         console.log(err);
       })
     }
   },
