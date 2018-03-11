@@ -45,7 +45,6 @@ export default {
       })
       .then(function (response) { 
         // If there is no treatment data. Check each individual array in the response to see if they are empty
-        console.log(response.data);
         if(response.data.every((item) => { return item.length == 0})) {
           self.wellnessWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
         } else {
@@ -54,7 +53,7 @@ export default {
             // Loop through each meter widget
             for (var meter of patient) {
               // Write the sum of the meter widget data 
-              wellness_obj[meter.due_date].value += (parseInt(meter.patient_input) / parseInt(meter.scale[1]) ) * 100
+              wellness_obj[meter.due_date].value += (parseFloat(meter.patient_input) / parseFloat(meter.scale[1]) ) * 100
               // Increment the counter
               wellness_obj[meter.due_date].counter+=1
             }
