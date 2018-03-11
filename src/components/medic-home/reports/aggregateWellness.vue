@@ -38,7 +38,7 @@ export default {
       .then(function (response) { 
         // If there is no treatment data. Check each individual array in the response to see if they are empty
         if(response.data.every((item) => { return item.length == 0})) {
-          self.wellnessWarning = 'Sorry, you need to add patients and have a full week of data (Monday - Friday) before you can view reports'
+          self.wellnessWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
         } else {
           // Loop through each array inside the encompassing response array
           for (var patient of response.data) {
