@@ -18,67 +18,100 @@ export default {
   },
   methods: {
     getInfo() {
-
-      /*
-        moment().day(-2)goes back two days further than the beginning of the week, i.e., last Friday.
-      */
      var days = [];
+     var wellness_obj = {}
      // generate the 5 days of the previous week
       for(var i = 0; i <=4; i++) {
-        console.log(moment().day(-2).subtract(i,'days').format("YYYY-MM-DD"));
-        days.unshift(moment().day(-2).subtract(i,'days').format("YYYY-MM-DD"));
+        // Loop will begin from the previous Friday and count backwards 1 day at a time
+        var singleDay = moment().day(-2).subtract(i,'days').format("YYYY-MM-DD");
+        days.unshift(singleDay);
+        wellness_obj[singleDay] = {
+          // Value will hold the sum of the meter widget data
+          value: 0,
+          // Counter will be used to represent the number of patients who had meter widget data on a specific day
+          counter: 0,
+        }  
+      }
+      // Request to return meter widget data
+      axios.get(this.$store.getters.getTreatmentmeterURL+this.$store.getters.medicalCode)
+      .then(function (response) {
+        // Loop through each array inside the encompassing response array
+        for (var patient of response.data) {
+          for (var meter of patient) {
+            // Write the sum of the meter widget data 
+            wellness_obj[meter.due_date].value += (parseInt(meter.patient_input) / parseInt(meter.scale[1]) ) * 100
+            // Increment the counter
+            wellness_obj[meter.due_date].counter+=1
+          }
+        }
+      // Compute the average of the meter widget data for each day
+      for(var key in wellness_obj) {
+        if(wellness_obj.hasOwnProperty(key)) {
+          // If no patients had a meter widget that day, set the average to 0 for that day
+          if(wellness_obj[key].counter == 0) {
+            wellness_obj[key].average = 0;
+          } else {
+              // Average is the sum of meter widget data divided by the number of patients who had data for that day 
+              wellness_obj[key].average = wellness_obj[key].value / wellness_obj[key].counter
+          }
+        }
       }
 
-      new Chart(document.getElementById("aggregate-wellness"), {
-         type: 'bar',
-         data: {
-           labels: days,
-           datasets: [{
-             label: "Average Wellness",
-             backgroundColor: Array(days.length).fill("#2e4053"),
-             data: [29,30,40,67,70]
-           }, 
-           {
-             data: Array(days.length).fill(20),
-             type: 'line',
-             label: "Severe Pain",
-             borderColor: "#ff0000",
-             backgroundColor: "#e6b0aa",
-             borderWidth: 4,
-             fill: true
+        new Chart(document.getElementById("aggregate-wellness"), {
+          type: 'bar',
+          data: {
+            labels: days,
+            datasets: [{
+              label: "Average Wellness",
+              backgroundColor: Array(days.length).fill("#2e4053"),
+              // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
+              data: Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse()
+            }, 
+            {
+              // Create the 'Severe Pain' line
+              data: Array(days.length).fill(20),
+              type: 'line',
+              label: "Severe Pain",
+              borderColor: "#ff0000",
+              backgroundColor: "#e6b0aa",
+              borderWidth: 3,
+              fill: true,
            },
            {
-             data: Array(days.length).fill(50),
-             type: 'line',
-             label: "Moderate Pain",
-             borderColor: "#f4d03f",
-             backgroundColor: "#fcf3cf",
-             borderWidth: 4,
-             fill: true,
-             spanGaps: true
+             // Create the 'Moderate Pain' line
+              data: Array(days.length).fill(50),
+              type: 'line',
+              label: "Moderate Pain",
+              borderColor: "#f4d03f",
+              backgroundColor: "#fcf3cf",
+              borderWidth: 3,
+              fill: true,
             
            },
            {
-             data: Array(days.length).fill(80),
-             type: 'line',
-             label: "Some Pain",
-             borderColor: "#3273dc",
-             backgroundColor: "#d6eaf8",
-             borderWidth: 4,
-             fill: true
+             // Create the 'Some Pain' line
+              data: Array(days.length).fill(80),
+              type: 'line',
+              label: "Some Pain",
+              borderColor: "#3273dc",
+              backgroundColor: "#d6eaf8",
+              borderWidth: 3,
+              fill: true,
            },
            {
-             data: Array(days.length).fill(99),
-             type: 'line',
-             label: "Little Pain",
-             borderColor: "#117a65",
-             backgroundColor: "#d4efdf",
-             borderWidth: 4
+              // Create the 'Little Pain' line 
+              data: Array(days.length).fill(99),
+              type: 'line',
+              label: "Little Pain",
+              borderColor: "#117a65",
+              backgroundColor: "#d4efdf",
+              borderWidth: 3,
            }]
          },
          options: {
            responsive: false,
            maintainAspectRatio: true,
+           hover: {mode: null},
             scales: {
               xAxes: [{barPercentage: 0.55}],
               yAxes: [{
@@ -89,20 +122,13 @@ export default {
               }]
             },
             elements: {point: {radius: 0}}           
-
          }
       });
-      // https://stackoverflow.com/questions/38726245/last-7-days-javascript
-      // Do the last Friday, and compute the last 5 days off of that. 
-      // https://stackoverflow.com/questions/5210376/how-to-get-first-and-last-day-of-the-week-in-javascript
-      // console.log(moment().endOf('isoWeek').format("YYYY-MM-DD"));
-      
-      // https://stackoverflow.com/questions/31632967/chartjs-how-to-set-custom-scale-in-bar-chart
-      
+      })
+      .catch(function(err) {
+        console.log(err)
+      })
     }
-    
-
-
   },
   mounted() {
     this.getInfo();

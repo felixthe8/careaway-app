@@ -22,13 +22,13 @@ export default {
         // Return patients who are associated with the medical professional
         axios.get(this.$store.getters.patientBreakdownURL+this.$store.getters.medicalCode)
         .then(function(response) {
-          if(response.data.patientDiagnoses.length == 0) {
+          if(response.data.length == 0) {
             self.breakdownWarning = 'Sorry, you need to add patients before you can view reports';
           } else {
           // Object that will hold the diagnosis count
           var conditionCount = {};
           // Loop through the patient diagnoses that was returned. In the conditionCount object, use the diagnoses as keys
-          for (var d of response.data.patientDiagnoses) {
+          for (var d of response.data) {
             if(!(d in conditionCount)) {
               // If the diagnosis does not exist as a key, add it and set the initial value to 1
               conditionCount[d] = 1;
@@ -41,8 +41,10 @@ export default {
          new Chart (document.getElementById("patient-breakdown").getContext('2d'), {
             type: 'doughnut',
             data: {
+              // Use the names of the conditions as the labels
               labels: Object.keys(conditionCount),
               datasets: [{
+                // Use the number of patients with that condition as the data values
                 data: Object.values(conditionCount),
                 backgroundColor: randomColor({count: Object.keys(conditionCount).length, luminosity: 'bright'})
               }]
@@ -60,8 +62,6 @@ export default {
                 fontSize: 14,
                 fontStyle: 'bold',
                 fontColor: '#fff',
-
-
               },
               legend: {
                 display: true,
