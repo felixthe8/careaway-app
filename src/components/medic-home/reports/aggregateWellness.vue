@@ -1,6 +1,6 @@
 <template>
   <div class = "a-wellness">
-    <h1 class = "title is-3 is-spaced"> Overall Patient Wellness </h1>
+    <h1 class = "title is-3 is-spaced"> Overall Patient Wellness From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{wellnessWarning}} </h2>
     <canvas id = "aggregate-wellness" width = "600" height = "300"> </canvas>
   </div>
@@ -19,10 +19,11 @@ export default {
   methods: {
     getInfo() {
      var days = [];
+     // Create a wellness object to hold and store the wellness data computations
      var wellness_obj = {}
      // generate the 5 days of the previous week
       for(var i = 0; i <=4; i++) {
-        // Loop will begin from the previous Friday and count backwards 1 day at a time
+        // Loop will begin from the previous Friday and count backwards 1 day at a time till the Monday of that week
         var singleDay = moment().day(-2).subtract(i,'days').format("YYYY-MM-DD");
         days.unshift(singleDay);
         wellness_obj[singleDay] = {
@@ -40,8 +41,9 @@ export default {
         if(response.data.every((item) => { return item.length == 0})) {
           self.wellnessWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
         } else {
-          // Loop through each array inside the encompassing response array
+          // Loop through each array holding arrays of meter widget treatment data
           for (var patient of response.data) {
+            // Loop through each meter widget
             for (var meter of patient) {
               // Write the sum of the meter widget data 
               wellness_obj[meter.due_date].value += (parseInt(meter.patient_input) / parseInt(meter.scale[1]) ) * 100
