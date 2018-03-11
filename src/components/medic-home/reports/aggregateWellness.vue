@@ -127,7 +127,7 @@ export default {
         }
       })
       .catch(function(err) {
-        console.log(err)
+         self.wellnessWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
       })
     }
   },
