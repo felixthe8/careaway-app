@@ -19,11 +19,11 @@
                   <a id='appointment-button' class='button is-rounded' @click="sendResponse('Declined')"> Decline </a>
                 </div>
                 <div v-if='isInitiator && !isRejected'>
-                  <a id='appointment-button' class='button is-rounded' > Edit </a>
-                  <a id='appointment-button' class='button is-rounded' > Delete </a>
+                  <a id='appointment-button' class='button is-rounded' @click="editAppointment()"> Edit </a>
+                  <a id='appointment-button' class='button is-rounded' @click="deleteAppointment()"> Delete </a>
                 </div>
                 <div v-if='isInitiator && isRejected'>
-                  <a id='appointment-button' class='button is-rounded' > Okay </a>
+                  <a id='appointment-button' class='button is-rounded' @click="deleteAppointment()"> Okay </a>
                 </div>
                 <div class = 'appointment-warning' v-show='showWarning'> {{warning}} </div>
               </div>
@@ -42,7 +42,6 @@
 
   export default {
     name: 'appointment-status',
-    // TODO: Remove testBool
     props: ['appointment'],
     data() {
       return {
@@ -63,7 +62,7 @@
         }
       },
       isRejected(){
-        if(this.status === "Declined" && !this.isInitiator){
+        if(this.status === "Declined" && this.isInitiator){
           return true;
         } else{
           return false;
@@ -116,6 +115,35 @@
             console.log("There was an error handling the request");
             self.showWarning = true;      
           })
+      },
+      // TODO: Crystal's task to do. Good Luck!
+      editAppointment(){
+
+      },
+      deleteAppointment(){
+        var self = this;
+        var appointmentObject = {
+          date: this.date,
+          initiator: this.initiator,
+          appointee: this.appointee,
+          status: this.status
+        }
+        axios.post(this.$store.getters.deleteAppt,{'appointment' : appointmentObject}).then(
+          function(response)
+          {
+            // TODO: Update the global appointments so this appointment does not show on the calendar anymore
+            if(response.data.response === 'success'){
+              console.log("Success");
+              self.$store.commit("alternateAppointment");
+              self.showWarning = false; 
+            } else {
+              console.log(response.data.response);
+              self.showWarning = true;     
+            }
+          }).catch(function(err){
+            console.log("There was an error handling the request");
+            self.showWarning = true;      
+          });
       }
     }
   }

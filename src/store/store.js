@@ -35,6 +35,7 @@ export const store = new Vuex.Store({
     ssoRegisterPatientURL: 'http://localhost:8080/ssoRegisterPatient',
     ssoRegisterMedicalURL: 'http://localhost:8080/ssoRegisterMed',
     modifyAppt: 'http://localhost:8080/updateAppt',
+    deleteAppt: 'http://localhost:8080/deleteAppt',
 
     validUsername: '',
     username: '',
@@ -96,6 +97,9 @@ export const store = new Vuex.Store({
     showAppointment: (state) => {
       return state.showAppointment;
     },
+    deleteAppt: (state) => {
+      return state.deleteAppt;
+    }
   }, 
   mutations: {
     // function to flip the value of showLogin 
