@@ -33,13 +33,19 @@ export default {
           counter: 0,
         }  
       }
-     
       var self = this;
       // Request to return meter widget data
-      axios.get(this.$store.getters.getTreatmentmeterURL+this.$store.getters.medicalCode)
+      axios.get(this.$store.getters.getTreatmentmeterURL, {
+        params: {
+          medicalcode:this.$store.getters.medicalCode,
+          // Pass the first and last elements from the day array. These dates will be used to filter the response in the backend
+          startDate: days[0],
+          finalDate: days.slice(-1)[0]
+        }
+      })
       .then(function (response) { 
         // If there is no treatment data. Check each individual array in the response to see if they are empty
-        
+        console.log(response.data);
         if(response.data.every((item) => { return item.length == 0})) {
           self.wellnessWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
         } else {
