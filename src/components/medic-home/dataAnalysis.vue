@@ -1,6 +1,5 @@
 <template>
   <div class = "aggregate-graphs">
-    
     <breakdownGraph/>
     <br>
     <aggregateWellness/>

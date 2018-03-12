@@ -1,6 +1,6 @@
 <template>
   <div class = "a-wellness">
-    <h1 class = "title is-3 is-spaced"> Overall Patient Wellness From Past Week (Monday - Friday)</h1>
+    <h1 class = "title is-3 is-spaced"> Average Patient Wellness From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{wellnessWarning}} </h2>
     <canvas id = "aggregate-wellness" width = "750" height = "300"> </canvas>
   </div>

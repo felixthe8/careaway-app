@@ -2,7 +2,7 @@
     <nav class="nav-bar">
       <img class="nav-bar__logo" @click="goHome" src="../../assets/images/careaway-logo.png">
       <a class="nav-bar__button button is-link is-rounded" @click="logOut"> <i class="fas fa-sign-out-alt"></i> {{button}} </a>
-      <a class="nav-bar__button button is-link is-rounded" @click="viewReport">  View Reports </a>
+      <a class="nav-bar__button button is-link is-rounded" @click="viewReport"> <i class="fas fa-chart-line"></i> View Reports </a>
     </nav>
 </template>
 
@@ -34,5 +34,8 @@ export default {
 <style lang="scss" scoped>
   .nav-bar__logo:hover{
       cursor: pointer;
+  }
+  .nav-bar a{
+      margin: 0 5px 0 3px;
   }
 </style>
