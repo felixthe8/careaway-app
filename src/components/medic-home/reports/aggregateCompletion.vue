@@ -2,7 +2,7 @@
   <div class = "a-completion">
     <h1 class = "title is-3 is-spaced"> Overall Patient Task Completion From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{completionWarning}} </h2>
-    <canvas id = "aggregate-complete" width = "450" height = "300"> </canvas>
+    <canvas id = "aggregate-complete" width = "700" height = "300"> </canvas>
   </div>
 </template>
 
@@ -71,8 +71,44 @@ export default {
             }
           }
 
-
           console.log(completion_obj);
+          new Chart (document.getElementById("aggregate-complete"), {
+            type: 'bar',
+            data: {
+              labels: days,
+              datasets: [{
+                label: "Completion Percentage",
+                backgroundColor: Array(days.length).fill('#3892f1'),
+                // Turn the completion percentage data into an array. Must reverse the array because the days were instantiated backwards
+                data: Object.keys(completion_obj).map(key => {return completion_obj[key].average}).reverse()
+              }]
+            },
+            options: {
+              responsive: false,
+              maintainAspectRatio: true,
+              scales: {
+                xAxes: [{barPercentage: 0.55}],
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true,
+                    suggestedMax: 100
+                  }
+                }]
+              },
+              legend: {
+                display: true,
+                position: "right",
+                labels: {fontSize: 14}
+              },
+              tooltips: {
+                callbacks: {
+                  label: function(tooltipItems, data) {
+                    return 'Patient Completion: '+data.datasets[0].data[tooltipItems.index] + '%'
+                  }
+                }
+              }
+            }
+          })
 
 
         }
