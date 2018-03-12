@@ -119,6 +119,7 @@ export default {
       })
       .catch(function(err) {
         console.log(err);
+        self.completionWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
       })
 
     }
