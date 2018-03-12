@@ -43,7 +43,6 @@ export default {
         }
       })
       .then(function(response) {
-        console.log(response.data);
         if(response.data.every((item) => {return item.length == 0} )) {
           self.completionWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
         } else {
@@ -113,15 +112,12 @@ export default {
               }
             }
           })
-
-
         }
       })
       .catch(function(err) {
         console.log(err);
         self.completionWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
       })
-
     }
   },
   mounted() {
