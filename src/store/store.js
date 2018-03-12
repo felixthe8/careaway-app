@@ -36,6 +36,7 @@ export const store = new Vuex.Store({
     returnCodeURL : 'http://localhost:8080/returnCode?username=',
     patientBreakdownURL: 'http://localhost:8080/getDiagnoses?medicalcode=',
     getTreatmentmeterURL: 'http://localhost:8080/getTreatmentmeter',
+    getTreatmentchecklistURL: 'http://localhost:8080/getTreatmentchecklist',
     validUsername: '',
     username: '',
     validPassword: '',
@@ -85,6 +86,9 @@ export const store = new Vuex.Store({
     },
     getTreatmentmeterURL: (state) => {
       return state.getTreatmentmeterURL;
+    },
+    getTreatmentchecklistURL: (state) => {
+      return state.getTreatmentchecklistURL;
     },
     showLogin: (state) => {
       return state.showLogin;

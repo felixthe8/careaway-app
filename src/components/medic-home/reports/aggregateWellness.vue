@@ -18,6 +18,7 @@ export default {
   },
   methods: {
     getInfo() {
+      // Create an array to store the 5 dates made from moment.js
      var days = [];
      // Create a wellness object to hold and store the wellness data computations
      var wellness_obj = {};
@@ -44,19 +45,17 @@ export default {
         }
       })
       .then(function (response) { 
-        // If there is no treatment data. Check each individual array in the response to see if they are empty
+        // Check each individual array in the response to see if they are empty. If they are, do not create the graph
         if(response.data.every((item) => { return item.length == 0})) {
           self.wellnessWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
         } else {
-          // Loop through each array holding arrays of meter widget treatment data
-          for (var patient of response.data) {
-            // Loop through each meter widget
-            for (var meter of patient) {
+          // Loop through each object holding meter widget treatment data
+          for (var meter of response.data) {
               // Write the sum of the meter widget data 
               wellness_obj[meter.due_date].value += (parseFloat(meter.patient_input) / parseFloat(meter.scale[1]) ) * 100
               // Increment the counter
               wellness_obj[meter.due_date].counter+=1
-            }
+            
           }
           // Compute the average of the meter widget data for each day
           for(var key in wellness_obj) {
