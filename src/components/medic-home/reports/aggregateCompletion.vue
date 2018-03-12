@@ -2,7 +2,7 @@
   <div class = "a-completion">
     <h1 class = "title is-3 is-spaced"> Overall Patient Task Completion From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{completionWarning}} </h2>
-    <canvas id = "aggregate-complete" width = "700" height = "300"> </canvas>
+    <canvas id = "aggregate-complete" width = "750" height = "300"> </canvas>
   </div>
 </template>
 
@@ -87,12 +87,16 @@ export default {
               responsive: false,
               maintainAspectRatio: true,
               scales: {
-                xAxes: [{barPercentage: 0.55}],
+                xAxes: [{
+                  barPercentage: 0.55,
+                  scaleLabel: {display: true, labelString: "Date", fontSize: 14}
+                }],
                 yAxes: [{
                   ticks: {
                     beginAtZero: true,
                     suggestedMax: 100
-                  }
+                  },
+                  scaleLabel: {display: true, labelString: "Completion Percentage", fontSize: 14}
                 }]
               },
               legend: {

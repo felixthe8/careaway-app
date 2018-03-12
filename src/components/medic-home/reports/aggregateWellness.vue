@@ -2,7 +2,7 @@
   <div class = "a-wellness">
     <h1 class = "title is-3 is-spaced"> Overall Patient Wellness From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{wellnessWarning}} </h2>
-    <canvas id = "aggregate-wellness" width = "600" height = "300"> </canvas>
+    <canvas id = "aggregate-wellness" width = "750" height = "300"> </canvas>
   </div>
 </template>
 
@@ -120,14 +120,30 @@ export default {
              responsive: false,
              maintainAspectRatio: true,
              hover: {mode: null},
+             legend: {
+               display: true,
+               position: "right",
+               labels: {fontSize: 14}
+             },
              scales: {
-               xAxes: [{barPercentage: 0.55}],
+               xAxes: [{
+                  barPercentage: 0.55,
+                  scaleLabel: {display: true, labelString: "Date", fontSize: 14}
+                }],
                yAxes: [{
                  ticks: {
                     beginAtZero: true,
                     suggestedMax: 100,
-                  }
+                  },
+                   scaleLabel: {display: true, labelString: "Wellness Percentage", fontSize: 14}
                 }]
+              },
+              tooltips: {
+                callbacks: {
+                  label: function(tooltipItems, data) {
+                    return 'Patient Wellness: '+data.datasets[0].data[tooltipItems.index] + '%'
+                  }
+                }
               },
               elements: {point: {radius: 0}}           
             }
