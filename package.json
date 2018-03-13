@@ -16,6 +16,7 @@
     "chart.piecelabel.js": "^0.9.0",
     "chartjs-plugin-annotation": "^0.5.7",
     "color-scheme": "^1.0.0",
+    "debounce": "^1.1.0",
     "font-awesome": "^4.7.0",
     "moment": "^2.21.0",
     "randomcolor": "^0.5.3",

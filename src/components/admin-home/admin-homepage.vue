@@ -23,6 +23,7 @@
 <script>
 import axios from 'axios';
 import timeout from '../shared/timeout';
+import debounce from 'debounce';
 export default {
     name: 'breach',
     components: {timeout},
@@ -40,9 +41,9 @@ export default {
       // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
       var self = this;
       var time;
-      document.onmousemove = resetTimer;
-      document.onkeypress = resetTimer;
-      document.onclick = resetTimer;
+      document.onmousemove = debounce(resetTimer, 500);
+      document.onkeypress = debounce(resetTimer, 500);
+      document.onclick = debounce(resetTimer, 500);
         
       function resetTimer() {
        clearTimeout(time);
