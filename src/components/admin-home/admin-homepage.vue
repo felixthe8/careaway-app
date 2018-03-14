@@ -19,27 +19,50 @@
         </div>
       </div>
        <button class="modal-close is-large" aria-label="close" @click="closeAdmin"></button>
+       <timeout v-if ="showTime" @close = "showTime = false" @stopAdmin = "closeAdmin"/>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import timeout from '../shared/timeout';
+import debounce from 'debounce';
 export default {
     name: 'breach',
+    components: {timeout},
      data() {
       return {
         //warning 
         showWarning: false,
         inputWarning: '',
+        showTime: false
+
         password: '',
         validPassword: '',
         validConfirmedPassword: '',
-        showWarning: false,
-        inputWarning: '',
         confirmMessage: '',
       }
     },
+
+    mounted () { 
+      // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
+      var self = this;
+      var time;
+      document.onmousemove = debounce(resetTimer, 500);
+      document.onkeypress = debounce(resetTimer, 500);
+      document.onclick = debounce(resetTimer, 500);
+        
+      function resetTimer() {
+       clearTimeout(time);
+       // After 15 minutes of inacitivity, the session timeout warning will display
+       time = setTimeout(self.displaySessionwarning, 15*60*1000);
+     }
+    // Call the resetTimer function to kick-start the inactivity timer. 
+    resetTimer();
+    },
     methods:{
+      displaySessionwarning() {
+        this.showTime = true;
       checkEmptyInput(data){
         if(data.length == 0 || data == '') {
           return 'is-danger';
@@ -59,6 +82,18 @@ export default {
       //shuts down and notifies user
       breachNotification(){
         axios.post('http://localhost:8080/breach', {username:this.getUserName(),password: this.getPassword()})
+        // Call to close admin page
+      closeAdmin() {
+          document.onmousemove = null;
+          document.onkeypress = null;
+          document.onclick = null;
+          this.$store.dispatch('signOut', '');
+          this.$store.dispatch('deauthenticatedUsername', '');
+          this.$store.dispatch('alternateAdmin');
+        },
+      // Shuts down and notifies user
+    breachNotification(){
+        axios.post(this.$store.getters.breachURL, {breach:'breach'})
           // runs after the request has been answered
           .then(function(response) {
             })
@@ -70,8 +105,6 @@ export default {
             });
     }
     },
-    
-  
 }
 </script>
 

@@ -7,11 +7,11 @@
 
 </template>
 
-
 <script>
 import navbar from './app-header';
-import timeout from './timeout';
+import timeout from '../shared/timeout';
 import calendar from './calendar';
+import debounce from 'debounce';
 export default {
     name: 'patientHome',
     components: {
@@ -24,36 +24,36 @@ export default {
         showWarning: false
       }
     },
-    // a 15 minute session inactivity timer will run to keep track of
-    // if the user is interacting with the page or not. Timer will
-    // begin after the DOM elements are created
     mounted () { 
-    var self = this;
-    var time;
-    document.onmousemove = resetTimer;
-    document.onkeypress = resetTimer;
-    document.onclick = resetTimer;
-        
-    function resetTimer() {
-       clearTimeout(time);
-       // after 15 minutes of inacitivity, showWarning will be set to true
-       // and the warning will display
-       time = setTimeout(self.DisplaySessionWarning, 15*60*1000);
-     }
+      // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
+      var self = this;
+      var time;
+      document.onmousemove = debounce(resetTimer, 500);
+      document.onkeypress = debounce(resetTimer, 500);
+      document.onclick = debounce(resetTimer, 500);
 
-    // call the resetTimer function to kick-start the event timer. 
-    resetTimer();
+      function resetTimer() {
+        // Remove the timer ID instance created by setTimeout
+       clearTimeout(time);
+      // After 15 minutes of inacitivity, the session timeout warning will display
+       time = setTimeout(self.displaySessionwarning, 15*60*1000);
+     }
+      // Call the resetTimer function to kick-start the inactivity timer. 
+      resetTimer();
     },
 
     methods: {
-      DisplaySessionWarning() {
+      displaySessionwarning() {
         this.showWarning = true;
       }
     },
-    // beforeDestroy will run when the user leaves the component. 
-    // (ie. when they logout, when they leave the view without logging out)
+    // beforeDestroy will run right before the user leaves the component. 
     beforeDestroy() {
-      this.$store.dispatch('signOutPatient');
+      document.onmousemove = null;
+      document.onkeypress = null;
+      document.onclick = null;
+      this.$store.dispatch('deauthenticatedUsername', '');
+      this.$store.dispatch('signOut','');
       this.$router.push('/');
     }
   

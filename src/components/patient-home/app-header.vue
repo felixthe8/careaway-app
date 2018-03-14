@@ -16,10 +16,8 @@ export default {
   },
   methods: {
       logOut() {
-          document.onmousemove = null;
-          document.onkeypress = null;
-          document.onclick = null;
-          this.$store.dispatch('signOutPatient');
+          this.$store.dispatch('deauthenticatedUsername', '');
+          this.$store.dispatch('signOut', '');
           this.$router.push('/');
       }
   }
