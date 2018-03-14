@@ -9,6 +9,9 @@
                 <img src = "../../assets/images/careaway-full1.png">
                  <p class = "warning" v-show="showWarning">{{inputWarning}}</p>
                  <h2 id= "systemAdmingWarning"> Breach Detected: Please Push Button</h2>
+                  <p class="control">
+                      <input class="input" type="password" id = "password" :class="validPassword" @keyup="validPassword = checkEmptyInput(getPassword())" placeholder="Password">
+                  </p> 
                  <button class="button is-primary is-medium is-fullwidth is-rounded" @click = "breachNotification()">Breach Notification</button>
               </div>
             </article>
@@ -28,19 +31,34 @@ export default {
         //warning 
         showWarning: false,
         inputWarning: '',
-
+        password: '',
+        validPassword: '',
+        validConfirmedPassword: '',
+        showWarning: false,
+        inputWarning: '',
+        confirmMessage: '',
       }
     },
-    
     methods:{
+      checkEmptyInput(data){
+        if(data.length == 0 || data == '') {
+          return 'is-danger';
+        } 
+      },
+      getPassword() {
+        return document.getElementById('password').value;
+      },
         //closes admin page
-    closeAdmin() {
+      closeAdmin() {
         this.$store.dispatch('signOutAdmin');
         this.$store.dispatch('alternateAdmin');
       },
+      getUserName(){
+        return this.$store.state.username;
+      },
       //shuts down and notifies user
-    breachNotification(){
-        axios.post(this.$store.getters.breachURL, {breach:'breach'})
+      breachNotification(){
+        axios.post('http://localhost:8080/breach', {username:this.getUserName(),password: this.getPassword()})
           // runs after the request has been answered
           .then(function(response) {
             })
@@ -51,7 +69,8 @@ export default {
               self.showWarning = true;
             });
     }
-    }
+    },
+    
   
 }
 </script>
