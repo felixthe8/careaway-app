@@ -8,6 +8,7 @@ import medicHome from '../components/medic-home/medic-homepage.vue';
 import medicCalendar from '../components/medic-home/calendar.vue';
 import medicDataAnalysis from '../components/medic-home/dataAnalysis.vue';
 import patientHome from '../components/patient-home/patient-homepage.vue';
+import adminHome from '../components/admin-home/admin-homepage.vue';
 import error from '../components/error/error.vue';
 
 Vue.use(Router);
@@ -65,6 +66,25 @@ const router = new Router ({
             },
             component: patientHome
 
+        },
+
+        {
+            path: '/AdminHome',
+            name: 'adminHome',
+            meta: {
+                title: "CareAway Admin Home"
+            },
+            beforeEnter: (to, from, next) => {
+                if((store.getters.authStatus) == 'system-admin') {
+                    console.log("Secure entry");
+                    console.log(store.getters.authStatus);
+                    next()
+                } else {
+                    console.log("Not Authenticated");
+                    next({path: '/',});
+                }
+            },
+            component: adminHome
         },
 
          // wildcard catch all route; Redirects to error page

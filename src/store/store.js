@@ -18,7 +18,6 @@ export const store = new Vuex.Store({
     showReset: false,
     showQuestions: false,
     showPassword: false,
-    showAdmin: false,
     ssoRegistration: false,
 
     // URLS
@@ -132,9 +131,6 @@ export const store = new Vuex.Store({
     alternatePassword: (state) => {
       state.showPassword = !state.showPassword;
     },
-    alternateAdmin: (state) => {
-      state.showAdmin = !state.showAdmin;
-    },
     saveUsername: (state, name) => {
       state.username = name;
     },
@@ -169,9 +165,6 @@ export const store = new Vuex.Store({
     },
     alternatePassword: (context) => {
       context.commit('alternatePassword');
-    },
-    alternateAdmin:(context) => {
-      context.commit('alternateAdmin');
     },
     saveUsername:(context,payload) =>{
       context.commit('saveUsername',payload);

@@ -58,6 +58,9 @@ import resetPassword from './reset-password.vue';
       routePatientHome() {
         this.$router.push('PatientHome');
       },
+      routeAdminHome() {
+        this.$router.push('AdminHome');
+      },
       // Method to check if a field is empty. 
       checkEmpty(data){
         if(data == '') {
@@ -101,7 +104,7 @@ import resetPassword from './reset-password.vue';
                 } // If the user is a system admin, display the admin modal
                 else if (response.data.accountType == 'system-admin') {
                   self.$store.dispatch('saveUsername',self.username);
-                  self.displayAdmin();
+                  self.routeAdminHome();
                 } // If the user is an SSO-type user, direct them to provide more information
                 else if(response.data.accountType =='SSO'){
                   self.$store.dispatch('saveUsername',self.username);
@@ -130,9 +133,6 @@ import resetPassword from './reset-password.vue';
       displayReset () {
         this.$store.dispatch('alternateLogin');
         this.$store.dispatch('alternateReset');
-      },
-      displayAdmin(){
-        this.$store.dispatch('alternateAdmin');
       },
     },
     computed: {

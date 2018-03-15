@@ -19,7 +19,7 @@
         </div>
       </div>
        <button class="modal-close is-large" aria-label="close" @click="closeAdmin"></button>
-       <timeout v-if ="showTime" @close = "showTime = false" @stopAdmin = "closeAdmin"/>
+       <timeout v-if ="showTime" @close = "showTime = false"/>
   </div>
 </template>
 
@@ -77,16 +77,17 @@ export default {
         document.onmousemove = null;
         document.onkeypress = null;
         document.onclick = null;
+        this.$store.dispatch('saveUsername', '');
         this.$store.dispatch('signOut', '');
         this.$store.dispatch('deauthenticatedUsername', '');
-        this.$store.dispatch('alternateAdmin');
+        this.$router.push('/');
       },
       getUserName(){
         return this.$store.state.username;
       },
       //shuts down and notifies user
     breachNotification(){
-        axios.post(this.$store.getters.breachURL, {breach:'breach'})
+        axios.post(this.$store.getters.breachURL, {username: this.getUserName(), password: this.getPassword()})
           // runs after the request has been answered
           .then(function(response) {
             })
