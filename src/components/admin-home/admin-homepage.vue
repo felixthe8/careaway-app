@@ -35,7 +35,7 @@ export default {
         //warning 
         showWarning: false,
         inputWarning: '',
-        showTime: false
+        showTime: false,
 
         password: '',
         validPassword: '',
@@ -63,6 +63,7 @@ export default {
     methods:{
       displaySessionwarning() {
         this.showTime = true;
+      },
       checkEmptyInput(data){
         if(data.length == 0 || data == '') {
           return 'is-danger';
@@ -73,25 +74,17 @@ export default {
       },
         //closes admin page
       closeAdmin() {
-        this.$store.dispatch('signOutAdmin');
+        document.onmousemove = null;
+        document.onkeypress = null;
+        document.onclick = null;
+        this.$store.dispatch('signOut', '');
+        this.$store.dispatch('deauthenticatedUsername', '');
         this.$store.dispatch('alternateAdmin');
       },
       getUserName(){
         return this.$store.state.username;
       },
       //shuts down and notifies user
-      breachNotification(){
-        axios.post('http://localhost:8080/breach', {username:this.getUserName(),password: this.getPassword()})
-        // Call to close admin page
-      closeAdmin() {
-          document.onmousemove = null;
-          document.onkeypress = null;
-          document.onclick = null;
-          this.$store.dispatch('signOut', '');
-          this.$store.dispatch('deauthenticatedUsername', '');
-          this.$store.dispatch('alternateAdmin');
-        },
-      // Shuts down and notifies user
     breachNotification(){
         axios.post(this.$store.getters.breachURL, {breach:'breach'})
           // runs after the request has been answered
@@ -103,7 +96,7 @@ export default {
               self.inputWarning = 'Breach Notification Failed';
               self.showWarning = true;
             });
-    }
+      }
     },
 }
 </script>
