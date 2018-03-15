@@ -10,33 +10,36 @@
         <div class="item calendar__menu--label current-week"><h1>Week of the {{getCurrent().monday}}th</h1></div>
         <div class="item"><div class="calendar__menu--arrow-right" @click="next"></div></div>
 
-        <div class="item calendar__menu--button active" @click="month"><h1 class="text">Month</h1></div>
-        <div class="item calendar__menu--button" @click="week"><h1 class="text">Week</h1></div>
+        <div class="item calendar__menu--button active" @click="displayMonth"><h1 class="text">Month</h1></div>
+        <div class="item calendar__menu--button" @click="displayWeek"><h1 class="text">Week</h1></div>
       </div>
 
       <div class="columns is-multiline monthly">
         <div class="column is-one-fifth calendar__day"
-          v-for="day, index in getMonth().length"
+          v-for="day, index in getMonth()"
           :class="{
             'no-right' : (index+1)%5 === 0,
             'no-bottom': (index > 19),
-            'weekly': getMonth()[index].date < getCurrent().monday || getMonth()[index].date > getCurrent().friday,
-            'no-bottom__mobile': getMonth()[index].date === getCurrent().friday
+            'weekly': day.date < getCurrent().monday || day.date > getCurrent().friday,
+            'no-bottom__mobile': day.date === getCurrent().friday
           }">
 
           <div class="calendar__day--date"
             :class="{
-                'today' : getCurrent().date === getMonth()[index].date
-          }">{{getMonth()[index].date}}</div>
+                'today' : getCurrent().date === day.date
+          }">{{day.date}}</div>
 
           <div class="blocked"
-            v-if="getMonth()[index].month != getCurrent().month"
+            v-if="day.month != getCurrent().month"
             :class="{
               'rounded-left': (index === 0),
               'rounded-right': (index === 24),
           }"></div>
-
-          <div class="calendar__day--label" v-if="index < 5">{{getMonth()[index].name}}</div>
+          
+          <div v-if="getWidget(day)">
+            Widgey!!
+          </div>
+          <div class="calendar__day--label" v-if="index < 5">{{day.name}}</div>
         </div>
 
       </div>
@@ -50,6 +53,26 @@
 
 export default {
   name: 'app',
+  created: function() {
+    // Fetch treatment plan
+    /*axios.get(this.$store.getters.returnCodeURL+this.$store.getters.authenticatedUsername)
+      .then(function(response) {
+        // Extract out medical code from the response
+        self.medicalcode = response.data.medicalcode;
+        self.$store.dispatch('medicalCode', self.medicalcode);
+      })
+      .catch(function(err) {
+        console.log(err);
+      })*/
+  },
+  /*data() {
+    return {
+      months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      week: ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"],
+      calendar: [],
+      state: 0
+    }
+  },*/
   components: {},
   methods: {
     getCurrent: function() {
@@ -122,7 +145,7 @@ export default {
       // return array of day objects
       return month;
     },
-    week: function(event) {
+    displayWeek: function(event) {
       let days = document.getElementsByClassName("monthly")[0].children;
       Array.from(days).forEach((item)=> {
         if(item.classList.contains("weekly"))
@@ -134,7 +157,7 @@ export default {
       document.getElementsByClassName("calendar__menu--button")[0].classList.add("active");
       document.getElementsByClassName("calendar__menu--button")[1].classList.remove("active");
     },
-    month: function(event) {
+    displayMonth: function(event) {
         let days = document.getElementsByClassName("monthly")[0].children;
         Array.from(days).forEach((item)=> {
           if(item.classList.contains("weekly"))
@@ -152,6 +175,16 @@ export default {
     previous: function(event) {
       console.log("previous");
     },
+    getWidget: function(day) {
+      console.log(day);
+      // object: Date (obj)
+      // date: int (date of month)
+      // code: int (day of week)
+      // month: int (month-1)
+      // name: str (day of week)
+      if (day.date % 5 == 0) return true;
+      return false;
+    }
   }
 }
 </script>
