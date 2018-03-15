@@ -33,7 +33,10 @@ export const store = new Vuex.Store({
     validateUsernameURL: 'http://localhost:8080/validate-username',
     ssoRegisterPatientURL: 'http://localhost:8080/ssoRegisterPatient',
     ssoRegisterMedicalURL: 'http://localhost:8080/ssoRegisterMed',
-
+    returnCodeURL : 'http://localhost:8080/returnCode?username=',
+    patientBreakdownURL: 'http://localhost:8080/getDiagnoses?medicalcode=',
+    getTreatmentmeterURL: 'http://localhost:8080/getTreatmentmeter',
+    getTreatmentchecklistURL: 'http://localhost:8080/getTreatmentchecklist',
     validUsername: '',
     username: '',
     validPassword: '',
@@ -75,7 +78,18 @@ export const store = new Vuex.Store({
     ssoRegisterMedicalURL:  (state) => {
       return state.ssoRegisterMedicalURL;
     },
-
+    returnCodeURL: (state) => {
+      return state.returnCodeURL;
+    },
+    patientBreakdownURL: (state) => {
+      return state.patientBreakdownURL;
+    },
+    getTreatmentmeterURL: (state) => {
+      return state.getTreatmentmeterURL;
+    },
+    getTreatmentchecklistURL: (state) => {
+      return state.getTreatmentchecklistURL;
+    },
     showLogin: (state) => {
       return state.showLogin;
     },

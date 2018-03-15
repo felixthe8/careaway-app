@@ -100,6 +100,7 @@ import resetPassword from './reset-password.vue';
                   self.routeMedicHome();
                 } // If the user is a system admin, display the admin modal
                 else if (response.data.accountType == 'system-admin') {
+                  self.$store.dispatch('saveUsername',self.username);
                   self.displayAdmin();
                 } // If the user is an SSO-type user, direct them to provide more information
                 else if(response.data.accountType =='SSO'){

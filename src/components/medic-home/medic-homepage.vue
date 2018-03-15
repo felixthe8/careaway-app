@@ -1,60 +1,78 @@
 <template>
   <div>
     <navbar class = "nav-bar"/>
-    <calendar/>
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
-
+    <p class = "subtitle" id = "code-display">CareAway Medical Code: {{medicalcode}} </p>
+    <router-view></router-view>
   </div>
-
-
 </template>
-
 
 <script>
 import navbar from './app-header';
-import timeout from './timeout';
-import calendar from './calendar';
+import timeout from '../shared/timeout';
+import Chart from 'chart.js';
+import axios from 'axios';
+import debounce from 'debounce';
 export default {
     name: 'medicHome',
-    components: {navbar, calendar, timeout},
+    components: {navbar, timeout},
     data() {
       return {
-        showWarning: false
+        showWarning: false,
+        medicalcode: this.$store.getters.medicalCode
       }
     },
-    // a 15 minute session inactivity timer will run to keep track of
-    // if the user is interacting with the page or not. Timer will
-    // begin after the DOM elements are created
     mounted () { 
-    var self = this;
-    var time;
-    document.onmousemove = resetTimer;
-    document.onkeypress = resetTimer;
-    document.onclick = resetTimer;
-        
-    function resetTimer() {
-       clearTimeout(time);
-       // after 15 minutes of inacitivity, showWarning will be set to true
-       // and the warning will display
-       time = setTimeout(self.DisplaySessionWarning, 15*60*1000);
-     }
-
-    // call the resetTimer function to kick-start the event timer. 
-    resetTimer();
-  
-    },
-
-    methods: {
-      DisplaySessionWarning() {
-        this.showWarning = true;
+      // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
+      var self = this;
+      var time;
+      document.onmousemove = debounce(resetTimer, 500);
+      document.onkeypress = debounce(resetTimer, 500);
+      document.onclick = debounce(resetTimer, 500);
+      // start event timer when the user stops typing, or clicking
+      // debouncing an event
+          
+      function resetTimer() {
+        console.log("Reset Timer");
+        clearTimeout(time);
+       // After 15 minutes of inacitivity, the session timeout warning will display
+        time = setTimeout(self.displaySessionwarning, 15*60*1000);
       }
+      // Call the resetTimer function to kick-start the inactivity timer. 
+      resetTimer();
+    },
+    methods: {
+      displaySessionwarning() {
+        this.showWarning = true;
+      },
+      getCode(){
+       var self = this;
+        // Return the medical code for the MP based on their username
+        axios.get(this.$store.getters.returnCodeURL+this.$store.getters.authenticatedUsername)
+          .then(function(response) {
+            // Extract out medical code from the response
+            self.medicalcode = response.data.medicalcode;
+            self.$store.dispatch('medicalCode', self.medicalcode);
+          })
+          .catch(function(err) {
+            console.log(err);
+          })
+        }
+
+    },
+    created() {
+      this.getCode();
     },
     // beforeDestroy will run when the user leaves the component. 
-    // (ie. when they logout, when they leave the view without logging out)
     beforeDestroy() {
-      this.$store.dispatch('signOutMP');
+      document.onmousemove = null;
+      document.onkeypress = null;
+      document.onclick = null;
+      this.$store.dispatch('deauthenticatedUsername', '');
+      this.$store.dispatch('signOut', '');
       this.$router.push('/');
-    }
+    },
+
   
 }
 </script>
@@ -81,6 +99,12 @@ export default {
       float: right;
     }
   }
+
+#code-display{
+  margin-left: 2%;
+  color: $purple;
+  font-size: 1.25em;
+}
 
 </style>
 
