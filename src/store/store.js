@@ -21,6 +21,10 @@ export const store = new Vuex.Store({
     showAdmin: false,
     ssoRegistration: false,
 
+    // Appointment boolean values.
+    showAppointmentCreation: false,
+    showAppointmentMod: false,
+
     // URLS
     checkBreachURL: 'http://localhost:8080/isBreached',
     breachURL: 'http://localhost:8080/breach',
@@ -37,12 +41,17 @@ export const store = new Vuex.Store({
     patientBreakdownURL: 'http://localhost:8080/getDiagnoses?medicalcode=',
     getTreatmentmeterURL: 'http://localhost:8080/getTreatmentmeter',
     getTreatmentchecklistURL: 'http://localhost:8080/getTreatmentchecklist',
+    // Appointment URLs
+    createAppt: 'http://localhost:8080/createAppt',
+    modifyAppt: 'http://localhost:8080/updateAppt',
+
     validUsername: '',
     username: '',
     validPassword: '',
     authenticatedUsername: '',
     medicalCode: '',
-    authStatus: ''
+    authStatus: '',
+    currentAppointment: {}
   },
   getters: {
     checkBreachURL: (state) => {
@@ -101,6 +110,21 @@ export const store = new Vuex.Store({
     },
     authStatus: (state) => {
       return state.authStatus;
+    },
+    showAppointmentCreation: (state) => {
+      return state.showAppointmentCreation;
+    },
+    showAppointmentMod: (state) => {
+      return state.showAppointmentMod;
+    },
+    createAppt: (state) => {
+      return state.createAppt;
+    },
+    modifyAppt: (state) => {
+      return state.modifyAppt;
+    },
+    currentAppointment: (state) => {
+      return state.currentAppointment;
     }
   }, 
   mutations: {
@@ -149,6 +173,19 @@ export const store = new Vuex.Store({
     },
     authStatus: (state,payload) => {
       state.authStatus = payload;
+    },
+    alternateAppointmentCreation: (state) => {
+      state.showAppointmentCreation = !state.showAppointmentCreation;
+    },
+    alternateAppointmentModification: (state) => {
+      state.showAppointment = false;
+      state.showAppointmentMod = true;
+    },
+    alternateAppointmentMod: (state) => {
+      state.showAppointmentMod = !state.showAppointmentMod;
+    },
+    storeAppointment: (state, payload) => {
+      state.currentAppointment = payload;
     }
 
   },
@@ -193,6 +230,18 @@ export const store = new Vuex.Store({
     },
     signOut: (context,payload) => {
       context.commit('authStatus', payload);
+    },
+    alternateAppointmentCreation: (context) => {
+      context.commit("alternateAppointmentCreation");
+    },
+    alternateAppointmentModification: (context) => {
+      context.commit("alternateAppointmentModification");
+    },
+    alternateAppointmentMod: (context) => {
+      context.commit("alternateAppointmentMod");
+    },
+    storeAppointment: (context, payload) => {
+      context.commit('storeAppointment', payload);
     }
   }
 });

@@ -6,6 +6,7 @@ import {store} from '../store/store'
 import homepage from '../components/homepage/homepage.vue';
 import medicHome from '../components/medic-home/medic-homepage.vue';
 import medicCalendar from '../components/medic-home/calendar.vue';
+import medicAppointment from '../components/appointment/appointment-home.vue';
 import medicDataAnalysis from '../components/medic-home/dataAnalysis.vue';
 import patientHome from '../components/patient-home/patient-homepage.vue';
 import error from '../components/error/error.vue';
@@ -43,6 +44,8 @@ const router = new Router ({
                 }},
                 {path: '/MedicHome/Report', component: medicDataAnalysis, name: 'medicReport', meta: {
                     title: "CareAway Medical Reports"
+                }}, {path: '/MedicHome/Appointments', component: medicAppointment, name: 'medicAppointment', meta: {
+                  title: "CareAway Medical Appointments"
                 }}
             ]
         },
