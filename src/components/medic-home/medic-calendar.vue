@@ -1,12 +1,8 @@
 <template>
 
   <div class="columns medic-calendar">
-    <div class="item">
-      <appointment/>
-    </div>
-    <div class="item">
-      <calendar/>
-    </div>
+    <appointment class="item"/>
+    <calendar class="item"/>
   </div>
 
 </template>
@@ -29,6 +25,9 @@ export default {
 <style lang="scss">
 @import "../../assets/sass/settings.scss";
 
-
+.medic-calendar {
+  width: auto;
+  height: 85vh;
+}
 
 </style>

@@ -1,19 +1,21 @@
 <template>
 
   <div>
+
     <navbar class = "nav-bar"/>
 
-    <timeout v-if ="showWarning" @close = "showWarning = false"/>
+    <timeout v-if="showWarning" @close="showWarning=false"/>
 
-    <p class = "subtitle" id = "code-display">CareAway Medical Code: {{medicalcode}} </p>
+    <p class="subtitle" id="code-display" alt="CareAway Medical Code">MC:{{medicalcode}} </p>
 
-    <router-view></router-view>
+    <router-view class="wrapper"></router-view>
 
   </div>
 
 </template>
 
 <script>
+
 import navbar from './app-header';
 import timeout from '../shared/timeout';
 import Chart from 'chart.js';
@@ -51,20 +53,19 @@ export default {
       displaySessionwarning() {
         this.showWarning = true;
       },
-      getCode(){
+      getCode() {
        var self = this;
         // Return the medical code for the MP based on their username
         axios.get(this.$store.getters.returnCodeURL+this.$store.getters.authenticatedUsername)
           .then(function(response) {
-            // Extract out medical code from the response
-            self.medicalcode = response.data.medicalcode;
-            self.$store.dispatch('medicalCode', self.medicalcode);
-          })
-          .catch(function(err) {
-            console.log(err);
-          })
-        }
-
+          // Extract out medical code from the response
+          self.medicalcode = response.data.medicalcode;
+          self.$store.dispatch('medicalCode', self.medicalcode);
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
+      }
     },
     created() {
       this.getCode();
@@ -77,37 +78,22 @@ export default {
       this.$store.dispatch('deauthenticatedUsername', '');
       this.$store.dispatch('signOut', '');
       this.$router.push('/');
-    },
-
-
+    }
 }
+
 </script>
 
-
 <style lang="scss">
+
 @import '../../assets/sass/settings.scss';
 
-#app {
-    width: 100vw;
-    height: 100vh;
-  }
+.wrapper {
+  margin-top: 75px;
+}
 
-.nav-bar {
-  width: 100%;
-  padding: 1rem;
-
-    &__logo {
-      width: 25px;
-      height: 25px;
-    }
-
-    &__button {
-      float: right;
-    }
-  }
-
-#code-display{
-  margin-left: 2%;
+#code-display {
+  margin-left: 15%;
+  padding-top: 1rem;
   color: $purple;
   font-size: 1.25em;
 }

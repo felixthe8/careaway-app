@@ -16,7 +16,8 @@ $green-light: #D6F8D6;
 
 /* App Default */
 #app {
-  overflow: scroll;
+  width: 100vw;
+  height: 100vh;
   background: $white;
   color: $purple-dark;
 }

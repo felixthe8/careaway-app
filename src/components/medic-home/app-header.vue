@@ -32,10 +32,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .nav-bar__logo:hover{
-      cursor: pointer;
+
+.nav-bar {
+  width: 100%;
+  padding: 1rem;
+  position: fixed;
+
+  &__logo {
+    width: 25px;
+    height: 25px;
   }
-  .nav-bar a{
-      margin: 0 5px 0 3px;
+
+  &__button {
+    float: right;
+    margin-left: 1rem;
   }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 </style>
