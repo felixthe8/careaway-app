@@ -12,6 +12,7 @@ import navbar from './app-header';
 import timeout from '../shared/timeout';
 import Chart from 'chart.js';
 import axios from 'axios';
+import debounce from 'debounce';
 export default {
     name: 'medicHome',
     components: {navbar, timeout},
@@ -25,11 +26,14 @@ export default {
       // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
       var self = this;
       var time;
-      document.onmousemove = resetTimer;
-      document.onkeypress = resetTimer;
-      document.onclick = resetTimer;
+      document.onmousemove = debounce(resetTimer, 500);
+      document.onkeypress = debounce(resetTimer, 500);
+      document.onclick = debounce(resetTimer, 500);
+      // start event timer when the user stops typing, or clicking
+      // debouncing an event
           
       function resetTimer() {
+        console.log("Reset Timer");
         clearTimeout(time);
        // After 15 minutes of inacitivity, the session timeout warning will display
         time = setTimeout(self.displaySessionwarning, 15*60*1000);
@@ -44,7 +48,7 @@ export default {
       getCode(){
        var self = this;
         // Return the medical code for the MP based on their username
-        axios.get('http://localhost:8080/returnCode?username='+this.$store.getters.authenticatedUsername)
+        axios.get(this.$store.getters.returnCodeURL+this.$store.getters.authenticatedUsername)
           .then(function(response) {
             // Extract out medical code from the response
             self.medicalcode = response.data.medicalcode;

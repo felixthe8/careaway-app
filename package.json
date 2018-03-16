@@ -14,9 +14,13 @@
     "axios": "^0.17.1",
     "bulma": "^0.6.2",
     "chart.piecelabel.js": "^0.9.0",
+    "chartjs-plugin-annotation": "^0.5.7",
     "color-scheme": "^1.0.0",
+    "debounce": "^1.1.0",
     "font-awesome": "^4.7.0",
+    "moment": "^2.21.0",
     "randomcolor": "^0.5.3",
+    "randomstring": "^1.1.5",
     "vue": "^2.5.11",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

@@ -8,7 +8,7 @@
 
 <script>
 import axios from 'axios';
-import randomColor from 'randomcolor';
+import colorScheme from 'color-scheme';
 export default {
   name: 'breakdown',
   data() {
@@ -19,30 +19,42 @@ export default {
   methods: {
       getInfo() {
         var self = this;
-        // return patients who are associated with the medical professional
-        axios.get('http://localhost:8080/patientBreakdown?medicalcode='+this.$store.getters.medicalCode)
+        // Return patients who are associated with the medical professional
+        axios.get(this.$store.getters.patientBreakdownURL+this.$store.getters.medicalCode)
         .then(function(response) {
-          if(response.data.patients.length == 0) {
+          // If there are no diagnoses returned
+          if(response.data.length == 0) {
             self.breakdownWarning = 'Sorry, you need to add patients before you can view reports';
           } else {
-          // object that will hold the diagnosis count
+          // Object that will hold the diagnosis count
           var conditionCount = {};
-          for(var i = 0; i < response.data.patients.length; i++) {
-            // if the diagnosis hasn't been encountered, add it to the object as a key and initialize it with a value of 1
-            if(!(response.data.patients[i].diagnosis in conditionCount)) {
-              conditionCount[response.data.patients[i].diagnosis] = 1
-            }  else { // otherwise, increment the existing value by 1
-                conditionCount[response.data.patients[i].diagnosis]+=1;
-                }
+          // Loop through the patient diagnoses that was returned. In the conditionCount object, use the diagnoses as keys
+          for (var d of response.data) {
+            if(!(d in conditionCount)) {
+              // If the diagnosis does not exist as a key, add it and set the initial value to 1
+              conditionCount[d] = 1;
+            } else {
+              // Increment an value of a condition
+              conditionCount[d]+=1;
+            }
           }
-          var ctx = document.getElementById("patient-breakdown").getContext('2d');
-          var breakdown = new Chart (ctx, {
+          
+         var scheme = new colorScheme;
+         var palette = scheme.from_hue(21).scheme('triade').variation('default').colors();
+         // Need to append a '#' at the front of each hex code generated because it is required for the colors on Chart JS and color-scheme does not do this
+         for(var i = 0; i < palette.length; i++) {
+           palette[i] = '#'+palette[i];
+         }
+         
+         new Chart (document.getElementById("patient-breakdown").getContext('2d'), {
             type: 'doughnut',
             data: {
+              // Use the names of the conditions as the labels
               labels: Object.keys(conditionCount),
               datasets: [{
+                // Use the number of patients with that condition as the data values
                 data: Object.values(conditionCount),
-                backgroundColor: randomColor({count: Object.keys(conditionCount).length, hue: 'green'})
+                backgroundColor: palette
               }]
             },
             options: {
@@ -58,8 +70,6 @@ export default {
                 fontSize: 14,
                 fontStyle: 'bold',
                 fontColor: '#fff',
-
-
               },
               legend: {
                 display: true,
@@ -86,7 +96,6 @@ export default {
   mounted() {
     this.getInfo();
   }
-  
 }
 </script>
 

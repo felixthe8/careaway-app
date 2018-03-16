@@ -9,6 +9,9 @@
                 <img src = "../../assets/images/careaway-full1.png">
                  <p class = "warning" v-show="showWarning">{{inputWarning}}</p>
                  <h2 id= "systemAdmingWarning"> Breach Detected: Please Push Button</h2>
+                  <p class="control">
+                      <input class="input" type="password" id = "password" :class="validPassword" @keyup="validPassword = checkEmptyInput(getPassword())" placeholder="Password">
+                  </p> 
                  <button class="button is-primary is-medium is-fullwidth is-rounded" @click = "breachNotification()">Breach Notification</button>
               </div>
             </article>
@@ -16,13 +19,14 @@
         </div>
       </div>
        <button class="modal-close is-large" aria-label="close" @click="closeAdmin"></button>
-       <timeout v-if ="showTime" @close = "showTime = false" @stopAdmin = "closeAdmin"/>
+       <timeout v-if ="showTime" @close = "showTime = false"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import timeout from '../shared/timeout';
+import debounce from 'debounce';
 export default {
     name: 'breach',
     components: {timeout},
@@ -31,8 +35,12 @@ export default {
         //warning 
         showWarning: false,
         inputWarning: '',
-        showTime: false
+        showTime: false,
 
+        password: '',
+        validPassword: '',
+        validConfirmedPassword: '',
+        confirmMessage: '',
       }
     },
 
@@ -40,9 +48,9 @@ export default {
       // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
       var self = this;
       var time;
-      document.onmousemove = resetTimer;
-      document.onkeypress = resetTimer;
-      document.onclick = resetTimer;
+      document.onmousemove = debounce(resetTimer, 500);
+      document.onkeypress = debounce(resetTimer, 500);
+      document.onclick = debounce(resetTimer, 500);
         
       function resetTimer() {
        clearTimeout(time);
@@ -56,18 +64,30 @@ export default {
       displaySessionwarning() {
         this.showTime = true;
       },
-        // Call to close admin page
+      checkEmptyInput(data){
+        if(data.length == 0 || data == '') {
+          return 'is-danger';
+        } 
+      },
+      getPassword() {
+        return document.getElementById('password').value;
+      },
+        //closes admin page
       closeAdmin() {
-          document.onmousemove = null;
-          document.onkeypress = null;
-          document.onclick = null;
-          this.$store.dispatch('signOut', '');
-          this.$store.dispatch('deauthenticatedUsername', '');
-          this.$store.dispatch('alternateAdmin');
-        },
-      // Shuts down and notifies user
+        document.onmousemove = null;
+        document.onkeypress = null;
+        document.onclick = null;
+        this.$store.dispatch('saveUsername', '');
+        this.$store.dispatch('signOut', '');
+        this.$store.dispatch('deauthenticatedUsername', '');
+        this.$router.push('/');
+      },
+      getUserName(){
+        return this.$store.state.username;
+      },
+      //shuts down and notifies user
     breachNotification(){
-        axios.post(this.$store.getters.breachURL, {breach:'breach'})
+        axios.post(this.$store.getters.breachURL, {username: this.getUserName(), password: this.getPassword()})
           // runs after the request has been answered
           .then(function(response) {
             })
@@ -77,7 +97,7 @@ export default {
               self.inputWarning = 'Breach Notification Failed';
               self.showWarning = true;
             });
-    }
+      }
     },
 }
 </script>

@@ -18,7 +18,6 @@ export const store = new Vuex.Store({
     showReset: false,
     showQuestions: false,
     showPassword: false,
-    showAdmin: false,
     ssoRegistration: false,
     showAppointment: false,
 
@@ -34,6 +33,10 @@ export const store = new Vuex.Store({
     validateUsernameURL: 'http://localhost:8080/validate-username',
     ssoRegisterPatientURL: 'http://localhost:8080/ssoRegisterPatient',
     ssoRegisterMedicalURL: 'http://localhost:8080/ssoRegisterMed',
+    returnCodeURL : 'http://localhost:8080/returnCode?username=',
+    patientBreakdownURL: 'http://localhost:8080/getDiagnoses?medicalcode=',
+    getTreatmentmeterURL: 'http://localhost:8080/getTreatmentmeter',
+    getTreatmentchecklistURL: 'http://localhost:8080/getTreatmentchecklist',
     modifyAppt: 'http://localhost:8080/updateAppt',
     deleteAppt: 'http://localhost:8080/deleteAppt',
 
@@ -78,6 +81,18 @@ export const store = new Vuex.Store({
     },
     ssoRegisterMedicalURL:  (state) => {
       return state.ssoRegisterMedicalURL;
+    },
+    returnCodeURL: (state) => {
+      return state.returnCodeURL;
+    },
+    patientBreakdownURL: (state) => {
+      return state.patientBreakdownURL;
+    },
+    getTreatmentmeterURL: (state) => {
+      return state.getTreatmentmeterURL;
+    },
+    getTreatmentchecklistURL: (state) => {
+      return state.getTreatmentchecklistURL;
     },
     modifyAppt: (state) => {
       return state.modifyAppt;
@@ -130,9 +145,6 @@ export const store = new Vuex.Store({
     alternatePassword: (state) => {
       state.showPassword = !state.showPassword;
     },
-    alternateAdmin: (state) => {
-      state.showAdmin = !state.showAdmin;
-    },
     saveUsername: (state, name) => {
       state.username = name;
     },
@@ -170,9 +182,6 @@ export const store = new Vuex.Store({
     },
     alternatePassword: (context) => {
       context.commit('alternatePassword');
-    },
-    alternateAdmin:(context) => {
-      context.commit('alternateAdmin');
     },
     saveUsername:(context,payload) =>{
       context.commit('saveUsername',payload);

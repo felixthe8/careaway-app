@@ -6,8 +6,9 @@ import {store} from '../store/store'
 import homepage from '../components/homepage/homepage.vue';
 import medicHome from '../components/medic-home/medic-homepage.vue';
 import medicCalendar from '../components/medic-home/calendar.vue';
-import medicDataAnalysis from '../components/medic-home/dataAnalysis.vue';
+import medicDataAnalysis from '../components/medic-home/data-analysis.vue';
 import patientHome from '../components/patient-home/patient-homepage.vue';
+import adminHome from '../components/admin-home/admin-homepage.vue';
 import error from '../components/error/error.vue';
 
 Vue.use(Router);
@@ -38,7 +39,9 @@ const router = new Router ({
             },
             component: medicHome,
             children:[ 
-                {path: '/MedicHome', component: medicCalendar, name: 'medicCalendar',  meta: {
+                {path: '/MedicHome', 
+                    component: medicCalendar, 
+                    name: 'medicCalendar',  meta: {
                     title: "CareAway Medical Home"
                 }},
                 {path: '/MedicHome/Report', component: medicDataAnalysis, name: 'medicReport', meta: {
@@ -65,6 +68,25 @@ const router = new Router ({
             },
             component: patientHome
 
+        },
+
+        {
+            path: '/AdminHome',
+            name: 'adminHome',
+            meta: {
+                title: "CareAway Admin Home"
+            },
+            beforeEnter: (to, from, next) => {
+                if((store.getters.authStatus) == 'system-admin') {
+                    console.log("Secure entry");
+                    console.log(store.getters.authStatus);
+                    next()
+                } else {
+                    console.log("Not Authenticated");
+                    next({path: '/',});
+                }
+            },
+            component: adminHome
         },
 
          // wildcard catch all route; Redirects to error page

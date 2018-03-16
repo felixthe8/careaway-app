@@ -11,6 +11,7 @@
 import navbar from './app-header';
 import timeout from '../shared/timeout';
 import calendar from './calendar';
+import debounce from 'debounce';
 export default {
     name: 'patientHome',
     components: {
@@ -27,9 +28,9 @@ export default {
       // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
       var self = this;
       var time;
-      document.onmousemove = resetTimer;
-      document.onkeypress = resetTimer;
-      document.onclick = resetTimer;
+      document.onmousemove = debounce(resetTimer, 500);
+      document.onkeypress = debounce(resetTimer, 500);
+      document.onclick = debounce(resetTimer, 500);
 
       function resetTimer() {
         // Remove the timer ID instance created by setTimeout
