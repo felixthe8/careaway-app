@@ -10,13 +10,13 @@
 <script>
 import navbar from './app-header';
 import timeout from '../shared/timeout';
-import calendar from './calendar';
+import calendar from '../shared/calendar';
 import debounce from 'debounce';
 export default {
     name: 'patientHome',
     components: {
-      navbar, 
-      calendar, 
+      navbar,
+      calendar,
       timeout
       },
     data() {
@@ -24,7 +24,7 @@ export default {
         showWarning: false
       }
     },
-    mounted () { 
+    mounted () {
       // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
       var self = this;
       var time;
@@ -38,7 +38,7 @@ export default {
       // After 15 minutes of inacitivity, the session timeout warning will display
        time = setTimeout(self.displaySessionwarning, 15*60*1000);
      }
-      // Call the resetTimer function to kick-start the inactivity timer. 
+      // Call the resetTimer function to kick-start the inactivity timer.
       resetTimer();
     },
 
@@ -47,7 +47,7 @@ export default {
         this.showWarning = true;
       }
     },
-    // beforeDestroy will run right before the user leaves the component. 
+    // beforeDestroy will run right before the user leaves the component.
     beforeDestroy() {
       document.onmousemove = null;
       document.onkeypress = null;
@@ -56,7 +56,7 @@ export default {
       this.$store.dispatch('signOut','');
       this.$router.push('/');
     }
-  
+
 }
 </script>
 
@@ -84,6 +84,3 @@ export default {
   }
 
 </style>
-
-
-  

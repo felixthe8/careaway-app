@@ -1,10 +1,16 @@
 <template>
+
   <div>
     <navbar class = "nav-bar"/>
+
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
+
     <p class = "subtitle" id = "code-display">CareAway Medical Code: {{medicalcode}} </p>
+
     <router-view></router-view>
+
   </div>
+
 </template>
 
 <script>
@@ -22,7 +28,7 @@ export default {
         medicalcode: this.$store.getters.medicalCode
       }
     },
-    mounted () { 
+    mounted () {
       // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
       var self = this;
       var time;
@@ -31,14 +37,14 @@ export default {
       document.onclick = debounce(resetTimer, 500);
       // start event timer when the user stops typing, or clicking
       // debouncing an event
-          
+
       function resetTimer() {
         console.log("Reset Timer");
         clearTimeout(time);
        // After 15 minutes of inacitivity, the session timeout warning will display
         time = setTimeout(self.displaySessionwarning, 15*60*1000);
       }
-      // Call the resetTimer function to kick-start the inactivity timer. 
+      // Call the resetTimer function to kick-start the inactivity timer.
       resetTimer();
     },
     methods: {
@@ -63,7 +69,7 @@ export default {
     created() {
       this.getCode();
     },
-    // beforeDestroy will run when the user leaves the component. 
+    // beforeDestroy will run when the user leaves the component.
     beforeDestroy() {
       document.onmousemove = null;
       document.onkeypress = null;
@@ -73,7 +79,7 @@ export default {
       this.$router.push('/');
     },
 
-  
+
 }
 </script>
 
@@ -107,6 +113,3 @@ export default {
 }
 
 </style>
-
-
-  

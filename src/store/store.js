@@ -5,13 +5,13 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    
+
     // The user's selected security questions during registration
     questionSelected1:0,
     questionSelected2:0,
     questionSelected3:0,
 
-    // Boolean value for controlling if the modals will display 
+    // Boolean value for controlling if the modals will display
     showRegistration: false,
     showLogin: false,
     resetRegistrationForm: false,
@@ -42,7 +42,8 @@ export const store = new Vuex.Store({
     validPassword: '',
     authenticatedUsername: '',
     medicalCode: '',
-    authStatus: ''
+    authStatus: '',
+
   },
   getters: {
     checkBreachURL: (state) => {
@@ -68,7 +69,7 @@ export const store = new Vuex.Store({
     },
     validateAnswerURL: (state) => {
       return state.validateAnswerURL;
-    }, 
+    },
     validateUsernameURL:  (state) => {
       return state.validateUsernameURL;
     },
@@ -102,9 +103,9 @@ export const store = new Vuex.Store({
     authStatus: (state) => {
       return state.authStatus;
     }
-  }, 
+  },
   mutations: {
-    // function to flip the value of showLogin 
+    // function to flip the value of showLogin
     alternateLogin: (state) => {
        state.showLogin = !state.showLogin;
     },
@@ -122,7 +123,7 @@ export const store = new Vuex.Store({
     },
     changeQuestionValue3: (state, value) => {
       state.questionSelected3=value;
-    }, 
+    },
     alternateReset: (state) => {
       state.showReset = !state.showReset;
     },
@@ -150,7 +151,6 @@ export const store = new Vuex.Store({
     authStatus: (state,payload) => {
       state.authStatus = payload;
     }
-
   },
 
   actions: {

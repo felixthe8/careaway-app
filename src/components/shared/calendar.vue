@@ -49,8 +49,7 @@
 <script>
 
 export default {
-  name: 'app',
-  components: {},
+  name: 'calendar',
   methods: {
     getCurrent: function() {
       // get today's date object
@@ -226,7 +225,7 @@ export default {
       @media #{$tablet} {
         display: block;
       }
-      
+
       background-color: $white;
       padding: 0 20px;
       text-align: center;
