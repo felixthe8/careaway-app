@@ -1,11 +1,12 @@
 <template>
 
-  <div>
-
-    <appointment/>
-
-    <calendar/>
-
+  <div class="columns medic-calendar">
+    <div class="item">
+      <appointment/>
+    </div>
+    <div class="item">
+      <calendar/>
+    </div>
   </div>
 
 </template>
