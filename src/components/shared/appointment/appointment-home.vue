@@ -51,7 +51,8 @@ export default {
     }
   }, 
   beforeCreate() {
-    axios.get('http://localhost:8080/appointments').then(result => {
+    axios.get(`http://localhost:8080/getAppt?username=${this.$store.getters.authenticatedUsername}`).then(result => {
+      console.log(result);
       for(let i in result.data.appointments) {
         console.log(i);
       }
@@ -62,21 +63,19 @@ export default {
   beforeMount() {
     // Get the type of account this is.
     if(this.$store.getters.authStatus === "medical-professional") {
+// TODO: Add error handling here and set the names in the appointment.
       // This is a medical professional, so get their patient list.
       axios.get(`http://localhost:8080/get-patients?code=${this.$store.getters.medicalCode}`)
         .then(result => {
           this.appointee = result.data.patients;
         });
-      console.log("Set type")
       // Set the appointee type to patient.
       this.appointeeType = "Patient";
       this.isMed = true;
     } else {
-      // This is a patient, so get their medical professional's name.
-      // TODO: Get patient's mp code
+      // This is a patient, so get their medical professional's name, and their information.
       axios.get(`http://localhost:8080/patient-appointment-info?username=${this.$store.getters.authenticatedUsername}`)
         .then(result => {
-          console.log(result.data.mp[0]);
           this.appointee = result.data.mp;
         });
       // Set appointee type to medical professional.
