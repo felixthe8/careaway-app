@@ -261,7 +261,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
- @import "../../assets/sass/settings.scss";
+ @import "../../../assets/sass/settings.scss";
  h2 {
   font-size: 2em;
   font-weight: bolder;

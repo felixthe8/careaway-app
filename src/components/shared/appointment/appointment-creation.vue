@@ -7,17 +7,17 @@
         <p v-if="errors.msg" :style="{ color: 'red'}">
           {{errorMsg}}
         </p>
-        <p class="form-input">
-          {{ appointeeType }}:
-          <select v-if="isMed">
-            <option v-for="patient in appointee">
+        <div class="form-input">
+          <p>{{ appointeeType }}:</p>
+          <select v-if="isMed" v-model="selectedAppointee" class="appointee">
+            <option v-for="patient in appointee" :value="patient.username">
               {{patient.firstName}}&nbsp;{{patient.lastName}}
             </option>
           </select>
-          <p v-if="!isMed">
-            {{ appointee }}
+          <p v-if="!isMed" class="appointee" :value="selectedAppointee">
+            {{medAppointee.firstName}}&nbsp;{{medAppointee.lastName}}
           </p>
-        </p>
+        </div>
         <p class="form-input">
           Date: 
           <input :class="{'error': errors.date}" id="date-input" type="date" v-model="date">
@@ -55,7 +55,7 @@ import moment from 'moment';
 import timeChangers from './time';
 export default {
   name: 'appointmentCreation',
-  components: { timeChangers }, // Pass in list of patients from global store
+  components: { timeChangers }, 
   props: ["appointeeType", "appointee", "isMed"],
   data() {
     return {
@@ -68,6 +68,8 @@ export default {
       endMinute: '00',
       endPM: true,
       endTime: '',
+      selectedAppointee: '',
+      medAppointee: '',
       button: 'Schedule Appointment',
       errorMsg: "",
       errors: {
@@ -78,10 +80,9 @@ export default {
       }
     }
   },
-  beforeCreate() {
-    // See if med prof or patient
-    // If med. prof, get all patients
-    // If patient, get med. prof name
+  beforeMount() {
+    this.selectedAppointee = this.appointee[0].username;
+    this.medAppointee = this.appointee[0];
   },
   methods: {
     create() {
@@ -219,12 +220,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
- @import "../../assets/sass/settings.scss";
+ @import "../../../assets/sass/settings.scss";
  h2 {
   font-size: 2em;
   font-weight: bolder;
   border-style: groove;
   border-width: 5px;
+  text-align: center;
   @media #{$tablet}{
     font-size: 1.5em;
   }
@@ -236,12 +238,12 @@ export default {
   margin: 0 auto;
   background-color: $white;
  }
- #time {
+ .form-input{
    @media #{$tablet} {
       display: flex;
       flex-direction: row;
    }
-   margin: 3% 0;
+   margin: 1% 0;
  }
  .form-input {
    display: flex;
@@ -294,5 +296,11 @@ export default {
   }
   .error {
     border: 1px red solid;
+  }
+  .appointee {
+    margin: 0 2%;
+  }
+  .appointee:focus {
+    outline: none;
   }
 </style>

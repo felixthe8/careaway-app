@@ -14,18 +14,16 @@
       :appointment="appointment"
       v-if = "showAppointmentMod" 
       v-on:storeAppointment="storeAppointment"/>
-    <calendar />
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import calendar from '../medic-home/calendar';
 import create from './appointment-creation';
 import modify from './appointment-modification';
 export default {
   name: 'medicAppointment',
-  components: {calendar, create, modify},
+  components: {create, modify},
   data() {
     return {
       appointment: {}, // Currently stores only one appointment object, will need to change to store array
@@ -78,7 +76,8 @@ export default {
       // TODO: Get patient's mp code
       axios.get(`http://localhost:8080/patient-appointment-info?username=${this.$store.getters.authenticatedUsername}`)
         .then(result => {
-          console.log(result);
+          console.log(result.data.mp[0]);
+          this.appointee = result.data.mp;
         });
       // Set appointee type to medical professional.
       this.appointeeType = "Medical Professional";
@@ -88,7 +87,7 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import '../../assets/sass/settings.scss';
+@import "../../../assets/sass/settings.scss";
   button {
     margin: 10px auto;
   }
