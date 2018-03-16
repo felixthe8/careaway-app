@@ -30,24 +30,23 @@ export default {
       return {
           wellnessWarning: '',
           averageWellness: '',
+          // Create an array to hold the values for the average wellness
           averageData: [],
            // Create an array to store the 5 dates made from moment.js
           days: [],
+          // Create an array to hold the starting and ending values of positive and negative trends on the graph
           trends: []
-
       }
   },
   methods: {
     getInfo() {
-      // Create an array to store the 5 dates made from moment.js
-     var days = [];
      // Create a wellness object to hold and store the wellness data computations
      var wellness_obj = {};
      // generate the 5 days of the previous week
       for(var i = 0; i <=4; i++) {
         // Loop will begin from the previous Friday and count backwards 1 day at a time till the Monday of that week
         var singleDay = moment().day(-2).subtract(i,'days').format("YYYY-MM-DD");
-        days.unshift(singleDay);
+        this.days.unshift(singleDay);
         wellness_obj[singleDay] = {
           // Value will hold the sum of the meter widget data
           value: 0,
@@ -55,16 +54,14 @@ export default {
           counter: 0,
         }  
       }
-      // Write the day array to the data
-      this.days = days;
       var self = this;
       // Request to return meter widget data
       axios.get(this.$store.getters.getTreatmentmeterURL, {
         params: {
           medicalcode:this.$store.getters.medicalCode,
           // Pass the first and last elements from the day array. These dates will be used to filter the response in the backend
-          startDate: days[0],
-          finalDate: days.slice(-1)[0]
+          startDate: self.days[0],
+          finalDate: self.days.slice(-1)[0]
         }
       })
       .then(function (response) { 
@@ -98,14 +95,14 @@ export default {
           new Chart(document.getElementById("aggregate-wellness"), {
             type: 'bar',
             data: {
-              labels: days,
+              labels: self.days,
               datasets: [{
                 label: "Average Wellness",
-                backgroundColor: Array(days.length).fill("#2e4053"),
+                backgroundColor: Array(self.days.length).fill("#2e4053"),
                 data: self.averageData
               }, {
                 // Create the 'Severe Pain' line
-                data: Array(days.length).fill(20),
+                data: Array(self.days.length).fill(20),
                 type: 'line',
                 label: "Severe Pain",
                 borderColor: "#ff0000",
@@ -114,7 +111,7 @@ export default {
                 fill: true,
               }, {
                 // Create the 'Moderate Pain' line
-                data: Array(days.length).fill(50),
+                data: Array(self.days.length).fill(50),
                 type: 'line',
                 label: "Moderate Pain",
                 borderColor: "#f4d03f",
@@ -123,7 +120,7 @@ export default {
                 fill: true,
               }, {
                 // Create the 'Some Pain' line
-                data: Array(days.length).fill(80),
+                data: Array(self.days.length).fill(80),
                 type: 'line',
                 label: "Some Pain",
                 borderColor: "#3273dc",
@@ -132,7 +129,7 @@ export default {
                 fill: true,
               }, {
                 // Create the 'Little Pain' line 
-                data: Array(days.length).fill(99),
+                data: Array(self.days.length).fill(99),
                 type: 'line',
                 label: "Little Pain",
                 borderColor: "#117a65",
@@ -172,8 +169,9 @@ export default {
               elements: {point: {radius: 0}}           
             }
           });
-        
+        // Call to determine the average wellness for the week
         self.getAvg(self.averageData);
+        // Call to determine where the positive and negative trends begin and end
         self.trends = self.getTrends(self.averageData);
         }
       })
@@ -183,48 +181,48 @@ export default {
       })
     },
     getAvg(numbers) {
+      // Compute the average for the week
       var average = numbers.reduce((a,b) => a+b,0) / numbers.length;
       this.averageWellness = "The average wellness for this week is "+average+"%";
     },
     getTrends(data) {
+      // Create 2 arrays - 1 for holding the positive trends and one for holding the negative trends
       var positiveTrends = [], negativeTrends = [];
       var startIndex = 0;
-
-      for(var i = 0; i < data.length -1; i++) {
+      // Determine the positive trends first. Loop through the data
+      for(var i = 0; i < data.length; i++) {
+        // If the data at one index is less than the one at the next, keep going and done run the body
         if(data[i] <= data[i+1]) {
           continue;
-        }  
-        positiveTrends.push(
-          {
-            start: startIndex, 
-            end: i
-          }
-        )
+        }
+        // When the if condition fails, push the starting index and ending index of the positive trend into an array  
+        positiveTrends.push({
+          start: startIndex, 
+          end: i
+        })
+        // Set the new starting index
         startIndex = i + 1
       }
       // Remove the instances where start and end values are the same. 
       positiveTrends = positiveTrends.filter(trend => trend.start != trend.end);
-      console.log(positiveTrends);
-
+      // Determine the negative trends next. Reset the startIndex variable to 0. 
       startIndex = 0;
-      for(var i = 0; i < data.length -1; i++) {
+      for(var i = 0; i < data.length; i++) {
+        // If the data at one index is greater than the one at the next, this is the start of a negative trend. 
         if(data[i] >= data[i+1]) {
           continue;
         }  
-        negativeTrends.push(
-          {
-            start: startIndex, 
-            end: i
-          }
-        )
+        // When the condition fails, pushing the starting index and ending index of the negative trend to the array
+        negativeTrends.push({
+          start: startIndex, 
+          end: i
+        })
         startIndex = i + 1
       }
+      // Remove the instances where start and end values are the same. 
       negativeTrends = negativeTrends.filter(trend => trend.start != trend.end);
       console.log(negativeTrends);
-
       return {positiveTrends, negativeTrends};
-
-
     }
 
   },
