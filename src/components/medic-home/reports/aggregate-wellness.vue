@@ -3,6 +3,7 @@
     <h1 class = "title is-3 is-spaced"> Average Patient Wellness From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{wellnessWarning}} </h2>
     <canvas id = "aggregate-wellness" width = "750" height = "300"> </canvas>
+    <p class="subtitle is-5">{{averageWellness}}</p>
   </div>
 </template>
 
@@ -13,7 +14,8 @@ export default {
   name: '',
   data() {
       return {
-          wellnessWarning: ''
+          wellnessWarning: '',
+          averageWellness: ''
       }
   },
   methods: {
@@ -69,6 +71,8 @@ export default {
               }
             }
           }
+           // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
+          var averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse()
           
           new Chart(document.getElementById("aggregate-wellness"), {
             type: 'bar',
@@ -77,8 +81,7 @@ export default {
               datasets: [{
                 label: "Average Wellness",
                 backgroundColor: Array(days.length).fill("#2e4053"),
-                // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
-                data: Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse()
+                data: averageData
               }, {
                 // Create the 'Severe Pain' line
                 data: Array(days.length).fill(20),
@@ -148,13 +151,20 @@ export default {
               elements: {point: {radius: 0}}           
             }
           });
+        self.averageWellness = "The average wellness for this week is "+self.getAvg(averageData)+"%";
+
         }
       })
       .catch(function(err) {
          self.wellnessWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
          console.log(err);
       })
-    }
+    },
+    getAvg(numbers) {
+      return numbers.reduce((a,b) => a+b,0) / numbers.length;
+      
+    },
+    
   },
   mounted() {
     this.getInfo();
