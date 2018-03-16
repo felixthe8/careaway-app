@@ -4,6 +4,8 @@
     <h2 class="subtitle"> {{wellnessWarning}} </h2>
     <canvas id = "aggregate-wellness" width = "750" height = "300"> </canvas>
     <div class = "report">
+      <input type = "checkbox" id = "empty-selection" v-model="ignoreEmpty" @change="showAnalysis">
+      <label for = "empty-selection">Ignore Missing Data</label>
       <p>{{averageWellness}} </p>
       <br>
       <ul>
@@ -32,10 +34,11 @@ export default {
           averageWellness: '',
           // Create an array to hold the values for the average wellness
           averageData: [],
-           // Create an array to store the 5 dates made from moment.js
+           // Create an array to store the 5 dates that will be displayed on the graph
           days: [],
           // Create an array to hold the starting and ending values of positive and negative trends on the graph
-          trends: []
+          trends: [],
+          ignoreEmpty: false
       }
   },
   methods: {
@@ -169,10 +172,7 @@ export default {
               elements: {point: {radius: 0}}           
             }
           });
-        // Call to determine the average wellness for the week
-        self.getAvg(self.averageData);
-        // Call to determine where the positive and negative trends begin and end
-        self.trends = self.getTrends(self.averageData);
+        self.showAnalysis();
         }
       })
       .catch(function(err) {
@@ -181,6 +181,10 @@ export default {
       })
     },
     getAvg(numbers) {
+      // If we choose to ignore empty input, then we must strip out the values that are 0
+      if(this.ignoreEmpty) {
+        numbers = numbers.filter(value => value!=0)
+      }
       // Compute the average for the week
       var average = numbers.reduce((a,b) => a+b,0) / numbers.length;
       this.averageWellness = "The average wellness for this week is "+average+"%";
@@ -194,35 +198,48 @@ export default {
         // If the data at one index is less than the one at the next, keep going and done run the body
         if(data[i] <= data[i+1]) {
           continue;
+        } else {
+          if( (data[i] - data[startIndex] == data[i]) && this.ignoreEmpty) {
+            continue;
+           } 
+          // When the if condition fails, push the starting index and ending index of the positive trend into an array  
+          positiveTrends.push({
+            start: startIndex, 
+            end: i
+          })
+          // Set the new starting index
+          startIndex = i + 1
         }
-        // When the if condition fails, push the starting index and ending index of the positive trend into an array  
-        positiveTrends.push({
-          start: startIndex, 
-          end: i
-        })
-        // Set the new starting index
-        startIndex = i + 1
       }
       // Remove the instances where start and end values are the same. 
       positiveTrends = positiveTrends.filter(trend => trend.start != trend.end);
+      
       // Determine the negative trends next. Reset the startIndex variable to 0. 
       startIndex = 0;
       for(var i = 0; i < data.length; i++) {
         // If the data at one index is greater than the one at the next, this is the start of a negative trend. 
         if(data[i] >= data[i+1]) {
           continue;
-        }  
-        // When the condition fails, pushing the starting index and ending index of the negative trend to the array
-        negativeTrends.push({
-          start: startIndex, 
-          end: i
-        })
-        startIndex = i + 1
+        } else {
+          // If the next value has dropped to 0 and we are choosing to ignore empty input, then return to the loop
+          if( ( (data[startIndex] - data[i]) === data[startIndex]) && this.ignoreEmpty) {
+            continue;
+          }
+          // When the condition fails, pushing the starting index and ending index of the negative trend to the array
+          negativeTrends.push({
+            start: startIndex, 
+            end: i
+          })
+          startIndex = i + 1
+        } 
       }
       // Remove the instances where start and end values are the same. 
       negativeTrends = negativeTrends.filter(trend => trend.start != trend.end);
-      console.log(negativeTrends);
       return {positiveTrends, negativeTrends};
+    },
+    showAnalysis() {
+      this.getAvg(this.averageData);
+      this.trends = this.getTrends(this.averageData);
     }
 
   },
