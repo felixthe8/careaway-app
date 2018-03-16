@@ -3,6 +3,7 @@
     <navbar class = "nav-bar"/>
     <calendar/>
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
+    <router-view></router-view>
   </div>
 
 </template>

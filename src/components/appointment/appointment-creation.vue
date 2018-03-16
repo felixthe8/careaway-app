@@ -8,8 +8,15 @@
           {{errorMsg}}
         </p>
         <p class="form-input">
-          {{ requestee }}:  
-          {{ appointee }}
+          {{ appointeeType }}:
+          <select v-if="isMed">
+            <option v-for="patient in appointee">
+              {{patient.firstName}}&nbsp;{{patient.lastName}}
+            </option>
+          </select>
+          <p v-if="!isMed">
+            {{ appointee }}
+          </p>
         </p>
         <p class="form-input">
           Date: 
@@ -49,7 +56,7 @@ import timeChangers from './time';
 export default {
   name: 'appointmentCreation',
   components: { timeChangers }, // Pass in list of patients from global store
-  props: ["requestee"],
+  props: ["appointeeType", "appointee", "isMed"],
   data() {
     return {
       date: '',
@@ -61,7 +68,6 @@ export default {
       endMinute: '00',
       endPM: true,
       endTime: '',
-      appointee: 'ABCDEFGHI',
       button: 'Schedule Appointment',
       errorMsg: "",
       errors: {

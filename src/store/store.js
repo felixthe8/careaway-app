@@ -40,6 +40,7 @@ export const store = new Vuex.Store({
     patientBreakdownURL: 'http://localhost:8080/getDiagnoses?medicalcode=',
     getTreatmentmeterURL: 'http://localhost:8080/getTreatmentmeter',
     getTreatmentchecklistURL: 'http://localhost:8080/getTreatmentchecklist',
+    
     // Appointment URLs
     createAppt: 'http://localhost:8080/createAppt',
     modifyAppt: 'http://localhost:8080/updateAppt',

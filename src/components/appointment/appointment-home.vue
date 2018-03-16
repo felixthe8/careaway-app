@@ -1,12 +1,16 @@
 <template>
   <div>
-    <button class="button is-rounded is-primary" @click="toggleCreate"><b>&#10753;</b>&nbsp; Appointment</button>
+    <button class="button is-primary is-rounded" @click="toggleCreate">
+      <b>&#10753;</b>&nbsp; Appointment
+    </button>
     <create 
-      :requestee="requestee" 
+      :appointeeType="appointeeType"
+      :appointee="appointee"
+      :isMed="isMed"
       v-if = "showAppointmentCreation" 
       v-on:storeAppointment="storeAppointment"/>
     <modify 
-      :requestee="requestee" 
+      :appointeeType="appointeeType" 
       :appointment="appointment"
       v-if = "showAppointmentMod" 
       v-on:storeAppointment="storeAppointment"/>
@@ -24,8 +28,10 @@ export default {
   components: {calendar, create, modify},
   data() {
     return {
-      appointment: {},
-      requestee: "Patient",
+      appointment: {}, // Currently stores only one appointment object, will need to change to store array
+      appointeeType: "",
+      appointee: [],
+      isMed: true
     }
   }, 
   computed: {
@@ -54,37 +60,72 @@ export default {
     }).catch(error => {
       console.log(error);
     });
+  },
+  beforeMount() {
+    // Get the type of account this is.
+    if(this.$store.getters.authStatus === "medical-professional") {
+      // This is a medical professional, so get their patient list.
+      axios.get(`http://localhost:8080/get-patients?code=${this.$store.getters.medicalCode}`)
+        .then(result => {
+          this.appointee = result.data.patients;
+        });
+      console.log("Set type")
+      // Set the appointee type to patient.
+      this.appointeeType = "Patient";
+      this.isMed = true;
+    } else {
+      // This is a patient, so get their medical professional's name.
+      // TODO: Get patient's mp code
+      axios.get(`http://localhost:8080/patient-appointment-info?username=${this.$store.getters.authenticatedUsername}`)
+        .then(result => {
+          console.log(result);
+        });
+      // Set appointee type to medical professional.
+      this.appointeeType = "Medical Professional";
+      this.isMed = false;
+    }
   }
 }
 </script>
-<style lang="scss">
-button{
-  margin: 10px 10px 10px 10px;
-}
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped lang="scss">
+@import '../../assets/sass/settings.scss';
+  button {
+    margin: 10px auto;
+  }
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+  }
 
-h1, h2 {
-  font-weight: normal;
-}
+  .button {
+   background-color: #00d1b2;
+   color: $white;
+   margin: 2% 0;
+  }
+  .button:hover {
+    background-color: #00c4a7;
+    color: $white;
+  }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
+  h1, h2 {
+    font-weight: normal;
+  }
 
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
 
-a {
-  color: #42b983;
-}
+  li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+
+  a {
+    color: #42b983;
+  }
 </style>

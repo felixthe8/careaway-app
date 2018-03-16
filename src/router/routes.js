@@ -6,7 +6,7 @@ import {store} from '../store/store'
 import homepage from '../components/homepage/homepage.vue';
 import medicHome from '../components/medic-home/medic-homepage.vue';
 import medicCalendar from '../components/medic-home/calendar.vue';
-import medicAppointment from '../components/appointment/appointment-home.vue';
+import appointment from '../components/appointment/appointment-home.vue';
 import medicDataAnalysis from '../components/medic-home/data-analysis.vue';
 import patientHome from '../components/patient-home/patient-homepage.vue';
 import adminHome from '../components/admin-home/admin-homepage.vue';
@@ -47,7 +47,8 @@ const router = new Router ({
                 }},
                 {path: '/MedicHome/Report', component: medicDataAnalysis, name: 'medicReport', meta: {
                     title: "CareAway Medical Reports"
-                }}, {path: '/MedicHome/Appointments', component: medicAppointment, name: 'medicAppointment', meta: {
+                }}, 
+                {path: '/MedicHome/Appointments', component: appointment, name: 'medicAppointment', meta: {
                   title: "CareAway Medical Appointments"
                 }}
             ]
@@ -69,7 +70,12 @@ const router = new Router ({
                     next({path: '/',});
                 }
             },
-            component: patientHome
+            component: patientHome,
+            children:[
+                {path: '/PatientHome/Appointments', component: appointment, name: 'appointment', meta: {
+                  title: "CareAway Appointments"
+                }}
+            ]
 
         },
 
