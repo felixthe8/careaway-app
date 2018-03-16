@@ -80,18 +80,10 @@
           document.onclick = null;
           this.$store.dispatch('deauthenticatedUsername', '');
           this.$store.dispatch('medicalCode', '');
-          // Check if account is system-admin needed because system-admin homepage is a child of the CareAway homepage
-          if(this.$store.getters.authStatus == "system-admin"){
-            // Call to close the admin homepage
-            this.$emit('stopAdmin')
-            // look into router.replace
-            
-          } else {
-            // Redirect to CareAway Homepage
-            this.$router.push('/');
-          }
           // Clear the username in the Vue store
           this.$store.dispatch('signOut', '');
+          // Redirect to CareAway Homepage
+          this.$router.push('/');
         }
       },
       mounted() {
