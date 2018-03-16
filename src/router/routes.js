@@ -29,7 +29,7 @@ const router = new Router ({
             path: '/MedicHome',
             name: 'MedicHome',
             beforeEnter: (to, from, next) => {
-                if((store.getters.authStatus) == 'medical-professional') {
+                if((store.getters.authStatus) === 'medical-professional') {
                     console.log("Secure entry");
                     console.log(store.getters.authStatus);
                     next()
@@ -61,7 +61,7 @@ const router = new Router ({
                 title: "CareAway Patient Home"
             },
             beforeEnter: (to, from, next) => {
-                if((store.getters.authStatus) == 'patient') {
+                if((store.getters.authStatus) === 'patient') {
                     console.log("Secure entry");
                     console.log(store.getters.authStatus);
                     next()
@@ -86,7 +86,7 @@ const router = new Router ({
                 title: "CareAway Admin Home"
             },
             beforeEnter: (to, from, next) => {
-                if((store.getters.authStatus) == 'system-admin') {
+                if((store.getters.authStatus) === 'system-admin') {
                     console.log("Secure entry");
                     console.log(store.getters.authStatus);
                     next()

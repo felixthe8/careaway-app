@@ -29,7 +29,8 @@ export default {
           this.$router.push('/MedicHome');
       },
       viewAppointments() {
-          this.$router.push('/MedicHome/Appointments');
+          //this.$router.push('/MedicHome/Appointments');
+          this.$store.dispatch('alternateAppointmentCreation');
       }
   }
 }
