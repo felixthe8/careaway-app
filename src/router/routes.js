@@ -15,7 +15,8 @@ Vue.use(Router);
 Vue.use(store);
 
 const router = new Router ({
- routes: [
+  mode: 'history',
+  routes: [
         {  path: '/' ,
             name: 'Home', 
             component: homepage,

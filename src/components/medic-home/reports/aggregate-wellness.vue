@@ -3,7 +3,21 @@
     <h1 class = "title is-3 is-spaced"> Average Patient Wellness From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{wellnessWarning}} </h2>
     <canvas id = "aggregate-wellness" width = "750" height = "300"> </canvas>
-    <p class="subtitle is-5">{{averageWellness}}</p>
+    <div class = "report">
+      <p>{{averageWellness}} </p>
+      <br>
+      <ul>
+        <li v-for= "positive in trends.positiveTrends">
+           <i class="fas fa-arrow-circle-up fa-lg"></i> <b> {{days[positive.start]}} </b> to  <b> {{days[positive.end]}} </b> : Wellness increased by {{averageData[positive.end] - averageData[positive.start]}} percentage points
+        </li>
+      </ul>
+
+      <ul>
+        <li v-for= "negative in trends.negativeTrends">
+           <i class="fas fa-arrow-circle-down fa-lg"></i> <b> {{days[negative.start]}} </b> to  <b> {{days[negative.end]}} </b> : Wellness decreased by {{averageData[negative.start] - averageData[negative.end]}} percentage points
+        </li>
+     </ul>
+    </div>
   </div>
 </template>
 
@@ -15,7 +29,12 @@ export default {
   data() {
       return {
           wellnessWarning: '',
-          averageWellness: ''
+          averageWellness: '',
+          averageData: [],
+           // Create an array to store the 5 dates made from moment.js
+          days: [],
+          trends: []
+
       }
   },
   methods: {
@@ -36,6 +55,8 @@ export default {
           counter: 0,
         }  
       }
+      // Write the day array to the data
+      this.days = days;
       var self = this;
       // Request to return meter widget data
       axios.get(this.$store.getters.getTreatmentmeterURL, {
@@ -72,7 +93,7 @@ export default {
             }
           }
            // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
-          var averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse()
+          self.averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse()
           
           new Chart(document.getElementById("aggregate-wellness"), {
             type: 'bar',
@@ -81,7 +102,7 @@ export default {
               datasets: [{
                 label: "Average Wellness",
                 backgroundColor: Array(days.length).fill("#2e4053"),
-                data: averageData
+                data: self.averageData
               }, {
                 // Create the 'Severe Pain' line
                 data: Array(days.length).fill(20),
@@ -151,8 +172,9 @@ export default {
               elements: {point: {radius: 0}}           
             }
           });
-        self.averageWellness = "The average wellness for this week is "+self.getAvg(averageData)+"%";
-
+        
+        self.getAvg(self.averageData);
+        self.trends = self.getTrends(self.averageData);
         }
       })
       .catch(function(err) {
@@ -161,10 +183,50 @@ export default {
       })
     },
     getAvg(numbers) {
-      return numbers.reduce((a,b) => a+b,0) / numbers.length;
-      
+      var average = numbers.reduce((a,b) => a+b,0) / numbers.length;
+      this.averageWellness = "The average wellness for this week is "+average+"%";
     },
-    
+    getTrends(data) {
+      var positiveTrends = [], negativeTrends = [];
+      var startIndex = 0;
+
+      for(var i = 0; i < data.length -1; i++) {
+        if(data[i] <= data[i+1]) {
+          continue;
+        }  
+        positiveTrends.push(
+          {
+            start: startIndex, 
+            end: i
+          }
+        )
+        startIndex = i + 1
+      }
+      // Remove the instances where start and end values are the same. 
+      positiveTrends = positiveTrends.filter(trend => trend.start != trend.end);
+      console.log(positiveTrends);
+
+      startIndex = 0;
+      for(var i = 0; i < data.length -1; i++) {
+        if(data[i] >= data[i+1]) {
+          continue;
+        }  
+        negativeTrends.push(
+          {
+            start: startIndex, 
+            end: i
+          }
+        )
+        startIndex = i + 1
+      }
+      negativeTrends = negativeTrends.filter(trend => trend.start != trend.end);
+      console.log(negativeTrends);
+
+      return {positiveTrends, negativeTrends};
+
+
+    }
+
   },
   mounted() {
     this.getInfo();
@@ -175,6 +237,12 @@ export default {
 <style lang="scss" scoped>
   .subtitle {
       margin-left: 2%;
+  }
+  .fa-arrow-circle-up {
+    color: #2ECC71;
+  }
+  .fa-arrow-circle-down {
+    color: #E74C3C;
   }
 </style>
 
