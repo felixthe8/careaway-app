@@ -3,6 +3,15 @@
     <navbar class = "nav-bar"/>
     <calendar/>
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
+    <create 
+      :appointeeType="appointeeType"
+      :appointee="appointee"
+      :isMed="isMed"
+      v-if = "showAppointmentCreation" />
+    <modify 
+      :appointeeType="appointeeType" 
+      :appointment="appointment"
+      v-if = "showAppointmentMod" />
     <router-view></router-view>
   </div>
 
@@ -11,6 +20,9 @@
 <script>
 import navbar from './app-header';
 import timeout from '../shared/timeout';
+import axios from 'axios';
+import create from '../shared/appointment/appointment-creation';
+import modify from '../shared/appointment/appointment-modification';
 import calendar from './calendar';
 import debounce from 'debounce';
 export default {
@@ -18,12 +30,39 @@ export default {
     components: {
       navbar, 
       calendar, 
-      timeout
+      timeout,
+      create,
+      modify
       },
     data() {
       return {
-        showWarning: false
+        showWarning: false,
+        appointment: {}, // Currently stores only one appointment object, will need to change to store array
+        appointeeType: "",
+        appointee: [],
+        isMed: true
       }
+    },
+    beforeCreate() {
+      axios.get(this.$store.getters.getAppointmentURL+this.$store.getters.authenticatedUsername).then(result => {
+        var appointments = result.data.appointments;
+        for(var i=0; i<appointments.length; i++) {
+          self.$store.dispatch('addAppointment',appointments[i]);
+        }
+      }).catch(error => {
+        console.log(error);
+      });
+
+    },
+    beforeMount(){
+      // This is a patient, so get their medical professional's name, and their information.
+      axios.get(this.$store.getters.getPatientApptURL + this.$store.getters.authenticatedUsername)
+        .then(result => {
+          this.appointee = result.data.mp;
+        });
+      // Set appointee type to medical professional.
+      this.appointeeType = "Medical Professional";
+      this.isMed = false;
     },
     mounted () { 
       // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
@@ -42,7 +81,14 @@ export default {
       // Call the resetTimer function to kick-start the inactivity timer. 
       resetTimer();
     },
-
+    computed: {
+      showAppointmentCreation() {
+        return this.$store.getters.showAppointmentCreation;
+      },
+      showAppointmentMod() {
+        return this.$store.getters.showAppointmentMod;
+      }
+    },
     methods: {
       displaySessionwarning() {
         this.showWarning = true;

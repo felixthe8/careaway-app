@@ -47,9 +47,6 @@ const router = new Router ({
                 }},
                 {path: '/MedicHome/Report', component: medicDataAnalysis, name: 'medicReport', meta: {
                     title: "CareAway Medical Reports"
-                }}, 
-                {path: '/MedicHome/Appointments', component: appointment, name: 'medicAppointment', meta: {
-                  title: "CareAway Medical Appointments"
                 }}
             ]
         },
@@ -70,13 +67,7 @@ const router = new Router ({
                     next({path: '/',});
                 }
             },
-            component: patientHome,
-            children:[
-                {path: '/PatientHome/Appointments', component: appointment, name: 'appointment', meta: {
-                  title: "CareAway Appointments"
-                }}
-            ]
-
+            component: patientHome
         },
 
         {

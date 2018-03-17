@@ -7,8 +7,7 @@
       :appointeeType="appointeeType"
       :appointee="appointee"
       :isMed="isMed"
-      v-if = "showAppointmentCreation" 
-      v-on:storeAppointment="storeAppointment"/>
+      v-if = "showAppointmentCreation"/>
     <modify 
       :appointeeType="appointeeType" 
       :appointment="appointment"

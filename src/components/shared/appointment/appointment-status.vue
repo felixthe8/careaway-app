@@ -55,7 +55,9 @@
     },
     computed: {
       isInitiator(){
+        console.log("Here");
         if(this.initiator === this.$store.getters.authenticatedUsername){
+          
           return true;
         } else {
           return false;
@@ -76,16 +78,11 @@
         }
       },
       getDate(){
-        return `${this.date.getMonth()+1}/${this.date.getDate()}/${this.date.getFullYear()}`;
+        return this.date;
       },
       getTime()
       {
-        return `${this.date.getHours() === 0 ? 
-                '1' : this.date.getHours()>12 ? 
-                this.date.getHours() - 12 : this.date.getHours()
-                }:${this.date.getMinutes()<10 ? '0' + this.date.getMinutes() : 
-                this.date.getMinutes()} 
-                ${this.date.getHours()>12 ? 'P.M.':'A.M.'}`;
+        return this.startTime;
       }
     },
     methods: {
@@ -118,7 +115,8 @@
       },
       // TODO: Crystal's task to do. Good Luck!
       editAppointment(){
-
+        // Close this modal and open the modification appointment modal
+        this.$store.dispatch("alternateAppointmentModification");
       },
       deleteAppointment(){
         var self = this;
@@ -150,7 +148,7 @@
 </script>
 
 
-<style lang='scss'>
+<style scoped lang='scss'>
 @import '../assets/sass/settings.scss';
   #appointment
   {

@@ -32,29 +32,24 @@ export default {
     data() {
       return {
         showWarning: false,
-        medicalcode: this.$store.getters.medicalCode
+        medicalcode: this.$store.getters.medicalCode,
+        appointment: {}, // Currently stores only one appointment object, will need to change to store array
+        appointeeType: "",
+        appointee: [],
+        isMed: true
       }
     },
     beforeCreate() {
-      axios.get(`http://localhost:8080/getAppt?username=${this.$store.getters.authenticatedUsername}`).then(result => {
-      console.log(result);
-      for(let i in result.data.appointments) {
-        console.log(i);
-      }
+      var self = this;
+      axios.get(this.$store.getters.getAppointmentURL + this.$store.getters.authenticatedUsername).then(result => {
+        var appointments = result.data.appointments;
+        for(var i=0; i<appointments.length; i++) {
+          self.$store.dispatch('addAppointment',appointments[i]);
+        }
       }).catch(error => {
         console.log(error);
       });
-    },
-    beforeMount() {
-      // TODO: Add error handling here and set the names in the appointment.
-      // This is a medical professional, so get their patient list.
-      axios.get(`http://localhost:8080/get-patients?code=${this.$store.getters.medicalCode}`)
-        .then(result => {
-          this.appointee = result.data.patients;
-      });
-      // Set the appointee type to patient.
-      this.appointeeType = "Patient";
-      this.isMed = true;
+
     },
     mounted () { 
       // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
@@ -95,10 +90,24 @@ export default {
             // Extract out medical code from the response
             self.medicalcode = response.data.medicalcode;
             self.$store.dispatch('medicalCode', self.medicalcode);
+            // TODO: Add error handling here and set the names in the appointment.
+            // This is a medical professional, so get their patient list.
+            axios.get(self.$store.getters.getPatientInfoURL + self.$store.getters.medicalCode).then(result => {
+              console.log(result.data.patients);
+              self.appointee = result.data.patients;
+            });
+            // Set the appointee type to patient.
+            self.appointeeType = "Patient";
+            self.isMed = true;
           })
           .catch(function(err) {
             console.log(err);
           })
+        },
+        storeAppointment(appointment) {
+          this.$store.dispatch("storeAppointment", appointment);
+          this.appointment = appointment;
+          console.log(this.appointment);
         }
 
     },
