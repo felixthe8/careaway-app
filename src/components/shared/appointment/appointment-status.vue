@@ -96,7 +96,7 @@
       }, 
       sendResponse(status){
         var self = this;
-        const appointmentObject = {
+        const newAppointment = {
           date: this.date,
           startTime: this.startTime,
           endTime: this.endTime,
@@ -106,12 +106,20 @@
           initiatorName: this.initiatorName,
           status: status
         };
-        console.log("About to send");
-        console.log(this.appointment);
-        axios.post(this.$store.getters.modifyAppt,{'newAppointment' : this.appointment, 'originalAppointment': appointmentObject}).then(
+        const oldAppointment = {
+          date: this.appointment.date,
+          startTime: this.appointment.startTime,
+          endTime: this.appointment.endTime,
+          initiator: this.appointment.initiator,
+          appointee: this.appointment.appointee,
+          appointeeName: this.appointment.appointeeName,
+          initiatorName: this.appointment.initiatorName,
+          status: this.appointment.status
+        };
+        axios.post(this.$store.getters.modifyAppt,{'newAppointment' : newAppointment, 'originalAppointment': oldAppointment}).then(
           function(response)
           {
-            if(response.data.response === 'success'){
+            if(response.status === 200){
               console.log("Success");
               self.status = status;
               self.showWarning = false; 

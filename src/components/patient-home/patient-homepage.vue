@@ -1,8 +1,10 @@
 <template>
   <div>
     <navbar class = "nav-bar"/>
+    <button class="button is-primary is-rounded" @click="toggleCreate"></button>
     <calendar/>
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
+    <appointment-status :appointment="getAppointment()" v-if="this.$store.getters.showAppointment" ></appointment-status>
     <create 
       :appointeeType="appointeeType"
       :appointee="appointee"
@@ -21,6 +23,7 @@
 import navbar from './app-header';
 import timeout from '../shared/timeout';
 import axios from 'axios';
+import appointmentStatus from '../shared/appointment/appointment-status';
 import create from '../shared/appointment/appointment-creation';
 import modify from '../shared/appointment/appointment-modification';
 import calendar from './calendar';
@@ -31,6 +34,7 @@ export default {
       navbar, 
       calendar, 
       timeout,
+      appointmentStatus,
       create,
       modify
       },
@@ -44,6 +48,7 @@ export default {
       }
     },
     beforeCreate() {
+      var self = this;
       axios.get(this.$store.getters.getAppointmentURL+this.$store.getters.authenticatedUsername).then(result => {
         var appointments = result.data.appointments;
         for(var i=0; i<appointments.length; i++) {
@@ -90,6 +95,14 @@ export default {
       }
     },
     methods: {
+      getAppointment(){
+        console.log("GETTING THE APPOINTMENT");
+        console.log(this.$store.getters.appointments[0]);
+        return this.$store.getters.appointments[0];
+      },
+      toggleCreate(){
+        this.$store.dispatch("alternateAppointment");
+      },
       displaySessionwarning() {
         this.showWarning = true;
       }
