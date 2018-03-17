@@ -65,7 +65,6 @@ export default {
       // debouncing an event
           
       function resetTimer() {
-        console.log("Reset Timer");
         clearTimeout(time);
        // After 15 minutes of inacitivity, the session timeout warning will display
         time = setTimeout(self.displaySessionwarning, 15*60*1000);
