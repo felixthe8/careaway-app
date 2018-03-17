@@ -16,6 +16,7 @@ Vue.use(Router);
 Vue.use(store);
 
 const router = new Router ({
+  mode: 'history',
  routes: [
         {  path: '/' ,
             name: 'Home', 
@@ -29,7 +30,7 @@ const router = new Router ({
             path: '/MedicHome',
             name: 'MedicHome',
             beforeEnter: (to, from, next) => {
-                if((store.getters.authStatus) == 'medical-professional') {
+                if((store.getters.authStatus) === 'medical-professional') {
                     console.log("Secure entry");
                     console.log(store.getters.authStatus);
                     next()
@@ -47,9 +48,6 @@ const router = new Router ({
                 }},
                 {path: '/MedicHome/Report', component: medicDataAnalysis, name: 'medicReport', meta: {
                     title: "CareAway Medical Reports"
-                }}, 
-                {path: '/MedicHome/Appointments', component: appointment, name: 'medicAppointment', meta: {
-                  title: "CareAway Medical Appointments"
                 }}
             ]
         },
@@ -61,7 +59,7 @@ const router = new Router ({
                 title: "CareAway Patient Home"
             },
             beforeEnter: (to, from, next) => {
-                if((store.getters.authStatus) == 'patient') {
+                if((store.getters.authStatus) === 'patient') {
                     console.log("Secure entry");
                     console.log(store.getters.authStatus);
                     next()
@@ -70,13 +68,7 @@ const router = new Router ({
                     next({path: '/',});
                 }
             },
-            component: patientHome,
-            children:[
-                {path: '/PatientHome/Appointments', component: appointment, name: 'appointment', meta: {
-                  title: "CareAway Appointments"
-                }}
-            ]
-
+            component: patientHome
         },
 
         {
@@ -86,7 +78,7 @@ const router = new Router ({
                 title: "CareAway Admin Home"
             },
             beforeEnter: (to, from, next) => {
-                if((store.getters.authStatus) == 'system-admin') {
+                if((store.getters.authStatus) === 'system-admin') {
                     console.log("Secure entry");
                     console.log(store.getters.authStatus);
                     next()

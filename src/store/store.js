@@ -19,6 +19,7 @@ export const store = new Vuex.Store({
     showQuestions: false,
     showPassword: false,
     ssoRegistration: false,
+    showAppointment: false,
 
     // Appointment boolean values.
     showAppointmentCreation: false,
@@ -40,10 +41,14 @@ export const store = new Vuex.Store({
     patientBreakdownURL: 'http://localhost:8080/getDiagnoses?medicalcode=',
     getTreatmentmeterURL: 'http://localhost:8080/getTreatmentmeter',
     getTreatmentchecklistURL: 'http://localhost:8080/getTreatmentchecklist',
-    
+    appointmentURL: 'http://localhost:8080/getAppt?username=',
+    patientApptURL: 'http://localhost:8080/patient-appointment-info?username=',
+    patientInfoURL: 'http://localhost:8080/get-patients?code=',
+
     // Appointment URLs
     createAppt: 'http://localhost:8080/createAppt',
     modifyAppt: 'http://localhost:8080/updateAppt',
+    deleteAppt: 'http://localhost:8080/deleteAppt',
 
     validUsername: '',
     username: '',
@@ -51,9 +56,11 @@ export const store = new Vuex.Store({
     authenticatedUsername: '',
     medicalCode: '',
     authStatus: '',
+    appointments: [],
     currentAppointment: {}
   },
   getters: {
+
     checkBreachURL: (state) => {
       return state.checkBreachURL;
     },
@@ -61,7 +68,7 @@ export const store = new Vuex.Store({
       return state.breachURL;
     },
     loginURL: (state) => {
-      return state.loginURL
+      return state.loginURL;
     },
     registerPatientURL: (state) => {
       return state.registerPatientURL;
@@ -99,6 +106,15 @@ export const store = new Vuex.Store({
     getTreatmentchecklistURL: (state) => {
       return state.getTreatmentchecklistURL;
     },
+    getAppointmentURL: (state) =>  {
+      return state.appointmentURL;
+    },
+    getPatientApptURL: (state) => {
+      return state.patientApptURL;
+    },
+    getPatientInfoURL: (state) => {
+      return state.patientInfoURL;
+    },
     showLogin: (state) => {
       return state.showLogin;
     },
@@ -110,6 +126,12 @@ export const store = new Vuex.Store({
     },
     authStatus: (state) => {
       return state.authStatus;
+    },
+    showAppointment: (state) => {
+      return state.showAppointment;
+    },
+    deleteAppt: (state) => {
+      return state.deleteAppt;
     },
     showAppointmentCreation: (state) => {
       return state.showAppointmentCreation;
@@ -125,6 +147,9 @@ export const store = new Vuex.Store({
     },
     currentAppointment: (state) => {
       return state.currentAppointment;
+    },
+    appointments: (state) => {
+      return state.appointments;
     }
   }, 
   mutations: {
@@ -183,8 +208,17 @@ export const store = new Vuex.Store({
     },
     storeAppointment: (state, payload) => {
       state.currentAppointment = payload;
+    },
+    alternateAppointment: (state) => {
+      state.showAppointment = !state.showAppointment;
+    },
+    addAppointment: (state, payLoad) => {
+      state.appointments.push(payLoad);
+    },
+    editAppointment: (state, payLoad) => {
+      var index = state.appointments.indexOf(payload.oldAppt);
+      state.appointments[index] = payLoad.newAppt;
     }
-
   },
 
   actions: {
@@ -225,6 +259,9 @@ export const store = new Vuex.Store({
     signOut: (context,payload) => {
       context.commit('authStatus', payload);
     },
+    alternateAppointment: (context) => {
+      context.commit("alternateAppointment");
+    },
     alternateAppointmentCreation: (context) => {
       context.commit("alternateAppointmentCreation");
     },
@@ -236,6 +273,12 @@ export const store = new Vuex.Store({
     },
     storeAppointment: (context, payload) => {
       context.commit('storeAppointment', payload);
+    },
+    addAppointment: (context, payload) => {
+      context.commit('addAppointment', payload);
+    },
+    editAppointment: (context, payload) => {
+      context.commit('editAppointment', payload);
     }
   }
 });

@@ -95,7 +95,7 @@ export default {
           startTime: this.startTime,
           endTime: this.endTime,
           initiator: this.$store.getters.authenticatedUsername,
-          appointee: this.appointee,
+          appointee: this.selectedAppointee,
           status: "Pending"
         };
         axios.post(this.$store.getters.createAppt, {appointment: appt})
