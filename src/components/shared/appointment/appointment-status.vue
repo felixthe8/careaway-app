@@ -6,10 +6,11 @@
           <div id='appointment-card' class = 'card'>
             <div class = 'card-content'>
               <h2 id = 'form-title'> Appointments</h2>
-              Date: {{getDate}}<br>
-              Time: {{getTime}}<br>
-              Requested by: {{initiator}}<br>
-              Scheduled with: {{appointee}}<br>
+              Date: {{date}}<br>
+              Start Time: {{getTime(startTime)}}<br>
+              End Time: {{getTime(endTime)}}<br>
+              Requested by: {{initiatorName}}<br>
+              Scheduled with: {{appointeeName}}<br>
               <div id='appointment-status'>
                 <div v-if='getStatus'>
                   Status: {{status}}<br>
@@ -38,16 +39,18 @@
 
 <script>
   import axios from 'axios';
-  import messageBox from './message-box.vue';
-
   export default {
     name: 'appointment-status',
     props: ['appointment'],
     data() {
       return {
         date: this.appointment.date,
+        startTime: this.appointment.startTime,
+        endTime: this.appointment.endTime,
         initiator: this.appointment.initiator,
         appointee: this.appointment.appointee,
+        initiatorName: this.appointment.initiatorNamel,
+        appointeeName: this.appointment.appointeeName,
         status: this.appointment.status,
         showWarning: false,
         warning: 'Connection error has occurred. Please try again.',
@@ -77,27 +80,35 @@
           return true;
         }
       },
-      getDate(){
-        return this.date;
-      },
-      getTime()
-      {
-        return this.startTime;
-      }
     },
     methods: {
+      getTime(time){
+        time = new Date(time);
+        return `${time.getHours() === 0 ?  
+                '1' : time.getHours()>12 ?  
+                time.getHours() - 12 : time.getHours() 
+                }:${time.getMinutes()<10 ? '0' + time.getMinutes() :  
+                time.getMinutes()}  
+                ${time.getHours()>12 ? 'P.M.':'A.M.'}`; 
+      },
       closeAppointment() {
          this.$store.commit('alternateAppointment');
       }, 
       sendResponse(status){
         var self = this;
-        var appointmentObject = {
+        const appointmentObject = {
           date: this.date,
+          startTime: this.startTime,
+          endTime: this.endTime,
           initiator: this.initiator,
           appointee: this.appointee,
+          appointeeName: this.appointeeName,
+          initiatorName: this.initiatorName,
           status: status
-        }
-        axios.post(this.$store.getters.modifyAppt,{'appointmentDate' : this.date, 'appointment': appointmentObject}).then(
+        };
+        console.log("About to send");
+        console.log(this.appointment);
+        axios.post(this.$store.getters.modifyAppt,{'newAppointment' : this.appointment, 'originalAppointment': appointmentObject}).then(
           function(response)
           {
             if(response.data.response === 'success'){
@@ -113,7 +124,6 @@
             self.showWarning = true;      
           })
       },
-      // TODO: Crystal's task to do. Good Luck!
       editAppointment(){
         // Close this modal and open the modification appointment modal
         this.$store.dispatch("alternateAppointmentModification");
@@ -149,7 +159,7 @@
 
 
 <style scoped lang='scss'>
-@import '../assets/sass/settings.scss';
+@import '../../../assets/sass/settings.scss';
   #appointment
   {
     &-box
@@ -183,7 +193,7 @@
   .modal-content {
     overflow: hidden;
     max-height: none;
-    font-family: cursive;
+    text-align: center;
   }
   #form-title {
     font-size: 2em;

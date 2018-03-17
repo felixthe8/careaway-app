@@ -1,6 +1,8 @@
 <template>
   <div>
     <navbar class = "nav-bar"/>
+    <button class="button is-primary is-rounded" @click="toggleCreate"></button>
+    <appointment-status :appointment="getAppointment()" v-if="this.$store.getters.showAppointment" ></appointment-status>
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
     <p class = "subtitle" id = "code-display">CareAway Medical Code: {{medicalcode}} </p> 
     <create 
@@ -23,12 +25,13 @@ import navbar from './app-header';
 import timeout from '../shared/timeout';
 import Chart from 'chart.js';
 import axios from 'axios';
+import appointmentStatus from '../shared/appointment/appointment-status';
 import create from '../shared/appointment/appointment-creation';
 import modify from '../shared/appointment/appointment-modification';
 import debounce from 'debounce';
 export default {
     name: 'medicHome',
-    components: {navbar, timeout, create, modify},
+    components: {navbar, timeout, appointmentStatus, create, modify},
     data() {
       return {
         showWarning: false,
@@ -79,6 +82,14 @@ export default {
       }
     },
     methods: {
+      getAppointment(){
+        console.log("GETTING THE APPOINTMENT");
+        console.log(this.$store.getters.appointments[0]);
+        return this.$store.getters.appointments[0];
+      },
+      toggleCreate(){
+        this.$store.dispatch("alternateAppointment");
+      },
       displaySessionwarning() {
         this.showWarning = true;
       },
