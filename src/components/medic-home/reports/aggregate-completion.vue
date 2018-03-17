@@ -16,6 +16,7 @@ export default {
           completionWarning: '',
           // Create an array to store the 5 dates made from moment.js
           days: [],
+          completionData: {}
       }
   },
   methods: {
@@ -69,8 +70,7 @@ export default {
               }
             }
           }
-
-          console.log(completion_obj);
+          self.completionData = completion_obj;
           new Chart (document.getElementById("aggregate-complete"), {
             type: 'bar',
             data: {
@@ -118,6 +118,9 @@ export default {
         console.log(err);
         self.completionWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
       })
+    },
+    getTasknumber() {
+      
     }
   },
   mounted() {

@@ -3,7 +3,7 @@
     <h1 class = "title is-3 is-spaced"> Average Patient Wellness From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{wellnessWarning}} </h2>
     <canvas id = "aggregate-wellness" width = "750" height = "300"> </canvas>
-    <div class = "report">
+    <div class = "report" v-if="showReport">
       <input type = "checkbox" id = "empty-selection" v-model="ignoreEmpty" @change="showAnalysis">
       <label for = "empty-selection">Ignore Missing Data</label>
       <p>{{averageWellness}} </p>
@@ -38,8 +38,8 @@ export default {
           days: [],
           // Create an array to hold the starting and ending values of positive and negative trends on the graph
           trends: [],
+          showReport: false,
           ignoreEmpty: false,
-          dayAverages: []
       }
   },
   methods: {
@@ -95,9 +95,7 @@ export default {
           }
            // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
           self.averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse()
-          for (var i = 0; i < self.days.length; i++) {
-            self.dayAverages.push({date: self.days[i], average: self.averageData[i]})
-          }
+
 
           new Chart(document.getElementById("aggregate-wellness"), {
             type: 'bar',
@@ -177,6 +175,7 @@ export default {
             }
           });
         self.showAnalysis();
+        self.showReport = true;
         }
       })
       .catch(function(err) {
