@@ -11,8 +11,8 @@
       :isMed="isMed"
       v-if = "showAppointmentCreation" />
     <modify 
-      :appointeeType="appointeeType" 
-      :appointment="appointment"
+      :requestee="appointeeType" 
+      :appointment="this.$store.getters.currentAppointment"
       v-if = "showAppointmentMod" />
     <router-view></router-view>
   </div>

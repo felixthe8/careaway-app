@@ -44,6 +44,16 @@
     props: ['appointment'],
     data() {
       return {
+        oldAppointment: {
+          date: this.appointment.date,
+          startTime: this.appointment.startTime,
+          endTime: this.appointment.endTime,
+          initiator: this.appointment.initiator,
+          appointee: this.appointment.appointee,
+          appointeeName: this.appointment.appointeeName,
+          initiatorName: this.appointment.initiatorName,
+          status: this.appointment.status
+        },
         date: this.appointment.date,
         startTime: this.appointment.startTime,
         endTime: this.appointment.endTime,
@@ -106,17 +116,7 @@
           initiatorName: this.initiatorName,
           status: status
         };
-        const oldAppointment = {
-          date: this.appointment.date,
-          startTime: this.appointment.startTime,
-          endTime: this.appointment.endTime,
-          initiator: this.appointment.initiator,
-          appointee: this.appointment.appointee,
-          appointeeName: this.appointment.appointeeName,
-          initiatorName: this.appointment.initiatorName,
-          status: this.appointment.status
-        };
-        axios.post(this.$store.getters.modifyAppt,{'newAppointment' : newAppointment, 'originalAppointment': oldAppointment}).then(
+        axios.post(this.$store.getters.modifyAppt,{'newAppointment' : newAppointment, 'originalAppointment': this.oldAppointment}).then(
           function(response)
           {
             if(response.status === 200){
@@ -134,6 +134,7 @@
       },
       editAppointment(){
         // Close this modal and open the modification appointment modal
+        this.$store.dispatch("storeAppointment", this.oldAppointment);
         this.$store.dispatch("alternateAppointmentModification");
       },
       deleteAppointment(){

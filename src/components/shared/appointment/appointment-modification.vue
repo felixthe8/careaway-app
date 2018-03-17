@@ -92,6 +92,7 @@ export default {
   },
   methods: {
     parseTimeStart(time) {
+      time = new moment(time);
       // Time is a moment object.
       const times = (time.format("HH:mm")).split(":");
       this.startMinute = times[1];
@@ -106,6 +107,7 @@ export default {
       this.startHour = hourPortion;
     },
     parseTimeEnd(time) {
+      time = new moment(time);
       // Time is a moment object.
       const times = (time.format("HH:mm")).split(":");
       this.endMinute = times[1];
