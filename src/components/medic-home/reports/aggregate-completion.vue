@@ -3,6 +3,10 @@
     <h1 class = "title is-3 is-spaced"> Average Patient Task Completion From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{completionWarning}} </h2>
     <canvas id = "aggregate-complete" width = "750" height = "300"> </canvas>
+    <div>
+      <p> Total completed tasks for this period: {{totalComplete}} </p>
+      <p> Total assigned tasks for this period: {{totalAssigned}}</p>
+    </div>  
   </div>
 </template>
 
@@ -16,7 +20,9 @@ export default {
           completionWarning: '',
           // Create an array to store the 5 dates made from moment.js
           days: [],
-          completionData: {}
+          completionData: {},
+          totalComplete: 0,
+          totalAssigned: 0
       }
   },
   methods: {
@@ -70,7 +76,7 @@ export default {
               }
             }
           }
-          self.completionData = completion_obj;
+          self.completionData = completion_obj
           new Chart (document.getElementById("aggregate-complete"), {
             type: 'bar',
             data: {
@@ -113,14 +119,25 @@ export default {
             }
           })
         }
+        self.showAnalysis(self.completionData);
       })
       .catch(function(err) {
         console.log(err);
         self.completionWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
       })
     },
-    getTasknumber() {
-      
+    showAnalysis(data) {
+      var completed = 0, assigned = 0;
+      for(var day in data) {
+         if(data.hasOwnProperty(day)) {
+           completed += data[day].complete;
+           assigned += data[day].taskCount;
+         }
+      }
+      this.totalComplete = completed;
+      this.totalAssigned = assigned;
+      console.log(completed);
+      console.log(assigned);
     }
   },
   mounted() {
