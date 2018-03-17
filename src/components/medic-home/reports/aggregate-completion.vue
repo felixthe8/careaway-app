@@ -3,7 +3,7 @@
     <h1 class = "title is-3 is-spaced"> Average Patient Task Completion From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{completionWarning}} </h2>
     <canvas id = "aggregate-complete" width = "750" height = "300"> </canvas>
-    <div>
+    <div class = "report" v-if="showReport">
       <p> Total completed tasks for this period: {{totalComplete}} </p>
       <p> Total assigned tasks for this period: {{totalAssigned}}</p>
     </div>  
@@ -17,18 +17,18 @@ export default {
   name: '',
   data() {
       return {
-          completionWarning: '',
-          // Create an array to store the 5 dates made from moment.js
-          days: [],
-          completionData: {},
-          totalComplete: 0,
-          totalAssigned: 0
+        completionWarning: '',
+        // Create an array to store the 5 dates made from moment.js
+        days: [],
+        completionData: {},
+        totalComplete: 0,
+        totalAssigned: 0,
+        showReport: false
       }
   },
   methods: {
     getInfo() {
-      // Create a completion object to hold the treatment completion data
-      // var completion_obj = {};
+      // Generate the 5 days from the previous week
       for(var i = 0; i <=4; i++) {
         var singleDay = moment().day(-2).subtract(i,'days').format("YYYY-MM-DD");
         this.days.unshift(singleDay);
@@ -76,6 +76,7 @@ export default {
               }
             }
           }
+           // Define the graph and it's styles
           new Chart (document.getElementById("aggregate-complete"), {
             type: 'bar',
             data: {
@@ -111,32 +112,33 @@ export default {
               tooltips: {
                 callbacks: {
                   label: function(tooltipItems, data) {
+                    // Overwrite the tooltip function to reformat the presented data
                     return 'Patient Completion: '+data.datasets[0].data[tooltipItems.index] + '%'
                   }
                 }
               }
             }
           })
+        self.analyzeData(self.completionData);
+        // If the GET was successfully completed and the graph has been made, then show the report
+        self.showReport = true;
         }
-        self.showAnalysis(self.completionData);
       })
       .catch(function(err) {
         console.log(err);
         self.completionWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
       })
     },
-    showAnalysis(data) {
-      var completed = 0, assigned = 0;
+    analyzeData(data) {
+      // Loop through the object that holds the completion data for each day
       for(var day in data) {
          if(data.hasOwnProperty(day)) {
-           completed += data[day].complete;
-           assigned += data[day].taskCount;
+           // Sum the completed tasks
+           this.totalComplete += data[day].complete;
+           // Sum the assigned tasks
+           this.totalAssigned += data[day].taskCount;
          }
       }
-      this.totalComplete = completed;
-      this.totalAssigned = assigned;
-      console.log(completed);
-      console.log(assigned);
     }
   },
   mounted() {
@@ -149,5 +151,9 @@ export default {
   .subtitle {
       margin-left: 2%;
   }
+  .report {
+    margin-bottom: 2%;
+  }
+
 </style>
 

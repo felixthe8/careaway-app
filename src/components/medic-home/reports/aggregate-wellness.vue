@@ -4,7 +4,7 @@
     <h2 class="subtitle"> {{wellnessWarning}} </h2>
     <canvas id = "aggregate-wellness" width = "750" height = "300"> </canvas>
     <div class = "report" v-if="showReport">
-      <input type = "checkbox" id = "empty-selection" v-model="ignoreEmpty" @change="showAnalysis">
+      <input type = "checkbox" id = "empty-selection" v-model="ignoreEmpty" @change="analyzeData">
       <label for = "empty-selection">Ignore Missing Data</label>
       <p>{{averageWellness}} </p>
       <br>
@@ -46,7 +46,7 @@ export default {
     getInfo() {
      // Create a wellness object to hold and store the wellness data computations
      var wellness_obj = {};
-     // generate the 5 days of the previous week
+     // Generate the 5 days of the previous week
       for(var i = 0; i <=4; i++) {
         // Loop will begin from the previous Friday and count backwards 1 day at a time till the Monday of that week
         var singleDay = moment().day(-2).subtract(i,'days').format("YYYY-MM-DD");
@@ -95,8 +95,7 @@ export default {
           }
            // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
           self.averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse()
-
-
+          // Define the graph and it's styles
           new Chart(document.getElementById("aggregate-wellness"), {
             type: 'bar',
             data: {
@@ -174,7 +173,9 @@ export default {
               elements: {point: {radius: 0}}           
             }
           });
-        self.showAnalysis();
+        // Call to run the functions to analyze the data  
+        self.analyzeData();
+        // If the GET was successfully completed and the graph has been made, then show the report
         self.showReport = true;
         }
       })
@@ -237,16 +238,17 @@ export default {
       // Create 2 arrays - 1 for holding the positive trends and one for holding the negative trends
       var positiveTrends = [], negativeTrends = [];
       var startIndex = 0;
-
+      // From the original data, strip out the values that aren't 0s and make a new array
       var filteredData = data.filter(value => value != 0)
-
       // Determine the positive trends
       for(var i = 0; i < filteredData.length; i++) {
        if(filteredData[i] <= filteredData[i+1]) {
           continue;
         } else {
            positiveTrends.push({
+            // Find starting value from the original data set and determine its index
             start: data.indexOf(filteredData[startIndex]), 
+            // Find the ending value from the original data set and determine its index. Start search from where the start value was last found
             end: data.indexOf(filteredData[i], data.indexOf(filteredData[startIndex]))
           })
           // Set the new starting index
@@ -255,8 +257,9 @@ export default {
       }
        // Remove the instances where start and end values are the same. 
       positiveTrends = positiveTrends.filter(trend => trend.start != trend.end);
-
+      // Reset the value of startIndex 
       startIndex = 0;
+      // Determine the negative trends
       for(var i =0; i < filteredData.length; i++) {
         if(filteredData[i] >= filteredData[i+1]) {
           continue;
@@ -273,17 +276,17 @@ export default {
       return {positiveTrends, negativeTrends};
    
     },
-
-    showAnalysis() {
+    analyzeData() {
+      // Call to determine the average wellness
       this.getAvg(this.averageData);
+      // If the user chose to ignore the empty values
       if(this.ignoreEmpty) {
         this.trends = this.getTrendsIgnore(this.averageData);
       } else {
+        // Otherwise, the use didn't choose to ignore the empty values
         this.trends = this.getTrends(this.averageData);
       }
-      
     }
-
   },
   mounted() {
     this.getInfo();
