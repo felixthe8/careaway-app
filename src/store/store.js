@@ -207,7 +207,7 @@ export const store = new Vuex.Store({
       state.showAppointmentMod = !state.showAppointmentMod;
     },
     storeAppointment: (state, payload) => {
-      state.currentAppointment = payload;
+      state.appointments.push(payload);
     },
     alternateAppointment: (state) => {
       state.showAppointment = !state.showAppointment;
