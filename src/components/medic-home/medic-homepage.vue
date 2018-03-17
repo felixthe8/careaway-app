@@ -9,13 +9,11 @@
       :appointeeType="appointeeType"
       :appointee="appointee"
       :isMed="isMed"
-      v-if = "showAppointmentCreation" 
-      v-on:storeAppointment="storeAppointment"/>
+      v-if = "showAppointmentCreation" />
     <modify 
-      :appointeeType="appointeeType" 
-      :appointment="appointment"
-      v-if = "showAppointmentMod" 
-      v-on:storeAppointment="storeAppointment"/>
+      :requestee="appointeeType" 
+      :appointment="this.$store.getters.currentAppointment"
+      v-if = "showAppointmentMod" />
     <router-view></router-view>
   </div>
 </template>
