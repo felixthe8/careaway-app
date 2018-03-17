@@ -38,7 +38,8 @@ export default {
           days: [],
           // Create an array to hold the starting and ending values of positive and negative trends on the graph
           trends: [],
-          ignoreEmpty: false
+          ignoreEmpty: false,
+          dayAverages: []
       }
   },
   methods: {
@@ -94,7 +95,10 @@ export default {
           }
            // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
           self.averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse()
-          
+          for (var i = 0; i < self.days.length; i++) {
+            self.dayAverages.push({date: self.days[i], average: self.averageData[i]})
+          }
+
           new Chart(document.getElementById("aggregate-wellness"), {
             type: 'bar',
             data: {
@@ -194,14 +198,11 @@ export default {
       var positiveTrends = [], negativeTrends = [];
       var startIndex = 0;
       // Determine the positive trends first. Loop through the data
-      for(var i = 0; i < data.length; i++) {
+      for(var i = 0; i < data.length - 1; i++) {
         // If the data at one index is less than the one at the next, keep going and done run the body
         if(data[i] <= data[i+1]) {
           continue;
         } else {
-          if( (data[i] - data[startIndex] == data[i]) && this.ignoreEmpty) {
-            continue;
-           } 
           // When the if condition fails, push the starting index and ending index of the positive trend into an array  
           positiveTrends.push({
             start: startIndex, 
@@ -217,29 +218,71 @@ export default {
       // Determine the negative trends next. Reset the startIndex variable to 0. 
       startIndex = 0;
       for(var i = 0; i < data.length; i++) {
-        // If the data at one index is greater than the one at the next, this is the start of a negative trend. 
-        if(data[i] >= data[i+1]) {
-          continue;
-        } else {
-          // If the next value has dropped to 0 and we are choosing to ignore empty input, then return to the loop
-          if( ( (data[startIndex] - data[i]) === data[startIndex]) && this.ignoreEmpty) {
-            continue;
-          }
-          // When the condition fails, pushing the starting index and ending index of the negative trend to the array
-          negativeTrends.push({
-            start: startIndex, 
-            end: i
-          })
-          startIndex = i + 1
-        } 
+            // If the data at one index is greater than the one at the next, this is the start of a negative trend. 
+            if(data[i] >= data[i+1]) {
+              continue;
+            } else {
+              // When the condition fails, pushing the starting index and ending index of the negative trend to the array
+              negativeTrends.push({
+                start: startIndex, 
+                end: i
+              })
+              startIndex = i + 1
+            } 
       }
       // Remove the instances where start and end values are the same. 
       negativeTrends = negativeTrends.filter(trend => trend.start != trend.end);
       return {positiveTrends, negativeTrends};
     },
+    getTrendsIgnore(data) {
+      // Create 2 arrays - 1 for holding the positive trends and one for holding the negative trends
+      var positiveTrends = [], negativeTrends = [];
+      var startIndex = 0;
+
+      var filteredData = data.filter(value => value != 0)
+
+      // Determine the positive trends
+      for(var i = 0; i < filteredData.length; i++) {
+       if(filteredData[i] <= filteredData[i+1]) {
+          continue;
+        } else {
+           positiveTrends.push({
+            start: data.indexOf(filteredData[startIndex]), 
+            end: data.indexOf(filteredData[i], data.indexOf(filteredData[startIndex]))
+          })
+          // Set the new starting index
+          startIndex = i + 1
+        }
+      }
+       // Remove the instances where start and end values are the same. 
+      positiveTrends = positiveTrends.filter(trend => trend.start != trend.end);
+
+      startIndex = 0;
+      for(var i =0; i < filteredData.length; i++) {
+        if(filteredData[i] >= filteredData[i+1]) {
+          continue;
+        } else {
+          negativeTrends.push({
+            start: data.indexOf(filteredData[startIndex]),
+            end: data.indexOf(filteredData[i] , data.indexOf(filteredData[startIndex]))
+          })
+          // Set the new starting index
+          startIndex = i + 1
+        }
+      }
+      negativeTrends = negativeTrends.filter(trend => trend.start != trend.end);
+      return {positiveTrends, negativeTrends};
+   
+    },
+
     showAnalysis() {
       this.getAvg(this.averageData);
-      this.trends = this.getTrends(this.averageData);
+      if(this.ignoreEmpty) {
+        this.trends = this.getTrendsIgnore(this.averageData);
+      } else {
+        this.trends = this.getTrends(this.averageData);
+      }
+      
     }
 
   },
