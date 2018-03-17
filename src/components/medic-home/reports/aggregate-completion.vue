@@ -28,11 +28,11 @@ export default {
   methods: {
     getInfo() {
       // Create a completion object to hold the treatment completion data
-      var completion_obj = {};
+      // var completion_obj = {};
       for(var i = 0; i <=4; i++) {
         var singleDay = moment().day(-2).subtract(i,'days').format("YYYY-MM-DD");
         this.days.unshift(singleDay);
-        completion_obj[singleDay] = {
+        this.completionData[singleDay] = {
           // Value will hold the sum of the checklist widget data
           complete: 0,
           // Counter will represent the number of patients who had checklist widget data on a specific day
@@ -58,25 +58,24 @@ export default {
             for(var task of checklist.list) {
               // If the task has been 'checked' (ie. completed), then increment the completed counter for that day
               if(task.check) {
-                completion_obj[checklist.due_date].complete +=1
+                self.completionData[checklist.due_date].complete +=1
               }
               // When a new task is encountered, add that new task and increment the task counter
-              completion_obj[checklist.due_date].taskCount +=1
+              self.completionData[checklist.due_date].taskCount +=1
             }
           }
           // Compute the completion percentage for each day
-          for(var key in completion_obj) {
-            if(completion_obj.hasOwnProperty(key)) {
+          for(var key in self.completionData) {
+            if(self.completionData.hasOwnProperty(key)) {
               // If there was no patient checklist data for that day, set the completion percentage to 0 for that day
-              if(completion_obj[key].taskCount == 0) {
-                completion_obj[key].average = 0;
+              if(self.completionData[key].taskCount == 0) {
+                self.completionData[key].average = 0;
               } else {
                 // Task completion percentage is the number of tasks completed / total tasks for that day
-                completion_obj[key].average = Math.round( (completion_obj[key].complete / completion_obj[key].taskCount) * 100 )
+                self.completionData[key].average = Math.round( (self.completionData[key].complete / self.completionData[key].taskCount) * 100 )
               }
             }
           }
-          self.completionData = completion_obj
           new Chart (document.getElementById("aggregate-complete"), {
             type: 'bar',
             data: {
@@ -85,7 +84,7 @@ export default {
                 label: "Completion Percentage",
                 backgroundColor: Array(self.days.length).fill('#3892f1'),
                 // Turn the completion percentage data into an array. Must reverse the array because the days were instantiated backwards
-                data: Object.keys(completion_obj).map(key => {return completion_obj[key].average}).reverse()
+                data: Object.keys(self.completionData).map(key => {return self.completionData[key].average}).reverse()
               }]
             },
             options: {
