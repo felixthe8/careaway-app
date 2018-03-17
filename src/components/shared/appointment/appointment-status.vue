@@ -50,8 +50,8 @@
           endTime: this.appointment.endTime,
           initiator: this.appointment.initiator,
           appointee: this.appointment.appointee,
-          appointeeName: this.appointment.appointeeName,
-          initiatorName: this.appointment.initiatorName,
+          // appointeeName: this.appointment.appointeeName,
+          // initiatorName: this.appointment.initiatorName,
           status: this.appointment.status
         },
         date: this.appointment.date,
@@ -59,7 +59,7 @@
         endTime: this.appointment.endTime,
         initiator: this.appointment.initiator,
         appointee: this.appointment.appointee,
-        initiatorName: this.appointment.initiatorNamel,
+        initiatorName: this.appointment.initiatorName,
         appointeeName: this.appointment.appointeeName,
         status: this.appointment.status,
         showWarning: false,
@@ -139,19 +139,14 @@
       },
       deleteAppointment(){
         var self = this;
-        var appointmentObject = {
-          date: this.date,
-          initiator: this.initiator,
-          appointee: this.appointee,
-          status: this.status
-        }
-        axios.post(this.$store.getters.deleteAppt,{'appointment' : appointmentObject}).then(
+        axios.post(this.$store.getters.deleteAppt,{'appointment' : this.oldAppointment}).then(
           function(response)
           {
             // TODO: Update the global appointments so this appointment does not show on the calendar anymore
             if(response.data.response === 'success'){
               console.log("Success");
               self.$store.commit("alternateAppointment");
+              self.$store.dispatch('deleteAppointment', self.oldAppointment);
               self.showWarning = false; 
             } else {
               console.log(response.data.response);
