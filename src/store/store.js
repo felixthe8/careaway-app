@@ -212,12 +212,27 @@ export const store = new Vuex.Store({
     alternateAppointment: (state) => {
       state.showAppointment = !state.showAppointment;
     },
-    addAppointment: (state, payLoad) => {
-      state.appointments.push(payLoad);
+    addAppointment: (state, payload) => {
+      state.appointments.push(payload);
     },
-    editAppointment: (state, payLoad) => {
+    editAppointment: (state, payload) => {
       var index = state.appointments.indexOf(payload.oldAppt);
-      state.appointments[index] = payLoad.newAppt;
+      state.appointments[index] = payload.newAppt;
+    },
+    deleteAppointment: (state, payload) => {
+      var temp = [];
+      console.log(temp);
+      console.log("THIS IS THE PAYLOAD");
+      console.log(payload);
+      console.log(state.appointments[0] === payload);
+      for(var i=0; i<state.appointments.length; i++) {
+        if(state.appointments[i] !== payload){
+          temp.push(state.appointments[i]);
+        }
+      };
+      console.log("THIS IS THE TEMP");
+      console.log(temp);
+      state.appointments = temp;
     }
   },
 
@@ -279,6 +294,9 @@ export const store = new Vuex.Store({
     },
     editAppointment: (context, payload) => {
       context.commit('editAppointment', payload);
+    },
+    deleteAppointment: (context, payload) => {
+      context.commit('deleteAppointment', payload);
     }
   }
 });
