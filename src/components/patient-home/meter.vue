@@ -1,39 +1,25 @@
 <template>
   <div class="modal" v-bind:class="{ 'is-active': computedActive == 'meter' }">
     <div class="modal-background"></div>
-    <div class="modal-content" style="background-color:#69f;">
+    <div class="modal-content box white-background">
         <!-- Any other Bulma elements you want -->
-        Zoop
-        Baaaaaa
-        {{ mutatingWidget.label || 'None' }}
         <div class="field">
+          <label class="label question-text">{{ mutatingWidget.question }}</label>
           <div class="control">
-            <label class="checkbox">
-              <input type="checkbox">
-              Zoop
-            </label>
+            <input class="input" type="text" v-model="mutatingWidget.patient_input" placeholder="Enter number">
           </div>
         </div>
-        <div class="field">
-          <div class="control">
-            <label class="checkbox">
-              <input type="checkbox">
-              Laa de dah
-            </label>
-          </div>
+        <br/>
+        <div class="centered">
+          <a class="button is-primary" @click="save">Save</a>
         </div>
-
-        <button class="button" @click="save">Save</button>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
     </div>
     <button class="modal-close is-large" aria-label="close" @click="close"></button>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'meterWidget',
   data() {
@@ -79,24 +65,18 @@ export default {
 <style lang="scss">
 @import '../../assets/sass/settings.scss';
 
-#app {
-    width: 100vw;
-    height: 100vh;
-  }
+.white-background {
+  background-color: $white;
+}
 
-.nav-bar {
-  width: 100%;
-  padding: 1rem;
+.question-text {
+  text-align: center;
+  font-size: 26px;
+}
 
-    &__logo {
-      width: 25px;
-      height: 25px;
-    }
-
-    &__button {
-      float: right;
-    }
-  }
+.centered {
+  text-align: center;
+}
 
 </style>
 

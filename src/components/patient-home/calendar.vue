@@ -87,21 +87,29 @@ export default {
       widgets: [
         {
           label: "checklist",
-          list: [],
+          list: [{question: 'Doki doki',check: false}],
           due_date: new Date(2018,2,19),
           created_at: new Date(Date.now()),
           updated_at: null
         },{
           label: "meter",
-          question: '',
+          question: 'ASASAAAAA',
           scale: [1,10],
           due_date: new Date(2018,2,16),
           patient_input: null,
           created_at: new Date(Date.now()),
           updated_at: null,
+        },{
+          label: "meter",
+          question: 'Shoooopiiiii',
+          scale: [1,10],
+          due_date: new Date(2018,2,15),
+          patient_input: null,
+          created_at: new Date(Date.now()),
+          updated_at: null,
         }
       ],
-      selectedWidget: {label:'checkwist'},
+      selectedWidget: {},
       active: ''
     }
   },
