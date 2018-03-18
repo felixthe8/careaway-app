@@ -151,9 +151,5 @@ export default {
   .subtitle {
       margin-left: 2%;
   }
-  .report {
-    margin-bottom: 2%;
-  }
-
 </style>
 
