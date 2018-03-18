@@ -37,22 +37,30 @@
           }"></div>
           
           <div v-if="getWidget(day)">
-            Widgey!!
-          </div>
+            WIDGETY!!!!
+            </div>
+          
           <div class="calendar__day--label" v-if="index < 5">{{day.name}}</div>
         </div>
 
       </div>
-
     </div>
+    <meter-widget :widget="selectedWidget" :active="meterActive" />
+    <checklist-widget :widget="selectedWidget" :active="checklistActive" />
   </div>
 
 </template>
 
 <script>
-
+import meterWidget from './meter';
+import checklistWidget from './checklist';
+    
 export default {
   name: 'app',
+  components: {
+    meterWidget,
+    checklistWidget
+  },
   created: function() {
     // Fetch treatment plan
     /*axios.get(this.$store.getters.returnCodeURL+this.$store.getters.authenticatedUsername)
@@ -64,16 +72,41 @@ export default {
       .catch(function(err) {
         console.log(err);
       })*/
+
+    /*while (x \
+              \
+               \
+                \
+                 \ getMonth()) {
+      
+    }*/
+
+    var widgets = [
+      {
+        label: "checklist",
+        list: [],
+        due_date: new Date(Date.now()),
+        created_at: new Date(Date.now()),
+        updated_at: null
+      },{
+        label: "meter",
+        question: '',
+        scale: [1,10],
+        due_date: new Date(Date.now()),
+        patient_input: null,
+        created_at: new Date(Date.now()),
+        updated_at: null,
+      }
+    ]
   },
-  /*data() {
+  data() {
     return {
-      months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      week: ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"],
-      calendar: [],
-      state: 0
+      widgets: [],
+      selectedWidget: {label:'checkwist'},
+      meterActive: false,
+      checklistActive: false
     }
-  },*/
-  components: {},
+  },
   methods: {
     getCurrent: function() {
       // get today's date object
@@ -176,14 +209,32 @@ export default {
       console.log("previous");
     },
     getWidget: function(day) {
-      console.log(day);
+      //console.log(day);
       // object: Date (obj)
       // date: int (date of month)
       // code: int (day of week)
       // month: int (month-1)
       // name: str (day of week)
-      if (day.date % 5 == 0) return true;
-      return false;
+      var widgets = this.widgets.filter(function(item) {
+        var dueDate = item.due_date;
+        var compareDate = day.object;
+
+        const sameYear = dueDate.getFullYear() === compareDate.getFullYear();
+        const sameMonth = dueDate.getMonth() === compareDate.getMonth();
+        const sameDay = dueDate.getDate() === compareDate.getDate();
+
+        if (sameYear && sameMonth && sameDay) return true;
+        return false;
+      })
+      /*if (widgets.length > 0) {
+        this.value += 1;
+        return widgets;
+      }*/
+      if (day.date % 5 == 0) {
+        this.value += 1;
+        return true;
+      }
+      return null;
     }
   }
 }
