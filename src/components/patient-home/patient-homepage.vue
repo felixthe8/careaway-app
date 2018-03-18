@@ -96,8 +96,6 @@ export default {
     },
     methods: {
       getAppointment(){
-        console.log("GETTING THE APPOINTMENT");
-        console.log(this.$store.getters.appointments[0]);
         return this.$store.getters.appointments[0];
       },
       toggleCreate(){
