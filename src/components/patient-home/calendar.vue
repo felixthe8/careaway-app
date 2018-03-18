@@ -36,17 +36,17 @@
               'rounded-right': (index === 24),
           }"></div>
           
-          <div v-if="getWidget(day)">
+          <div v-if="getWidget(day).length > 0" @click="clickWidget(getWidget(day))">
             WIDGETY!!!!
-            </div>
+          </div>
           
           <div class="calendar__day--label" v-if="index < 5">{{day.name}}</div>
         </div>
 
       </div>
     </div>
-    <meter-widget :widget="selectedWidget" :active="meterActive" />
-    <checklist-widget :widget="selectedWidget" :active="checklistActive" />
+    <meter-widget :widget="selectedWidget" :active="active" v-on:close="close" />
+    <checklist-widget :widget="selectedWidget" :active="active" v-on:close="close" />
   </div>
 
 </template>
@@ -81,30 +81,28 @@ export default {
       
     }*/
 
-    var widgets = [
-      {
-        label: "checklist",
-        list: [],
-        due_date: new Date(Date.now()),
-        created_at: new Date(Date.now()),
-        updated_at: null
-      },{
-        label: "meter",
-        question: '',
-        scale: [1,10],
-        due_date: new Date(Date.now()),
-        patient_input: null,
-        created_at: new Date(Date.now()),
-        updated_at: null,
-      }
-    ]
   },
   data() {
     return {
-      widgets: [],
+      widgets: [
+        {
+          label: "checklist",
+          list: [],
+          due_date: new Date(2018,2,19),
+          created_at: new Date(Date.now()),
+          updated_at: null
+        },{
+          label: "meter",
+          question: '',
+          scale: [1,10],
+          due_date: new Date(2018,2,16),
+          patient_input: null,
+          created_at: new Date(Date.now()),
+          updated_at: null,
+        }
+      ],
       selectedWidget: {label:'checkwist'},
-      meterActive: false,
-      checklistActive: false
+      active: ''
     }
   },
   methods: {
@@ -219,22 +217,22 @@ export default {
         var dueDate = item.due_date;
         var compareDate = day.object;
 
-        const sameYear = dueDate.getFullYear() === compareDate.getFullYear();
-        const sameMonth = dueDate.getMonth() === compareDate.getMonth();
-        const sameDay = dueDate.getDate() === compareDate.getDate();
+        const sameYear = dueDate.getFullYear() === day.object.getFullYear();
+        const sameMonth = dueDate.getMonth() === day.month;
+        const sameDay = dueDate.getDate() === day.date;
 
         if (sameYear && sameMonth && sameDay) return true;
         return false;
       })
-      /*if (widgets.length > 0) {
-        this.value += 1;
-        return widgets;
-      }*/
-      if (day.date % 5 == 0) {
-        this.value += 1;
-        return true;
-      }
-      return null;
+      return widgets;
+    },
+    clickWidget: function(widget, event) {
+      widget = widget[0];
+      this.selectedWidget = widget;
+      this.active = widget.label;
+    },
+    close: function() {
+      this.active = '';
     }
   }
 }

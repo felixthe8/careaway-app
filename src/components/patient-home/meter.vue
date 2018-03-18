@@ -1,43 +1,53 @@
 <template>
-  <div class="modal" v-bind:class="{ 'is-active': computedActive }">
+  <div class="modal" v-bind:class="{ 'is-active': computedActive == 'meter' }">
     <div class="modal-background"></div>
-    <div class="modal-content">
+    <div class="modal-content" style="background-color:#69f;">
         <!-- Any other Bulma elements you want -->
+        Zoop
+        Baaaaaa
+        {{ mutatingWidget.label || 'None' }}
     </div>
-    <button class="modal-close is-large" aria-label="close"></button>
+    <button class="modal-close is-large" aria-label="close" @click="close"></button>
   </div>
 </template>
 
 <script>
 export default {
-    name: 'meterWidget',
-    data() {
-      return {
-        showWarning: false
-      }
-    },
-    props: ['widget','active'],
-    computed: {
-      computedWidget: function () {
-        if ( this.widget != null ) {
-            return this.widget;
-        }
-
-        return {};
-      },
-      computedActive: function() {
-        if (this.active != null) {
-          return this.active;
-        }
-
-        return false;
-      }
-    },
-    mounted() {
-      console.log("blah");
-      console.log(this.computedWidget.label);
-      console.log(this.computedActive);
+  name: 'meterWidget',
+  data() {
+    return {
+      showWarning: false,
+      mutatingWidget: {}
     }
+  },
+  props: ['widget','active'],
+  watch: {
+    widget: function(newVal, oldVal) {
+      this.mutatingWidget = newVal;
+    }
+  },
+  computed: {
+    computedActive: function() {
+      if (this.active != null) {
+        return this.active;
+      }
+
+      return '';
+    }
+  },
+  mounted() {
+    //console.log("blah");
+    //console.log(this.computedWidget.label);
+    //console.log(this.computedActive);
+  },
+  methods: {
+    close: function(event) {
+      this.$emit('close');
+    },
+    save: function(event) {
+      this.$emit('save', this.mutatingWidget);
+    }
+  }
 }
 </script>
 
