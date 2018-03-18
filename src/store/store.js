@@ -41,13 +41,15 @@ export const store = new Vuex.Store({
     patientBreakdownURL: 'http://localhost:8080/getDiagnoses?medicalcode=',
     getTreatmentmeterURL: 'http://localhost:8080/getTreatmentmeter',
     getTreatmentchecklistURL: 'http://localhost:8080/getTreatmentchecklist',
-    appointmentURL: 'http://localhost:8080/getAppt?username=',
-    patientApptURL: 'http://localhost:8080/patient-appointment-info?username=',
+
     patientInfoURL: 'http://localhost:8080/get-patients?code=',
+    userInfoURL: 'http://localhost:8080/get-user?username=',
 
     // Appointment URLs
-    createAppt: 'http://localhost:8080/createAppt',
-    modifyAppt: 'http://localhost:8080/updateAppt',
+    appointmentURL: 'http://localhost:8080/getAppt?username=',
+    patientApptURL: 'http://localhost:8080/patient-appointment-info?username=',
+    createAppointmentURL: 'http://localhost:8080/createAppointment',
+    modifyAppointmentURL: 'http://localhost:8080/updateAppointment',
     deleteAppt: 'http://localhost:8080/deleteAppt',
 
     validUsername: '',
@@ -115,6 +117,9 @@ export const store = new Vuex.Store({
     getPatientInfoURL: (state) => {
       return state.patientInfoURL;
     },
+    getUserURL: (state) => {
+      return state.userInfoURL;
+    },
     showLogin: (state) => {
       return state.showLogin;
     },
@@ -139,11 +144,11 @@ export const store = new Vuex.Store({
     showAppointmentMod: (state) => {
       return state.showAppointmentMod;
     },
-    createAppt: (state) => {
-      return state.createAppt;
+    createAppointmentURL: (state) => {
+      return state.createAppointmentURL;
     },
-    modifyAppt: (state) => {
-      return state.modifyAppt;
+    modifyAppointmentURL: (state) => {
+      return state.modifyAppointmentURL;
     },
     currentAppointment: (state) => {
       return state.currentAppointment;
@@ -206,11 +211,11 @@ export const store = new Vuex.Store({
     alternateAppointmentMod: (state) => {
       state.showAppointmentMod = !state.showAppointmentMod;
     },
-    storeAppointment: (state, payload) => {
-      state.currentAppointment = payload;
-    },
     alternateAppointment: (state) => {
       state.showAppointment = !state.showAppointment;
+    },
+    storeAppointment: (state, payload) => {
+      state.currentAppointment = payload;
     },
     addAppointment: (state, payload) => {
       state.appointments.push(payload);
