@@ -45,8 +45,8 @@
 
       </div>
     </div>
-    <meter-widget :widget="selectedWidget" :active="active" v-on:close="close" />
-    <checklist-widget :widget="selectedWidget" :active="active" v-on:close="close" />
+    <meter-widget :widget="selectedWidget" :active="active" v-on:close="close" v-on:save="save" />
+    <checklist-widget :widget="selectedWidget" :active="active" v-on:close="close" v-on:save="save" />
   </div>
 
 </template>
@@ -233,6 +233,11 @@ export default {
     },
     close: function() {
       this.active = '';
+    },
+    save: function(payload) {
+      console.log('pay');
+      console.log(payload);
+      // TODO axios call
     }
   }
 }
