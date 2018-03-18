@@ -18,6 +18,15 @@
     <tooltip :requirements="nameRequirements"></tooltip>
     <input placeholder="Last Name" class="input is-small" type="text" @keyup="lastNameInput=nameValid(lastName)" v-bind:class="[lastNameInput]" v-model="lastName">
     <tooltip :requirements="nameRequirements"></tooltip>
+    <security-questions :class='getValue' :questions='1'></security-questions>
+    <input placeholder = 'Answer'  class='input is-small' type='text'  @keyup='answer1Input=isEmpty(securityA1)' v-bind:class='[answer1Input]' v-model='securityA1'>
+    <tooltip :requirements='answerRequirements'></tooltip>
+    <security-questions :class='getValue' :questions='2'></security-questions>
+    <input placeholder = 'Answer'  class='input is-small' type='text'  @keyup='answer2Input=isEmpty(securityA2)' v-bind:class='[answer2Input]' v-model='securityA2'>
+    <tooltip :requirements='answerRequirements'></tooltip>
+    <security-questions :class='getValue' :questions='3'></security-questions>
+    <input placeholder = 'Answer' class='input is-small' type='text'  @keyup='answer3Input=isEmpty(securityA3)' v-bind:class='[answer3Input]' v-model='securityA3'>
+    <tooltip :requirements='answerRequirements'></tooltip>
     <div v-if="showPatientForm">
       <input placeholder="Medical Professional Code" class="input is-small" type="text"  @keyup="medicalProfessionalCodeInput=isEmpty()" v-bind:class="[medicalProfessionalCodeInput]" v-model="medicalProfessionalCode">
       <tooltip :requirements="medicalProfessionalRequirements"></tooltip>  
@@ -31,16 +40,24 @@
 <script>
   import axios from 'axios';
   import tooltip from './tooltip.vue'
+  import securityQuestions from './security-question.vue'
   export default {
     name: 'ssoRegistration',
     components: {
       "tooltip": tooltip, //This is the on hover tool tip next to input fields
+      "security-questions": securityQuestions
     },
     data(){
       return{
         //user inputs
         firstName:'',
         lastName: '',
+        securityA1: '',
+        securityA2: '',
+        securityA3: '',
+        securityQ1: '',
+        securityQ2:'',
+        securityQ3: '',
         medicalProfessionalCode: '',
         termsAgreement: false,
         above18: false,
@@ -49,7 +66,11 @@
         //check input validation
         firstNameInput: 'is-primary',
         lastNameInput: 'is-primary',
+        answer1Input: 'is-primary',
+        answer2Input: 'is-primary',
+        answer3Input: 'is-primary',
         medicalProfessionalCodeInput: 'is-primary',
+        answerRequirements: '1 - 100 characters [A-Z or a - z and any special characters] ',
         nameRequirements:'1 - 30 characters [A-Z or a - z and any special characters] ',
         medicalProfessionalRequirements: 'This is the code you receive from your medical consultant',
         showWarning: false,
@@ -65,7 +86,14 @@
         } else{
           return false;
         }
+      },
+      // This gets the values of the security question that was stored in the vueX store
+      getValue(){
+        this.securityQ1= this.$store.state.questionSelected1;
+        this.securityQ2= this.$store.state.questionSelected2;
+        this.securityQ3= this.$store.state.questionSelected3;
       }
+
     },
     methods:{
       //Checks if the name inputs are valid based on requirements
@@ -100,6 +128,14 @@
         }
         return true;
       },
+      // Checks if all security questions were selected 
+      checkSecurityQuestions(){
+        if(this.securityQ1 == 0 || this.securityQ2 == 0 ||this.securityQ3 == 0){
+          return false;
+        } else {
+          return true;
+        }
+      },
       routeMedicHome() {
         this.$router.push('MedicHome');
       },
@@ -120,7 +156,11 @@
         this.firstNameInput== 'is-success'&&
         this.lastNameInput== 'is-success'&&
         this.medicalProfessionalCodeInput == 'is-success' &&
-        this.checkTermsandAgreement()&&
+        this.answer1Input == 'is-success' &&
+        this.answer2Input == 'is-success' &&
+        this.answer3Input == 'is-success' &&
+        this.checkSecurityQuestions() &&
+        this.checkTermsandAgreement() &&
         this.isPatient=="true")
         {
           //clear any warnings
@@ -134,14 +174,21 @@
             firstName: this.firstName,
             lastName: this.lastName,
             username: this.$store.state.username,
+            securityQ1: this.securityQ1,
+            securityQ2: this.securityQ2,
+            securityQ3: this.securityQ3,
+            securityA1: this.securityA1,
+            securityA2: this.securityA2,
+            securityA3: this.securityA3,
             medicalCode: this.medicalProfessionalCode
           }
           //Sends data to the proxy server on this route
           axios.post(this.$store.getters.ssoRegisterPatientURL, newPatient).then((
             function(response){
               if(response.data.success){
+                self.$store.dispatch('authenticatedUsername', newPatient.username);
                 //This allows the user to be signed in as a patient
-                self.$store.dispatch('signInPatient');
+                self.$store.dispatch('signIn', 'patient');
                 //This navigates the user to the patient account page
                 self.routePatientHome();
                 self.closeRegistration();
@@ -162,6 +209,10 @@
         else if(
         this.firstNameInput== 'is-success'&&
         this.lastNameInput== 'is-success'&&
+        this.answer1Input == 'is-success' &&
+        this.answer2Input == 'is-success' &&
+        this.answer3Input == 'is-success' &&
+        this.checkSecurityQuestions() &&
         this.isPatient=="false"
         ){
           //resets the warning
@@ -174,14 +225,21 @@
           const newMedicalProfessional = {
             firstName: this.firstName,
             lastName: this.lastName,
-            username: this.$store.state.username
+            username: this.$store.state.username,
+            securityQ1: this.securityQ1,
+            securityQ2: this.securityQ2,
+            securityQ3: this.securityQ3,
+            securityA1: this.securityA1,
+            securityA2: this.securityA2,
+            securityA3: this.securityA3
           }
           console.log(newMedicalProfessional)
           //Sends data to the proxy server on this route
           axios.post(this.$store.getters.ssoRegisterMedicalURL,newMedicalProfessional).then((
             function(response){
               //This allows the user to sign in as a medical professional
-              self.$store.dispatch('signInMP');
+              self.$store.dispatch('authenticatedUsername', newMedicalProfessional.username);
+              self.$store.dispatch('signIn', 'medical-professional');
               //This reroutes the user to the medical professional account page
               self.routeMedicHome();
               self.closeRegistration();
