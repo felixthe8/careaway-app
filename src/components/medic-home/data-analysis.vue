@@ -23,6 +23,6 @@ export default {
 
 <style lang="scss" scoped>
   .aggregate-graphs {
-      padding: 2% 3% 0 3%;
+      padding: 2% 3% 2% 3%;
   }
 </style>
