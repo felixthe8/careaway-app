@@ -221,22 +221,19 @@ export const store = new Vuex.Store({
       state.appointments.push(payload);
     },
     editAppointment: (state, payload) => {
-      var index = state.appointments.indexOf(payload.oldAppt);
+      function findOldAppt(element){
+        return element.date === payload.oldAppt.date && element.startTime === payload.oldAppt.startTime;
+      }
+      var index = state.appointments.findIndex(findOldAppt);
       state.appointments[index] = payload.newAppt;
     },
     deleteAppointment: (state, payload) => {
       var temp = [];
-      console.log(temp);
-      console.log("THIS IS THE PAYLOAD");
-      console.log(payload);
-      console.log(state.appointments[0] === payload);
       for(var i=0; i<state.appointments.length; i++) {
-        if(state.appointments[i] !== payload){
+        if(state.appointments[i].date !== payload.date && state.appointments[i].startTime !== payload.startTime){
           temp.push(state.appointments[i]);
         }
-      };
-      console.log("THIS IS THE TEMP");
-      console.log(temp);
+      }
       state.appointments = temp;
     }
   },
