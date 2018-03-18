@@ -198,8 +198,8 @@ export default {
       var positiveTrends = [], negativeTrends = [];
       var startIndex = 0;
       // Determine the positive trends first. Loop through the data
-      for(var i = 0; i < data.length - 1; i++) {
-        // If the data at one index is less than the one at the next, keep going and done run the body
+      for(var i = 0; i < data.length; i++) {
+        // If the data at one index is less than the one at the next, this is the start of a positive trend
         if(data[i] <= data[i+1]) {
           continue;
         } else {
