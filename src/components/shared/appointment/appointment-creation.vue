@@ -9,13 +9,11 @@
         </p>
         <div class="form-input">
           <p>{{ appointeeType }}:</p>
-          <select v-if="isMed" v-model="selectedAppointee" class="appointee">
-            <option v-for="patient in appointee" :value="patient.username">
-              {{patient.firstName}}&nbsp;{{patient.lastName}}
-            </option>
+          <select v-if="isMed" v-model="selectedAppointee" ref="appoint" class="appointee">
+            <option id="appointee" v-for="patient in appointee" :value="patient.username">{{patient.firstName}} {{patient.lastName}}</option>
           </select>
           <p v-if="!isMed" class="appointee" :value="selectedAppointee">
-            {{medAppointee.firstName}}&nbsp;{{medAppointee.lastName}}
+            {{medAppointee.firstName}} {{medAppointee.lastName}}
           </p>
         </div>
         <p class="form-input">
@@ -87,34 +85,33 @@ export default {
   methods: {
     create() {
       this.removeAllErrors();
-      if(this.check()) {
-        this.removeAllErrors();
-        // Construct Appointment Object
-        const appt = {
-          date: this.date,
-          startTime: this.startTime,
-          endTime: this.endTime,
-          initiator: this.$store.getters.authenticatedUsername,
-          appointee: this.selectedAppointee,
-          status: "Pending"
-        };
-        axios.post(this.$store.getters.createAppt, {appointment: appt})
-        .then(response => {
-          if(response.data.success) {
-            console.log("Create appt success");
-            this.$emit('storeAppointment', appt);
-            this.errors.msg = false;
-            this.closeThis();
-          } else {
-            console.log("Create appt fail");
-            this.errorMsg = response.data.reason;
-            this.errors.msg = true;
-          }
-        });
+      if(this.check()) { 
+        // Getting the initator's first and last name.
+        axios.get(this.$store.getters.getUserURL + this.$store.getters.authenticatedUsername)
+          .then(result => {
+            const name = `${result.data.user.firstName} ${result.data.user.lastName}`;
+
+            // Construct appointment object and send to server.
+            const appointment = this.constructAppointment(name);
+            axios.post(this.$store.getters.createAppointmentURL, {appointment: appointment})
+              .then(response => {
+                if(response.data.success) {
+                  console.log("Create appointment success.");
+
+                  this.$emit('addAppointment', appointment);
+                  this.errors.msg = false;
+                  this.closeThis();
+                } else {
+                  console.log("Create appointment fail.");
+
+                  this.errorMsg = response.data.reason;
+                  this.errors.msg = true;
+                }
+              });
+          });
       } else {
         console.log("Error, invalid inputs.");
       }
-      // Create axios post
     },
     check() {
       if(!this.appointee | !this.date | !this.startHour | !this.endHour) {
@@ -152,7 +149,6 @@ export default {
 
       if(difference >= 0) {
         // Valid start date, checks the duration.
-        this.removeAllErrors();
         return this.checkDuration(start);
       }
       this.errors.date = true;
@@ -181,8 +177,25 @@ export default {
         this.showErrorMessage("Error, invalid times.");
         return false;
       }
+
+      // Valid appointment duration.
+      this.removeAllErrors();
       return true;
-    }, 
+    },
+    constructAppointment(initiatorName) {
+      // Construct Appointment object.
+      const appointment = {
+        date: this.date,
+        startTime: this.startTime,
+        endTime: this.endTime,
+        initiator: this.$store.getters.authenticatedUsername,
+        initiatorName: initiatorName,
+        appointee: this.selectedAppointee,
+        appointeeName: document.getElementById("appointee").innerHTML,
+        status: "Pending"
+      };
+      return appointment;
+    },
     closeThis() {
       // Closes create appointment 
       this.$store.dispatch("alternateAppointmentCreation");

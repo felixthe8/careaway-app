@@ -55,7 +55,7 @@ import timeChangers from './time';
 export default {
   name: 'appointmentCreation',
   components: { timeChangers }, // Pass in list of patients from global store
-  props: ["requestee", "storealternate", "appointment"],
+  props: ["requestee", "appointment"],
   data() {
     return {
       date: this.appointment.date,
@@ -123,26 +123,22 @@ export default {
     create() {
       this.removeAllErrors();
       if(this.check()) {
-        this.removeAllErrors();
-        // Construct Appointment Object
-        const appt = {
-          date: this.date,
-          startTime: this.startTime,
-          endTime: this.endTime,
-          initiator: this.$store.getters.authenticatedUsername,
-          appointee: this.appointee,
-          status: "Pending"
-        };
-        console.log(`original: ${this.appointment.startTime}\nnew ${appt.startTime}`);
-        axios.post(this.$store.getters.modifyAppt, {originalAppointment: this.appointment, newAppointment: appt})
+        // The only fields that could change are start and end time.
+        const modified_appointment = this.appointment;
+        modified_appointment.startTime = this.startTime;
+        modified_appointment.endTime = this.endTime;
+
+        console.log(`original: ${this.appointment.startTime}\nnew ${modified_appointment.startTime}`);
+        axios.post(this.$store.getters.modifyAppointmentURL, {originalAppointment: this.appointment, newAppointment: modified_appointment})
         .then(response => {
           if(response.data.success) {
-            console.log("Modify appt success");
-            this.$emit("storeAppointment", appt);
+            console.log("Modify appointment success.");
+
+            this.$emit("storeAppointment", modified_appointment);
             this.errors.msg = false;
             this.cancel();
           } else {
-            console.log("modify appt fail");
+            console.log("Modify appointment fail.");
             this.errorMsg = response.data.reason;
             this.errors.msg = true;
           }
@@ -150,7 +146,6 @@ export default {
       } else {
         console.log("Error, invalid inputs.");
       }
-      // Create axios post
     },
     check() {
       if(!this.appointee | !this.date | !this.startHour | !this.endHour) {
@@ -189,7 +184,6 @@ export default {
 
       if(difference >= 0) {
         // Valid start date, checks the duration.
-        this.removeAllErrors();
         return this.checkDuration(start);
       }
       this.errors.date = true;
@@ -204,10 +198,12 @@ export default {
         hour += 12;
       }
       this.endTime = `${hour.toString()}:${this.endMinute}`;
+
       // Convert end time.
       const endStr = `${this.date} ${this.endTime}`;
       const end = moment(endStr);
       this.endTime = end;
+
       // Calculate the difference between the start and end time.
       const difference = end.diff(start);
       if(difference <= 0) {
@@ -216,6 +212,9 @@ export default {
         this.showErrorMessage("Error, invalid times.");
         return false;
       }
+
+      // Valid appointment duration.
+      this.removeAllErrors();
       return true;
     }, 
     closeThis() {

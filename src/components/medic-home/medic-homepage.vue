@@ -9,7 +9,8 @@
       :appointeeType="appointeeType"
       :appointee="appointee"
       :isMed="isMed"
-      v-if = "showAppointmentCreation" />
+      v-if = "showAppointmentCreation" 
+      v-on:addAppointment="addAppointment"/>
     <modify 
       :requestee="appointeeType" 
       :appointment="this.$store.getters.currentAppointment"
@@ -44,6 +45,7 @@ export default {
       var self = this;
       axios.get(this.$store.getters.getAppointmentURL + this.$store.getters.authenticatedUsername).then(result => {
         var appointments = result.data.appointments;
+        console.log(appointments);
         for(var i=0; i<appointments.length; i++) {
           self.$store.dispatch('addAppointment',appointments[i]);
         }
@@ -101,8 +103,14 @@ export default {
             // TODO: Add error handling here and set the names in the appointment.
             // This is a medical professional, so get their patient list.
             axios.get(self.$store.getters.getPatientInfoURL + self.$store.getters.medicalCode).then(result => {
-              console.log(result.data.patients);
-              self.appointee = result.data.patients;
+              if(result.data.success) {
+                // Get patients was successful.
+                console.log("Successfully retrieved list of patients: " + result.data.patients);
+                self.appointee = result.data.patients;
+              } else {
+                // Get patients failed.
+                console.log("Error getting patients.");
+              }
             });
             // Set the appointee type to patient.
             self.appointeeType = "Patient";
@@ -111,13 +119,12 @@ export default {
           .catch(function(err) {
             console.log(err);
           })
-        },
-        storeAppointment(appointment) {
-          this.$store.dispatch("storeAppointment", appointment);
-          this.appointment = appointment;
-          console.log(this.appointment);
-        }
-
+      },
+      addAppointment(appointment) {
+        this.$store.dispatch("addAppointment", appointment);
+        this.appointment = appointment;
+        console.log(this.appointment);
+      }
     },
     created() {
       this.getCode();
