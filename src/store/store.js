@@ -221,11 +221,11 @@ export const store = new Vuex.Store({
       state.appointments.push(payload);
     },
     editAppointment: (state, payload) => {
-      function findOldAppt(element){
-        return element.date === payload.oldAppt.date && element.startTime === payload.oldAppt.startTime;
+      function findOldAppointment(element){
+        return element.date === payload.originalAppointment.date && element.startTime === payload.originalAppointment.startTime;
       }
-      var index = state.appointments.findIndex(findOldAppt);
-      state.appointments[index] = payload.newAppt;
+      var index = state.appointments.findIndex(findOldAppointment);
+      state.appointments[index] = payload.newAppointment;
     },
     deleteAppointment: (state, payload) => {
       var temp = [];
