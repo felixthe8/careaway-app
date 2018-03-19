@@ -98,8 +98,7 @@ export default {
               .then(response => {
                 if(response.data.success) {
                   console.log("Create appointment success.");
-
-                  this.$emit('addAppointment', appointment);
+                  this.$emit('addAppointment', appointment.appointment);
                   this.errors.msg = false;
                   this.closeThis();
                 } else {
