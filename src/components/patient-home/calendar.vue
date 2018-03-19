@@ -37,7 +37,11 @@
           }"></div>
           
           <div v-if="getWidget(day).length > 0" @click="clickWidget(getWidget(day))">
-            WIDGETY!!!!
+            <div :class="{ 'checklist-background': getWidget(day)[0].label == 'checklist', 'meter-background': getWidget(day)[0].label == 'meter' }">
+              {{ titleize(getWidget(day)[0].label) }}
+              <br/>
+              {{ isCompleted(getWidget(day)[0]) ? 'Completed' : 'Pending' }}
+            </div>
           </div>
           
           <div class="calendar__day--label" v-if="index < 5">{{day.name}}</div>
@@ -246,6 +250,30 @@ export default {
       console.log('pay');
       console.log(payload);
       // TODO axios call
+      /*axios.put(this.$store.getters.returnCodeURL+this.$store.getters.authenticatedUsername,payload)
+      .then(function(response) {
+        // Extract out medical code from the response
+        //self.medicalcode = response.data.medicalcode;
+        //self.$store.dispatch('medicalCode', self.medicalcode);
+      })
+      .catch(function(err) {
+        console.log(err);
+      })*/
+    },
+    titleize: function(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    },
+    isCompleted: function(widget) {
+      if (widget.label == 'checklist') {
+        for (var i=0;i<widget.list.length;i++) {
+          if (!widget.list[i].check) {
+            return false;
+          }
+        }
+      } else {
+        if (widget.patient_input === null || widget.patient_input === '') return false;
+      }
+      return true;
     }
   }
 }
@@ -253,6 +281,18 @@ export default {
 
 <style lang="scss">
 @import "../../assets/sass/settings.scss";
+
+.meter-background {
+  background-color: rgb(255, 176, 102);
+  padding-bottom: 12px;
+  cursor: pointer;
+}
+
+.checklist-background {
+  background-color: rgb(33, 154, 235);
+  padding-bottom: 12px;
+  cursor: pointer;
+}
 
 .weekly {
   display: none;
