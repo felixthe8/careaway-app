@@ -6,14 +6,14 @@
           <div id='appointment-card' class = 'card'>
             <div class = 'card-content'>
               <h2 id = 'form-title'> Appointments</h2>
-              Date: {{date}}<br>
-              Start Time: {{getTime(startTime)}}<br>
-              End Time: {{getTime(endTime)}}<br>
-              Requested by: {{initiatorName}}<br>
-              Scheduled with: {{appointeeName}}<br>
+              Date: {{appointment.date}}<br>
+              Start Time: {{getTime(appointment.startTime)}}<br>
+              End Time: {{getTime(appointment.endTime)}}<br>
+              Requested by: {{appointment.initiatorName}}<br>
+              Scheduled with: {{appointment.appointeeName}}<br>
               <div id='appointment-status'>
                 <div v-if='getStatus'>
-                  Status: {{status}}<br>
+                  Status: {{appointment.status}}<br>
                 </div>
                 <div v-if='!getStatus '>
                   <a id='appointment-button' class='button is-rounded' @click="sendResponse('Accepted')"> Accept </a>
@@ -36,7 +36,6 @@
   </div> 
 </template>
 
-
 <script>
   import axios from 'axios';
   export default {
@@ -44,45 +43,33 @@
     props: ['appointment'],
     data() {
       return {
-        oldAppointment: {
-          date: this.appointment.date,
-          startTime: this.appointment.startTime,
-          endTime: this.appointment.endTime,
-          initiator: this.appointment.initiator,
-          appointee: this.appointment.appointee,
-          appointeeName: this.appointment.appointeeName,
-          initiatorName: this.appointment.initiatorName,
-          status: this.appointment.status
-        },
-        date: this.appointment.date,
-        startTime: this.appointment.startTime,
-        endTime: this.appointment.endTime,
-        initiator: this.appointment.initiator,
-        appointee: this.appointment.appointee,
-        initiatorName: this.appointment.initiatorName,
-        appointeeName: this.appointment.appointeeName,
-        status: this.appointment.status,
+        // Warning Notification to tell the user if there was a connection issue
         showWarning: false,
         warning: 'Connection error has occurred. Please try again.',
       }
     },
     computed: {
+      // Check if the initiator is looking at the appointment they created
       isInitiator(){
-        if(this.initiator === this.$store.getters.authenticatedUsername){
+        // Checks the initiator on the appointment to the current logged in user
+        if(this.appointment.initiator === this.$store.getters.authenticatedUsername){
           return true;
         } else {
           return false;
         }
       },
+      // Checks if the appointment was declined and  if it is the initator viewing it
+      // Used to notify the user the user that a appointment has been rejected before deleting the appointment
       isRejected(){
-        if(this.status === "Declined" && this.isInitiator){
+        if(this.appointment.status === "Declined" && this.isInitiator){
           return true;
         } else{
           return false;
         }
       },
+      // Checks if the appointment is still pending and if the apointee is viewing the appointment
       getStatus(){
-        if(this.status === "Pending" && !this.isInitiator){
+        if(this.appointment.status === "Pending" && !this.isInitiator){
           return false;
         } else{
           return true;
@@ -90,39 +77,37 @@
       },
     },
     methods: {
+      // This transform the date format to a human readable state
       getTime(time){
         time = new Date(time);
-        return `${time.getHours() === 0 ?  
-                '1' : time.getHours()>12 ?  
-                time.getHours() - 12 : time.getHours() 
-                }:${time.getMinutes()<10 ? '0' + time.getMinutes() :  
-                time.getMinutes()}  
-                ${time.getHours()>12 ? 'P.M.':'A.M.'}`; 
+        return `${time.getHours() === 0 ? '1' : time.getHours() > 12 ? time.getHours() - 12 : time.getHours() 
+                }:${time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()
+                }${time.getHours() > 12 ? 'P.M.':'A.M.'}`; 
       },
+      // This hides the appointment-status component
       closeAppointment() {
          this.$store.commit('alternateAppointment');
       }, 
+      // This method sends the new status changes to save to the server
+      // Status is either Accepted or Declined that the appointee has chosen
       sendResponse(status){
         var self = this;
-        const newAppointment = {
-          date: this.date,
-          startTime: this.startTime,
-          endTime: this.endTime,
-          initiator: this.initiator,
-          appointee: this.appointee,
-          appointeeName: this.appointeeName,
-          initiatorName: this.initiatorName,
-          status: status
-        };
-        axios.post(this.$store.getters.modifyAppointmentURL,{'newAppointment' : newAppointment, 'originalAppointment': this.oldAppointment}).then(
+        // Make a copy of the appointment
+        const newAppointment = this.appointment;
+        // Set the new status of the appointment
+        newAppointment.status=  status;
+        // Send the request to the backend
+        axios.post(this.$store.getters.modifyAppointmentURL,{'newAppointment' : newAppointment, 'originalAppointment': this.appointment}).then(
           function(response)
           {
+            // Check if the status of the response is successful
             if(response.status === 200){
               console.log("Success");
-              self.$store.dispatch('editAppointment',{'oldAppt' : self.oldAppointment, 'newAppt' : newAppointment});
-              self.status = status;
+              // Edit the appointment in the array in the VueX
+              self.$store.dispatch('editAppointment',{'oldAppt' : self.appointment, 'newAppt' : newAppointment});
               self.showWarning = false; 
             } else {
+              // Display an error message if the connection went wrong
               console.log(response.data.response);
               self.showWarning = true;     
             }
@@ -131,27 +116,32 @@
             self.showWarning = true;      
           })
       },
+      // Opens the appointment-modification vue
       editAppointment(){
         // Close this modal and open the modification appointment modal
-        this.$store.dispatch("storeAppointment", this.oldAppointment);
+        this.$store.dispatch("storeAppointment", this.appointment);
         this.$store.dispatch("alternateAppointmentModification");
       },
+      // This deletes the appointment vue from both appointee and initiator appointment list
       deleteAppointment(){
         var self = this;
-        axios.post(this.$store.getters.deleteAppt,{'appointment' : this.oldAppointment}).then(
+        axios.post(this.$store.getters.deleteAppt,{'appointment' : this.appointment}).then(
           function(response)
           {
-            // TODO: Update the global appointments so this appointment does not show on the calendar anymore
-            if(response.data.response === 'success'){
+            // Check if the status of the response is successful
+            if(response.status === 200){
               console.log("Success");
+              // Closes this vue
               self.$store.commit("alternateAppointment");
-              self.$store.dispatch('deleteAppointment', self.oldAppointment);
+              // Deletes the appointment from the appointment array in the VueX
+              self.$store.dispatch('deleteAppointment', self.appointment);
               self.showWarning = false; 
             } else {
               console.log(response.data.response);
               self.showWarning = true;     
             }
           }).catch(function(err){
+            // Display an error message if the connection went wrong
             console.log("There was an error handling the request");
             self.showWarning = true;      
           });
