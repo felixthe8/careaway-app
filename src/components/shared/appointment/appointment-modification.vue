@@ -124,16 +124,32 @@ export default {
       this.removeAllErrors();
       if(this.check()) {
         // The only fields that could change are start and end time.
-        const modified_appointment = this.appointment;
-        modified_appointment.startTime = this.startTime;
-        modified_appointment.endTime = this.endTime;
-
+        const originalAppointment = {
+          date: this.appointment.date,
+          startTime: this.appointment.startTime,
+          endTime: this.appointment.endTime,
+          initiator: this.appointment.initiator,
+          initiatorName: this.appointment.initiatorName,
+          appointee: this.appointment.appointee,
+          appointeeName: this.appointment.appointeeName,
+          status: this.appointment.status
+        };
+        const modified_appointment = {
+          date: this.appointment.date,
+          startTime: this.startTime.format(),
+          endTime: this.endTime.format(),
+          initiator: this.appointment.initiator,
+          initiatorName: this.appointment.initiatorName,
+          appointee: this.appointment.appointee,
+          appointeeName: this.appointment.appointeeName,
+          status: this.appointment.status
+        };
         console.log(`original: ${this.appointment.startTime}\nnew ${modified_appointment.startTime}`);
-        axios.post(this.$store.getters.modifyAppointmentURL, {originalAppointment: this.appointment, newAppointment: modified_appointment})
+        axios.post(this.$store.getters.modifyAppointmentURL, {originalAppointment: originalAppointment, newAppointment: modified_appointment})
         .then(response => {
           if(response.data.success) {
             console.log("Modify appointment success.");
-
+            this.$store.dispatch('editAppointment',{'oldAppt' : originalAppointment, 'newAppt' : modified_appointment});
             this.$emit("storeAppointment", modified_appointment);
             this.errors.msg = false;
             this.cancel();

@@ -50,8 +50,8 @@
           endTime: this.appointment.endTime,
           initiator: this.appointment.initiator,
           appointee: this.appointment.appointee,
-          // appointeeName: this.appointment.appointeeName,
-          // initiatorName: this.appointment.initiatorName,
+          appointeeName: this.appointment.appointeeName,
+          initiatorName: this.appointment.initiatorName,
           status: this.appointment.status
         },
         date: this.appointment.date,
@@ -68,9 +68,7 @@
     },
     computed: {
       isInitiator(){
-        console.log("Here");
         if(this.initiator === this.$store.getters.authenticatedUsername){
-          
           return true;
         } else {
           return false;
@@ -116,11 +114,12 @@
           initiatorName: this.initiatorName,
           status: status
         };
-        axios.post(this.$store.getters.modifyAppt,{'newAppointment' : newAppointment, 'originalAppointment': this.oldAppointment}).then(
+        axios.post(this.$store.getters.modifyAppointmentURL,{'newAppointment' : newAppointment, 'originalAppointment': this.oldAppointment}).then(
           function(response)
           {
             if(response.status === 200){
               console.log("Success");
+              self.$store.dispatch('editAppointment',{'oldAppt' : self.oldAppointment, 'newAppt' : newAppointment});
               self.status = status;
               self.showWarning = false; 
             } else {
