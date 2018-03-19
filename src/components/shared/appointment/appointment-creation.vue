@@ -51,9 +51,10 @@
 import axios from 'axios';
 import moment from 'moment';
 import timeChangers from './time';
+import tooltip from '../../homepage/tooltip';
 export default {
   name: 'appointmentCreation',
-  components: { timeChangers }, 
+  components: { timeChangers, tooltip }, 
   props: ["appointeeType", "appointee", "isMed"],
   data() {
     return {
@@ -93,7 +94,7 @@ export default {
 
             // Construct appointment object and send to server.
             const appointment = this.constructAppointment(name);
-            axios.post(this.$store.getters.createAppointmentURL, {appointment: appointment})
+            axios.post(this.$store.getters.createAppointmentURL, appointment)
               .then(response => {
                 if(response.data.success) {
                   console.log("Create appointment success.");
@@ -114,7 +115,7 @@ export default {
       }
     },
     check() {
-      if(!this.appointee | !this.date | !this.startHour | !this.endHour) {
+      if(!this.appointee || !this.date || !this.startHour || !this.endHour) {
         console.log("Incomplete");
         this.errors.date = true;
         this.errors.startTime = true;
@@ -133,11 +134,29 @@ export default {
       }
       this.startTime = `${hour.toString()}:${this.startMinute}`;
       const startStr = `${this.date} ${this.startTime}`;
-      const start = moment(startStr);
+      console.log(`Start string: ${startStr}`);
+
+      // Valid date formats.
+      const formats = ["YYYY-MM-DD HH:mm", 
+                        "M/DD/YYYY HH:mm", 
+                        "M/D/YYYY HH:mm", 
+                        "MM/D/YYYY HH:mm", 
+                        "MM/DD/YYYY HH:mm",
+                        "MM-DD-YYYY HH:mm",
+                        "M-DD-YYYY HH:mm",
+                        "M-D-YYYY HH:mm",
+                        "MM-D-YYYY HH:mm"];
+      
+      const start = moment(startStr, formats);
 
       if(!start.isValid()) {
         this.errors.date = true;
-        this.showErrorMessage("Error, invalid date.");
+        this.showErrorMessage("Error, invalid date. Preferrable formats: YYYY-MM-DD or MM/DD/YYYY");
+        return false;
+      } else if(start.day() === 0 || start.day() === 6) {
+        // The day the appointment is scheduled is a Sunday (0) or Saturday (6)
+        this.errors.date = true;
+        this.showErrorMessage("Error, this date is not a weekday, please choose a different date.");
         return false;
       }
       this.startTime = start;
@@ -149,14 +168,14 @@ export default {
 
       if(difference >= 0) {
         // Valid start date, checks the duration.
-        return this.checkDuration(start);
+        return this.checkDuration(start, formats);
       }
+
       this.errors.date = true;
       this.showErrorMessage("Error, invalid date. Please select a date in the future.");
-      console.log(this.errors.date);
       return false;
     },
-    checkDuration(start) {
+    checkDuration(start, formats) {
       // Make sure the duration of the appointment is valid.
       let hour = this.endHour;
       if(this.endPM) {
@@ -165,10 +184,10 @@ export default {
       this.endTime = `${hour.toString()}:${this.endMinute}`;
       // Convert end time.
       const endStr = `${this.date} ${this.endTime}`;
-      const end = moment(endStr);
+      const end = moment(endStr, formats);
 
       this.endTime = end;
-      console.log(this.endTime);
+
       // Calculate the difference between the start and end time.
       const difference = end.diff(start);
       if(difference <= 0) {
@@ -194,7 +213,7 @@ export default {
         appointeeName: document.getElementById("appointee").innerHTML,
         status: "Pending"
       };
-      return appointment;
+      return {appointment: appointment};
     },
     closeThis() {
       // Closes create appointment 
