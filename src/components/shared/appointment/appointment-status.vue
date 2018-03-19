@@ -97,7 +97,7 @@
         // Set the new status of the appointment
         newAppointment.status=  status;
         // Send the request to the backend
-        axios.post(this.$store.getters.modifyAppointmentURL,{'newAppointment' : newAppointment, 'originalAppointment': this.appointment}).then(
+        axios.put(this.$store.getters.modifyAppointmentURL,{'newAppointment' : newAppointment, 'originalAppointment': this.appointment}).then(
           function(response)
           {
             // Check if the status of the response is successful

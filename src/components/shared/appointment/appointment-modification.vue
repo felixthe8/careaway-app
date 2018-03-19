@@ -123,7 +123,7 @@ export default {
       if(this.check()) {
         const appointments = this.constructAppointments();
 
-        axios.post(this.$store.getters.modifyAppointmentURL, appointments)
+        axios.put(this.$store.getters.modifyAppointmentURL, appointments)
         .then(response => {
           if(response.data.success) {
             console.log("Modify appointment success.");
@@ -290,7 +290,7 @@ export default {
         initiatorName: this.appointment.initiatorName,
         appointee: this.appointment.appointee,
         appointeeName: this.appointment.appointeeName,
-        status: this.appointment.status
+        status: "Pending"
       };
       const appointments = {
         originalAppointment: originalAppointment,
