@@ -1,8 +1,8 @@
 <template>
 
   <div class="columns medic-calendar">
-    <appointment class="item"/>
-    <calendar class="item"/>
+    <appointment :calendar="calendar" class="item"/>
+    <calendar :calendar="calendar" class="item"/>
   </div>
 
 </template>
@@ -18,7 +18,18 @@ export default {
   components: {
     calendar,
     appointment
+  },
+
+  created: function() {
+    this.calendar = this.$renderCalendar(0);
+  },
+
+  data() {
+    return {
+      calendar: []
+    }
   }
+
 }
 </script>
 

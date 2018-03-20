@@ -36,6 +36,8 @@
           }"></div>
 
           <div class="calendar__day--label" v-if="index < 5">{{calendar[index].name}}</div>
+
+          <div class="calendar__day--event" v-if="calendar[index].event">{{calendar[index].event}}</div>
         </div>
 
       </div>
@@ -48,18 +50,17 @@
 <script>
 export default {
   name: 'app',
-  created: function() {
-      this.calendar = this.$renderCalendar(0);
-  },
+
+  props: ['calendar'],
+
   data() {
     return {
       months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
       week: ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"],
-      calendar: [],
       state: 0
     }
   },
-  // use vue.set to update array (Vue.$set)
+
   methods: {
     next: function(event) {
       if(this.state < 1)
@@ -121,6 +122,11 @@ export default {
 <style lang="scss">
 
 @import '../../assets/sass/settings.scss';
+
+.calendar-wrapper {
+  width: 75%;
+  position: relative;
+}
 
 .weekly {
   display: none;
