@@ -191,7 +191,7 @@ export default {
       }
       // Compute the average for the week
       var average = numbers.reduce((a,b) => a+b,0) / numbers.length;
-      this.averageWellness = "The average wellness for this week is "+average+"%";
+      this.averageWellness = "The average wellness for this week is "+average.toFixed(2)+"%";
     },
     getTrends(data) {
       // Create 2 arrays - 1 for holding the positive trends and one for holding the negative trends
