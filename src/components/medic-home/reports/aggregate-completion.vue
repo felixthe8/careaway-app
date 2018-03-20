@@ -107,7 +107,9 @@ export default {
               legend: {
                 display: true,
                 position: "right",
-                labels: {fontSize: 14}
+                labels: {fontSize: 14},
+                // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing. 
+                onClick: null
               },
               tooltips: {
                 callbacks: {
