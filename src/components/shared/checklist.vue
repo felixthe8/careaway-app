@@ -1,7 +1,7 @@
 <template>
 
   <div class="checklist">
-    <button class="checklist__button green-button" @click="addChecklist">Checklist</button>
+    <button class="checklist__button green-button" draggable="true" @click="addChecklist">Checklist</button>
 
     <div class="checklist__menu">
       <label>Reason for checklist:</label>

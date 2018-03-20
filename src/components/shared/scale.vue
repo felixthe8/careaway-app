@@ -1,7 +1,7 @@
 <template>
 
   <div class="scale">
-    <button class="scale__button green-button" @click="addScale">Scale</button>
+    <button class="scale__button green-button" draggable="true" @click="addScale">Scale</button>
 
     <div class="scale__menu">
       <label>Reason for scale:</label>
@@ -28,7 +28,8 @@ export default {
   },
 
   methods: {
-    addScale: function() {
+    addScale: function(event) {
+      console.log(event);
       document.getElementsByClassName("scale__menu")[0].classList.add("show-menu");
     },
     create: function() {
