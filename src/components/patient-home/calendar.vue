@@ -68,28 +68,17 @@ export default {
   },
   created: function() {
     // Fetch treatment plan
-    /*axios.get(this.$store.getters.returnCodeURL+this.$store.getters.authenticatedUsername)
-      .then(function(response) {
-        // Extract out medical code from the response
-        self.medicalcode = response.data.medicalcode;
-        self.$store.dispatch('medicalCode', self.medicalcode);
+    axios.get(this.$store.getters.getPatientTreatmentURL+this.$store.getters.authenticatedUsername)
+      .then(response => {
+        this.widgets = response.data;
       })
-      .catch(function(err) {
+      .catch(err => {
         console.log(err);
-      })*/
-
-    /*while (x \
-              \
-               \
-                \
-                 \ getMonth()) {
-      
-    }*/
-
+      })
   },
   data() {
     return {
-      widgets: [
+      widgets: []/*[
         {
           label: "checklist",
           list: [{question: 'Doki doki',check: false}],
@@ -104,12 +93,6 @@ export default {
           patient_input: null,
           created_at: new Date(Date.now()),
           updated_at: null,
-        },{
-          label: "checklist",
-          list: [{question: 'Xoop',check: false}],
-          due_date: new Date(2018,2,15),
-          created_at: new Date(Date.now()),
-          updated_at: null
         },{
           label: "meter",
           question: 'Shoooopiiiii',
@@ -127,7 +110,7 @@ export default {
           created_at: new Date(Date.now()),
           updated_at: null,
         }
-      ],
+      ]*/,
       selectedWidget: {},
       active: ''
     }
@@ -263,16 +246,17 @@ export default {
     save: function(payload) {
       console.log('pay');
       console.log(payload);
-      // TODO axios call
-      /*axios.put(this.$store.getters.returnCodeURL+this.$store.getters.authenticatedUsername,payload)
+      const obj = {
+        treatment: payload,
+        username: this.$store.getters.authenticatedUsername
+      }
+      axios.put(this.$store.getters.updatePatientTreatmentURL,obj)
       .then(function(response) {
-        // Extract out medical code from the response
-        //self.medicalcode = response.data.medicalcode;
-        //self.$store.dispatch('medicalCode', self.medicalcode);
+        console.log("Updated");
       })
       .catch(function(err) {
         console.log(err);
-      })*/
+      })
     },
     titleize: function(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);

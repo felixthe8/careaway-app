@@ -5,8 +5,9 @@
         <!-- Any other Bulma elements you want -->
         <div class="field">
           <label class="label question-text">{{ mutatingWidget.question }}</label>
+          <div class="centered" v-if="mutatingWidget.scale">On a scale of {{ mutatingWidget.scale[0] }} to {{ mutatingWidget.scale[1] }}</div>
           <div class="control">
-            <input class="input" type="text" v-model="mutatingWidget.patient_input" placeholder="Enter number">
+            <input class="input" type="number" v-model="mutatingWidget.patient_input" placeholder="Enter number">
           </div>
         </div>
         <br/>

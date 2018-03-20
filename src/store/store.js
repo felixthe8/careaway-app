@@ -41,7 +41,9 @@ export const store = new Vuex.Store({
     patientBreakdownURL: 'http://localhost:8080/getDiagnoses?medicalcode=',
     getTreatmentmeterURL: 'http://localhost:8080/getTreatmentmeter',
     getTreatmentchecklistURL: 'http://localhost:8080/getTreatmentchecklist',
-
+    getPatientTreatmentURL: 'http://localhost:8080/getPatientTreatment?username=',
+    updatePatientTreatmentURL: 'http://localhost:8080/updatePatientTreatment',
+    
     patientInfoURL: 'http://localhost:8080/get-patients?code=',
     userInfoURL: 'http://localhost:8080/get-user?username=',
 
@@ -107,6 +109,15 @@ export const store = new Vuex.Store({
     },
     getTreatmentchecklistURL: (state) => {
       return state.getTreatmentchecklistURL;
+    },
+    getPatientTreatmentURL: (state) => {
+      return state.returnCodeURL;
+    },
+    updatePatientTreatmentURL: (state) => {
+      return state.returnCodeURL;
+    },
+    returnCodeURL: (state) => {
+      return state.returnCodeURL;
     },
     getAppointmentURL: (state) =>  {
       return state.appointmentURL;
