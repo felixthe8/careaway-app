@@ -52,9 +52,10 @@ export default {
 @import "../../assets/sass/settings.scss";
 
 .checklist {
+  padding: 1rem;
 
   &__button {
-    margin: 10px;
+    padding: 5px 20px;
   }
 
   &__label {
@@ -66,7 +67,11 @@ export default {
   }
 
   &__menu {
-    opacity: 0;
+    display: none;
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    left: 0;
     background: $green-light;
     margin-left: 1rem;
     padding: 1rem;
@@ -79,6 +84,6 @@ export default {
 }
 
 .show-menu {
-  opacity: 1;
+  display: block;
 }
 </style>

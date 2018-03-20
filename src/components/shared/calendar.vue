@@ -38,7 +38,7 @@
           <div class="calendar__day--label" v-if="index < 5">{{calendar[index].name}}</div>
 
           <div class="calendar__day--appointment">{{calendar[index].appointment.text}}</div>
-          <div class="calendar__day--meter">{{calendar[index].meter.text}}</div>
+          <div class="calendar__day--scale">{{calendar[index].scale.text}}</div>
           <div class="calendar__day--checklist">{{calendar[index].checklist.text}}</div>
 
         </div>
