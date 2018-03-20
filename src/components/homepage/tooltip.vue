@@ -1,14 +1,14 @@
 <template>
-  <div class="tooltip">
-    <img class="tooltip-question" src="../../assets/images/question.png">
-    <span class="tooltip-text">{{requirements}}</span>
+  <div class='tooltip'>
+    <img class='tooltip-question' src='../../assets/images/question.png'>
+    <span class='tooltip-text'> {{requirements}} </span>
   </div>
 </template>
 
 
 <script>
   export default {
-    //This is the requirement message for the tool tip message
+    // This is the requirement message for the tool tip message
     props:['requirements'],
     name: 'tooltip'
   }
@@ -16,7 +16,7 @@
 
 
 <style lang='scss'>
-  @import "../../assets/sass/settings.scss";
+  @import '../../assets/sass/settings.scss';
   .tooltip{
     display: none;
     @media #{$tablet} {

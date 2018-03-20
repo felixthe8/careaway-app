@@ -3,6 +3,10 @@
     <h1 class = "title is-3 is-spaced"> Average Patient Task Completion From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{completionWarning}} </h2>
     <canvas id = "aggregate-complete" width = "750" height = "300"> </canvas>
+    <div class = "report" v-if="showReport">
+      <p> Total completed tasks for this period: {{totalComplete}} </p>
+      <p> Total assigned tasks for this period: {{totalAssigned}}</p>
+    </div>  
   </div>
 </template>
 
@@ -13,19 +17,22 @@ export default {
   name: '',
   data() {
       return {
-          completionWarning: ''
+        completionWarning: '',
+        // Create an array to store the 5 dates made from moment.js
+        days: [],
+        completionData: {},
+        totalComplete: 0,
+        totalAssigned: 0,
+        showReport: false
       }
   },
   methods: {
     getInfo() {
-      // Create an array to store the 5 dates made from moment.js
-      var days = [];
-      // Create a completion object to hold the treatment completion data
-      var completion_obj = {};
+      // Generate the 5 days from the previous week
       for(var i = 0; i <=4; i++) {
         var singleDay = moment().day(-2).subtract(i,'days').format("YYYY-MM-DD");
-        days.unshift(singleDay);
-        completion_obj[singleDay] = {
+        this.days.unshift(singleDay);
+        this.completionData[singleDay] = {
           // Value will hold the sum of the checklist widget data
           complete: 0,
           // Counter will represent the number of patients who had checklist widget data on a specific day
@@ -38,8 +45,8 @@ export default {
         params: {
           medicalcode:this.$store.getters.medicalCode,
           // Pass the first and last elements from the day array. These dates will be used to filter the response in the backend
-          startDate: days[0],
-          finalDate: days.slice(-1)[0]
+          startDate: self.days[0],
+          finalDate: self.days.slice(-1)[0]
         }
       })
       .then(function(response) {
@@ -49,37 +56,36 @@ export default {
           // Loop through each object holding checklist data
           for (var checklist of response.data) {
             for(var task of checklist.list) {
-              // if the task has been 'checked' (ie. completed), then increment the completed counter for that day
+              // If the task has been 'checked' (ie. completed), then increment the completed counter for that day
               if(task.check) {
-                completion_obj[checklist.due_date].complete +=1
+                self.completionData[checklist.due_date].complete +=1
               }
-              // when a new task is encountered, increement the task counter
-              completion_obj[checklist.due_date].taskCount +=1
+              // When a new task is encountered, add that new task and increment the task counter
+              self.completionData[checklist.due_date].taskCount +=1
             }
           }
           // Compute the completion percentage for each day
-          for(var key in completion_obj) {
-            if(completion_obj.hasOwnProperty(key)) {
+          for(var key in self.completionData) {
+            if(self.completionData.hasOwnProperty(key)) {
               // If there was no patient checklist data for that day, set the completion percentage to 0 for that day
-              if(completion_obj[key].taskCount == 0) {
-                completion_obj[key].average = 0;
+              if(self.completionData[key].taskCount == 0) {
+                self.completionData[key].average = 0;
               } else {
                 // Task completion percentage is the number of tasks completed / total tasks for that day
-                completion_obj[key].average = Math.round( (completion_obj[key].complete / completion_obj[key].taskCount) * 100 )
+                self.completionData[key].average = Math.round( (self.completionData[key].complete / self.completionData[key].taskCount) * 100 )
               }
             }
           }
-
-          console.log(completion_obj);
+           // Define the graph and it's styles
           new Chart (document.getElementById("aggregate-complete"), {
             type: 'bar',
             data: {
-              labels: days,
+              labels: self.days,
               datasets: [{
                 label: "Completion Percentage",
-                backgroundColor: Array(days.length).fill('#3892f1'),
+                backgroundColor: Array(self.days.length).fill('#3892f1'),
                 // Turn the completion percentage data into an array. Must reverse the array because the days were instantiated backwards
-                data: Object.keys(completion_obj).map(key => {return completion_obj[key].average}).reverse()
+                data: Object.keys(self.completionData).map(key => {return self.completionData[key].average}).reverse()
               }]
             },
             options: {
@@ -106,18 +112,33 @@ export default {
               tooltips: {
                 callbacks: {
                   label: function(tooltipItems, data) {
+                    // Overwrite the tooltip function to reformat the presented data
                     return 'Patient Completion: '+data.datasets[0].data[tooltipItems.index] + '%'
                   }
                 }
               }
             }
           })
+        self.analyzeData(self.completionData);
+        // If the GET was successfully completed and the graph has been made, then show the report
+        self.showReport = true;
         }
       })
       .catch(function(err) {
         console.log(err);
         self.completionWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
       })
+    },
+    analyzeData(data) {
+      // Loop through the object that holds the completion data for each day
+      for(var day in data) {
+         if(data.hasOwnProperty(day)) {
+           // Sum the completed tasks
+           this.totalComplete += data[day].complete;
+           // Sum the assigned tasks
+           this.totalAssigned += data[day].taskCount;
+         }
+      }
     }
   },
   mounted() {
