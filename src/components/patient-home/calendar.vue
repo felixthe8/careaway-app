@@ -36,11 +36,12 @@
               'rounded-right': (index === 24),
           }"></div>
           
-          <div v-if="getWidget(day).length > 0" @click="clickWidget(getWidget(day))">
-            <div :class="{ 'checklist-background': getWidget(day)[0].label == 'checklist', 'meter-background': getWidget(day)[0].label == 'meter' }">
-              {{ titleize(getWidget(day)[0].label) }}
-              <br/>
-              {{ isCompleted(getWidget(day)[0]) ? 'Completed' : 'Pending' }}
+          <div v-if="getWidget(day).length > 0">
+            <div v-for="widget in getWidget(day)">
+              <div class="widget-box" :class="getCompletedStatus(widget).className" @click="clickWidget(widget)">
+                <div>{{ titleize(widget.label) }}</div>
+                <div class="status-text">{{ getCompletedStatus(widget).status }}</div>
+              </div>
             </div>
           </div>
           
@@ -104,10 +105,24 @@ export default {
           created_at: new Date(Date.now()),
           updated_at: null,
         },{
+          label: "checklist",
+          list: [{question: 'Xoop',check: false}],
+          due_date: new Date(2018,2,15),
+          created_at: new Date(Date.now()),
+          updated_at: null
+        },{
           label: "meter",
           question: 'Shoooopiiiii',
           scale: [1,10],
           due_date: new Date(2018,2,15),
+          patient_input: null,
+          created_at: new Date(Date.now()),
+          updated_at: null,
+        },{
+          label: "meter",
+          question: 'Met',
+          scale: [1,10],
+          due_date: new Date(2018,2,21),
           patient_input: null,
           created_at: new Date(Date.now()),
           updated_at: null,
@@ -239,7 +254,6 @@ export default {
       return widgets;
     },
     clickWidget: function(widget, event) {
-      widget = widget[0];
       this.selectedWidget = widget;
       this.active = widget.label;
     },
@@ -263,17 +277,39 @@ export default {
     titleize: function(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
-    isCompleted: function(widget) {
+    getCompletedStatus: function(widget) {
+      var due_date = widget.due_date;
+      var today = new Date();
+      
+      due_date.setHours(0,0,0,0);
+      today.setHours(0,0,0,0);
+      
+      var status = {
+        status: 'Planned',
+        className: widget.label+'-planned'
+      }
+
+      if (due_date > today) {
+        return status;
+      }
+      
+      status.status = 'Incomplete';
+      status.className = widget.label+'-incomplete';
+
       if (widget.label == 'checklist') {
         for (var i=0;i<widget.list.length;i++) {
           if (!widget.list[i].check) {
-            return false;
+            return status;
           }
         }
       } else {
-        if (widget.patient_input === null || widget.patient_input === '') return false;
+        if (widget.patient_input === null || widget.patient_input === '') return status;
       }
-      return true;
+
+      status.status = 'Completed';
+      status.className = widget.label+'-completed';
+
+      return status;
     }
   }
 }
@@ -282,16 +318,38 @@ export default {
 <style lang="scss">
 @import "../../assets/sass/settings.scss";
 
-.meter-background {
-  background-color: rgb(255, 176, 102);
-  padding-bottom: 12px;
+.widget-box {
+  padding-bottom: 6px;
   cursor: pointer;
+  border-radius:3px;
 }
 
-.checklist-background {
-  background-color: rgb(33, 154, 235);
-  padding-bottom: 12px;
-  cursor: pointer;
+.meter-incomplete {
+  background-color: $blue-light;
+}
+
+.checklist-incomplete {
+  background-color: $green-light;
+}
+
+.meter-completed {
+  background-color: $blue-dark;
+}
+
+.checklist-completed {
+  background-color: $green-dark;
+}
+
+.meter-planned {
+  background-color: $blue;
+}
+
+.checklist-planned {
+  background-color: $green;
+}
+
+.status-text {
+  font-size: 12px;
 }
 
 .weekly {
