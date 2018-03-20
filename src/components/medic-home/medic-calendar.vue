@@ -1,7 +1,12 @@
 <template>
 
   <div class="columns medic-calendar">
-    <appointment :calendar="calendar" class="column is-one-fifth"/>
+    <div class="menu column is-one-fifth">
+      <appointment :calendar="calendar"/>
+      <meterWidget :calendar="calendar"/>
+      <checklistWidget :calendar="calendar"/>
+    </div>
+
     <calendar :calendar="calendar" class="column is-four-fifths"/>
   </div>
 
@@ -10,14 +15,18 @@
 <script>
 
 import appointment from '../shared/appointment.vue';
+import meterWidget from '../shared/meter.vue';
+import checklistWidget from '../shared/checklist.vue';
 import calendar from '../shared/calendar.vue';
 
 export default {
   name: 'medic-calendar',
 
   components: {
-    calendar,
-    appointment
+    appointment,
+    meterWidget,
+    checklistWidget,
+    calendar
   },
 
   created: function() {

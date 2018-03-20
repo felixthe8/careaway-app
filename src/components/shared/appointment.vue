@@ -5,8 +5,10 @@
     <button class="appointment__button green-button" @click="addAppointment">+</button>
 
     <div class="appointment__menu">
-      <label>Appointment</label>
+      <label>Reason for Appointment:</label>
       <input class="appointment__menu--input" name="appointment" type="text" id="appointment">
+      <label>Date Requested</label>
+      <input class="appointment__menu--input" name="date" type="text" id="appointment-date">
       <button class="appointment__menu--create green-button" @click="create">Create Event</button>
     </div>
   </div>
@@ -32,10 +34,15 @@ export default {
     },
     create: function() {
       this.appointment = {
-          type: "appointment",
-          text: document.getElementById("appointment").value
+        text: document.getElementById("appointment").value,
+        date: document.getElementById("appointment-date").value
       }
-      this.calendar[0].event = this.appointment;
+      // get element by date attribute
+      for(var i=0; i < this.calendar.length; i++) {
+        if(this.calendar[i].date == this.appointment.date) {
+          this.calendar[i].appointment = this.appointment;
+        }
+      }
       document.getElementsByClassName("appointment__menu")[0].classList.remove("show-menu");
     }
   }

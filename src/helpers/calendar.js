@@ -42,7 +42,9 @@ Calendar.install = function (Vue, options) {
           "code": start.getDay(),
           "month": start.getMonth(),
           "name": week[start.getDay()],
-          "event": {}
+          "appointment": {},
+          "meter": {},
+          "checklist": {}
         }
 
         // update count & set next after first itr
