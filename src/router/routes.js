@@ -7,6 +7,7 @@ import homepage from '../components/homepage/homepage.vue';
 import medicHome from '../components/medic-home/medic-homepage.vue';
 import medicCalendar from '../components/medic-home/calendar.vue';
 import medicDataAnalysis from '../components/medic-home/data-analysis.vue';
+import medicSingleDataAnalysis from '../components/medic-home/single-analysis.vue';
 import patientHome from '../components/patient-home/patient-homepage.vue';
 import adminHome from '../components/admin-home/admin-homepage.vue';
 import error from '../components/error/error.vue';
@@ -47,7 +48,10 @@ const router = new Router ({
                 }},
                 {path: '/MedicHome/Report', component: medicDataAnalysis, name: 'medicReport', meta: {
                     title: "CareAway Medical Reports"
-                }}
+                }},
+                {path: '/MedicHome/IndividualReport', component: medicSingleDataAnalysis, name: 'medicSingleReport', meta: {
+                    title: "CareAway Medical Reports"
+                }},
             ]
         },
 

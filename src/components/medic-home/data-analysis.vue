@@ -1,5 +1,11 @@
 <template>
+  
   <div class = "aggregate-graphs">
+    <select v-model="selected" v-on:change="choosePatient">
+        <option  v-for="patient in patientList" v-bind:value="patient.UserName">
+        First Name:{{ patient.FirstName }} , UserName:{{patient.UserName}}
+        </option>
+    </select>
     <breakdownGraph/>
     <br>
     <aggregateWellness/>
@@ -16,6 +22,47 @@ import aggregateWellness from './reports/aggregate-wellness';
 import aggregateComplete from './reports/aggregate-completion';
 export default {
   name: 'aggregateReport',
+  data() {
+      return {
+        patientList: [],
+        // Create an array to store the 5 dates made from moment.js
+        selected: 'Patients',
+
+      }
+  },
+  methods:{
+
+    getPatientNames(){
+      var self = this;
+      axios.get(this.$store.getters.getPatientUserNamesURL, {
+      params: {
+        medicalcode:this.$store.getters.medicalCode,
+        // Pass the first and last elements from the day array. These dates will be used to filter the response in the backend
+        }
+      })
+          // runs after the request has been answered
+      .then(function(response) {
+
+            self.patientList = response.data;
+      })
+      .catch(function(err) {
+        console.log(err);
+        // prompt the user if there was an error in handling their login request 
+        self.inputWarning = 'Breach Notification Failed';
+        self.showWarning = true;
+      });
+      },
+      choosePatient(){
+        this.$store.dispatch('saveUsername',this.selected);
+        this.$router.push('/MedicHome/IndividualReport');
+
+
+      },
+  },
+  mounted(){
+    this.getPatientNames()
+  },
+  
   components: {breakdownGraph, aggregateWellness, aggregateComplete},
 }
 
