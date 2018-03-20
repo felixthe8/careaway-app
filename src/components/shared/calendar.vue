@@ -37,7 +37,7 @@
 
           <div class="calendar__day--label" v-if="index < 5">{{calendar[index].name}}</div>
 
-          <div class="calendar__day--event" v-if="calendar[index].event">{{calendar[index].event}}</div>
+          <div class="calendar__day--event" v-if="calendar[index].event.type === 'appointment'">{{calendar[index].event.text}}</div>
         </div>
 
       </div>
@@ -124,7 +124,6 @@ export default {
 @import '../../assets/sass/settings.scss';
 
 .calendar-wrapper {
-  width: 75%;
   position: relative;
 }
 

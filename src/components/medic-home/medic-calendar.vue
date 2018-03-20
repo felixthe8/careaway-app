@@ -1,8 +1,8 @@
 <template>
 
   <div class="columns medic-calendar">
-    <appointment :calendar="calendar" class="item"/>
-    <calendar :calendar="calendar" class="item"/>
+    <appointment :calendar="calendar" class="column is-one-fifth"/>
+    <calendar :calendar="calendar" class="column is-four-fifths"/>
   </div>
 
 </template>
