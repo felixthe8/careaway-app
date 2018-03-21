@@ -1,25 +1,25 @@
 <template>
-  <div id="sheet" class='modal is-active'>
-    <div id="sheet-background" class='modal-background'></div>
-      <div id="sheet-content" class='modal-content'>
-        <div id="sheet-box" class='box'>
-          <div class="columns is-centered">
-          <article class="card is-rounded">
-              <div class="card-content"  v-if="this.$store.state.ssoRegistration">
+  <div id='sheet' class='modal is-active'>
+    <div id='sheet-background' class='modal-background'></div>
+      <div id='sheet-content' class='modal-content'>
+        <div id='sheet-box' class='box'>
+          <div class='columns is-centered'>
+          <article class='card is-rounded'>
+              <div class='card-content'  v-if='this.$store.state.ssoRegistration'>
                 <sso-registration></sso-registration>
               </div>
-              <div class="card-content" v-if="!this.$store.state.ssoRegistration">
-                <ul id="sheet-switcher" class="form-switcher">  
-                  <li @click="switchToPatientForm"><div class='patient' :class="patientForm">Register as a Patient</div></li>
-                  <li @click="switchToMedicalForm"><div :class="medicalProfessionalForm">Register as a Medical Professional</div></li>
+              <div class='card-content' v-if='!this.$store.state.ssoRegistration'>
+                <ul id='sheet-switcher' class='form-switcher'>  
+                  <li @click='switchToPatientForm'><div class = 'patient' :class='patientForm'>Register as a Patient</div></li>
+                  <li @click='switchToMedicalForm'><div :class = 'medicalProfessionalForm'>Register as a Medical Professional</div></li>
                 </ul> 
-                <registration  :patient-form="showPatientForm" ></registration>        
+                <registration  :patient-form='showPatientForm' ></registration>        
               </div>
             </article>
             </div>
         </div>
       </div>
-      <button class='modal-close' @click="closeRegistration"></button>
+      <button class='modal-close' @click='closeRegistration'></button>
   </div>
 </template>
 
@@ -30,44 +30,44 @@
   export default {
     name: 'registration-menu',
     components: {
-      "registration" : registration,
-      "ssoRegistration" : ssoRegistration
+      'registration' : registration,
+      'ssoRegistration' : ssoRegistration
     },
     data(){
         return{
-          //Holds the bulma class to show if medical professional form is active
+          // Holds the bulma class to show if medical professional form is active
           medicalProfessionalForm: '',
-          //Holds the bulma class to show if patient form is active
+          // Holds the bulma class to show if patient form is active
           patientForm: 'active',
-          //value to send into registration
-          //true to denote patient form
-          //false to denote medical professional form
+          // Value to send into registration
+          // True to denote patient form
+          // False to denote medical professional form
           showPatientForm: true,
         }
     },
     methods: {
       switchToPatientForm(){
-        //Tells the registration form it's a patient form
+        // Tells the registration form it's a patient form
         this.showPatientForm = true; 
-        //set patient form to active
+        // Set patient form to active
         this.medicalProfessionalForm= '';
         this.patientForm= 'active';
-        //a message to the registration form to clear all inputs
+        // A message to the registration form to clear all inputs
         this.$store.commit('resetRegForm');
       },
       switchToMedicalForm(){
-        //Tells the registration form it's a medical form
+        // Tells the registration form it's a medical form
         this.showPatientForm = false;
         this.medicalProfessionalForm= 'active';
         this.patientForm= '';
-        //a message to the registration form to clear all inputs
+        // A message to the registration form to clear all inputs
         this.$store.commit('resetRegForm');
       },
       closeRegistration(){
         if(this.$store.state.ssoRegistration){
           this.$store.dispatch('alternateSSORegistration');
         }
-        //calls the store to close the registration
+        // Calls the store to close the registration
         this.$store.commit('alternateRegistration');
       }
     }
@@ -76,7 +76,7 @@
 
 
 <style lang='scss'>
-  @import "../../assets/sass/settings.scss";
+  @import '../../assets/sass/settings.scss';
   
   .patient{
     padding-bottom: 30px;

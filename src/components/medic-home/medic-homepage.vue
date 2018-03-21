@@ -3,11 +3,20 @@
   <div>
 
     <navbar class = "nav-bar"/>
-
-    <timeout v-if="showWarning" @close="showWarning=false"/>
-
-    <p class="subtitle" id="code-display" alt="CareAway Medical Code">MC:{{medicalcode}} </p>
-
+    <button class="button is-primary is-rounded" @click="toggleCreate"></button>
+    <appointment-status :appointment="getAppointment()" v-if="this.$store.getters.showAppointment" ></appointment-status>
+    <timeout v-if ="showWarning" @close = "showWarning = false"/>
+    <p class = "subtitle" id = "code-display">CareAway Medical Code: {{medicalcode}} </p>
+    <create
+      :appointeeType="appointeeType"
+      :appointee="appointee"
+      :isMed="isMed"
+      v-if = "showAppointmentCreation"
+      v-on:addAppointment="addAppointment"/>
+    <modify
+      :requestee="appointeeType"
+      :appointment="this.$store.getters.currentAppointment"
+      v-if = "showAppointmentMod" />
     <router-view class="wrapper"></router-view>
 
   </div>
@@ -20,15 +29,35 @@ import navbar from './app-header';
 import timeout from '../shared/timeout';
 import Chart from 'chart.js';
 import axios from 'axios';
+import appointmentStatus from '../shared/appointment/appointment-status';
+import create from '../shared/appointment/appointment-creation';
+import modify from '../shared/appointment/appointment-modification';
 import debounce from 'debounce';
 export default {
     name: 'medicHome',
-    components: {navbar, timeout},
+    components: {navbar, timeout, appointmentStatus, create, modify},
     data() {
       return {
         showWarning: false,
-        medicalcode: this.$store.getters.medicalCode
+        medicalcode: this.$store.getters.medicalCode,
+        appointment: {}, // Currently stores only one appointment object, will need to change to store array
+        appointeeType: "",
+        appointee: [],
+        isMed: true
       }
+    },
+    beforeCreate() {
+      var self = this;
+      axios.get(this.$store.getters.getAppointmentURL + this.$store.getters.authenticatedUsername).then(result => {
+        var appointments = result.data.appointments;
+        console.log(appointments);
+        for(var i=0; i<appointments.length; i++) {
+          self.$store.dispatch('addAppointment',appointments[i]);
+        }
+      }).catch(error => {
+        console.log(error);
+      });
+
     },
     mounted () {
       // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
@@ -41,7 +70,6 @@ export default {
       // debouncing an event
 
       function resetTimer() {
-        console.log("Reset Timer");
         clearTimeout(time);
        // After 15 minutes of inacitivity, the session timeout warning will display
         time = setTimeout(self.displaySessionwarning, 15*60*1000);
@@ -49,7 +77,21 @@ export default {
       // Call the resetTimer function to kick-start the inactivity timer.
       resetTimer();
     },
+    computed: {
+      showAppointmentCreation() {
+        return this.$store.getters.showAppointmentCreation;
+      },
+      showAppointmentMod() {
+        return this.$store.getters.showAppointmentMod;
+      }
+    },
     methods: {
+      getAppointment(){
+        return this.$store.getters.appointments[0];
+      },
+      toggleCreate(){
+        this.$store.dispatch("alternateAppointment");
+      },
       displaySessionwarning() {
         this.showWarning = true;
       },
@@ -58,13 +100,33 @@ export default {
         // Return the medical code for the MP based on their username
         axios.get(this.$store.getters.returnCodeURL+this.$store.getters.authenticatedUsername)
           .then(function(response) {
-          // Extract out medical code from the response
-          self.medicalcode = response.data.medicalcode;
-          self.$store.dispatch('medicalCode', self.medicalcode);
-        })
-        .catch(function(err) {
-          console.log(err);
-        })
+            // Extract out medical code from the response
+            self.medicalcode = response.data.medicalcode;
+            self.$store.dispatch('medicalCode', self.medicalcode);
+            // TODO: Add error handling here and set the names in the appointment.
+            // This is a medical professional, so get their patient list.
+            axios.get(self.$store.getters.getPatientInfoURL + self.$store.getters.medicalCode).then(result => {
+              if(result.data.success) {
+                // Get patients was successful.
+                console.log("Successfully retrieved list of patients: " + result.data.patients);
+                self.appointee = result.data.patients;
+              } else {
+                // Get patients failed.
+                console.log("Error getting patients.");
+              }
+            });
+            // Set the appointee type to patient.
+            self.appointeeType = "Patient";
+            self.isMed = true;
+          })
+          .catch(function(err) {
+            console.log(err);
+          })
+      },
+      addAppointment(appointment) {
+        this.$store.dispatch("addAppointment", appointment);
+        this.appointment = appointment;
+        console.log(this.appointment);
       }
     },
     created() {

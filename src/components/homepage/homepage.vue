@@ -11,7 +11,7 @@
     <reset-username v-if = "showReset"></reset-username>
     <reset-questions v-if = "showQuestions"></reset-questions>
     <reset-password v-if = "showPassword"></reset-password>
-    <admin-homepage v-if = "showAdmin"></admin-homepage>
+  
     <info-block></info-block>
     <service-block></service-block>
     <device-block></device-block>
