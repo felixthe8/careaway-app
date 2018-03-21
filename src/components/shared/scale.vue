@@ -1,14 +1,14 @@
 <template>
 
   <div class="scale">
-    <button class="scale__button green-button" draggable="true" @click="addScale">Scale</button>
+    <button class="scale__button green-button" draggable="true" @drag="onDrag">Scale</button>
 
     <div class="scale__menu">
       <label>Reason for scale:</label>
       <input class="scale__menu--input" name="scale" type="text" id="scale">
-      <label>Date Requested</label>
+      <label>Date Requested:</label>
       <input class="scale__menu--input" name="date" type="text" id="scale-date">
-      <button class="scale__menu--create green-button" @click="create">Create Event</button>
+      <button id="scale" class="scale__menu--create green-button" @click="create">Create Event</button>
     </div>
   </div>
 
@@ -23,14 +23,14 @@ export default {
 
   data() {
     return {
-      scale: {}
+      scale: { "type": "scale" }
     }
   },
 
   methods: {
-    addScale: function(event) {
-      console.log(event);
-      document.getElementsByClassName("scale__menu")[0].classList.add("show-menu");
+    onDrag:function(event) {
+      event.dataTransfer.setData("text/plain", event.target.id);
+      event.dropEffect = "move";
     },
     create: function() {
       this.scale = {
@@ -57,6 +57,7 @@ export default {
 
   &__button {
     padding: 5px 20px;
+    cursor: move;
   }
 
   &__label {

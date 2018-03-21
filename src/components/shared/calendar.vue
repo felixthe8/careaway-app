@@ -15,6 +15,9 @@
 
       <div class="columns is-multiline monthly">
         <div class="column is-one-fifth calendar__day"
+          :date="calendar[index].date"
+          @dragover="dragOver"
+          @drop="drop"
           v-for="day, index in calendar.length"
           :class="{
             'no-right' : (index+1)%5 === 0,
@@ -98,6 +101,24 @@ export default {
 
         document.getElementsByClassName("calendar__menu--button")[1].classList.add("active");
         document.getElementsByClassName("calendar__menu--button")[0].classList.remove("active");
+    },
+    dragOver: function(event) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "move"
+    },
+    drop: function(event) {
+      event.preventDefault();
+
+      //if scale
+      console.log(event.dataTransfer.getData("text/plain"));
+      let date = event.target.getAttribute("date");
+      document.getElementById("scale-date").value = date;
+      document.getElementsByClassName("scale__menu")[0].classList.add("show-menu");
+
+      //if checklist
+      // let date = event.target.getAttribute("date");
+      // document.getElementById("checklist-date").value = date;
+      // document.getElementsByClassName("checklist__menu")[0].classList.add("show-menu");
     }
   },
 
