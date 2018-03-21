@@ -91,20 +91,7 @@ export default {
         this.showWarning = true;
       },
       getCode() {
-       var self = this;
-        // Return the medical code for the MP based on their username
-        axios.get(this.$store.getters.returnCodeURL+this.$store.getters.authenticatedUsername)
-          .then(function(response) {
-            // Extract out medical code from the response
-            self.medicalcode = response.data.medicalcode;
-            self.$store.dispatch('medicalCode', self.medicalcode);
-            // TODO: Add error handling here and set the names in the appointment.
-            // This is a medical professional, so get their patient list.
-
-          })
-          .catch(function(err) {
-            console.log(err);
-          })
+        this.medicalcode = this.$store.getters.medicalCode;
       },
       addAppointment(appointment) {
         this.$store.dispatch("addAppointment", appointment);

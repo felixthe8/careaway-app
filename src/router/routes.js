@@ -10,7 +10,7 @@ import medicDataAnalysis from '../components/medic-home/data-analysis.vue';
 import patientHome from '../components/patient-home/patient-homepage.vue';
 import adminHome from '../components/admin-home/admin-homepage.vue';
 import error from '../components/error/error.vue';
-
+import axios from 'axios';
 Vue.use(Router);
 Vue.use(store);
 
@@ -30,7 +30,20 @@ const router = new Router ({
       name: 'MedicHome',
       beforeEnter: (to, from, next) => {
         if((store.getters.authStatus) == 'medical-professional') {
-          next()
+          axios.get(store.getters.returnCodeURL+store.getters.authenticatedUsername)
+          .then(function(response) {
+            // Extract out medical code from the response
+            //self.medicalcode = response.data.medicalcode;
+            store.dispatch('medicalCode', response.data.medicalcode);
+            next();
+            // TODO: Add error handling here and set the names in the appointment.
+            // This is a medical professional, so get their patient list.
+
+          })
+          .catch(function(err) {
+            console.log(err);
+          })
+          
         } else {
           next({path: '/',});
         }
