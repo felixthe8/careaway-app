@@ -2,7 +2,19 @@
 
   <div class="appointment">
     <label class="appointment__label">Appointment</label>
-    <button class="appointment__button green-button" @click="addAppointment">+</button>
+    <button class="appointment__button green-button" @click="openCreateAppointment">+</button>
+
+    
+    <create
+      :appointeeType="appointeeType"
+      :appointee="appointee"
+      :isMed="isMed"
+      v-if = "showAppointmentCreation"
+      v-on:addAppointment="addAppointment" />
+    <modify
+      :requestee="appointeeType"
+      :appointment="this.$store.getters.currentAppointment"
+      v-if = "showAppointmentMod" />
 
     <div class="appointment__menu">
       <label>Reason for Appointment:</label>
@@ -11,26 +23,37 @@
       <input class="appointment__menu--input" name="date" type="text" id="appointment-date">
       <button class="appointment__menu--create green-button" @click="create">Create Event</button>
     </div>
+
   </div>
 
 </template>
 
 <script>
-
+import create from './appointment/appointment-creation';
+import modify from './appointment/appointment-modification';
 export default {
   name: 'appointment',
-
+  components: ['create', 'modify'],
   props: ['calendar'],
 
   data() {
     return {
-      appointment: {}
+      // Data needed for appointment creation/modification
+      appointment: {}, // Currently stores only one appointment object, will need to change to store array
+      appointeeType: "",
+      appointee: [],
+      isMed: true
     }
   },
 
   methods: {
     addAppointment: function() {
       document.getElementsByClassName("appointment__menu")[0].classList.add("show-menu");
+    },
+    addAppointment(appointment) {
+      this.$store.dispatch("addAppointment", appointment);
+      this.appointment = appointment;
+      console.log(this.appointment);
     },
     create: function() {
       this.appointment = {
@@ -44,8 +67,25 @@ export default {
         }
       }
       document.getElementsByClassName("appointment__menu")[0].classList.remove("show-menu");
+    },
+    getAppointment(){
+      return this.$store.getters.appointments[0];
+    },
+    toggleCreate(){
+      this.$store.dispatch("alternateAppointment");
+    },
+    openCreateAppointment() {
+      this.$store.dispatch('alternateAppointmentCreation');
     }
-  }
+  },
+  computed: {
+    showAppointmentCreation() {
+      return this.$store.getters.showAppointmentCreation;
+    },
+    showAppointmentMod() {
+      return this.$store.getters.showAppointmentMod;
+    }
+  },
 }
 </script>
 
