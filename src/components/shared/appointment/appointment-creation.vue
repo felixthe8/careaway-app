@@ -80,8 +80,11 @@ export default {
     }
   },
   beforeMount() {
-    this.selectedAppointee = this.appointee[0].username;
-    this.medAppointee = this.appointee[0];
+    if(this.appointee.length > 0) {
+      this.selectedAppointee = this.appointee[0].username;
+      this.medAppointee = this.appointee[0];
+    }
+    
   },
   methods: {
     create() {

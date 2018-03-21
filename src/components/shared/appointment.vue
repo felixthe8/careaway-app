@@ -33,7 +33,7 @@ import create from './appointment/appointment-creation';
 import modify from './appointment/appointment-modification';
 export default {
   name: 'appointment',
-  components: ['create', 'modify'],
+  components: {create, modify},
   props: ['calendar'],
 
   data() {
