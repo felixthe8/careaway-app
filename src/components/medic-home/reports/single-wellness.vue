@@ -95,6 +95,7 @@ export default {
           }
            // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
           self.averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse();
+          self.$store.dispatch("singlePatientWellness",self.averageData);
           // Define the graph and it's styles
           new Chart(document.getElementById("aggregate-wellness"), {
             type: 'bar',

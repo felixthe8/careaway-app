@@ -1,12 +1,15 @@
 <template>
   
   <div class = "aggregate-graphs">
+    <div id = "patientLabel">
+    <p class ="subtitle" id = "patientText">Select Patient </p>
     <select class = "selectPatient" v-model="selected" v-on:change="choosePatient" name="Patients"> 
         <option value ="0" selected disabled >Choose Patient</option>
         <option  v-for="patient in patientList" v-bind:value="patient.UserName">
         First Name:{{ patient.FirstName }} , UserName:{{patient.UserName}}
         </option>
     </select>
+    </div>
     <breakdownGraph/>
     <br>
     <aggregateWellness/>
@@ -73,11 +76,18 @@ export default {
   .aggregate-graphs {
       padding: 2% 3% 0 3%;
   }
+  #patientLabel{
+    
+    float: right;
+  }
+  #patientText{
+    text-align: center;
+  }
   .selectPatient{
     width: 150px;
     padding: 5px 5px 5px 5px;
     font-size: 16px;
     height: 34px;
-   
+    float: right;
   }
 </style>

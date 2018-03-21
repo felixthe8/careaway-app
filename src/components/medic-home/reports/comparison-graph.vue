@@ -2,8 +2,8 @@
   <div class = "breakdown">
     <h1 class = "title is-3 is-spaced"> Patient Breakdown by Diagnosis: {{diagnosis}} </h1>
     <h2 class="subtitle"> {{breakdownWarning}} </h2>
-    <canvas id = "checklist-comparison" width = "450" height = "300"> </canvas>
-    <canvas id = "meter-comparison" width = "450" height = "300"> </canvas>
+    <canvas id = "checklist-comparison" width = "500" height = "300"> </canvas>
+    <canvas id = "meter-comparison" width = "500" height = "300"> </canvas>
   </div>
 </template>
 
@@ -32,52 +32,6 @@ export default {
       }
   },
   methods: {
-      getPatientWellness(){
-         var self = this;
-      // Request to return meter widget data
-      axios.get(this.$store.getters.getSingleTreatmentmeterURL, {
-        params: {
-          username:self.$store.state.username,
-          // Pass the first and last elements from the day array. These dates will be used to filter the response in the backend
-          startDate: self.days[0],
-          finalDate: self.days.slice(-1)[0]
-        }
-      })
-      .then(function (response) { 
-        // Check each individual array in the response to see if they are empty. If they are, do not create the graph
-        if(response.data.every((item) => { return item.length == 0})) {
-          self.diagnosisWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
-        } else {
-          // Loop through each object holding meter widget treatment data
-          for (var meter of response.data) {
-              // Write the sum of the meter widget data 
-              self.completionSingleMeterData[meter.due_date].value += (parseFloat(meter.patient_input) / parseFloat(meter.scale[1]) ) * 100
-              // Increment the counter
-              self.completionSingleMeterData[meter.due_date].counter+=1
-            
-          }
-          // Compute the average of the meter widget data for each day
-          for(var key in self.completionSingleMeterData) {
-            if(self.completionSingleMeterData.hasOwnProperty(key)) {
-              // If no patients had a meter widget that day, set the average to 0 for that day
-              if(self.completionSingleMeterData[key].counter == 0) {
-                self.completionSingleMeterData[key].average = 0;
-              } else {
-                // Average is the sum of meter widget data divided by the number of patients who had data for that day 
-                self.completionSingleMeterData[key].average = self.completionSingleMeterData[key].value / self.completionSingleMeterData[key].counter;
-              }
-            }
-          }
-           // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
-          self.averagePatientData = Object.keys(self.completionSingleMeterData).map(key => { return self.completionSingleMeterData[key].average }).reverse();
-        }
-      })
-      .catch(function(err) {
-         self.wellnessWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
-         console.log(err);
-      });
-      },
-    
       getInfo() {
         for(var i = 0; i <=4; i++) {
         var singleDay = moment().day(-2).subtract(i,'days').format("YYYY-MM-DD");
@@ -147,7 +101,6 @@ export default {
               }
             }
           }
-          self.getPatientWellness();
           for (var meterResponse of response.data.meter) {
               // Write the sum of the meter widget data 
               self.completionAggregatedMeterData[meterResponse.due_date].value += (parseFloat(meterResponse.patient_input) / parseFloat(meterResponse.scale[1]) ) * 100;
@@ -183,15 +136,17 @@ export default {
             data: {
               labels: self.days,
               datasets: [{
-                label: "Completion Percentage",
-                borderColor:'#DC1702',
+                label: "Average Completion",
+                borderColor:'#FFD700',
                 fill: false,
                 // Turn the completion percentage data into an array. Must reverse the array because the days were instantiated backwards
                 data: Object.keys(self.completionAggregatedCheckListData).map(key => {return self.completionAggregatedCheckListData[key].average}).reverse()
               }, 
               {
                 type: 'line',
-                data: Array(self.days.length),
+                data: self.$store.getters.singlePatientCompletion,
+                label:"Individual Completion",
+                borderColor: '#DC1702',
                 fill: false,
 
               }]
@@ -233,16 +188,18 @@ export default {
             data: {
               labels: self.days,
               datasets: [{
-                label: "Completion Percentage",
-                borderColor:'#DC1702',
+                label: "Average Patient Wellness",
+                borderColor:'#FFD700',
                 fill: false,
                 // Turn the completion percentage data into an array. Must reverse the array because the days were instantiated backwards
                 data: self.averageAggregatedData,
               }, 
               {
-                type: 'line',
-                data: self.averagePatientData,
+                label: "Individual Patient Wellness ",
+                data:  self.$store.getters.singlePatientWellness,
+                borderColor: '#DC1702',
                 fill: false,
+                
 
               }]
             },
@@ -259,7 +216,7 @@ export default {
                     beginAtZero: true,
                     suggestedMax: 100
                   },
-                  scaleLabel: {display: true, labelString: "Completion Percentage", fontSize: 14}
+                  scaleLabel: {display: true, labelString: "Wellness Percentage", fontSize: 14}
                 }]
               },
               legend: {

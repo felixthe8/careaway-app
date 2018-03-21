@@ -73,6 +73,7 @@ export default {
               } else {
                 // Task completion percentage is the number of tasks completed / total tasks for that day
                 self.completionData[key].average = Math.round( (self.completionData[key].complete / self.completionData[key].taskCount) * 100 )
+                self.$store.dispatch("singlePatientCompletion", Object.keys(self.completionData).map(key => {return self.completionData[key].average}).reverse());
               }
             }
           }

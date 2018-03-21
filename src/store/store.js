@@ -45,7 +45,11 @@ export const store = new Vuex.Store({
     validPassword: '',
     authenticatedUsername: '',
     medicalCode: '',
-    authStatus: ''
+    authStatus: '',
+    singlePatientCompletion: [],
+    singlePatientWellness: [],
+  
+
   },
   getters: {
     checkBreachURL: (state) => {
@@ -116,7 +120,13 @@ export const store = new Vuex.Store({
     },
     authStatus: (state) => {
       return state.authStatus;
-    }
+    },
+    singlePatientCompletion:(state) => {
+      return state.singlePatientCompletion;
+    },
+    singlePatientWellness:(state) => {
+      return state.singlePatientWellness;
+    },
   }, 
   mutations: {
     // function to flip the value of showLogin 
@@ -161,6 +171,12 @@ export const store = new Vuex.Store({
     },
     authStatus: (state,payload) => {
       state.authStatus = payload;
+    },
+    singlePatientWellness:(state,payload) =>{
+      state.singlePatientWellness = payload;
+    },
+    singlePatientCompletion:(state,payload)=>{
+      state.singlePatientCompletion = payload;
     }
 
   },
@@ -202,6 +218,12 @@ export const store = new Vuex.Store({
     },
     signOut: (context,payload) => {
       context.commit('authStatus', payload);
-    }
+    },
+    singlePatientWellness:(context,payload) => {
+      context.commit('singlePatientWellness',payload);
+    },
+    singlePatientCompletion:(context,payload) => {
+      context.commit('singlePatientCompletion',payload);
+    },
   }
 });
