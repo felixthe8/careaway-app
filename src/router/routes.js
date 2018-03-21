@@ -1,6 +1,7 @@
 // import home from '../../../careaway-home/src/App.vue';
 
 import Vue from 'vue';
+import axios from 'axios';
 import Router from 'vue-router';
 import {store} from '../store/store'
 import homepage from '../components/homepage/homepage.vue';
@@ -23,6 +24,17 @@ const router = new Router ({
             component: homepage,
             meta: {
                 title: "CareAway Homepage"
+            },
+            beforeEnter:(to, from, next) => {
+                axios.get('http://localhost:8080/getToken')
+                .then(response => {
+                  self.datas = response.data.csrfToken;
+                  axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken;
+                  console.log(axios.defaults.headers);
+                }).catch(function(err) {
+                  console.log(err);
+                });
+                next();
             }
         },
 
@@ -35,7 +47,6 @@ const router = new Router ({
                     console.log(store.getters.authStatus);
                     next()
                 } else {
-                    console.log("Not Authenticated");
                     next({path: '/',});
                 }
             },
@@ -59,12 +70,9 @@ const router = new Router ({
                 title: "CareAway Patient Home"
             },
             beforeEnter: (to, from, next) => {
-                if((store.getters.authStatus) === 'patient') {
-                    console.log("Secure entry");
-                    console.log(store.getters.authStatus);
+                if((store.getters.authStatus) == 'patient') {
                     next()
                 } else {
-                    console.log("Not Authenticated");
                     next({path: '/',});
                 }
             },
@@ -78,12 +86,9 @@ const router = new Router ({
                 title: "CareAway Admin Home"
             },
             beforeEnter: (to, from, next) => {
-                if((store.getters.authStatus) === 'system-admin') {
-                    console.log("Secure entry");
-                    console.log(store.getters.authStatus);
+                if((store.getters.authStatus) == 'system-admin') {
                     next()
                 } else {
-                    console.log("Not Authenticated");
                     next({path: '/',});
                 }
             },
