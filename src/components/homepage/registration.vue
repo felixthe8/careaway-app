@@ -226,7 +226,8 @@
             securityQ3: this.securityQ3,
             securityA1: this.securityA1,
             securityA2: this.securityA2,
-            securityA3: this.securityA3
+            securityA3: this.securityA3,
+            patient: this.patientForm
           }
           // Sends data to the proxy server on this route
           axios.post('http://localhost:8080/registerPatient', newPatient).then((
@@ -279,7 +280,8 @@
             securityQ3: this.securityQ3,
             securityA1: this.securityA1,
             securityA2: this.securityA2,
-            securityA3: this.securityA3
+            securityA3: this.securityA3,
+            patient: this.patientForm
           }
           // Sends data to the proxy server on this route
           axios.post('http://localhost:8080/registerMed',newMedicalProfessional).then((

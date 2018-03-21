@@ -20,14 +20,12 @@ import timeout from '../shared/timeout';
 import Chart from 'chart.js';
 import axios from 'axios';
 import appointmentStatus from '../shared/appointment/appointment-status';
-import create from '../shared/appointment/appointment-creation';
-import modify from '../shared/appointment/appointment-modification';
 import debounce from 'debounce';
 axios.defaults.withCredentials = true;
 axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
 export default {
     name: 'medicHome',
-    components: {navbar, timeout, appointmentStatus, create, modify},
+    components: {navbar, timeout, appointmentStatus},
     data() {
       return {
         showWarning: false,
