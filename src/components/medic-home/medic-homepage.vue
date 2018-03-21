@@ -51,9 +51,14 @@ export default {
       axios.get(this.$store.getters.getAppointmentURL + this.$store.getters.authenticatedUsername).then(result => {
         var appointments = result.data.appointments;
         console.log(appointments);
-        for(var i=0; i<appointments.length; i++) {
+        if(appointments) {
+          for(var i=0; i<appointments.length; i++) {
           self.$store.dispatch('addAppointment',appointments[i]);
+          }
+        } else {
+          console.log("No appointments.");
         }
+        
       }).catch(error => {
         console.log(error);
       });
