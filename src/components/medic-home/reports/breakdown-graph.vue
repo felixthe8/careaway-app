@@ -47,9 +47,10 @@ export default {
                 // Use the number of patients with that condition as the data values
                 data: Object.values(conditionCount),
                 backgroundColor: colors.make_color({
-                  full_random: true,
+                  scheme_type: 'complement',
+                  golden: false,
                   format: 'hex',
-                  colors_returned: Object.values(conditionCount).length
+                  colors_returned: Object.keys(conditionCount).length
                 })
               }]
             },
