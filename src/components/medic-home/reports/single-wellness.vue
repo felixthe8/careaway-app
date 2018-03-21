@@ -94,7 +94,7 @@ export default {
             }
           }
            // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
-          self.averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse()
+          self.averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse();
           // Define the graph and it's styles
           new Chart(document.getElementById("aggregate-wellness"), {
             type: 'bar',
@@ -191,15 +191,15 @@ export default {
       }
       // Compute the average for the week
       var average = numbers.reduce((a,b) => a+b,0) / numbers.length;
-      this.averageWellness = "The average wellness for this week is "+average+"%";
+      this.averageWellness = "The average wellness for this week is "+average.toFixed(2)+"%";
     },
     getTrends(data) {
       // Create 2 arrays - 1 for holding the positive trends and one for holding the negative trends
       var positiveTrends = [], negativeTrends = [];
       var startIndex = 0;
       // Determine the positive trends first. Loop through the data
-      for(var i = 0; i < data.length - 1; i++) {
-        // If the data at one index is less than the one at the next, keep going and done run the body
+      for(var i = 0; i < data.length; i++) {
+        // If the data at one index is less than the one at the next, this is the start of a positive trend
         if(data[i] <= data[i+1]) {
           continue;
         } else {
@@ -237,7 +237,9 @@ export default {
     getTrendsIgnore(data) {
       // Create 2 arrays - 1 for holding the positive trends and one for holding the negative trends
       var positiveTrends = [], negativeTrends = [];
-      var startIndex = 0;
+      // Keep track of the start index when a new trend begins
+      // Keep a marker of the last index that was read in the data array so we know where to read next
+      var startIndex = 0, marker = 0;
       // From the original data, strip out the values that aren't 0s and make a new array
       var filteredData = data.filter(value => value != 0)
       // Determine the positive trends
@@ -247,29 +249,34 @@ export default {
         } else {
            positiveTrends.push({
             // Find starting value from the original data set and determine its index
-            start: data.indexOf(filteredData[startIndex]), 
+            start: data.indexOf(filteredData[startIndex], marker), 
             // Find the ending value from the original data set and determine its index. Start search from where the start value was last found
-            end: data.indexOf(filteredData[i], data.indexOf(filteredData[startIndex]))
+            end: data.indexOf(filteredData[i], marker)
           })
           // Set the new starting index
-          startIndex = i + 1
+          startIndex = i + 1;
+          // The new marker becomes the 1 index past where the last value was read
+          marker = positiveTrends.slice(-1)[0].end + 1
         }
       }
        // Remove the instances where start and end values are the same. 
       positiveTrends = positiveTrends.filter(trend => trend.start != trend.end);
       // Reset the value of startIndex 
       startIndex = 0;
+      // Reset the marker
+      marker = 0;
       // Determine the negative trends
       for(var i =0; i < filteredData.length; i++) {
         if(filteredData[i] >= filteredData[i+1]) {
           continue;
         } else {
           negativeTrends.push({
-            start: data.indexOf(filteredData[startIndex]),
-            end: data.indexOf(filteredData[i] , data.indexOf(filteredData[startIndex]))
+            start: data.indexOf(filteredData[startIndex], marker),
+            end: data.indexOf(filteredData[i] , marker)
           })
           // Set the new starting index
           startIndex = i + 1
+          marker = negativeTrends.slice(-1)[0].end + 1
         }
       }
       negativeTrends = negativeTrends.filter(trend => trend.start != trend.end);

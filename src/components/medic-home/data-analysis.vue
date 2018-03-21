@@ -1,7 +1,8 @@
 <template>
   
   <div class = "aggregate-graphs">
-    <select v-model="selected" v-on:change="choosePatient">
+    <select class = "selectPatient" v-model="selected" v-on:change="choosePatient" name="Patients"> 
+        <option value ="0" selected disabled >Choose Patient</option>
         <option  v-for="patient in patientList" v-bind:value="patient.UserName">
         First Name:{{ patient.FirstName }} , UserName:{{patient.UserName}}
         </option>
@@ -71,5 +72,12 @@ export default {
 <style lang="scss" scoped>
   .aggregate-graphs {
       padding: 2% 3% 0 3%;
+  }
+  .selectPatient{
+    width: 150px;
+    padding: 5px 5px 5px 5px;
+    font-size: 16px;
+    height: 34px;
+   
   }
 </style>

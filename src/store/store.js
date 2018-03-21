@@ -27,8 +27,8 @@ export const store = new Vuex.Store({
     registerPatientURL: 'http://localhost:8080/registerPatient',
     registerMedicalProURL: 'http://localhost:8080/registerMed',
     resetCredURL: 'http://localhost:8080/reset-creds',
-    getSecurityQURL:'http://localhost:4100/account/api/security-questions?username=',
-    validateAnswerURL: 'http://localhost:4100/account/api/validate-answers',
+    getSecurityQURL:'http://localhost:8080/security-questions?username=',
+    validateAnswerURL: 'http://localhost:8080/validate-answers',
     validateUsernameURL: 'http://localhost:8080/validate-username',
     ssoRegisterPatientURL: 'http://localhost:8080/ssoRegisterPatient',
     ssoRegisterMedicalURL: 'http://localhost:8080/ssoRegisterMed',
@@ -36,6 +36,7 @@ export const store = new Vuex.Store({
     patientBreakdownURL: 'http://localhost:8080/getDiagnoses?medicalcode=',
     getTreatmentmeterURL: 'http://localhost:8080/getTreatmentmeter',
     getSingleTreatmentmeterURL: 'http://localhost:8080/getSingleTreatmentmeter',
+    getSingleDiagnosisURL: 'http://localhost:8080/getSingleDiagnosis',
     getTreatmentchecklistURL: 'http://localhost:8080/getTreatmentchecklist',
     getSingleTreatmentchecklistURL: 'http://localhost:8080/getSingleTreatmentchecklist',
     getPatientUserNamesURL: 'http://localhost:8080/getPatientUserNames',
@@ -100,6 +101,9 @@ export const store = new Vuex.Store({
     },
     getPatientUserNamesURL:(state) => {
       return state.getPatientUserNamesURL;
+    },
+    getSingleDiagnosisURL:(state) =>{
+      return state.getSingleDiagnosisURL;
     },
     showLogin: (state) => {
       return state.showLogin;

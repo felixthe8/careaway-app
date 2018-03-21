@@ -1,7 +1,7 @@
 <template>
   <div class = "aggregate-graphs">
     <p id = patientName>{{patient}}</p>
-    <breakdownGraph/>
+    <comparisonGraph/>
     <br>
     <singleWellness/>
     <br>
@@ -12,7 +12,7 @@
 <script>
 import axios from 'axios';
 import pieceLabel from 'chart.piecelabel.js';
-import breakdownGraph from './reports/breakdown-graph';
+import comparisonGraph from './reports/comparison-graph';
 import singleWellness from './reports/single-wellness';
 import singleComplete from './reports/single-completion';
 import patientHomepageVue from '../patient-home/patient-homepage.vue';
@@ -38,7 +38,7 @@ export default {
     this.getPatientName()
   },
   
-  components: {breakdownGraph, singleWellness, singleComplete},
+  components: {comparisonGraph, singleWellness, singleComplete},
 }
 
 </script>
