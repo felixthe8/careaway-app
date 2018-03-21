@@ -33,12 +33,8 @@ const router = new Router ({
           axios.get(store.getters.returnCodeURL+store.getters.authenticatedUsername)
           .then(function(response) {
             // Extract out medical code from the response
-            //self.medicalcode = response.data.medicalcode;
             store.dispatch('medicalCode', response.data.medicalcode);
             next();
-            // TODO: Add error handling here and set the names in the appointment.
-            // This is a medical professional, so get their patient list.
-
           })
           .catch(function(err) {
             console.log(err);

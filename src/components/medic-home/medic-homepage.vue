@@ -48,7 +48,6 @@ export default {
         } else {
           console.log("No appointments.");
         }
-        
       }).catch(error => {
         console.log(error);
       });

@@ -88,7 +88,6 @@ export default {
   },
   mounted() {
     if(this.isMed) {
-      //TODO: Medical code not available yet...
       axios.get(this.$store.getters.getPatientInfoURL + this.$store.getters.medicalCode)
         .then(result => {
           if(result.data.success) {
