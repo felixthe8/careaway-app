@@ -29,20 +29,20 @@
 </template>
 
 <script>
+import axios from 'axios';
 import create from './appointment/appointment-creation';
 import modify from './appointment/appointment-modification';
 export default {
   name: 'appointment',
   components: {create, modify},
-  props: ['calendar'],
+  props: ['calendar', 'isMed'],
 
   data() {
     return {
       // Data needed for appointment creation/modification
       appointment: {}, // Currently stores only one appointment object, will need to change to store array
       appointeeType: "",
-      appointee: [],
-      isMed: true
+      appointee: []
     }
   },
 
@@ -86,6 +86,35 @@ export default {
       return this.$store.getters.showAppointmentMod;
     }
   },
+  mounted() {
+    if(this.isMed) {
+      //TODO: Medical code not available yet...
+      axios.get(this.$store.getters.getPatientInfoURL + this.$store.getters.medicalCode)
+        .then(result => {
+          if(result.data.success) {
+            // Get patients was successful.
+            console.log("Successfully retrieved list of patients: " + result.data.patients);
+            this.appointee = result.data.patients;
+          } else {
+            // Get patients failed.
+            console.log("Error getting patients.");
+          }
+        });
+      // Set the appointee type to patient.
+      this.appointeeType = "Patient";
+      this.isMed = true;
+    } else {
+      // This is a patient, so get their medical professional's name, and their information.
+      axios.get(this.$store.getters.getPatientApptURL + this.$store.getters.authenticatedUsername)
+        .then(result => {
+          this.appointee = result.data.mp;
+        });
+      // Set appointee type to medical professional.
+      this.appointeeType = "Medical Professional";
+      this.isMed = false;
+    }
+    
+  }
 }
 </script>
 

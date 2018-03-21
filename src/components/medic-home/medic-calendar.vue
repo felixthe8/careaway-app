@@ -2,7 +2,7 @@
 
   <div class="columns medic-calendar">
     <div class="menu column is-one-fifth">
-      <appointment :calendar="calendar"/>
+      <appointment :calendar="calendar" :isMed="isMed" />
 
       <div class="menu__widgets">
         <scale :calendar="calendar"/>
@@ -38,7 +38,8 @@ export default {
 
   data() {
     return {
-      calendar: []
+      calendar: [],
+      isMed: true
     }
   }
 

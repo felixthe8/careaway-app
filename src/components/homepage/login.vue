@@ -33,6 +33,9 @@
 <script>
 import axios from 'axios'
 import resetPassword from './reset-password.vue';
+import cookies from 'browser-cookies';
+axios.defaults.withCredentials = true;
+axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
   export default {
     name: 'login',
     components: {
@@ -93,6 +96,8 @@ import resetPassword from './reset-password.vue';
             .then(function(response) {
               // If the response is successful, that means an account exists.   
               if(response.data.success) {
+                console.log(response.data.cookie);
+                cookies.set('user', response.data.cookie);
                 self.$store.dispatch('signIn', response.data.accountType);
                 self.$store.dispatch('authenticatedUsername', self.username);
                 // If the login credential is a patient, take this route

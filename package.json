@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "browser-cookies": "^1.2.0",
     "bulma": "^0.6.2",
     "chart.piecelabel.js": "^0.9.0",
     "chartjs-plugin-annotation": "^0.5.7",

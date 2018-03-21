@@ -80,6 +80,8 @@ export default {
     }
   },
   beforeMount() {
+    const length = this.appointee.length;
+    console.log(length);
     if(this.appointee.length > 0) {
       this.selectedAppointee = this.appointee[0].username;
       this.medAppointee = this.appointee[0];

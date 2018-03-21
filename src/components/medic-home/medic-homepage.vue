@@ -7,16 +7,6 @@
     <appointment-status :appointment="getAppointment()" v-if="this.$store.getters.showAppointment" ></appointment-status>
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
     <p class = "subtitle" id = "code-display">CareAway Medical Code: {{medicalcode}} </p>
-    <create
-      :appointeeType="appointeeType"
-      :appointee="appointee"
-      :isMed="isMed"
-      v-if = "showAppointmentCreation"
-      v-on:addAppointment="addAppointment"/>
-    <modify
-      :requestee="appointeeType"
-      :appointment="this.$store.getters.currentAppointment"
-      v-if = "showAppointmentMod" />
     <router-view class="wrapper"></router-view>
 
   </div>
@@ -33,6 +23,8 @@ import appointmentStatus from '../shared/appointment/appointment-status';
 import create from '../shared/appointment/appointment-creation';
 import modify from '../shared/appointment/appointment-modification';
 import debounce from 'debounce';
+axios.defaults.withCredentials = true;
+axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
 export default {
     name: 'medicHome',
     components: {navbar, timeout, appointmentStatus, create, modify},
@@ -110,19 +102,7 @@ export default {
             self.$store.dispatch('medicalCode', self.medicalcode);
             // TODO: Add error handling here and set the names in the appointment.
             // This is a medical professional, so get their patient list.
-            axios.get(self.$store.getters.getPatientInfoURL + self.$store.getters.medicalCode).then(result => {
-              if(result.data.success) {
-                // Get patients was successful.
-                console.log("Successfully retrieved list of patients: " + result.data.patients);
-                self.appointee = result.data.patients;
-              } else {
-                // Get patients failed.
-                console.log("Error getting patients.");
-              }
-            });
-            // Set the appointee type to patient.
-            self.appointeeType = "Patient";
-            self.isMed = true;
+
           })
           .catch(function(err) {
             console.log(err);
