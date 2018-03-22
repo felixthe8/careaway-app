@@ -45,7 +45,7 @@ export default {
         appointment: {}, // Currently stores only one appointment object, will need to change to store array
         appointeeType: "",
         appointee: [],
-        isMed: true
+        isMed: false
       }
     },
     beforeCreate() {

@@ -12,7 +12,7 @@
           <select v-if="isMed" v-model="selectedAppointee" ref="appoint" class="appointee">
             <option id="appointee" v-for="patient in appointee" :value="patient.username">{{patient.firstName}} {{patient.lastName}}</option>
           </select>
-          <p v-if="!isMed" class="appointee" :value="selectedAppointee">
+          <p v-if="!isMed" class="appointee" id="appointee" :value="selectedAppointee">
             {{medAppointee.firstName}} {{medAppointee.lastName}}
           </p>
         </div>
