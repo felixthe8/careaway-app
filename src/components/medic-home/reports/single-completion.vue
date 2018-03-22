@@ -17,10 +17,13 @@ export default {
   name: '',
   data() {
       return {
+        // Warning for Error Handling
         completionWarning: '',
         // Create an array to store the 5 dates made from moment.js
         days: [],
+        // Creates Object for Completion Data
         completionData: {},
+        // Creates integers for tasks
         totalComplete: 0,
         totalAssigned: 0,
         showReport: false
