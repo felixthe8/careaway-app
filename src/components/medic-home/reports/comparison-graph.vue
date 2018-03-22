@@ -14,8 +14,8 @@
 
 <script>
 import axios from 'axios';
-import colorScheme from 'color-scheme';
 import moment from 'moment';
+import Chart from 'chart.js';
 export default {
   name: 'comparison',
   data() {
@@ -297,12 +297,7 @@ export default {
         }
       },
   },
-  created(){
-      this.$store.dispatch("singlePatientWellness",null);
-      this.$store.dispatch("singlePatientCompletion",null);
-      
-    
-  },
+  
   // Mounted Functions 
   mounted() {
     // Calls Get Info for Graphs

@@ -1,11 +1,11 @@
 <template>
   <div class = "aggregate-graphs">
     <p id = patientName>{{patient}}</p>
-    <comparisonGraph/>
+    <comparisonGraph v-if="showComparison" />
     <br>
-    <singleWellness/>
+    <singleWellness @completeWellness = "wellnessDone = true"/>
     <br>
-    <singleComplete/>
+    <singleComplete @completeCompletion = "completionDone = true"/>
   </div>
 </template>
 
@@ -24,15 +24,24 @@ export default {
         // Create an array to store the 5 dates made from moment.js
         patient: '',
 
+        completionDone: false,
+        wellnessDone: false,
+
+
       }
   },
   methods:{
-
+    
     getPatientName(){
       this.patient = this.$store.state.username;
       
 
       },
+  },
+  computed:{
+    showComparison(){
+      return this.wellnessDone && this.completionDone;
+    }
   },
   mounted(){
     this.getPatientName()
