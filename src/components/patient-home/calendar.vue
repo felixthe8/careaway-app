@@ -39,7 +39,7 @@
           <div v-if="getWidget(day).length > 0">
             <div v-for="widget in getWidget(day)">
               <div class="widget-box" :class="getCompletedStatus(widget).className" @click="clickWidget(widget)">
-                <div><i class="fas fa-tachometer-alt"/><i class="fas fa-clipboard-list"/>{{ titleize(widget.label) }}</div>
+                <div><i class="fas" :class="icons[widget.label]" style="margin-right:6px" />{{ titleize(widget.label) }}</div>
                 <div class="status-text">{{ getCompletedStatus(widget).status }}</div>
               </div>
             </div>
@@ -69,28 +69,32 @@ export default {
   },
   created: function() {
     // Fetch treatment plan
-    axios.get(this.$store.getters.getPatientTreatmentURL+this.$store.getters.authenticatedUsername)
+    /*axios.get(this.$store.getters.getPatientTreatmentURL+this.$store.getters.authenticatedUsername)
       .then(response => {
         this.widgets = response.data.treatment;
       })
       .catch(err => {
         console.log(err);
-      })
+      })*/
   },
   data() {
     return {
+      icons: {
+        checklist:'fa-clipboard-list',
+        meter:'fa-tachometer-alt'
+      },
       widgets: [
         {
           label: "checklist",
           list: [{question: 'Doki doki',check: false}],
-          due_date: new Date(2018,2,19),
+          due_date: '2018-03-20',
           created_at: new Date(Date.now()),
           updated_at: null
         },{
           label: "meter",
           question: 'ASASAAAAA',
           scale: [1,10],
-          due_date: new Date(2018,2,16),
+          due_date: '2018-03-21',
           patient_input: null,
           created_at: new Date(Date.now()),
           updated_at: null,
@@ -98,7 +102,7 @@ export default {
           label: "meter",
           question: 'Shoooopiiiii',
           scale: [1,10],
-          due_date: new Date(2018,2,15),
+          due_date: '2018-03-22',
           patient_input: null,
           created_at: new Date(Date.now()),
           updated_at: null,
@@ -106,7 +110,7 @@ export default {
           label: "meter",
           question: 'Met',
           scale: [1,10],
-          due_date: new Date(2018,2,21),
+          due_date: '2018-03-23',
           patient_input: null,
           created_at: new Date(Date.now()),
           updated_at: null,
@@ -117,7 +121,7 @@ export default {
     }
   },
   methods: {
-    getCurrent: function() {
+    getCurrent() {
       // get today's date object
       let current = new Date();
       // get current monday
@@ -136,7 +140,7 @@ export default {
         "friday": friday.getDate()
       };
     },
-    getMonth: function(start) {
+    getMonth(start) {
       // week day array
       let week = ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"];
       // get today's date object
@@ -187,7 +191,7 @@ export default {
       // return array of day objects
       return month;
     },
-    displayWeek: function(event) {
+    displayWeek(event) {
       let days = document.getElementsByClassName("monthly")[0].children;
       Array.from(days).forEach((item)=> {
         if(item.classList.contains("weekly"))
@@ -199,7 +203,7 @@ export default {
       document.getElementsByClassName("calendar__menu--button")[0].classList.add("active");
       document.getElementsByClassName("calendar__menu--button")[1].classList.remove("active");
     },
-    displayMonth: function(event) {
+    displayMonth(event) {
         let days = document.getElementsByClassName("monthly")[0].children;
         Array.from(days).forEach((item)=> {
           if(item.classList.contains("weekly"))
@@ -210,39 +214,55 @@ export default {
         document.getElementsByClassName("calendar__menu--button")[1].classList.add("active");
         document.getElementsByClassName("calendar__menu--button")[0].classList.remove("active");
     },
-    next: function(event) {
+    next(event) {
       console.log("next");
     },
-    previous: function(event) {
+    previous(event) {
       console.log("previous");
     },
-    getWidget: function(day) {
+    dateStrToDateObj(dateStr) {
+      var dateArray = dateStr.split('-');
+      return {
+        year: parseInt(dateArray[0]),
+        month: parseInt(dateArray[1]),
+        day: parseInt(dateArray[2])
+      }
+    },
+    getWidget(day) {
       // object: Date (obj)
       // date: int (date of month)
       // code: int (day of week)
       // month: int (month-1)
       // name: str (day of week)
-      var widgets = this.widgets.filter(function(item) {
-        var dueDate = item.due_date;
-        var compareDate = day.object;
+      var widgets = this.widgets.filter(item => {
+        var dueDate = this.dateStrToDateObj(item.due_date);
 
-        const sameYear = dueDate.getFullYear() === day.object.getFullYear();
-        const sameMonth = dueDate.getMonth() === day.month;
-        const sameDay = dueDate.getDate() === day.date;
+        const sameYear = dueDate.year === day.object.getFullYear();
+        const sameMonth = dueDate.month-1 === day.month;
+        const sameDay = dueDate.day === day.date;
 
         if (sameYear && sameMonth && sameDay) return true;
         return false;
       })
       return widgets;
     },
-    clickWidget: function(widget, event) {
+    clickWidget(widget, event) {
+      var dueDate = this.dateStrToDateObj(widget.due_date);
+      var todayDate = new Date();
+
+      const sameYear = dueDate.year === todayDate.getFullYear();
+      const sameMonth = dueDate.month-1 === todayDate.getMonth();
+      const sameDay = dueDate.day === todayDate.getDate();
+
+      if (!sameYear || !sameMonth || !sameDay) return;
+
       this.selectedWidget = widget;
       this.active = widget.label;
     },
-    close: function() {
+    close() {
       this.active = '';
     },
-    save: function(payload) {
+    save(payload) {
       const obj = {
         treatment: payload,
         username: this.$store.getters.authenticatedUsername
@@ -255,11 +275,12 @@ export default {
         console.log(err);
       })
     },
-    titleize: function(str) {
+    titleize(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
-    getCompletedStatus: function(widget) {
-      var due_date = widget.due_date;
+    getCompletedStatus(widget) {
+      var due_date = this.dateStrToDateObj(widget.due_date);
+      due_date = new Date(due_date.year, due_date.month-1, due_date.day);
       var today = new Date();
       
       due_date.setHours(0,0,0,0);
