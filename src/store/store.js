@@ -37,6 +37,7 @@ export const store = new Vuex.Store({
     validateUsernameURL: 'http://localhost:8080/validate-username',
     ssoRegisterPatientURL: 'http://localhost:8080/ssoRegisterPatient',
     ssoRegisterMedicalURL: 'http://localhost:8080/ssoRegisterMed',
+    LoginInfoURL: 'http://localhost:8080/getLoginInfo?token=',
     returnCodeURL : 'http://localhost:8080/returnCode?username=',
     patientBreakdownURL: 'http://localhost:8080/getDiagnoses?medicalcode=',
     getTreatmentmeterURL: 'http://localhost:8080/getTreatmentmeter',
@@ -146,6 +147,9 @@ export const store = new Vuex.Store({
     },
     getSingleDiagnosisURL:(state) =>{
       return state.getSingleDiagnosisURL;
+    },
+    getLoginInfoURL: (state) => {
+      return state.LoginInfoURL;
     },
     showLogin: (state) => {
       return state.showLogin;
