@@ -287,6 +287,7 @@
           axios.post('http://localhost:8080/registerMed',newMedicalProfessional).then((
             function(response){
               if(response.data.success){
+                console.log("Registering med");
                 //This allows the user to sign in as a medical professional
                 self.$store.dispatch('authenticatedUsername', newMedicalProfessional.username);
                 self.$store.dispatch('signIn', 'medical-professional');

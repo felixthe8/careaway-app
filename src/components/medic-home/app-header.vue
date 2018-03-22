@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'navbar',
   data() {
@@ -19,7 +20,10 @@ export default {
       this.$store.dispatch('deauthenticatedUsername', '');
       this.$store.dispatch('medicalCode', '');
       this.$store.dispatch('signOut', '');
-      this.$router.push('/');
+      axios.get(this.$store.getters.logoutURL).then(response => {
+        console.log(response);
+        this.$router.push('/');
+      });
     },
     viewReport(){
       this.$router.push('/MedicHome/Report');

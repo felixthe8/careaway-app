@@ -44,6 +44,7 @@ export const store = new Vuex.Store({
 
     patientInfoURL: 'http://localhost:8080/get-patients?code=',
     userInfoURL: 'http://localhost:8080/get-user?username=',
+    logoutURL: 'http://localhost:8080/logout',
 
     // Appointment URLs
     appointmentURL: 'http://localhost:8080/getAppt?username=',
@@ -95,6 +96,9 @@ export const store = new Vuex.Store({
     },
     ssoRegisterMedicalURL:  (state) => {
       return state.ssoRegisterMedicalURL;
+    },
+    logoutURL: (state) => {
+      return state.logoutURL;
     },
     returnCodeURL: (state) => {
       return state.returnCodeURL;
