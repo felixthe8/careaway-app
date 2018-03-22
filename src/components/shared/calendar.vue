@@ -18,6 +18,7 @@
           @dragover="dragOver"
           @drop="drop"
           v-for="day, index in calendar.length"
+          :date="calendar[index].object"
           :class="{
             'no-right' : (index+1)%5 === 0,
             'no-bottom': (index > 19),
@@ -66,6 +67,8 @@
 </template>
 
 <script>
+
+import moment from 'moment';
 
 export default {
   name: 'app',
@@ -120,13 +123,13 @@ export default {
     },
     dragOver: function(event) {
       event.preventDefault();
-      event.dataTransfer.dropEffect = "move"
     },
     drop: function(event) {
       event.preventDefault();
 
-      //if meter
-      console.log(event.dataTransfer.getData("text/plain"));
+      console.log('drop', event.dataTransfer.getData("text"));
+      console.log(event);
+      // if meter
       let date = event.target.getAttribute("date");
       document.getElementById("meter-date").value = date;
       document.getElementsByClassName("meter__menu")[0].classList.add("show-menu");

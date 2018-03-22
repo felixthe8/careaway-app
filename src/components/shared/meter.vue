@@ -1,13 +1,12 @@
 <template>
 
   <div class="meter">
-    <button class="meter__button green-button" draggable="true" @drag="onDrag">meter</button>
+    <button class="meter__button green-button" draggable="true" id="meter" @drag="onDrag">meter</button>
 
     <div class="meter__menu">
       <label>Question:</label>
-      <input class="meter__menu--input" name="meter" type="text" id="meter">
+      <input class="meter__menu--input" name="meter" type="text" id="meter-question">
       <label>Date Requested:</label>
-
       <input class="meter__menu--input" name="date" type="text" id="meter-date">
       <button id="meter" class="meter__menu--create green-button" @click="create">Create Event</button>
     </div>
@@ -30,7 +29,6 @@ export default {
 
   data() {
     return {
-      created: false,
       label: "meter",
       question: "",
       scale: [1,10],
@@ -40,23 +38,24 @@ export default {
 
   methods: {
     onDrag:function(event) {
-      event.dataTransfer.setData("text/plain", event.target.id);
+      event.dataTransfer.setData("text", event.target.id);
+      event.dataTransfer.effectAllowed = 'move';
       event.dropEffect = "move";
     },
     create: function() {
-      this.question = document.getElementById("meter").value;
+      this.question = document.getElementById("meter-question").value;
+      this.due_date = document.getElementById("meter-date").value;
 
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].date == this.due_date) {
-            console.log("hi");
+        if(this.calendar[i].object === this.due_date) {
           this.calendar[i].meter = this;
           this.calendar[i].meter.created = true;
         }
       }
 
-      this.saveMeter();
       document.getElementsByClassName("meter__menu")[0].classList.remove("show-menu");
+      // this.saveMeter();
     },
     saveMeter: function() {
       const meter = {
