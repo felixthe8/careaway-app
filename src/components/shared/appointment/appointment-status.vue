@@ -104,7 +104,6 @@
             if(response.status === 200){
               console.log("Success");
               // Edit the appointment in the array in the VueX
-              self.$store.dispatch('editAppointment',{'oldAppt' : self.appointment, 'newAppt' : newAppointment});
               self.showWarning = false;
             } else {
               // Display an error message if the connection went wrong
