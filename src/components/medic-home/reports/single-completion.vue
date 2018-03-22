@@ -55,7 +55,7 @@ export default {
       })
       .then(function(response) {
         if(response.data.every((item) => {return item.length == 0} )) {
-          self.completionWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
+          self.completionWarning = 'Sorry, this patient does not have the data for this report'
         } else {
           // Loop through each object holding checklist data
           for (var checklist of response.data) {
