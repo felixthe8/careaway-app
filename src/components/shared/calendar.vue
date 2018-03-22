@@ -15,7 +15,6 @@
 
       <div class="columns is-multiline monthly">
         <div class="column is-one-fifth calendar__day"
-          :date="calendar[index].date"
           @dragover="dragOver"
           @drop="drop"
           v-for="day, index in calendar.length"
@@ -40,7 +39,12 @@
 
           <div class="calendar__day--label" v-if="index < 5">{{calendar[index].name}}</div>
 
-          <div class="calendar__day--appointment">{{calendar[index].appointment.text}}</div>
+          <div class="calendar__day--appointment"
+            v-if="calendar[index].appointment.created">
+              <button class="button is-primary is-rounded" @click="toggleCreate">
+                {{calendar[index].appointment.date}}
+              </button>
+          </div>
           <div class="calendar__day--scale">{{calendar[index].scale.text}}</div>
           <div class="calendar__day--checklist">{{calendar[index].checklist.text}}</div>
 
@@ -54,6 +58,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'app',
 
@@ -101,6 +106,9 @@ export default {
 
         document.getElementsByClassName("calendar__menu--button")[1].classList.add("active");
         document.getElementsByClassName("calendar__menu--button")[0].classList.remove("active");
+    },
+    toggleCreate: function() {
+      this.$store.dispatch("alternateAppointment");
     },
     dragOver: function(event) {
       event.preventDefault();

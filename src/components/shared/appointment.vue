@@ -4,37 +4,35 @@
     <label class="appointment__label">Appointment</label>
     <button class="appointment__button green-button" @click="openCreateAppointment">+</button>
 
-    
     <create
       :appointeeType="appointeeType"
       :appointee="appointee"
       :isMed="isMed"
       v-if = "showAppointmentCreation"
       v-on:addAppointment="addAppointment" />
+
     <modify
       :requestee="appointeeType"
       :appointment="this.$store.getters.currentAppointment"
       v-if = "showAppointmentMod" />
 
-    <div class="appointment__menu">
-      <label>Reason for Appointment:</label>
-      <input class="appointment__menu--input" name="appointment" type="text" id="appointment">
-      <label>Date Requested</label>
-      <input class="appointment__menu--input" name="date" type="text" id="appointment-date">
-      <button class="appointment__menu--create green-button" @click="create">Create Event</button>
-    </div>
+    <edit :appointment="getAppointment()" v-if="showAppointment"></edit>
 
   </div>
 
 </template>
 
 <script>
+
 import axios from 'axios';
 import create from './appointment/appointment-creation';
 import modify from './appointment/appointment-modification';
+import edit from '../shared/appointment/appointment-status';
+import moment from 'moment';
+
 export default {
   name: 'appointment',
-  components: {create, modify},
+  components: {create, modify, edit},
   props: ['calendar', 'isMed'],
 
   data() {
@@ -47,32 +45,20 @@ export default {
   },
 
   methods: {
-    addAppointment: function() {
-      document.getElementsByClassName("appointment__menu")[0].classList.add("show-menu");
-    },
     addAppointment(appointment) {
       this.$store.dispatch("addAppointment", appointment);
       this.appointment = appointment;
-      console.log(this.appointment);
-    },
-    create: function() {
-      this.appointment = {
-        text: document.getElementById("appointment").value,
-        date: document.getElementById("appointment-date").value
-      }
+      this.appointment.created = true;
+
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].date == this.appointment.date) {
+        if(moment(this.calendar[i].object).format("YYYY-MM-DD") == this.appointment.date) {
           this.calendar[i].appointment = this.appointment;
         }
       }
-      document.getElementsByClassName("appointment__menu")[0].classList.remove("show-menu");
     },
     getAppointment(){
       return this.$store.getters.appointments[0];
-    },
-    toggleCreate(){
-      this.$store.dispatch("alternateAppointment");
     },
     openCreateAppointment() {
       this.$store.dispatch('alternateAppointmentCreation');
@@ -82,10 +68,14 @@ export default {
     showAppointmentCreation() {
       return this.$store.getters.showAppointmentCreation;
     },
+    showAppointment: function() {
+     return this.$store.getters.showAppointment;
+    },
     showAppointmentMod() {
       return this.$store.getters.showAppointmentMod;
     }
   },
+
   mounted() {
     if(this.isMed) {
       axios.get(this.$store.getters.getPatientInfoURL + this.$store.getters.medicalCode)
@@ -112,8 +102,8 @@ export default {
       this.appointeeType = "Medical Professional";
       this.isMed = false;
     }
-    
   }
+
 }
 </script>
 

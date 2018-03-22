@@ -3,11 +3,13 @@
   <div>
 
     <navbar class = "nav-bar"/>
-    <button class="button is-primary is-rounded" @click="toggleCreate"></button>
-    <appointment-status :appointment="getAppointment()" v-if="this.$store.getters.showAppointment" ></appointment-status>
+
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
     <p class = "subtitle" id = "code-display">CareAway Medical Code: {{medicalcode}} </p>
+
+    <div v-if="isLoaded">
     <router-view class="wrapper"></router-view>
+</div>
 
   </div>
 
@@ -19,13 +21,12 @@ import navbar from './app-header';
 import timeout from '../shared/timeout';
 import Chart from 'chart.js';
 import axios from 'axios';
-import appointmentStatus from '../shared/appointment/appointment-status';
 import debounce from 'debounce';
 axios.defaults.withCredentials = true;
 axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
 export default {
     name: 'medicHome',
-    components: {navbar, timeout, appointmentStatus},
+    components: {navbar, timeout},
     data() {
       return {
         showWarning: false,
@@ -33,25 +34,25 @@ export default {
         appointment: {}, // Currently stores only one appointment object, will need to change to store array
         appointeeType: "",
         appointee: [],
-        isMed: true
+        isMed: true,
+        isLoaded: false
       }
     },
     beforeCreate() {
       var self = this;
       axios.get(this.$store.getters.getAppointmentURL + this.$store.getters.authenticatedUsername).then(result => {
         var appointments = result.data.appointments;
-        console.log(appointments);
         if(appointments) {
           for(var i=0; i<appointments.length; i++) {
           self.$store.dispatch('addAppointment',appointments[i]);
           }
+          self.isLoaded = true;
         } else {
           console.log("No appointments.");
         }
       }).catch(error => {
         console.log(error);
       });
-
     },
     mounted () {
       // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
@@ -80,22 +81,11 @@ export default {
       }
     },
     methods: {
-      getAppointment(){
-        return this.$store.getters.appointments[0];
-      },
-      toggleCreate(){
-        this.$store.dispatch("alternateAppointment");
-      },
       displaySessionwarning() {
         this.showWarning = true;
       },
       getCode() {
         this.medicalcode = this.$store.getters.medicalCode;
-      },
-      addAppointment(appointment) {
-        this.$store.dispatch("addAppointment", appointment);
-        this.appointment = appointment;
-        console.log(this.appointment);
       }
     },
     created() {

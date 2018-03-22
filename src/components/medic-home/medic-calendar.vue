@@ -21,6 +21,7 @@ import appointment from '../shared/appointment.vue';
 import scale from '../shared/scale.vue';
 import checklist from '../shared/checklist.vue';
 import calendar from '../shared/calendar.vue';
+import moment from 'moment';
 
 export default {
   name: 'medic-calendar',
@@ -34,6 +35,17 @@ export default {
 
   created: function() {
     this.calendar = this.$renderCalendar(0);
+
+    let appointments = this.$store.getters.appointments;
+    for(var i=0; i < appointments.length; i++) {
+      for(var j=0; j < this.calendar.length; j++) {
+        if(appointments[i].date === moment(this.calendar[j].object).format("YYYY-MM-DD")) {
+          this.calendar[j].appointment = appointments[i];
+          appointments[i].created = true;
+        }
+      }
+    }
+    console.log(this.calendar);
   },
 
   data() {
