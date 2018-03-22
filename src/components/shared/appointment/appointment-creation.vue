@@ -12,33 +12,33 @@
           <select v-if="isMed" v-model="selectedAppointee" ref="appoint" class="appointee">
             <option id="appointee" v-for="patient in appointee" :value="patient.username">{{patient.firstName}} {{patient.lastName}}</option>
           </select>
-          <p v-if="!isMed" class="appointee" :value="selectedAppointee">
+          <p v-if="!isMed" class="appointee" id="appointee" :value="selectedAppointee">
             {{medAppointee.firstName}} {{medAppointee.lastName}}
           </p>
         </div>
         <p class="form-input">
-          Date: 
+          Date:
           <input :class="{'error': errors.date}" id="date-input" type="date" v-model="date">
         </p>
         <div id="time" class="form-input">
           <p>From:</p>
-            <timeChangers :class="{'timeBox':true, 'error':errors.startTime}" 
-              v-on:changeHour="changeStartHour" 
-              v-on:changeMin="changeStartMin" 
+            <timeChangers :class="{'timeBox':true, 'error':errors.startTime}"
+              v-on:changeHour="changeStartHour"
+              v-on:changeMin="changeStartMin"
               v-on:togglePM="togglePMStart"
-              :hour="startHour" 
+              :hour="startHour"
               :minute="startMinute"
-              :pm="startPM"> 
+              :pm="startPM">
             </timeChangers>
           <p>To:</p>
-            <timeChangers :class="{'timeBox':true, 'error':errors.endTime}"  
+            <timeChangers :class="{'timeBox':true, 'error':errors.endTime}"
               v-on:changeHour="changeEndHour"
               v-on:changeMin="changeEndMin"
               v-on:togglePM="togglePMEnd"
-              :hour="endHour" 
+              :hour="endHour"
               :minute="endMinute"
               :pm="endPM">
-            </timeChangers> 
+            </timeChangers>
         </div>
         <a class="button is-primary is-medium is-fullwidth is-rounded" @click="create"> {{button}} </a>
       </div>
@@ -54,13 +54,14 @@ import timeChangers from './time';
 import tooltip from '../../homepage/tooltip';
 export default {
   name: 'appointmentCreation',
-  components: { timeChangers, tooltip }, 
+  components: { timeChangers, tooltip },
   props: ["appointeeType", "appointee", "isMed"],
   data() {
     return {
+      created: false,
       date: '',
       startHour: 8,
-      startMinute: '00', 
+      startMinute: '00',
       startPM: false,
       startTime: '',
       endHour: 8,
@@ -80,13 +81,17 @@ export default {
     }
   },
   beforeMount() {
-    this.selectedAppointee = this.appointee[0].username;
-    this.medAppointee = this.appointee[0];
+    const length = this.appointee.length;
+    if(this.appointee.length > 0) {
+      this.selectedAppointee = this.appointee[0].username;
+      this.medAppointee = this.appointee[0];
+    }
+
   },
   methods: {
     create() {
       this.removeAllErrors();
-      if(this.check()) { 
+      if(this.check()) {
         // Getting the initator's first and last name.
         axios.get(this.$store.getters.getUserURL + this.$store.getters.authenticatedUsername)
           .then(result => {
@@ -136,16 +141,16 @@ export default {
       console.log(`Start string: ${startStr}`);
 
       // Valid date formats.
-      const formats = ["YYYY-MM-DD HH:mm", 
-                        "M/DD/YYYY HH:mm", 
-                        "M/D/YYYY HH:mm", 
-                        "MM/D/YYYY HH:mm", 
+      const formats = ["YYYY-MM-DD HH:mm",
+                        "M/DD/YYYY HH:mm",
+                        "M/D/YYYY HH:mm",
+                        "MM/D/YYYY HH:mm",
                         "MM/DD/YYYY HH:mm",
                         "MM-DD-YYYY HH:mm",
                         "M-DD-YYYY HH:mm",
                         "M-D-YYYY HH:mm",
                         "MM-D-YYYY HH:mm"];
-      
+
       const start = moment(startStr, formats);
 
       if(!start.isValid()) {
@@ -159,7 +164,7 @@ export default {
         return false;
       }
       this.startTime = start;
-      
+
       const now = moment();
 
       // Checks to make sure the start of the appointment is after the current date and time.
@@ -215,7 +220,7 @@ export default {
       return {appointment: appointment};
     },
     closeThis() {
-      // Closes create appointment 
+      // Closes create appointment
       this.$store.dispatch("alternateAppointmentCreation");
     },
     changeStartHour(hour) {

@@ -5,13 +5,13 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    
+
     // The user's selected security questions during registration
     questionSelected1:0,
     questionSelected2:0,
     questionSelected3:0,
 
-    // Boolean value for controlling if the modals will display 
+    // Boolean value for controlling if the modals will display
     showRegistration: false,
     showLogin: false,
     resetRegistrationForm: false,
@@ -51,6 +51,7 @@ export const store = new Vuex.Store({
     
     patientInfoURL: 'http://localhost:8080/get-patients?code=',
     userInfoURL: 'http://localhost:8080/get-user?username=',
+    logoutURL: 'http://localhost:8080/logout',
 
     // Appointment URLs
     appointmentURL: 'http://localhost:8080/getAppt?username=',
@@ -96,7 +97,7 @@ export const store = new Vuex.Store({
     },
     validateAnswerURL: (state) => {
       return state.validateAnswerURL;
-    }, 
+    },
     validateUsernameURL:  (state) => {
       return state.validateUsernameURL;
     },
@@ -105,6 +106,9 @@ export const store = new Vuex.Store({
     },
     ssoRegisterMedicalURL:  (state) => {
       return state.ssoRegisterMedicalURL;
+    },
+    logoutURL: (state) => {
+      return state.logoutURL;
     },
     returnCodeURL: (state) => {
       return state.returnCodeURL;
@@ -195,7 +199,7 @@ export const store = new Vuex.Store({
     },
   }, 
   mutations: {
-    // function to flip the value of showLogin 
+    // function to flip the value of showLogin
     alternateLogin: (state) => {
        state.showLogin = !state.showLogin;
     },
@@ -213,7 +217,7 @@ export const store = new Vuex.Store({
     },
     changeQuestionValue3: (state, value) => {
       state.questionSelected3=value;
-    }, 
+    },
     alternateReset: (state) => {
       state.showReset = !state.showReset;
     },

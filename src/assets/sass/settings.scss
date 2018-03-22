@@ -16,7 +16,8 @@ $green-light: #D6F8D6;
 
 /* App Default */
 #app {
-  overflow: scroll;
+  width: 100vw;
+  height: 100vh;
   background: $white;
   color: $purple-dark;
 }
@@ -30,6 +31,21 @@ img {
   -ms-user-select: none;
 }
 
+button {
+  color: $purple-dark;
+  border: none;
+  background: $white;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+input {
+  border: 2px solid $green;
+  border-radius: 5px;
+}
+
 /* Global Classes */
 .nopad {
   padding: 0;
@@ -37,12 +53,16 @@ img {
 
 /* Template Classes */
 .button {
-  color: $purple-dark;
-  border: none;
   background: none;
+  border: none;
+}
+
+.green-button {
+  border: 2px solid $green;
+  border-radius: 5px;
 
   &:hover {
-    color: $purple-light;
+    background: $green-light;
   }
 }
 
