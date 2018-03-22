@@ -297,6 +297,12 @@ export default {
         }
       },
   },
+  created(){
+      self.$store.dispatch("singlePatientWellness",null);
+      self.$store.dispatch("singlePatientCompletion",null);
+      
+    
+  },
   // Mounted Functions 
   mounted() {
     // Calls Get Info for Graphs
