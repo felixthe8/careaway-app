@@ -16,7 +16,12 @@
       :appointment="this.$store.getters.currentAppointment"
       v-if = "showAppointmentMod" />
 
-    <edit :appointment="getAppointment()" v-if="showAppointment"></edit>
+    <edit
+      :calendar="calendar"
+      :appointment="getAppointment()"
+      :appointee="appointee"
+      :isMed="isMed"
+      v-if="showAppointment"/>
 
   </div>
 
@@ -27,7 +32,7 @@
 import axios from 'axios';
 import create from './appointment/appointment-creation';
 import modify from './appointment/appointment-modification';
-import edit from '../shared/appointment/appointment-status';
+import edit from './appointment/appointment-status';
 import moment from 'moment';
 
 export default {
@@ -52,13 +57,21 @@ export default {
 
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
-        if(moment(this.calendar[i].object).format("YYYY-MM-DD") == this.appointment.date) {
+        if(this.calendar[i].object === this.appointment.date) {
           this.calendar[i].appointment = this.appointment;
         }
       }
     },
-    getAppointment(){
-      return this.$store.getters.appointments[0];
+    getAppointment() {
+      let date = this.$store.getters.getEditableAppointment;
+      let appointments = this.$store.getters.appointments;
+      let current = {};
+      for(var i=0; i < appointments.length; i++) {
+        if(appointments[i].date === date) {
+            current = appointments[i];
+        }
+      }
+      return current;
     },
     openCreateAppointment() {
       this.$store.dispatch('alternateAppointmentCreation');

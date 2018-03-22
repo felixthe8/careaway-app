@@ -2,7 +2,7 @@
   <div>
     <navbar class = "nav-bar"/>
     <button class="button is-primary is-rounded" @click="toggleCreate"></button>
-    <calendar/>
+    <calendar :calendar="calendar"/>
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
     <appointment-status :appointment="getAppointment()" v-if="this.$store.getters.showAppointment" ></appointment-status>
     <create
@@ -38,16 +38,23 @@ export default {
       appointmentStatus,
       create,
       modify
-      },
+    },
+
     data() {
       return {
         showWarning: false,
         appointment: {}, // Currently stores only one appointment object, will need to change to store array
         appointeeType: "",
         appointee: [],
-        isMed: false
+        isMed: true,
+        calendar: [0]
       }
     },
+
+    created: function() {
+      this.calendar = this.$renderCalendar(0);
+    },
+
     beforeCreate() {
       var self = this;
       axios.get(this.$store.getters.getAppointmentURL+this.$store.getters.authenticatedUsername).then(result => {

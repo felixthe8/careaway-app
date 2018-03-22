@@ -50,7 +50,7 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
-import timeChangers from './time';
+import timeChangers from '../time';
 import tooltip from '../../homepage/tooltip';
 export default {
   name: 'appointmentCreation',

@@ -24,6 +24,7 @@ export const store = new Vuex.Store({
     // Appointment boolean values.
     showAppointmentCreation: false,
     showAppointmentMod: false,
+    editableAppointment: "",
 
     // URLS
     checkBreachURL: 'http://localhost:8080/isBreached',
@@ -60,6 +61,11 @@ export const store = new Vuex.Store({
     modifyAppointmentURL: 'http://localhost:8080/updateAppointment',
     deleteAppt: 'http://localhost:8080/deleteAppt',
 
+    // Widget URLs
+    createMeterURL: 'http://localhost:8080/createMeter',
+    createChecklistURL: 'http://localhost:8080/createChecklist',
+
+    // Login Data
     validUsername: '',
     username: '',
     validPassword: '',
@@ -182,6 +188,15 @@ export const store = new Vuex.Store({
     createAppointmentURL: (state) => {
       return state.createAppointmentURL;
     },
+    getEditableAppointment: (state) => {
+      return state.editableAppointment;
+    },
+    createMeterURL: (state) => {
+      return state.createMeterURL;
+    },
+    createChecklistURL: (state) => {
+      return state.createChecklistURL;
+    },
     modifyAppointmentURL: (state) => {
       return state.modifyAppointmentURL;
     },
@@ -282,6 +297,9 @@ export const store = new Vuex.Store({
     },
     singlePatientCompletion:(state,payload)=>{
       state.singlePatientCompletion = payload;
+    },
+    editableAppointment: (state, payload) => {
+      state.editableAppointment = payload;
     }
   },
 
@@ -352,6 +370,9 @@ export const store = new Vuex.Store({
     },
     singlePatientCompletion:(context,payload) => {
       context.commit('singlePatientCompletion',payload);
+    },
+    editableAppointment: (context, payload) => {
+      context.commit('editableAppointment', payload);
     }
   }
 });

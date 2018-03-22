@@ -18,6 +18,7 @@
           @dragover="dragOver"
           @drop="drop"
           v-for="day, index in calendar.length"
+          :date="calendar[index].object"
           :class="{
             'no-right' : (index+1)%5 === 0,
             'no-bottom': (index > 19),
@@ -41,12 +42,21 @@
 
           <div class="calendar__day--appointment"
             v-if="calendar[index].appointment.created">
-              <button class="button is-primary is-rounded" @click="toggleCreate">
+              <button class="button is-primary is-rounded" @click="toggleCreate(calendar[index].appointment.date)"
+                :id="calendar[index].appointment.date">
                 {{calendar[index].appointment.date}}
               </button>
           </div>
-          <div class="calendar__day--meter">{{calendar[index].meter.text}}</div>
-          <div class="calendar__day--checklist">{{calendar[index].checklist.text}}</div>
+
+          <div class="calendar__day--meter"
+            v-if="calendar[index].meter.created">
+            {{calendar[index].meter.label}}
+          </div>
+
+          <div class="calendar__day--checklist"
+            v-if="calendar[index].checklist.created">
+            {{calendar[index].checklist.label}}
+          </div>
 
         </div>
 
@@ -58,6 +68,8 @@
 </template>
 
 <script>
+
+import moment from 'moment';
 
 export default {
   name: 'app',
@@ -107,18 +119,18 @@ export default {
         document.getElementsByClassName("calendar__menu--button")[1].classList.add("active");
         document.getElementsByClassName("calendar__menu--button")[0].classList.remove("active");
     },
-    toggleCreate: function() {
+    toggleCreate: function(index) {
+      this.$store.dispatch("editableAppointment", index);
       this.$store.dispatch("alternateAppointment");
     },
     dragOver: function(event) {
       event.preventDefault();
-      event.dataTransfer.dropEffect = "move"
     },
     drop: function(event) {
       event.preventDefault();
 
-      //if meter
-      console.log(event.dataTransfer.getData("text/plain"));
+      console.log('drop', event.dataTransfer.getData("text"));
+      // if meter
       let date = event.target.getAttribute("date");
       document.getElementById("meter-date").value = date;
       document.getElementsByClassName("meter__menu")[0].classList.add("show-menu");

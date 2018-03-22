@@ -8,37 +8,37 @@
           {{errorMsg}}
         </p>
         <p class="form-input">
-          {{ requestee }}:  
+          {{ requestee }}:
           {{ appointee }}
         </p>
         <p class="form-input">
-          Date: 
-          <input 
-            :class="{'error': errors.date}" 
-            id="date-input" 
-            ref="dateInput" 
-            type="date" 
+          Date:
+          <input
+            :class="{'error': errors.date}"
+            id="date-input"
+            ref="dateInput"
+            type="date"
             v-model="date">
         </p>
         <div id="time" class="form-input">
           <p>From:</p>
-            <timeChangers :class="{'timeBox':true, 'error':errors.startTime}" 
-              v-on:changeHour="changeStartHour" 
-              v-on:changeMin="changeStartMin" 
+            <timeChangers :class="{'timeBox':true, 'error':errors.startTime}"
+              v-on:changeHour="changeStartHour"
+              v-on:changeMin="changeStartMin"
               v-on:togglePM="togglePMStart"
-              :hour="startHour" 
+              :hour="startHour"
               :minute="startMinute"
-              :pm="startPM"> 
+              :pm="startPM">
             </timeChangers>
           <p>To:</p>
-            <timeChangers :class="{'timeBox':true, 'error':errors.endTime}"  
+            <timeChangers :class="{'timeBox':true, 'error':errors.endTime}"
               v-on:changeHour="changeEndHour"
               v-on:changeMin="changeEndMin"
               v-on:togglePM="togglePMEnd"
-              :hour="endHour" 
+              :hour="endHour"
               :minute="endMinute"
               :pm="endPM">
-            </timeChangers> 
+            </timeChangers>
         </div>
         <a class="button is-primary is-medium is-fullwidth is-rounded" @click="create"> {{button}} </a>
         <a class="button is-primary is-medium is-fullwidth is-rounded" @click="cancel"> Cancel </a>
@@ -51,7 +51,7 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
-import timeChangers from './time';
+import timeChangers from '../time';
 export default {
   name: 'appointmentCreation',
   components: { timeChangers }, // Pass in list of patients from global store
@@ -60,7 +60,7 @@ export default {
     return {
       date: this.appointment.date,
       startHour: '',
-      startMinute: '', 
+      startMinute: '',
       startPM: true,
       startTime: this.appointment.startTime,
       endHour: '',
@@ -155,10 +155,10 @@ export default {
     },
     checkDate() {
       // Valid date formats.
-      const formats = ["YYYY-MM-DD HH:mm", 
-                        "M/DD/YYYY HH:mm", 
-                        "M/D/YYYY HH:mm", 
-                        "MM/D/YYYY HH:mm", 
+      const formats = ["YYYY-MM-DD HH:mm",
+                        "M/DD/YYYY HH:mm",
+                        "M/D/YYYY HH:mm",
+                        "MM/D/YYYY HH:mm",
                         "MM/DD/YYYY HH:mm",
                         "MM-DD-YYYY HH:mm",
                         "M-DD-YYYY HH:mm",
@@ -187,7 +187,7 @@ export default {
         return false;
       }
       this.startTime = start;
-      
+
       const now = moment();
 
       // Checks to make sure the start of the appointment is after the current date and time.
@@ -229,7 +229,7 @@ export default {
       // Valid appointment duration.
       this.removeAllErrors();
       return true;
-    }, 
+    },
     closeThis() {
       // Closes modify appointment.
       this.$store.dispatch("alternateAppointmentMod");

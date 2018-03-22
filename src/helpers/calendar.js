@@ -5,6 +5,8 @@ Calendar.install = function (Vue, options) {
 
   // Instance Method
   Vue.prototype.$renderCalendar = function (start) {
+      var moment = require("moment");
+
       // week day array
       let week = ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"];
       // get today's date object
@@ -37,7 +39,7 @@ Calendar.install = function (Vue, options) {
 
         // add day object to month
         month[count] = {
-          "object": new Date(start.getFullYear(), start.getMonth(), start.getDate()),
+          "object": moment(new Date(start.getFullYear(), start.getMonth(), start.getDate())).format("YYYY-MM-DD"),
           "date": start.getDate(),
           "code": start.getDay(),
           "month": start.getMonth(),
