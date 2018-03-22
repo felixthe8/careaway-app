@@ -16,7 +16,11 @@
       :appointment="this.$store.getters.currentAppointment"
       v-if = "showAppointmentMod" />
 
-    <edit :appointment="getAppointment()" v-if="showAppointment"></edit>
+    <edit
+      :appointment="getAppointment()"
+      :appointee="appointee"
+      :isMed="isMed"
+      v-if="showAppointment"/>
 
   </div>
 

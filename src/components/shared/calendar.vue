@@ -128,7 +128,6 @@ export default {
       event.preventDefault();
 
       console.log('drop', event.dataTransfer.getData("text"));
-      console.log(event);
       // if meter
       let date = event.target.getAttribute("date");
       document.getElementById("meter-date").value = date;
