@@ -11,8 +11,10 @@
 </template>
 
 <script>
+
 import axios from 'axios';
 import moment from 'moment';
+import Chart from 'chart.js';
 export default {
   name: '',
   data() {

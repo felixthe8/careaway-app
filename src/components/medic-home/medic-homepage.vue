@@ -22,7 +22,6 @@
 <script>
 import navbar from './app-header';
 import timeout from '../shared/timeout';
-import Chart from 'chart.js';
 import axios from 'axios';
 import appointmentStatus from '../shared/appointment/appointment-status';
 import create from '../shared/appointment/appointment-creation';

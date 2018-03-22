@@ -9,6 +9,8 @@
 <script>
 import axios from 'axios';
 import * as chromatism from 'chromatism';
+import Chart from 'chart.js';
+import pieceLabel from 'chart.piecelabel.js';
 export default {
   name: 'breakdown',
   data() {

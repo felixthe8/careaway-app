@@ -10,12 +10,11 @@
 
 <script>
 import axios from 'axios';
-import pieceLabel from 'chart.piecelabel.js';
 import breakdownGraph from './reports/breakdown-graph';
 import aggregateWellness from './reports/aggregate-wellness';
 import aggregateComplete from './reports/aggregate-completion';
 export default {
-  name: 'aggregateReport',
+  name: 'dataAnalysis',
   components: {breakdownGraph, aggregateWellness, aggregateComplete},
 }
 
