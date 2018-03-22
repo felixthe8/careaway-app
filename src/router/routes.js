@@ -11,6 +11,7 @@ import medicDataAnalysis from '../components/medic-home/data-analysis.vue';
 import patientHome from '../components/patient-home/patient-homepage.vue';
 import adminHome from '../components/admin-home/admin-homepage.vue';
 import error from '../components/error/error.vue';
+import registration from '../components/homepage/sso_registration.vue';
 
 Vue.use(Router);
 Vue.use(store);
@@ -25,29 +26,29 @@ const router = new Router ({
             meta: {
                 title: "CareAway Homepage"
             },
-            beforeEnter:(to, from, next) => {
-                axios.get('http://localhost:8080/getToken')
-                .then(response => {
-                  self.datas = response.data.csrfToken;
-                  axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken;
-                  console.log(axios.defaults.headers);
-                }).catch(function(err) {
-                  console.log(err);
-                });
-                next();
-            }
         },
-
         {
-            path: '/MedicHome',
+            path: '/MedicHome/:jwt',
             name: 'MedicHome',
-            beforeEnter: (to, from, next) => {
-                if((store.getters.authStatus) === 'medical-professional') {
-                    console.log("Secure entry");
-                    console.log(store.getters.authStatus);
-                    next()
-                } else {
-                    next({path: '/',});
+            beforeEnter: (to, from, next) => {          
+                if(to.query.jwt){
+                    axios.get('http://localhost:8080/getLoginInfo?token='+to.query.jwt).then(response => {
+                        axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken;
+                        store.dispatch('signIn',response.data.role);
+                        store.dispatch('authenticatedUsername',response.data.username);
+                        next();
+                        }).catch(function(err) {
+                        console.log(err);
+                    });               
+                }
+                else{
+                    if((store.getters.authStatus) === 'medical-professional') {
+                        console.log("Secure entry");
+                        console.log(store.getters.authStatus);
+                        next();
+                    } else {
+                        next({path: '/',});
+                    }
                 }
             },
             component: medicHome,
@@ -70,10 +71,27 @@ const router = new Router ({
                 title: "CareAway Patient Home"
             },
             beforeEnter: (to, from, next) => {
-                if((store.getters.authStatus) == 'patient') {
-                    next()
-                } else {
-                    next({path: '/',});
+                console.log(to);
+                console.log(from);
+                if(to.query.jwt){
+                    console.log('sso');
+                    axios.get('http://localhost:8080/getLoginInfo?token='+to.query.jwt).then(response => {
+                        axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken;
+                        store.dispatch('signIn',response.data.role);
+                        store.dispatch('authenticatedUsername',response.data.username);
+                        next();
+                        }).catch(function(err) {
+                        console.log(err);
+                    });               
+                }
+                else {
+                    if((store.getters.authStatus) === 'patient') {
+                        console.log("Secure entry");
+                        console.log(store.getters.authStatus);
+                        next();
+                    } else {
+                        next({path: '/',});
+                    }
                 }
             },
             component: patientHome
@@ -86,15 +104,53 @@ const router = new Router ({
                 title: "CareAway Admin Home"
             },
             beforeEnter: (to, from, next) => {
-                if((store.getters.authStatus) == 'system-admin') {
+                if(to.query.jwt){
+                    console.log('sso');
+                    axios.get('http://localhost:8080/getLoginInfo?token='+to.query.jwt).then(response => {
+                        axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken;
+                        store.dispatch('signIn',response.data.role);
+                        store.dispatch('authenticatedUsername',response.data.username);
+                        next();
+                        }).catch(function(err) {
+                        console.log(err);
+                    });               
+                }
+                else{
+                if((store.getters.authStatus) === 'system-admin') {
                     next()
                 } else {
                     next({path: '/',});
                 }
+                 }
             },
             component: adminHome
         },
-
+        {  path: '/Registration' ,
+            name: 'Registration', 
+            component: registration,
+            meta: {
+                title: "Registration"
+            },
+            beforeEnter: (to, from, next) => {
+                console.log("HERE");        
+                if(to.query.jwt){
+                    axios.get('http://localhost:8080/getLoginInfo?token='+to.query.jwt).then(response => {
+                        axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken;
+                        store.dispatch('signIn',response.data.role);
+                        store.dispatch('authenticatedUsername',response.data.username);
+                        store.dispatch('saveUsername', response.data.username);
+                        store.dispatch('alternateSSORegistration');
+                        next();
+                        }).catch(function(err) {
+                        console.log(err);
+                    });               
+                }
+                else{
+                    next({path: '/',});
+                }
+                next();
+            }
+        },
          // wildcard catch all route; Redirects to error page
         {
             path: '*',

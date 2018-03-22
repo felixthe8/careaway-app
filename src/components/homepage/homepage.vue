@@ -73,6 +73,7 @@
         //get method to see if brach
          axios.get(this.$store.getters.checkBreachURL)
          .then(response => {
+                axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken;
                 if(response.data.down){
                   //show breach warning
                   self.showWarning = true;
