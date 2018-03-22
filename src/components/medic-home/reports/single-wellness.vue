@@ -26,6 +26,7 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
+import Chart from 'chart.js';
 export default {
   name: '',
   data() {
@@ -40,6 +41,7 @@ export default {
           trends: [],
           showReport: false,
           ignoreEmpty: false,
+          signalWellness: false,
       }
   },
   methods: {
@@ -96,6 +98,7 @@ export default {
            // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
           self.averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse();
           self.$store.dispatch("singlePatientWellness",self.averageData);
+          self.$emit('completeWellness');
           // Define the graph and it's styles
           new Chart(document.getElementById("aggregate-wellness"), {
             type: 'bar',

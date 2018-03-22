@@ -63,8 +63,15 @@ export default {
 
       },
   },
+  
   mounted(){
     this.getPatientNames()
+  },
+  created(){
+      this.$store.dispatch("singlePatientWellness",null);
+      this.$store.dispatch("singlePatientCompletion",null);
+      
+    
   },
   
   components: {breakdownGraph, aggregateWellness, aggregateComplete},

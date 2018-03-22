@@ -13,6 +13,7 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
+import Chart from 'chart.js';
 export default {
   name: '',
   data() {
@@ -26,7 +27,7 @@ export default {
         // Creates integers for tasks
         totalComplete: 0,
         totalAssigned: 0,
-        showReport: false
+        showReport: false,
       }
   },
   methods: {
@@ -77,6 +78,7 @@ export default {
                 // Task completion percentage is the number of tasks completed / total tasks for that day
                 self.completionData[key].average = Math.round( (self.completionData[key].complete / self.completionData[key].taskCount) * 100 )
                 self.$store.dispatch("singlePatientCompletion", Object.keys(self.completionData).map(key => {return self.completionData[key].average}).reverse());
+                 self.$emit('completeCompletion');
               }
             }
           }
