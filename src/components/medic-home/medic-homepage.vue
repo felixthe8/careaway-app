@@ -9,7 +9,7 @@
 
     <div v-if="isLoaded">
     <router-view class="wrapper"></router-view>
-</div>
+    </div>
 
   </div>
 

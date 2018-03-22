@@ -1,7 +1,7 @@
 <template>
 
   <div class="meter">
-    <button class="meter__button green-button" draggable="true" id="meter" @drag="onDrag">meter</button>
+    <button class="meter__button green-button" draggable="true" id="meter" @drag="onDrag">Meter</button>
 
     <div class="meter__menu">
       <label>Question:</label>

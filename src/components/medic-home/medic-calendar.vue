@@ -39,7 +39,7 @@ export default {
     let appointments = this.$store.getters.appointments;
     for(var i=0; i < appointments.length; i++) {
       for(var j=0; j < this.calendar.length; j++) {
-        if(appointments[i].date === moment(this.calendar[j].object).format("YYYY-MM-DD")) {
+        if(appointments[i].date === this.calendar[j].object) {
           this.calendar[j].appointment = appointments[i];
           appointments[i].created = true;
         }
