@@ -62,8 +62,16 @@ export default {
         }
       }
     },
-    getAppointment(){
-      return this.$store.getters.appointments[0];
+    getAppointment() {
+      let date = this.$store.getters.getEditableAppointment;
+      let appointments = this.$store.getters.appointments;
+      let current = {};
+      for(var i=0; i < appointments.length; i++) {
+        if(appointments[i].date === date) {
+            current = appointments[i];
+        }
+      }
+      return current;
     },
     openCreateAppointment() {
       this.$store.dispatch('alternateAppointmentCreation');

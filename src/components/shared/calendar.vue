@@ -42,7 +42,8 @@
 
           <div class="calendar__day--appointment"
             v-if="calendar[index].appointment.created">
-              <button class="button is-primary is-rounded" @click="toggleCreate">
+              <button class="button is-primary is-rounded" @click="toggleCreate(calendar[index].appointment.date)"
+                :id="calendar[index].appointment.date">
                 {{calendar[index].appointment.date}}
               </button>
           </div>
@@ -118,7 +119,8 @@ export default {
         document.getElementsByClassName("calendar__menu--button")[1].classList.add("active");
         document.getElementsByClassName("calendar__menu--button")[0].classList.remove("active");
     },
-    toggleCreate: function() {
+    toggleCreate: function(index) {
+      this.$store.dispatch("editableAppointment", index);
       this.$store.dispatch("alternateAppointment");
     },
     dragOver: function(event) {

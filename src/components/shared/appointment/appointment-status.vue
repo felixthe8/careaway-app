@@ -145,11 +145,12 @@
             console.log("There was an error handling the request");
             self.showWarning = true;
           });
-          
+
+          console.log(this.appointment.date);
           // get element by date attribute
-          for(var i=0; i < self.calendar.length; i++) {
-            if(self.calendar[i].object === self.appointment.date) {
-              self.calendar[i].appointment = {};
+          for(var i=0; i < this.calendar.length; i++) {
+            if(this.calendar[i].object === this.appointment.date) {
+              this.calendar[i].appointment = {};
             }
           }
       }

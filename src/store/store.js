@@ -24,6 +24,7 @@ export const store = new Vuex.Store({
     // Appointment boolean values.
     showAppointmentCreation: false,
     showAppointmentMod: false,
+    editableAppointment: "",
 
     // URLS
     checkBreachURL: 'http://localhost:8080/isBreached',
@@ -152,6 +153,9 @@ export const store = new Vuex.Store({
     createAppointmentURL: (state) => {
       return state.createAppointmentURL;
     },
+    getEditableAppointment: (state) => {
+      return state.editableAppointment;
+    },
     createMeterURL: (state) => {
       return state.createMeterURL;
     },
@@ -246,6 +250,9 @@ export const store = new Vuex.Store({
         }
       }
       state.appointments = temp;
+    },
+    editableAppointment: (state, payload) => {
+      state.editableAppointment = payload;
     }
   },
 
@@ -310,6 +317,9 @@ export const store = new Vuex.Store({
     },
     deleteAppointment: (context, payload) => {
       context.commit('deleteAppointment', payload);
+    },
+    editableAppointment: (context, payload) => {
+      context.commit('editableAppointment', payload);
     }
   }
 });
