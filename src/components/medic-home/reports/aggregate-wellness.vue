@@ -26,6 +26,7 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
+import Chart from 'chart.js';
 export default {
   name: '',
   data() {
@@ -148,7 +149,9 @@ export default {
              legend: {
                display: true,
                position: "right",
-               labels: {fontSize: 14}
+               labels: {fontSize: 14},
+               // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing. 
+               onClick: null
              },
              scales: {
                xAxes: [{

@@ -182,7 +182,6 @@ export const store = new Vuex.Store({
     },
     appointments: (state) => {
       return state.appointments;
-    }
     },
     singlePatientCompletion:(state) => {
       return state.singlePatientCompletion;
@@ -339,13 +338,12 @@ export const store = new Vuex.Store({
     },
     deleteAppointment: (context, payload) => {
       context.commit('deleteAppointment', payload);
-    }
     },
     singlePatientWellness:(context,payload) => {
       context.commit('singlePatientWellness',payload);
     },
     singlePatientCompletion:(context,payload) => {
       context.commit('singlePatientCompletion',payload);
-    },
+    }
   }
 });

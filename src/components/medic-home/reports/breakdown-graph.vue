@@ -8,7 +8,9 @@
 
 <script>
 import axios from 'axios';
-import colorScheme from 'color-scheme';
+import * as chromatism from 'chromatism';
+import Chart from 'chart.js';
+import pieceLabel from 'chart.piecelabel.js';
 export default {
   name: 'breakdown',
   data() {
@@ -37,15 +39,7 @@ export default {
               // Increment an value of a condition
               conditionCount[d]+=1;
             }
-          }
-          
-         var scheme = new colorScheme;
-         var palette = scheme.from_hue(21).scheme('triade').variation('default').colors();
-         // Need to append a '#' at the front of each hex code generated because it is required for the colors on Chart JS and color-scheme does not do this
-         for(var i = 0; i < palette.length; i++) {
-           palette[i] = '#'+palette[i];
-         }
-         
+          } 
          new Chart (document.getElementById("patient-breakdown").getContext('2d'), {
             type: 'doughnut',
             data: {
@@ -54,7 +48,7 @@ export default {
               datasets: [{
                 // Use the number of patients with that condition as the data values
                 data: Object.values(conditionCount),
-                backgroundColor: palette
+                backgroundColor: chromatism.adjacent(30, Object.keys(conditionCount).length, '#e52525').hex
               }]
             },
             options: {
@@ -74,7 +68,9 @@ export default {
               legend: {
                 display: true,
                 position: "left",
-                labels: {fontSize: 14}
+                labels: {fontSize: 14},
+                // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing. 
+                onClick: null
               },
               tooltips: {
                 callbacks: {
