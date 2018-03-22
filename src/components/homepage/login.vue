@@ -91,7 +91,7 @@ import resetPassword from './reset-password.vue';
             axios.post(this.$store.getters.loginURL, newContact)
             // Runs after the request has been answered
             .then(function(response) {
-              // If the response is successful, that means an account exists.   
+              // If the response is successful, that means an account exists. 
               if(response.data.success) {
                 self.$store.dispatch('signIn', response.data.accountType);
                 self.$store.dispatch('authenticatedUsername', self.username);
@@ -112,7 +112,11 @@ import resetPassword from './reset-password.vue';
                   self.$store.dispatch('alternateRegistration');
                 }
                 self.closeLogin();
-              } else {
+              } else if(response.data.down ){
+                  //show breach warning
+                  self.showWarning = true;
+                  self.inputWarning = 'Breach Has Been Detected, Server Shutdown';
+                } else {
                  // If the credentials are bad, update the vue to prompt the user of their error
                   self.inputWarning = 'The username and password you have provided are invalid.';
                   self.showWarning = true;

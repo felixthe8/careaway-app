@@ -1,6 +1,6 @@
 <template>
   <div class = "a-wellness">
-    <h1 class = "title is-3 is-spaced"> Average Patient Wellness From Past Week (Monday - Friday)</h1>
+    <h1 class = "title is-3 is-spaced"> Individual Patient Wellness From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{wellnessWarning}} </h2>
     <canvas id = "aggregate-wellness" width = "750" height = "300"> </canvas>
     <div class = "report" v-if="showReport">
@@ -60,9 +60,9 @@ export default {
       }
       var self = this;
       // Request to return meter widget data
-      axios.get(this.$store.getters.getTreatmentmeterURL, {
+      axios.get(this.$store.getters.getSingleTreatmentmeterURL, {
         params: {
-          medicalcode:this.$store.getters.medicalCode,
+          username:self.$store.state.username,
           // Pass the first and last elements from the day array. These dates will be used to filter the response in the backend
           startDate: self.days[0],
           finalDate: self.days.slice(-1)[0]
@@ -94,7 +94,8 @@ export default {
             }
           }
            // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
-          self.averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse()
+          self.averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse();
+          self.$store.dispatch("singlePatientWellness",self.averageData);
           // Define the graph and it's styles
           new Chart(document.getElementById("aggregate-wellness"), {
             type: 'bar',

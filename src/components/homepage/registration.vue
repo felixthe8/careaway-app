@@ -239,6 +239,11 @@
                 self.routePatientHome();
                 self.closeRegistration();
               }
+              else if(response.data.down ){
+                  //show breach warning
+                  self.warning = 'Breach Has Been Detected, Server Shutdown';
+                  self.showWarning = true;
+                }
               else{
                 self.warning = response.data.error;
                 self.showWarning = true;
