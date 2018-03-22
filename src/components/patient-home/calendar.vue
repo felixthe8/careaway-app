@@ -69,13 +69,13 @@ export default {
   },
   created: function() {
     // Fetch treatment plan
-    /*axios.get(this.$store.getters.getPatientTreatmentURL+this.$store.getters.authenticatedUsername)
+    axios.get(this.$store.getters.getPatientTreatmentURL+this.$store.getters.authenticatedUsername)
       .then(response => {
         this.widgets = response.data.treatment;
       })
       .catch(err => {
         console.log(err);
-      })*/
+      })
   },
   data() {
     return {
@@ -83,7 +83,7 @@ export default {
         checklist:'fa-clipboard-list',
         meter:'fa-tachometer-alt'
       },
-      widgets: [
+      widgets: []/*[
         {
           label: "checklist",
           list: [{question: 'Doki doki',check: false}],
@@ -115,7 +115,7 @@ export default {
           created_at: new Date(Date.now()),
           updated_at: null,
         }
-      ],
+      ]*/,
       selectedWidget: {},
       active: ''
     }
