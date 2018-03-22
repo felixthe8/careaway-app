@@ -55,10 +55,9 @@ const router = new Router ({
            // Checks if the request to login in was local         
          } else {
             // If the login local request roletype is medical professional log them into the system
-            if(store.getters.authStatus === 'medical-professional') {
+          if(store.getters.authStatus === 'medical-professional') {
           axios.get(store.getters.returnCodeURL+store.getters.authenticatedUsername)
           .then(function(response) {
-            // Extract out medical code from the response
             store.dispatch('medicalCode', response.data.medicalcode);
             next();
           })

@@ -43,7 +43,7 @@
         <a class="button is-primary is-medium is-fullwidth is-rounded" @click="create"> {{button}} </a>
       </div>
     </div>
-    <button class='modal-close is-large' aria-label='close' @click='closeThis'></button>
+    <button class='modal-close is-large' id="close" aria-label='close' @click='closeThis'></button>
   </div>
 </template>
 
@@ -338,5 +338,8 @@ export default {
   }
   .appointee:focus {
     outline: none;
+  }
+  #close {
+    background-color: black;
   }
 </style>

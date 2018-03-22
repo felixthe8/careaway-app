@@ -96,7 +96,6 @@ axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
             .then(function(response) {
               // If the response is successful, that means an account exists. 
               if(response.data.success) {
-                console.log(response.data.cookie);
                 cookies.set('user', response.data.cookie);
                 self.$store.dispatch('signIn', response.data.accountType);
                 self.$store.dispatch('authenticatedUsername', self.username);

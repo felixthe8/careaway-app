@@ -82,7 +82,6 @@ export default {
         .then(result => {
           if(result.data.success) {
             // Get patients was successful.
-            console.log("Successfully retrieved list of patients: " + result.data.patients);
             this.appointee = result.data.patients;
           } else {
             // Get patients failed.
@@ -120,9 +119,6 @@ export default {
     margin-left: 1rem;
   }
 
-  &__button {
-
-  }
 
   &__menu {
     opacity: 0;
@@ -130,9 +126,7 @@ export default {
     margin-left: 1rem;
     padding: 1rem;
 
-    &--create {
 
-    }
   }
 
 }

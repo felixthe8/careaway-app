@@ -33,6 +33,7 @@
   import axios from 'axios';
   import tooltip from './tooltip.vue'
   import securityQuestions from './security-question.vue';
+  import cookies from 'browser-cookies';
   export default {
     name: 'registration',
     // The patientForm holds a true or false value 
@@ -230,25 +231,15 @@
             patient: this.patientForm
           }
           // Sends data to the proxy server on this route
-          axios.post('http://localhost:8080/registerPatient', newPatient).then((
+          axios.post(this.$store.getters.registerPatientURL, newPatient).then((
             function(response){
-              if(response.data.success){
-                self.$store.dispatch('authenticatedUsername', newPatient.username);
-                //This allows the user to be signed in as a patient
-                self.$store.dispatch('signIn', 'patient');
-                //This navigates the user to the patient account page
-                self.routePatientHome();
-                self.closeRegistration();
-              }
-              else if(response.data.down ){
-                  //show breach warning
-                  self.warning = 'Breach Has Been Detected, Server Shutdown';
-                  self.showWarning = true;
-                }
-              else{
-                self.warning = response.data.error;
-                self.showWarning = true;
-              }
+              self.$store.dispatch('authenticatedUsername', newPatient.username);
+              //This allows the user to be signed in as a patient
+              self.$store.dispatch('signIn', 'patient');
+              //This navigates the user to the patient account page
+              cookies.set('user', response.data.cookie);
+              self.$router.push('/PatientHome');
+              self.closeRegistration();
             }
           )).catch(function(err){
             // Display an error message on the registration modal that an error has occurred upon sending the data
@@ -289,20 +280,15 @@
             patient: this.patientForm
           }
           // Sends data to the proxy server on this route
-          axios.post('http://localhost:8080/registerMed',newMedicalProfessional).then((
+          axios.post(this.$store.getters.registerMedicalProURL,newMedicalProfessional).then((
             function(response){
-              if(response.data.success){
-                console.log("Registering med");
-                //This allows the user to sign in as a medical professional
-                self.$store.dispatch('authenticatedUsername', newMedicalProfessional.username);
-                self.$store.dispatch('signIn', 'medical-professional');
-                //This reroutes the user to the medical professional account page
-                self.routeMedicHome();
-                self.closeRegistration();
-              } else {
-                self.warning = response.data.error;
-                self.showWarning = true;
-              }
+              //This allows the user to sign in as a medical professional
+              self.$store.dispatch('authenticatedUsername', newMedicalProfessional.username);
+              self.$store.dispatch('signIn', 'medical-professional');
+              cookies.set('user', response.data.cookie);
+              //This reroutes the user to the medical professional account page
+              self.$router.push('/MedicHome');
+              self.closeRegistration();
             }
           )).catch(function(err){
             // Display an error message on the registration modal that an error has occurred upon sending the data
