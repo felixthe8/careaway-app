@@ -16,14 +16,23 @@
 
 <script>
 
+import axios from 'axios';
+import moment from 'moment';
+import timeChangers from './time';
+
 export default {
   name: 'checklist',
 
   props: ['calendar'],
 
+  components: { timeChangers },
+
   data() {
     return {
-      checklist: {}
+      created: false,
+      label: "checklist",
+      list: [],
+      due_date: {}
     }
   },
 
@@ -41,9 +50,29 @@ export default {
       for(var i=0; i < this.calendar.length; i++) {
         if(this.calendar[i].date == this.checklist.date) {
           this.calendar[i].checklist = this.checklist;
+          this.calendar[i].checklist.created = true;
         }
       }
+
+      this.saveChecklist();
       document.getElementsByClassName("checklist__menu")[0].classList.remove("show-menu");
+    },
+    saveChecklist: function() {
+      const checklist = {
+        label: this.label,
+        list: this.list,
+        due_date: this.due_date,
+      }
+
+      axios.post(this.$store.getters.createMeterURL, checklist).then(function(response) {
+        if(response.date.success) {
+          console.log("Successfully Created Meter");
+        } else {
+          console.log("Failed to Create Meter");
+        }
+      }).catch(function(err) {
+        console.log(err);
+      });
     }
   }
 }

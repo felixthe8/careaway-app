@@ -4,9 +4,10 @@
     <button class="meter__button green-button" draggable="true" @drag="onDrag">meter</button>
 
     <div class="meter__menu">
-      <label>Reason for meter:</label>
+      <label>Question:</label>
       <input class="meter__menu--input" name="meter" type="text" id="meter">
       <label>Date Requested:</label>
+
       <input class="meter__menu--input" name="date" type="text" id="meter-date">
       <button id="meter" class="meter__menu--create green-button" @click="create">Create Event</button>
     </div>
@@ -16,14 +17,24 @@
 
 <script>
 
+import axios from 'axios';
+import moment from 'moment';
+import timeChangers from './time';
+
 export default {
   name: 'meter',
 
   props: ['calendar'],
 
+  components: { timeChangers },
+
   data() {
     return {
-      meter: { "type": "meter" }
+      created: false,
+      label: "meter",
+      question: "",
+      scale: [1,10],
+      due_date: {}
     }
   },
 
@@ -33,17 +44,37 @@ export default {
       event.dropEffect = "move";
     },
     create: function() {
-      this.meter = {
-        text: document.getElementById("meter").value,
-        date: document.getElementById("meter-date").value
-      }
+      this.question = document.getElementById("meter").value;
+
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].date == this.meter.date) {
-          this.calendar[i].meter = this.meter;
+        if(this.calendar[i].date == this.due_date) {
+            console.log("hi");
+          this.calendar[i].meter = this;
+          this.calendar[i].meter.created = true;
         }
       }
+
+      this.saveMeter();
       document.getElementsByClassName("meter__menu")[0].classList.remove("show-menu");
+    },
+    saveMeter: function() {
+      const meter = {
+        label: this.label,
+        question: this.question,
+        scale: this.scale,
+        due_date: this.due_date,
+      }
+
+      axios.post(this.$store.getters.createMeterURL, meter).then(function(response) {
+        if(response.date.success) {
+          console.log("Successfully Created Meter");
+        } else {
+          console.log("Failed to Create Meter");
+        }
+      }).catch(function(err) {
+        console.log(err);
+      });
     }
   }
 }

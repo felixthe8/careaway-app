@@ -45,8 +45,16 @@
                 {{calendar[index].appointment.date}}
               </button>
           </div>
-          <div class="calendar__day--meter">{{calendar[index].meter.text}}</div>
-          <div class="calendar__day--checklist">{{calendar[index].checklist.text}}</div>
+
+          <div class="calendar__day--meter"
+            v-if="calendar[index].meter.created">
+            {{calendar[index].meter.label}}
+          </div>
+
+          <div class="calendar__day--checklist"
+            v-if="calendar[index].checklist.created">
+            {{calendar[index].checklist.label}}
+          </div>
 
         </div>
 

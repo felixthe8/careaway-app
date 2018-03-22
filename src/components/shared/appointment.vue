@@ -27,7 +27,7 @@
 import axios from 'axios';
 import create from './appointment/appointment-creation';
 import modify from './appointment/appointment-modification';
-import edit from '../shared/appointment/appointment-status';
+import edit from './appointment/appointment-status';
 import moment from 'moment';
 
 export default {

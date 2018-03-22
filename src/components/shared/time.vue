@@ -1,5 +1,5 @@
 <template>
-<div id="timeBox"> 
+<div id="timeBox">
   <div class="dropDown">
     <a v-on:click="show" class="drop-down">
       <p id="symbol">&#9716;</p> &nbsp;
@@ -28,7 +28,7 @@
       </div>
       <div class="x">
         <a v-on:click="show">Done</a>
-      </div> 
+      </div>
     </div>
   </div>
   <div class="tod">
@@ -49,7 +49,7 @@ export default {
       pmbool: this.pm,
       timeOfDay: "PM"
     }
-  }, 
+  },
   beforeMount() {
     if(this.pm) {
       this.timeOfDay = "PM";
@@ -68,10 +68,10 @@ export default {
       }
     },
     checkTime() {
-    }, 
+    },
     show() {
-      this.showTime = !this.showTime; 
-    }, 
+      this.showTime = !this.showTime;
+    },
     selectHour(hour) {
       this.$emit('changeHour', hour);
     },
@@ -82,7 +82,7 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-  @import "../../../assets/sass/settings.scss";
+  @import "../../assets/sass/settings.scss";
   .dropDown {
     display: inline-block;
     flex: 1;

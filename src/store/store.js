@@ -52,6 +52,11 @@ export const store = new Vuex.Store({
     modifyAppointmentURL: 'http://localhost:8080/updateAppointment',
     deleteAppt: 'http://localhost:8080/deleteAppt',
 
+    // Widget URLs
+    createMeterURL: 'http://localhost:8080/createMeter',
+    createChecklistURL: 'http://localhost:8080/createChecklist',
+
+    // Login Data
     validUsername: '',
     username: '',
     validPassword: '',
@@ -146,6 +151,12 @@ export const store = new Vuex.Store({
     },
     createAppointmentURL: (state) => {
       return state.createAppointmentURL;
+    },
+    createMeterURL: (state) => {
+      return state.createMeterURL;
+    },
+    createChecklistURL: (state) => {
+      return state.createChecklistURL;
     },
     modifyAppointmentURL: (state) => {
       return state.modifyAppointmentURL;
