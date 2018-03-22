@@ -298,8 +298,8 @@ export default {
       },
   },
   created(){
-      self.$store.dispatch("singlePatientWellness",null);
-      self.$store.dispatch("singlePatientCompletion",null);
+      this.$store.dispatch("singlePatientWellness",null);
+      this.$store.dispatch("singlePatientCompletion",null);
       
     
   },
