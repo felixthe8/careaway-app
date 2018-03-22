@@ -1,24 +1,28 @@
 <template>
   <div>
     <navbar class = "nav-bar"/>
-    <button class="button is-primary is-rounded" @click="toggleCreate"></button>
 
-    <div class="patient-calendar">
+    <div class="patient-calendar"  v-if="isLoaded">
       <calendar :calendar="calendar"/>
     </div>
 
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
+    
     <appointment-status :appointment="getAppointment()" v-if="this.$store.getters.showAppointment" ></appointment-status>
+
     <create
       :appointeeType="appointeeType"
       :appointee="appointee"
       :isMed="isMed"
       v-if = "showAppointmentCreation" />
+
     <modify
       :requestee="appointeeType"
       :appointment="this.$store.getters.currentAppointment"
       v-if = "showAppointmentMod" />
+
     <router-view></router-view>
+
   </div>
 
 </template>
@@ -51,12 +55,23 @@ export default {
         appointeeType: "",
         appointee: [],
         isMed: true,
-        calendar: [0]
+        calendar: [0],
+        isLoaded: false
       }
     },
 
     created: function() {
       this.calendar = this.$renderCalendar(0);
+
+      let appointments = this.$store.getters.appointments;
+      for(var i=0; i < appointments.length; i++) {
+        for(var j=0; j < this.calendar.length; j++) {
+          if(appointments[i].date === this.calendar[j].object) {
+            this.calendar[j].appointment = appointments[i];
+            appointments[i].created = true;
+          }
+        }
+      }
     },
 
     beforeCreate() {
@@ -65,6 +80,7 @@ export default {
         var appointments = result.data.appointments;
         for(var i=0; i<appointments.length; i++) {
           self.$store.dispatch('addAppointment',appointments[i]);
+          self.isLoaded = true;
         }
       }).catch(error => {
         console.log(error);

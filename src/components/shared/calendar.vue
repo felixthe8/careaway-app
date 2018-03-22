@@ -86,14 +86,14 @@ export default {
 
   methods: {
     next: function(event) {
-      if(this.state < 1)
-        this.state = this.state + 1;
-      this.calendar = this.$renderCalendar(this.state);
+      // if(this.state < 1)
+      //   this.state = this.state + 1;
+      // this.calendar = this.$renderCalendar(this.state);
     },
     previous: function(event) {
-      if(this.state > -1)
-        this.state = this.state - 1;
-      this.calendar = this.$renderCalendar(this.state);
+      // if(this.state > -1)
+      //   this.state = this.state - 1;
+      // this.calendar = this.$renderCalendar(this.state);
     },
     weekly: function(event) {
       let days = document.getElementsByClassName("monthly")[0].children;
