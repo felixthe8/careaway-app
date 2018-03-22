@@ -233,7 +233,6 @@
             securityA2: this.securityA2,
             securityA3: this.securityA3
           }
-          console.log(newMedicalProfessional)
           //Sends data to the proxy server on this route
           axios.post(this.$store.getters.ssoRegisterMedicalURL,newMedicalProfessional).then((
             function(response){

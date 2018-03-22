@@ -49,14 +49,8 @@ export default {
       return '';
     }
   },
-  mounted() {
-    //console.log("blah");
-    //console.log(this.computedWidget.label);
-    //console.log(this.computedActive);
-  },
   methods: {
     close: function(event) {
-      console.log('clo');
       this.$emit('close');
     },
     save: function(event) {

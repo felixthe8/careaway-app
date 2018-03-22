@@ -111,13 +111,10 @@ export const store = new Vuex.Store({
       return state.getTreatmentchecklistURL;
     },
     getPatientTreatmentURL: (state) => {
-      return state.returnCodeURL;
+      return state.getPatientTreatmentURL;
     },
     updatePatientTreatmentURL: (state) => {
-      return state.returnCodeURL;
-    },
-    returnCodeURL: (state) => {
-      return state.returnCodeURL;
+      return state.updatePatientTreatmentURL;
     },
     getAppointmentURL: (state) =>  {
       return state.appointmentURL;

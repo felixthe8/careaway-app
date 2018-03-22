@@ -45,7 +45,6 @@ export default {
       var self = this;
       axios.get(this.$store.getters.getAppointmentURL + this.$store.getters.authenticatedUsername).then(result => {
         var appointments = result.data.appointments;
-        console.log(appointments);
         for(var i=0; i<appointments.length; i++) {
           self.$store.dispatch('addAppointment',appointments[i]);
         }
@@ -103,7 +102,6 @@ export default {
             axios.get(self.$store.getters.getPatientInfoURL + self.$store.getters.medicalCode).then(result => {
               if(result.data.success) {
                 // Get patients was successful.
-                console.log("Successfully retrieved list of patients: " + result.data.patients);
                 self.appointee = result.data.patients;
               } else {
                 // Get patients failed.
@@ -121,7 +119,6 @@ export default {
       addAppointment(appointment) {
         this.$store.dispatch("addAppointment", appointment);
         this.appointment = appointment;
-        console.log(this.appointment);
       }
     },
     created() {

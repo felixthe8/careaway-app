@@ -39,7 +39,7 @@
           <div v-if="getWidget(day).length > 0">
             <div v-for="widget in getWidget(day)">
               <div class="widget-box" :class="getCompletedStatus(widget).className" @click="clickWidget(widget)">
-                <div>{{ titleize(widget.label) }}</div>
+                <div><i class="fas fa-tachometer-alt"/><i class="fas fa-clipboard-list"/>{{ titleize(widget.label) }}</div>
                 <div class="status-text">{{ getCompletedStatus(widget).status }}</div>
               </div>
             </div>
@@ -59,6 +59,7 @@
 <script>
 import meterWidget from './meter';
 import checklistWidget from './checklist';
+import axios from 'axios';
     
 export default {
   name: 'app',
@@ -70,7 +71,7 @@ export default {
     // Fetch treatment plan
     axios.get(this.$store.getters.getPatientTreatmentURL+this.$store.getters.authenticatedUsername)
       .then(response => {
-        this.widgets = response.data;
+        this.widgets = response.data.treatment;
       })
       .catch(err => {
         console.log(err);
@@ -78,7 +79,7 @@ export default {
   },
   data() {
     return {
-      widgets: []/*[
+      widgets: [
         {
           label: "checklist",
           list: [{question: 'Doki doki',check: false}],
@@ -110,7 +111,7 @@ export default {
           created_at: new Date(Date.now()),
           updated_at: null,
         }
-      ]*/,
+      ],
       selectedWidget: {},
       active: ''
     }
@@ -206,7 +207,6 @@ export default {
           else
             item.classList.remove("week-height");
         });
-
         document.getElementsByClassName("calendar__menu--button")[1].classList.add("active");
         document.getElementsByClassName("calendar__menu--button")[0].classList.remove("active");
     },
@@ -217,7 +217,6 @@ export default {
       console.log("previous");
     },
     getWidget: function(day) {
-      //console.log(day);
       // object: Date (obj)
       // date: int (date of month)
       // code: int (day of week)
@@ -244,15 +243,13 @@ export default {
       this.active = '';
     },
     save: function(payload) {
-      console.log('pay');
-      console.log(payload);
       const obj = {
         treatment: payload,
         username: this.$store.getters.authenticatedUsername
       }
       axios.put(this.$store.getters.updatePatientTreatmentURL,obj)
       .then(function(response) {
-        console.log("Updated");
+        // Updated
       })
       .catch(function(err) {
         console.log(err);
