@@ -2,7 +2,11 @@
   <div>
     <navbar class = "nav-bar"/>
     <button class="button is-primary is-rounded" @click="toggleCreate"></button>
-    <calendar :calendar="calendar"/>
+
+    <div class="patient-calendar">
+      <calendar :calendar="calendar"/>
+    </div>
+
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
     <appointment-status :appointment="getAppointment()" v-if="this.$store.getters.showAppointment" ></appointment-status>
     <create
@@ -130,11 +134,6 @@ export default {
 <style lang="scss">
 @import '../../assets/sass/settings.scss';
 
-#app {
-    width: 100vw;
-    height: 100vh;
-  }
-
 .nav-bar {
   width: 100%;
   padding: 1rem;
@@ -147,6 +146,12 @@ export default {
     &__button {
       float: right;
     }
+  }
+
+  .patient-calendar {
+    width: auto;
+    height: 85vh;
+    display: grid;
   }
 
 </style>
