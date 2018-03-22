@@ -45,7 +45,7 @@
                 {{calendar[index].appointment.date}}
               </button>
           </div>
-          <div class="calendar__day--scale">{{calendar[index].scale.text}}</div>
+          <div class="calendar__day--meter">{{calendar[index].meter.text}}</div>
           <div class="calendar__day--checklist">{{calendar[index].checklist.text}}</div>
 
         </div>
@@ -117,11 +117,11 @@ export default {
     drop: function(event) {
       event.preventDefault();
 
-      //if scale
+      //if meter
       console.log(event.dataTransfer.getData("text/plain"));
       let date = event.target.getAttribute("date");
-      document.getElementById("scale-date").value = date;
-      document.getElementsByClassName("scale__menu")[0].classList.add("show-menu");
+      document.getElementById("meter-date").value = date;
+      document.getElementsByClassName("meter__menu")[0].classList.add("show-menu");
 
       //if checklist
       // let date = event.target.getAttribute("date");

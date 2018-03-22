@@ -1,14 +1,14 @@
 <template>
 
-  <div class="scale">
-    <button class="scale__button green-button" draggable="true" @drag="onDrag">Scale</button>
+  <div class="meter">
+    <button class="meter__button green-button" draggable="true" @drag="onDrag">meter</button>
 
-    <div class="scale__menu">
-      <label>Reason for scale:</label>
-      <input class="scale__menu--input" name="scale" type="text" id="scale">
+    <div class="meter__menu">
+      <label>Reason for meter:</label>
+      <input class="meter__menu--input" name="meter" type="text" id="meter">
       <label>Date Requested:</label>
-      <input class="scale__menu--input" name="date" type="text" id="scale-date">
-      <button id="scale" class="scale__menu--create green-button" @click="create">Create Event</button>
+      <input class="meter__menu--input" name="date" type="text" id="meter-date">
+      <button id="meter" class="meter__menu--create green-button" @click="create">Create Event</button>
     </div>
   </div>
 
@@ -17,13 +17,13 @@
 <script>
 
 export default {
-  name: 'scale',
+  name: 'meter',
 
   props: ['calendar'],
 
   data() {
     return {
-      scale: { "type": "scale" }
+      meter: { "type": "meter" }
     }
   },
 
@@ -33,17 +33,17 @@ export default {
       event.dropEffect = "move";
     },
     create: function() {
-      this.scale = {
-        text: document.getElementById("scale").value,
-        date: document.getElementById("scale-date").value
+      this.meter = {
+        text: document.getElementById("meter").value,
+        date: document.getElementById("meter-date").value
       }
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].date == this.scale.date) {
-          this.calendar[i].scale = this.scale;
+        if(this.calendar[i].date == this.meter.date) {
+          this.calendar[i].meter = this.meter;
         }
       }
-      document.getElementsByClassName("scale__menu")[0].classList.remove("show-menu");
+      document.getElementsByClassName("meter__menu")[0].classList.remove("show-menu");
     }
   }
 }
@@ -52,7 +52,7 @@ export default {
 <style lang="scss">
 @import "../../assets/sass/settings.scss";
 
-.scale {
+.meter {
   padding: 1rem;
 
   &__button {

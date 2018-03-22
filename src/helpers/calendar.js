@@ -43,7 +43,7 @@ Calendar.install = function (Vue, options) {
           "month": start.getMonth(),
           "name": week[start.getDay()],
           "appointment": {},
-          "scale": {},
+          "meter": {},
           "checklist": {}
         }
 

@@ -5,8 +5,8 @@
       <appointment :calendar="calendar" :isMed="isMed" />
 
       <div class="menu__widgets">
-        <scale :calendar="calendar"/>
-        <checklist :calendar="calendar"/>
+        <meterWidget :calendar="calendar"/>
+        <checklistWidget :calendar="calendar"/>
       </div>
     </div>
 
@@ -18,8 +18,8 @@
 <script>
 
 import appointment from '../shared/appointment.vue';
-import scale from '../shared/scale.vue';
-import checklist from '../shared/checklist.vue';
+import meterWidget from '../shared/meter.vue';
+import checklistWidget from '../shared/checklist.vue';
 import calendar from '../shared/calendar.vue';
 import moment from 'moment';
 
@@ -28,8 +28,8 @@ export default {
 
   components: {
     appointment,
-    scale,
-    checklist,
+    meterWidget,
+    checklistWidget,
     calendar
   },
 
