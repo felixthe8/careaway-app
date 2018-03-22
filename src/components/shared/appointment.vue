@@ -17,6 +17,7 @@
       v-if = "showAppointmentMod" />
 
     <edit
+      :calendar="calendar"
       :appointment="getAppointment()"
       :appointee="appointee"
       :isMed="isMed"
@@ -56,7 +57,7 @@ export default {
 
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
-        if(moment(this.calendar[i].object).format("YYYY-MM-DD") == this.appointment.date) {
+        if(this.calendar[i].object === this.appointment.date) {
           this.calendar[i].appointment = this.appointment;
         }
       }

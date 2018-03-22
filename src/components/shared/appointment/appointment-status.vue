@@ -33,14 +33,14 @@
         </div>
       </div>
     <button class='modal-close is-large' aria-label='close' @click='closeAppointment'></button>
-  </div> 
+  </div>
 </template>
 
 <script>
   import axios from 'axios';
   export default {
     name: 'appointment-status',
-    props: ['appointment'],
+    props: ['appointment', 'calendar'],
     data() {
       return {
         // Warning Notification to tell the user if there was a connection issue
@@ -80,14 +80,14 @@
       // This transform the date format to a human readable state
       getTime(time){
         time = new Date(time);
-        return `${time.getHours() === 0 ? '1' : time.getHours() > 12 ? time.getHours() - 12 : time.getHours() 
+        return `${time.getHours() === 0 ? '1' : time.getHours() > 12 ? time.getHours() - 12 : time.getHours()
                 }:${time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()
-                }${time.getHours() > 12 ? 'P.M.':'A.M.'}`; 
+                }${time.getHours() > 12 ? 'P.M.':'A.M.'}`;
       },
       // This hides the appointment-status component
       closeAppointment() {
          this.$store.commit('alternateAppointment');
-      }, 
+      },
       // This method sends the new status changes to save to the server
       // Status is either Accepted or Declined that the appointee has chosen
       sendResponse(status){
@@ -105,15 +105,15 @@
               console.log("Success");
               // Edit the appointment in the array in the VueX
               self.$store.dispatch('editAppointment',{'oldAppt' : self.appointment, 'newAppt' : newAppointment});
-              self.showWarning = false; 
+              self.showWarning = false;
             } else {
               // Display an error message if the connection went wrong
               console.log(response.data.response);
-              self.showWarning = true;     
+              self.showWarning = true;
             }
           }).catch(function(err){
             console.log("There was an error handling the request");
-            self.showWarning = true;      
+            self.showWarning = true;
           })
       },
       // Opens the appointment-modification vue
@@ -135,16 +135,23 @@
               self.$store.commit("alternateAppointment");
               // Deletes the appointment from the appointment array in the VueX
               self.$store.dispatch('deleteAppointment', self.appointment);
-              self.showWarning = false; 
+              self.showWarning = false;
             } else {
               console.log(response.data.response);
-              self.showWarning = true;     
+              self.showWarning = true;
             }
           }).catch(function(err){
             // Display an error message if the connection went wrong
             console.log("There was an error handling the request");
-            self.showWarning = true;      
+            self.showWarning = true;
           });
+          
+          // get element by date attribute
+          for(var i=0; i < self.calendar.length; i++) {
+            if(self.calendar[i].object === self.appointment.date) {
+              self.calendar[i].appointment = {};
+            }
+          }
       }
     }
   }
@@ -197,7 +204,7 @@
     @media #{$tablet}{
       font-size: 1.5em;
     }
-  } 
+  }
   .input{
     margin: 5px 0px 5px 0px;
   }
