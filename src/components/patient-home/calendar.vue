@@ -10,49 +10,118 @@
         <div class="item calendar__menu--label current-week"><h1>Week of the {{getCurrent().monday}}th</h1></div>
         <div class="item"><div class="calendar__menu--arrow-right" @click="next"></div></div>
 
-        <div class="item calendar__menu--button active" @click="month"><h1 class="text">Month</h1></div>
-        <div class="item calendar__menu--button" @click="week"><h1 class="text">Week</h1></div>
+        <div class="item calendar__menu--button active" @click="displayMonth"><h1 class="text">Month</h1></div>
+        <div class="item calendar__menu--button" @click="displayWeek"><h1 class="text">Week</h1></div>
       </div>
 
       <div class="columns is-multiline monthly">
         <div class="column is-one-fifth calendar__day"
-          v-for="day, index in getMonth().length"
+          v-for="day, index in getMonth()"
           :class="{
             'no-right' : (index+1)%5 === 0,
             'no-bottom': (index > 19),
-            'weekly': getMonth()[index].date < getCurrent().monday || getMonth()[index].date > getCurrent().friday,
-            'no-bottom__mobile': getMonth()[index].date === getCurrent().friday
+            'weekly': day.date < getCurrent().monday || day.date > getCurrent().friday,
+            'no-bottom__mobile': day.date === getCurrent().friday
           }">
 
           <div class="calendar__day--date"
             :class="{
-                'today' : getCurrent().date === getMonth()[index].date
-          }">{{getMonth()[index].date}}</div>
+                'today' : getCurrent().date === day.date
+          }">{{day.date}}</div>
 
           <div class="blocked"
-            v-if="getMonth()[index].month != getCurrent().month"
+            v-if="day.month != getCurrent().month"
             :class="{
               'rounded-left': (index === 0),
               'rounded-right': (index === 24),
           }"></div>
-
-          <div class="calendar__day--label" v-if="index < 5">{{getMonth()[index].name}}</div>
+          
+          <div v-if="getWidget(day).length > 0">
+            <div v-for="widget in getWidget(day)">
+              <div class="widget-box" :class="getCompletedStatus(widget).className" @click="clickWidget(widget)">
+                <div><i class="fas" :class="icons[widget.label]" style="margin-right:6px" />{{ titleize(widget.label) }}</div>
+                <div class="status-text">{{ getCompletedStatus(widget).status }}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="calendar__day--label" v-if="index < 5">{{day.name}}</div>
         </div>
 
       </div>
-
     </div>
+    <meter-widget :widget="selectedWidget" :active="active" v-on:close="close" v-on:save="save" />
+    <checklist-widget :widget="selectedWidget" :active="active" v-on:close="close" v-on:save="save" />
   </div>
 
 </template>
 
 <script>
-
+import meterWidget from './meter';
+import checklistWidget from './checklist';
+import axios from 'axios';
+    
 export default {
   name: 'app',
-  components: {},
+  components: {
+    meterWidget,
+    checklistWidget
+  },
+  created: function() {
+    // Fetch treatment plan
+    axios.get(this.$store.getters.getPatientTreatmentURL+this.$store.getters.authenticatedUsername)
+      .then(response => {
+        this.widgets = response.data.treatment;
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  },
+  data() {
+    return {
+      icons: {
+        checklist:'fa-clipboard-list',
+        meter:'fa-tachometer-alt'
+      },
+      widgets: []/*[
+        {
+          label: "checklist",
+          list: [{question: 'Doki doki',check: false}],
+          due_date: '2018-03-20',
+          created_at: new Date(Date.now()),
+          updated_at: null
+        },{
+          label: "meter",
+          question: 'ASASAAAAA',
+          scale: [1,10],
+          due_date: '2018-03-21',
+          patient_input: null,
+          created_at: new Date(Date.now()),
+          updated_at: null,
+        },{
+          label: "meter",
+          question: 'Shoooopiiiii',
+          scale: [1,10],
+          due_date: '2018-03-22',
+          patient_input: null,
+          created_at: new Date(Date.now()),
+          updated_at: null,
+        },{
+          label: "meter",
+          question: 'Met',
+          scale: [1,10],
+          due_date: '2018-03-23',
+          patient_input: null,
+          created_at: new Date(Date.now()),
+          updated_at: null,
+        }
+      ]*/,
+      selectedWidget: {},
+      active: ''
+    }
+  },
   methods: {
-    getCurrent: function() {
+    getCurrent() {
       // get today's date object
       let current = new Date();
       // get current monday
@@ -71,7 +140,7 @@ export default {
         "friday": friday.getDate()
       };
     },
-    getMonth: function(start) {
+    getMonth(start) {
       // week day array
       let week = ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"];
       // get today's date object
@@ -122,7 +191,7 @@ export default {
       // return array of day objects
       return month;
     },
-    week: function(event) {
+    displayWeek(event) {
       let days = document.getElementsByClassName("monthly")[0].children;
       Array.from(days).forEach((item)=> {
         if(item.classList.contains("weekly"))
@@ -134,7 +203,7 @@ export default {
       document.getElementsByClassName("calendar__menu--button")[0].classList.add("active");
       document.getElementsByClassName("calendar__menu--button")[1].classList.remove("active");
     },
-    month: function(event) {
+    displayMonth(event) {
         let days = document.getElementsByClassName("monthly")[0].children;
         Array.from(days).forEach((item)=> {
           if(item.classList.contains("weekly"))
@@ -142,22 +211,148 @@ export default {
           else
             item.classList.remove("week-height");
         });
-
         document.getElementsByClassName("calendar__menu--button")[1].classList.add("active");
         document.getElementsByClassName("calendar__menu--button")[0].classList.remove("active");
     },
-    next: function(event) {
+    next(event) {
       console.log("next");
     },
-    previous: function(event) {
+    previous(event) {
       console.log("previous");
     },
+    dateStrToDateObj(dateStr) {
+      var dateArray = dateStr.split('-');
+      return {
+        year: parseInt(dateArray[0]),
+        month: parseInt(dateArray[1]),
+        day: parseInt(dateArray[2])
+      }
+    },
+    getWidget(day) {
+      // object: Date (obj)
+      // date: int (date of month)
+      // code: int (day of week)
+      // month: int (month-1)
+      // name: str (day of week)
+      var widgets = this.widgets.filter(item => {
+        var dueDate = this.dateStrToDateObj(item.due_date);
+
+        const sameYear = dueDate.year === day.object.getFullYear();
+        const sameMonth = dueDate.month-1 === day.month;
+        const sameDay = dueDate.day === day.date;
+
+        if (sameYear && sameMonth && sameDay) return true;
+        return false;
+      })
+      return widgets;
+    },
+    clickWidget(widget, event) {
+      var dueDate = this.dateStrToDateObj(widget.due_date);
+      var todayDate = new Date();
+
+      const sameYear = dueDate.year === todayDate.getFullYear();
+      const sameMonth = dueDate.month-1 === todayDate.getMonth();
+      const sameDay = dueDate.day === todayDate.getDate();
+
+      if (!sameYear || !sameMonth || !sameDay) return;
+
+      this.selectedWidget = widget;
+      this.active = widget.label;
+    },
+    close() {
+      this.active = '';
+    },
+    save(payload) {
+      const obj = {
+        treatment: payload,
+        username: this.$store.getters.authenticatedUsername
+      }
+      axios.put(this.$store.getters.updatePatientTreatmentURL,obj)
+      .then(function(response) {
+        // Updated
+      })
+      .catch(function(err) {
+        console.log(err);
+      })
+    },
+    titleize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    },
+    getCompletedStatus(widget) {
+      var due_date = this.dateStrToDateObj(widget.due_date);
+      due_date = new Date(due_date.year, due_date.month-1, due_date.day);
+      var today = new Date();
+      
+      due_date.setHours(0,0,0,0);
+      today.setHours(0,0,0,0);
+      
+      var status = {
+        status: 'Planned',
+        className: widget.label+'-planned'
+      }
+
+      if (due_date > today) {
+        return status;
+      }
+      
+      status.status = 'Incomplete';
+      status.className = widget.label+'-incomplete';
+
+      if (widget.label == 'checklist') {
+        for (var i=0;i<widget.list.length;i++) {
+          if (!widget.list[i].check) {
+            return status;
+          }
+        }
+      } else {
+        if (widget.patient_input === null || widget.patient_input === '') return status;
+      }
+
+      status.status = 'Completed';
+      status.className = widget.label+'-completed';
+
+      return status;
+    }
   }
 }
 </script>
 
 <style lang="scss">
 @import "../../assets/sass/settings.scss";
+
+.widget-box {
+  padding-bottom: 6px;
+  cursor: pointer;
+  border-radius:3px;
+}
+
+.meter-incomplete {
+  background-color: $blue-light;
+}
+
+.checklist-incomplete {
+  background-color: $green-light;
+}
+
+.meter-completed {
+  background-color: $blue-dark;
+}
+
+.checklist-completed {
+  background-color: $green-dark;
+}
+
+.meter-planned {
+  background-color: $blue;
+}
+
+.checklist-planned {
+  background-color: $green;
+}
+
+.status-text {
+  font-size: 12px;
+}
 
 .weekly {
   display: none;

@@ -5,13 +5,13 @@
     <calendar/>
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
     <appointment-status :appointment="getAppointment()" v-if="this.$store.getters.showAppointment" ></appointment-status>
-    <create 
+    <create
       :appointeeType="appointeeType"
       :appointee="appointee"
       :isMed="isMed"
       v-if = "showAppointmentCreation" />
-    <modify 
-      :requestee="appointeeType" 
+    <modify
+      :requestee="appointeeType"
       :appointment="this.$store.getters.currentAppointment"
       v-if = "showAppointmentMod" />
     <router-view></router-view>
@@ -26,13 +26,14 @@ import axios from 'axios';
 import appointmentStatus from '../shared/appointment/appointment-status';
 import create from '../shared/appointment/appointment-creation';
 import modify from '../shared/appointment/appointment-modification';
-import calendar from './calendar';
+import calendar from '../shared/calendar';
 import debounce from 'debounce';
+
 export default {
     name: 'patientHome',
     components: {
-      navbar, 
-      calendar, 
+      navbar,
+      calendar,
       timeout,
       appointmentStatus,
       create,
@@ -44,7 +45,7 @@ export default {
         appointment: {}, // Currently stores only one appointment object, will need to change to store array
         appointeeType: "",
         appointee: [],
-        isMed: true
+        isMed: false
       }
     },
     beforeCreate() {
@@ -69,7 +70,7 @@ export default {
       this.appointeeType = "Medical Professional";
       this.isMed = false;
     },
-    mounted () { 
+    mounted () {
       // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
       var self = this;
       var time;
@@ -83,7 +84,7 @@ export default {
       // After 15 minutes of inacitivity, the session timeout warning will display
        time = setTimeout(self.displaySessionwarning, 15*60*1000);
      }
-      // Call the resetTimer function to kick-start the inactivity timer. 
+      // Call the resetTimer function to kick-start the inactivity timer.
       resetTimer();
     },
     computed: {
@@ -105,7 +106,7 @@ export default {
         this.showWarning = true;
       }
     },
-    // beforeDestroy will run right before the user leaves the component. 
+    // beforeDestroy will run right before the user leaves the component.
     beforeDestroy() {
       document.onmousemove = null;
       document.onkeypress = null;
@@ -114,7 +115,7 @@ export default {
       this.$store.dispatch('signOut','');
       this.$router.push('/');
     }
-  
+
 }
 </script>
 
@@ -142,6 +143,3 @@ export default {
   }
 
 </style>
-
-
-  

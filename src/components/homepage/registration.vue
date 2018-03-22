@@ -226,7 +226,8 @@
             securityQ3: this.securityQ3,
             securityA1: this.securityA1,
             securityA2: this.securityA2,
-            securityA3: this.securityA3
+            securityA3: this.securityA3,
+            patient: this.patientForm
           }
           // Sends data to the proxy server on this route
           axios.post('http://localhost:8080/registerPatient', newPatient).then((
@@ -239,6 +240,11 @@
                 self.routePatientHome();
                 self.closeRegistration();
               }
+              else if(response.data.down ){
+                  //show breach warning
+                  self.warning = 'Breach Has Been Detected, Server Shutdown';
+                  self.showWarning = true;
+                }
               else{
                 self.warning = response.data.error;
                 self.showWarning = true;
@@ -279,12 +285,14 @@
             securityQ3: this.securityQ3,
             securityA1: this.securityA1,
             securityA2: this.securityA2,
-            securityA3: this.securityA3
+            securityA3: this.securityA3,
+            patient: this.patientForm
           }
           // Sends data to the proxy server on this route
           axios.post('http://localhost:8080/registerMed',newMedicalProfessional).then((
             function(response){
               if(response.data.success){
+                console.log("Registering med");
                 //This allows the user to sign in as a medical professional
                 self.$store.dispatch('authenticatedUsername', newMedicalProfessional.username);
                 self.$store.dispatch('signIn', 'medical-professional');

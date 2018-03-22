@@ -5,13 +5,13 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    
+
     // The user's selected security questions during registration
     questionSelected1:0,
     questionSelected2:0,
     questionSelected3:0,
 
-    // Boolean value for controlling if the modals will display 
+    // Boolean value for controlling if the modals will display
     showRegistration: false,
     showLogin: false,
     resetRegistrationForm: false,
@@ -32,18 +32,26 @@ export const store = new Vuex.Store({
     registerPatientURL: 'http://localhost:8080/registerPatient',
     registerMedicalProURL: 'http://localhost:8080/registerMed',
     resetCredURL: 'http://localhost:8080/reset-creds',
-    getSecurityQURL:'http://localhost:4100/account/api/security-questions?username=',
-    validateAnswerURL: 'http://localhost:4100/account/api/validate-answers',
+    getSecurityQURL:'http://localhost:8080/security-questions?username=',
+    validateAnswerURL: 'http://localhost:8080/validate-answers',
     validateUsernameURL: 'http://localhost:8080/validate-username',
     ssoRegisterPatientURL: 'http://localhost:8080/ssoRegisterPatient',
     ssoRegisterMedicalURL: 'http://localhost:8080/ssoRegisterMed',
+    LoginInfoURL: 'http://localhost:8080/getLoginInfo?token=',
     returnCodeURL : 'http://localhost:8080/returnCode?username=',
     patientBreakdownURL: 'http://localhost:8080/getDiagnoses?medicalcode=',
     getTreatmentmeterURL: 'http://localhost:8080/getTreatmentmeter',
+    getSingleTreatmentmeterURL: 'http://localhost:8080/getSingleTreatmentmeter',
+    getSingleDiagnosisURL: 'http://localhost:8080/getSingleDiagnosis',
     getTreatmentchecklistURL: 'http://localhost:8080/getTreatmentchecklist',
-
+    getSingleTreatmentchecklistURL: 'http://localhost:8080/getSingleTreatmentchecklist',
+    getPatientUserNamesURL: 'http://localhost:8080/getPatientUserNames',
+    getPatientTreatmentURL: 'http://localhost:8080/getPatientTreatment?username=',
+    updatePatientTreatmentURL: 'http://localhost:8080/updatePatientTreatment',
+    
     patientInfoURL: 'http://localhost:8080/get-patients?code=',
     userInfoURL: 'http://localhost:8080/get-user?username=',
+    logoutURL: 'http://localhost:8080/logout',
 
     // Appointment URLs
     appointmentURL: 'http://localhost:8080/getAppt?username=',
@@ -58,6 +66,9 @@ export const store = new Vuex.Store({
     authenticatedUsername: '',
     medicalCode: '',
     authStatus: '',
+    singlePatientCompletion: [],
+    singlePatientWellness: [],
+  
     appointments: [],
     currentAppointment: {}
   },
@@ -86,7 +97,7 @@ export const store = new Vuex.Store({
     },
     validateAnswerURL: (state) => {
       return state.validateAnswerURL;
-    }, 
+    },
     validateUsernameURL:  (state) => {
       return state.validateUsernameURL;
     },
@@ -95,6 +106,9 @@ export const store = new Vuex.Store({
     },
     ssoRegisterMedicalURL:  (state) => {
       return state.ssoRegisterMedicalURL;
+    },
+    logoutURL: (state) => {
+      return state.logoutURL;
     },
     returnCodeURL: (state) => {
       return state.returnCodeURL;
@@ -105,8 +119,17 @@ export const store = new Vuex.Store({
     getTreatmentmeterURL: (state) => {
       return state.getTreatmentmeterURL;
     },
+    getSingleTreatmentmeterURL:(state) =>{
+      return state.getSingleTreatmentmeterURL;
+    },
     getTreatmentchecklistURL: (state) => {
       return state.getTreatmentchecklistURL;
+    },
+    getPatientTreatmentURL: (state) => {
+      return state.getPatientTreatmentURL;
+    },
+    updatePatientTreatmentURL: (state) => {
+      return state.updatePatientTreatmentURL;
     },
     getAppointmentURL: (state) =>  {
       return state.appointmentURL;
@@ -119,6 +142,18 @@ export const store = new Vuex.Store({
     },
     getUserURL: (state) => {
       return state.userInfoURL;
+    },
+    getSingleTreatmentchecklistURL:(state) => {
+      return state.getSingleTreatmentchecklistURL;
+    },
+    getPatientUserNamesURL:(state) => {
+      return state.getPatientUserNamesURL;
+    },
+    getSingleDiagnosisURL:(state) =>{
+      return state.getSingleDiagnosisURL;
+    },
+    getLoginInfoURL: (state) => {
+      return state.LoginInfoURL;
     },
     showLogin: (state) => {
       return state.showLogin;
@@ -155,10 +190,16 @@ export const store = new Vuex.Store({
     },
     appointments: (state) => {
       return state.appointments;
-    }
+    },
+    singlePatientCompletion:(state) => {
+      return state.singlePatientCompletion;
+    },
+    singlePatientWellness:(state) => {
+      return state.singlePatientWellness;
+    },
   }, 
   mutations: {
-    // function to flip the value of showLogin 
+    // function to flip the value of showLogin
     alternateLogin: (state) => {
        state.showLogin = !state.showLogin;
     },
@@ -176,7 +217,7 @@ export const store = new Vuex.Store({
     },
     changeQuestionValue3: (state, value) => {
       state.questionSelected3=value;
-    }, 
+    },
     alternateReset: (state) => {
       state.showReset = !state.showReset;
     },
@@ -235,6 +276,12 @@ export const store = new Vuex.Store({
         }
       }
       state.appointments = temp;
+    },
+    singlePatientWellness:(state,payload) =>{
+      state.singlePatientWellness = payload;
+    },
+    singlePatientCompletion:(state,payload)=>{
+      state.singlePatientCompletion = payload;
     }
   },
 
@@ -299,6 +346,12 @@ export const store = new Vuex.Store({
     },
     deleteAppointment: (context, payload) => {
       context.commit('deleteAppointment', payload);
+    },
+    singlePatientWellness:(context,payload) => {
+      context.commit('singlePatientWellness',payload);
+    },
+    singlePatientCompletion:(context,payload) => {
+      context.commit('singlePatientCompletion',payload);
     }
   }
 });

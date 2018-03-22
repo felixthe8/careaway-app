@@ -146,8 +146,12 @@
       },
       //This calls the store to notify that the registration modal should now be closed
       closeRegistration(){
-        this.$store.dispatch('alternateSSORegistration');
-        this.$store.dispatch('alternateRegistration');
+        if(this.$store.state.showAppointment){
+          this.$store.dispatch('alternateRegistration');
+        }
+        if(this.$store.state.ssoRegistration){ 
+          this.$store.dispatch('alternateSSORegistration');
+        }
         this.$store.dispatch('saveUsername','');
       },
       registerUser(){
@@ -190,7 +194,7 @@
                 //This allows the user to be signed in as a patient
                 self.$store.dispatch('signIn', 'patient');
                 //This navigates the user to the patient account page
-                self.routePatientHome();
+                self.$router.push('/PatientHome');
                 self.closeRegistration();
               }
               else{
@@ -233,7 +237,6 @@
             securityA2: this.securityA2,
             securityA3: this.securityA3
           }
-          console.log(newMedicalProfessional)
           //Sends data to the proxy server on this route
           axios.post(this.$store.getters.ssoRegisterMedicalURL,newMedicalProfessional).then((
             function(response){
@@ -241,7 +244,7 @@
               self.$store.dispatch('authenticatedUsername', newMedicalProfessional.username);
               self.$store.dispatch('signIn', 'medical-professional');
               //This reroutes the user to the medical professional account page
-              self.routeMedicHome();
+              self.$router.push('/MedicHome');
               self.closeRegistration();
             }
           )).catch(function(err){

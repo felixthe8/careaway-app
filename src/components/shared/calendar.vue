@@ -15,6 +15,8 @@
 
       <div class="columns is-multiline monthly">
         <div class="column is-one-fifth calendar__day"
+          @dragover="dragOver"
+          @drop="drop"
           v-for="day, index in calendar.length"
           :class="{
             'no-right' : (index+1)%5 === 0,
@@ -36,6 +38,16 @@
           }"></div>
 
           <div class="calendar__day--label" v-if="index < 5">{{calendar[index].name}}</div>
+
+          <div class="calendar__day--appointment"
+            v-if="calendar[index].appointment.created">
+              <button class="button is-primary is-rounded" @click="toggleCreate">
+                {{calendar[index].appointment.date}}
+              </button>
+          </div>
+          <div class="calendar__day--meter">{{calendar[index].meter.text}}</div>
+          <div class="calendar__day--checklist">{{calendar[index].checklist.text}}</div>
+
         </div>
 
       </div>
@@ -46,20 +58,20 @@
 </template>
 
 <script>
+
 export default {
   name: 'app',
-  created: function() {
-      this.calendar = this.$renderCalendar(0);
-  },
+
+  props: ['calendar'],
+
   data() {
     return {
       months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
       week: ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"],
-      calendar: [],
       state: 0
     }
   },
-  // use vue.set to update array (Vue.$set)
+
   methods: {
     next: function(event) {
       if(this.state < 1)
@@ -94,6 +106,27 @@ export default {
 
         document.getElementsByClassName("calendar__menu--button")[1].classList.add("active");
         document.getElementsByClassName("calendar__menu--button")[0].classList.remove("active");
+    },
+    toggleCreate: function() {
+      this.$store.dispatch("alternateAppointment");
+    },
+    dragOver: function(event) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "move"
+    },
+    drop: function(event) {
+      event.preventDefault();
+
+      //if meter
+      console.log(event.dataTransfer.getData("text/plain"));
+      let date = event.target.getAttribute("date");
+      document.getElementById("meter-date").value = date;
+      document.getElementsByClassName("meter__menu")[0].classList.add("show-menu");
+
+      //if checklist
+      // let date = event.target.getAttribute("date");
+      // document.getElementById("checklist-date").value = date;
+      // document.getElementsByClassName("checklist__menu")[0].classList.add("show-menu");
     }
   },
 
@@ -121,6 +154,10 @@ export default {
 <style lang="scss">
 
 @import '../../assets/sass/settings.scss';
+
+.calendar-wrapper {
+  position: relative;
+}
 
 .weekly {
   display: none;
