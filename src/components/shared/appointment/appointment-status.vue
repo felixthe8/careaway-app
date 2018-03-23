@@ -114,6 +114,7 @@
             console.log("There was an error handling the request");
             self.showWarning = true;
           })
+          
       },
       // Opens the appointment-modification vue
       editAppointment(){
@@ -123,34 +124,41 @@
       },
       // This deletes the appointment vue from both appointee and initiator appointment list
       deleteAppointment(){
-        var self = this;
-        axios.post(this.$store.getters.deleteAppt,{'appointment' : this.appointment}).then(
-          function(response)
-          {
-            // Check if the status of the response is successful
-            if(response.status === 200){
-              console.log("Success");
-              // Closes this vue
-              self.$store.commit("alternateAppointment");
-              // Deletes the appointment from the appointment array in the VueX
-              self.$store.dispatch('deleteAppointment', self.appointment);
-              self.showWarning = false;
-            } else {
-              console.log(response.data.response);
+        var today = new Date(Date.now());
+        var appointmentDate = new Date(this.appointment.date)
+        if(today.getDate() !== appointmentDate.getDate()+1){
+          var self = this;
+          axios.post(this.$store.getters.deleteAppt,{'appointment' : this.appointment}).then(
+            function(response)
+            {
+              // Check if the status of the response is successful
+              if(response.status === 200){
+                console.log("Success");
+                // Closes this vue
+                self.$store.commit("alternateAppointment");
+                // Deletes the appointment from the appointment array in the VueX
+                self.$store.dispatch('deleteAppointment', self.appointment);
+                self.showWarning = false;
+              } else {
+                console.log(response.data.response);
+                self.showWarning = true;
+              }
+            }).catch(function(err){
+              // Display an error message if the connection went wrong
+              console.log("There was an error handling the request");
               self.showWarning = true;
-            }
-          }).catch(function(err){
-            // Display an error message if the connection went wrong
-            console.log("There was an error handling the request");
-            self.showWarning = true;
-          });
+            });
 
-          console.log(this.appointment.date);
-          // get element by date attribute
-          for(var i=0; i < this.calendar.length; i++) {
-            if(this.calendar[i].object === this.appointment.date) {
-              this.calendar[i].appointment = {};
-            }
+            console.log(this.appointment.date);
+            // get element by date attribute
+            for(var i=0; i < this.calendar.length; i++) {
+              if(this.calendar[i].object === this.appointment.date) {
+                this.calendar[i].appointment = {};
+              }
+          } 
+        } else {
+            console.log("You can't cancel right now");
+              self.showWarning = true;
           }
       }
     }
