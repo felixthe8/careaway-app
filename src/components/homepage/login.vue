@@ -97,8 +97,7 @@ axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
               // If the response is successful, that means an account exists. 
               if(response.data.success) {
                 cookies.set('user', response.data.cookie);
-                self.$store.dispatch('signIn', response.data.accountType);
-                self.$store.dispatch('authenticatedUsername', self.username);
+                self.$login(response.data.accountType, self.username);
                 // If the login credential is a patient, take this route
                 if(response.data.accountType == 'patient') {
                   self.routePatientHome();

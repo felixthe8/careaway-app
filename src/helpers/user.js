@@ -4,13 +4,19 @@ import store from '../store/store';
 const User = {};
 User.install = function(Vue, options) {
     Vue.prototype.$logout = function() {
-        console.log("Logout plugin method");
-        // clears the authenticated username 
+        // Clears the authenticated username 
         this.$store.dispatch('deauthenticatedUsername', '');
-        // clears the medical code
+        // Clears the medical code
         this.$store.dispatch('medicalCode', '');
-        // clears the authenticated role
+        // Clears the authenticated role
         this.$store.dispatch('signOut', '');
+    }
+
+    Vue.prototype.$login = function(accountType, userName) {
+        // Sets the authenticated user role
+        this.$store.dispatch('signIn', accountType);
+        // Sets the authenticated username
+        this.$store.dispatch('authenticatedUsername', userName);
     }
 }
 
