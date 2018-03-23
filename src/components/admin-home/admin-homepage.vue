@@ -78,8 +78,8 @@ export default {
         document.onkeypress = null;
         document.onclick = null;
         this.$store.dispatch('saveUsername', '');
-        this.$store.dispatch('signOut', '');
-        this.$store.dispatch('deauthenticatedUsername', '');
+        // Call to user plugin to logout user
+        this.$logout();
         this.$router.push('/');
       },
       getUserName(){
