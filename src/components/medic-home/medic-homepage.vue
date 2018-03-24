@@ -6,9 +6,6 @@
 
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
     <p class = "subtitle" id = "code-display">CareAway Medical Code: {{medicalcode}} </p>
-    <div id = "diagnosis-container">
-      <diagnosis/>
-    </div>
     <div v-if="isLoaded">
       <router-view class="wrapper"></router-view>
     </div>
@@ -23,12 +20,11 @@ import navbar from './app-header';
 import timeout from '../shared/timeout';
 import axios from 'axios';
 import debounce from 'debounce';
-import diagnosis from './set-diagnosis';
 axios.defaults.withCredentials = true;
 axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
 export default {
     name: 'medicHome',
-    components: {navbar, timeout, diagnosis},
+    components: {navbar, timeout},
     data() {
       return {
         showWarning: false,

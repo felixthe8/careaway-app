@@ -1,12 +1,17 @@
 <template>
-  <div class = "autocomplete">
-      <input 
-        type = "text" 
-        v-model="search" 
-        @input="onChange" 
-        @keyup.down = "onArrowDown"
-        @keyup.up = "onArrowUp"
-        @keyup.enter = "onEnter"/>
+  <div class = "diagnosis-input">
+    <div class = "search">  
+        <input 
+            type = "text" 
+            class = "input is-rounded"
+            v-model="search" 
+            @input="onChange" 
+            @keyup.down = "onArrowDown"
+            @keyup.up = "onArrowUp"
+            @keyup.enter = "onEnter"
+            placeholder="Set Patient Diagnosis"/>
+            <i class="fas fa-angle-right fa-2x"></i>
+    </div>
       <ul class = "condition-results" v-show="isOpen">
           <li class = "condition"
             :class = "{ 'is-selected': i === arrowCounter }" 
@@ -39,7 +44,7 @@ import axios from'axios';
               this.filterResults();
           },
           filterResults() {
-            this.results = this.conditionList.filter(condition => condition.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
+            this.results = this.conditionList.filter(condition => condition.toLowerCase().indexOf(this.search.toLowerCase()) > -1).sort();
           },
           setResult(result) {
               this.search = result;
@@ -61,11 +66,14 @@ import axios from'axios';
                    this.arrowCounter = this.results.length - 1;
                }
           },
+          // Function to handle when the user is going through the list using the arrows.
           onEnter() {
              this.search = this.results[this.arrowCounter];
+             // Close the list
              this.isOpen = false;
              this.arrowCounter = -1;
           },
+          // Check if the user clicks outside the Set Diagnosis view. If they do, close it. 
           handleClickOutside(evt) {
               if(!this.$el.contains(evt.target)) {
                   this.isOpen = false;
@@ -96,15 +104,23 @@ import axios from'axios';
 </script>
 
 <style lang = "scss" scoped>
-  .autocomplete {
+  .diagnosis-input {
       position: relative;
-      width: 130px;
+      width: 90%;
+      margin-left: 2%;
   }
+  .search {
+      display: inline-flex;
+  }
+ .fa-angle-right{
+    margin-left: 3%;
+    transform: translateY(15%);
+    color: #92CC92;
+}
   .condition-results {
       padding: 0;
       margin: 0;
       border: 1px solid #EEEEEE;
-      height: 120px;
       overflow: auto;
       position: absolute;
       width: 100%;

@@ -8,6 +8,7 @@
         <meterWidget :calendar="calendar"/>
         <checklistWidget :calendar="calendar"/>
       </div>
+      <diagnosis/>
     </div>
 
     <calendar :calendar="calendar" class="column is-four-fifths"/>
@@ -21,6 +22,7 @@ import appointment from '../shared/appointment.vue';
 import meterWidget from '../shared/meter.vue';
 import checklistWidget from '../shared/checklist.vue';
 import calendar from '../shared/calendar.vue';
+import diagnosis from './set-diagnosis';
 import moment from 'moment';
 
 export default {
@@ -30,7 +32,8 @@ export default {
     appointment,
     meterWidget,
     checklistWidget,
-    calendar
+    calendar,
+    diagnosis
   },
 
   created: function() {
