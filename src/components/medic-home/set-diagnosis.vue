@@ -2,15 +2,16 @@
   <div class = "diagnosis-input">
     <div class = "search">  
         <input 
-            type = "text" 
+            type = "text"
             class = "input is-rounded"
             v-model="search" 
             @input="onChange" 
             @keyup.down = "onArrowDown"
             @keyup.up = "onArrowUp"
             @keyup.enter = "onEnter"
-            placeholder="Set Patient Diagnosis"/>
-            <i class="fas fa-angle-right fa-2x"></i>
+            placeholder="Set Patient Diagnosis"
+            :class = "{ 'is-danger': inputError}" />
+            <span @click = "saveDiagnosis"><i class="fas fa-angle-right fa-2x"></i> </span>
     </div>
       <ul class = "condition-results" v-show="isOpen">
           <li class = "condition"
@@ -35,7 +36,8 @@ import axios from'axios';
               conditionList: [],
               results: [],
               isOpen: false,
-              arrowCounter: -1
+              arrowCounter: -1,
+              inputError: false
           }
       },
       methods: {
@@ -89,6 +91,18 @@ import axios from'axios';
             .catch(err => {
               console.log(err);
             })
+          },
+          saveDiagnosis() {
+            // Check if the user input isn't a valid diagnosis
+            if(!this.conditionList.includes(this.search)) {
+                // Toggle the is-danger class to make the input box red
+                this.inputError = true;
+                // Input box will remain red for a period of time, then revert back to normal color
+                var time = setTimeout(() => {
+                    clearTimeout(time);
+                    this.inputError = false;
+                }, 1800)
+            }
           }
       },
       created() {
@@ -113,9 +127,12 @@ import axios from'axios';
       display: inline-flex;
   }
  .fa-angle-right{
-    margin-left: 3%;
-    transform: translateY(15%);
+    margin-left: 5%;
+    transform: translateY(25%);
     color: #92CC92;
+}
+.fa-angle-right:hover {
+    cursor: pointer;
 }
   .condition-results {
       padding: 0;
