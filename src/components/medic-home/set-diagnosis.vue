@@ -9,9 +9,9 @@
             @keyup.down = "onArrowDown"
             @keyup.up = "onArrowUp"
             @keyup.enter = "onEnter"
-            placeholder="Set Patient Diagnosis"
+            placeholder="Set Diagnosis"
             :class = "[ {'is-danger': inputError}, {'is-success':inputSuccess} ]" />
-            <span @click = "saveDiagnosis"><i class="fas fa-angle-right fa-2x"></i> </span>
+            <span @click = "saveDiagnosis"><i class="fas fa-arrow-circle-right fa-2x"></i> </span>
     </div>
       <ul class = "condition-results" v-show="isOpen">
           <li class = "condition"
@@ -138,12 +138,12 @@ import axios from'axios';
   .search {
       display: inline-flex;
   }
- .fa-angle-right{
+ .fa-arrow-circle-right{
     margin-left: 5%;
     transform: translateY(25%);
     color: #92CC92;
 }
-.fa-angle-right:hover {
+.fa-arrow-circle-right:hover {
     cursor: pointer;
 }
   .condition-results {
