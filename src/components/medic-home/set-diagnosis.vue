@@ -10,7 +10,7 @@
             @keyup.up = "onArrowUp"
             @keyup.enter = "onEnter"
             placeholder="Set Patient Diagnosis"
-            :class = "{ 'is-danger': inputError}" />
+            :class = "[ {'is-danger': inputError}, {'is-success':inputSuccess} ]" />
             <span @click = "saveDiagnosis"><i class="fas fa-angle-right fa-2x"></i> </span>
     </div>
       <ul class = "condition-results" v-show="isOpen">
@@ -37,7 +37,8 @@ import axios from'axios';
               results: [],
               isOpen: false,
               arrowCounter: -1,
-              inputError: false
+              inputError: false,
+              inputSuccess: false
           }
       },
       methods: {
@@ -102,6 +103,17 @@ import axios from'axios';
                     clearTimeout(time);
                     this.inputError = false;
                 }, 1800)
+            } else {
+                // Otherwise, the diagnosis is valid. Toggle the is-danger class to make the box green
+                this.inputSuccess = true;
+                // Input box will remain red for a period of time, then revert back to normal color
+                var time = setTimeout(() => {
+                    clearTimeout(time);
+                    this.inputSuccess = false;
+                    // Clear out the search value
+                    this.search = '';
+                }, 1800)
+
             }
           }
       },
