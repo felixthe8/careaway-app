@@ -49,6 +49,7 @@ export const store = new Vuex.Store({
     getPatientUserNamesURL: 'http://localhost:8080/getPatientUserNames',
     getPatientTreatmentURL: 'http://localhost:8080/getPatientTreatment?username=',
     updatePatientTreatmentURL: 'http://localhost:8080/updatePatientTreatment',
+    getDiagnosisListURL: 'http://localhost:8080/getDiagnosisList',
     
     patientInfoURL: 'http://localhost:8080/get-patients?code=',
     userInfoURL: 'http://localhost:8080/get-user?username=',
@@ -76,7 +77,8 @@ export const store = new Vuex.Store({
     singlePatientWellness: [],
   
     appointments: [],
-    currentAppointment: {}
+    currentAppointment: {},
+
   },
   getters: {
 
@@ -136,6 +138,9 @@ export const store = new Vuex.Store({
     },
     updatePatientTreatmentURL: (state) => {
       return state.updatePatientTreatmentURL;
+    },
+    getDiagnosisListURL: (state) => {
+      return state.getDiagnosisListURL;
     },
     getAppointmentURL: (state) =>  {
       return state.appointmentURL;
