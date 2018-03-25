@@ -16,20 +16,19 @@
 
 <script>
 
-import axios from 'axios';
-import moment from 'moment';
-import timeChangers from './time';
+import axios from "axios";
+import moment from "moment";
+import timeChangers from "./time";
 
 export default {
-  name: 'checklist',
+  name: "checklist",
 
-  props: ['calendar'],
+  props: ["calendar"],
 
   components: { timeChangers },
 
   data() {
     return {
-      created: false,
       label: "checklist",
       list: [],
       due_date: {}
@@ -38,23 +37,22 @@ export default {
 
   methods: {
     onDrag: function() {
-      event.dataTransfer.setData("text/plain", event.target);
-      // event.dropEffect = "move";
+        this.$store.commit("toggleChecklist");
     },
     create: function() {
-      this.checklist = {
-        text: document.getElementById("checklist").value,
-        date: document.getElementById("checklist-date").value
-      }
+      this.list = [];
+      this.due_date = document.getElementById("checklist-date").value;
+
+
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].date == this.checklist.date) {
-          this.calendar[i].checklist = this.checklist;
+        if(this.calendar[i].object == this.due_date) {
+          this.calendar[i].checklist = this;
           this.calendar[i].checklist.created = true;
         }
       }
 
-      this.saveChecklist();
+      // this.saveChecklist();
       document.getElementsByClassName("checklist__menu")[0].classList.remove("show-menu");
     },
     saveChecklist: function() {

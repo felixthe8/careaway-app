@@ -20,6 +20,8 @@ export const store = new Vuex.Store({
     showPassword: false,
     ssoRegistration: false,
     showAppointment: false,
+    showMeter: false,
+    showChecklist: false,
 
     // Appointment boolean values.
     showAppointmentCreation: false,
@@ -49,7 +51,7 @@ export const store = new Vuex.Store({
     getPatientUserNamesURL: 'http://localhost:8080/getPatientUserNames',
     getPatientTreatmentURL: 'http://localhost:8080/getPatientTreatment?username=',
     updatePatientTreatmentURL: 'http://localhost:8080/updatePatientTreatment',
-    
+
     patientInfoURL: 'http://localhost:8080/get-patients?code=',
     userInfoURL: 'http://localhost:8080/get-user?username=',
     logoutURL: 'http://localhost:8080/logout',
@@ -74,12 +76,12 @@ export const store = new Vuex.Store({
     authStatus: '',
     singlePatientCompletion: [],
     singlePatientWellness: [],
-  
+
     appointments: [],
     currentAppointment: {}
   },
-  getters: {
 
+  getters: {
     checkBreachURL: (state) => {
       return state.checkBreachURL;
     },
@@ -176,6 +178,12 @@ export const store = new Vuex.Store({
     showAppointment: (state) => {
       return state.showAppointment;
     },
+    showMeter: (state) => {
+      return state.showMeter;
+    },
+    showChecklist: (state) => {
+      return state.showChecklist;
+    },
     deleteAppt: (state) => {
       return state.deleteAppt;
     },
@@ -212,7 +220,7 @@ export const store = new Vuex.Store({
     singlePatientWellness:(state) => {
       return state.singlePatientWellness;
     },
-  }, 
+  },
   mutations: {
     // function to flip the value of showLogin
     alternateLogin: (state) => {
@@ -232,6 +240,12 @@ export const store = new Vuex.Store({
     },
     changeQuestionValue3: (state, value) => {
       state.questionSelected3=value;
+    },
+    toggleMeter: (state) => {
+      state.showMeter = !state.showMeter;
+    },
+    toggleChecklist: (state) => {
+      state.showChecklist = !state.showChecklist;
     },
     alternateReset: (state) => {
       state.showReset = !state.showReset;

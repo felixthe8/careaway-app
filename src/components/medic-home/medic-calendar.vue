@@ -50,7 +50,9 @@ export default {
   data() {
     return {
       calendar: [],
-      isMed: true
+      isMed: true,
+      meter: false,
+      checklist: false
     }
   }
 

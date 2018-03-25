@@ -50,12 +50,16 @@
 
           <div class="calendar__day--meter"
             v-if="calendar[index].meter.created">
-            {{calendar[index].meter.label}}
+            <button class="button is-primary is-rounded">
+                {{calendar[index].meter.label}}
+            </button>
           </div>
 
           <div class="calendar__day--checklist"
             v-if="calendar[index].checklist.created">
-            {{calendar[index].checklist.label}}
+            <button class="button is-primary is-rounded">
+                {{calendar[index].checklist.label}}
+            </button>
           </div>
 
         </div>
@@ -129,16 +133,19 @@ export default {
     drop: function(event) {
       event.preventDefault();
 
-      console.log('drop', event.dataTransfer.getData("text"));
-      // if meter
-      let date = event.target.getAttribute("date");
-      document.getElementById("meter-date").value = date;
-      document.getElementsByClassName("meter__menu")[0].classList.add("show-menu");
+      if(this.$store.getters.showMeter === true) {
+        let date = event.target.getAttribute("date");
+        document.getElementById("meter-date").value = date;
+        document.getElementsByClassName("meter__modal")[0].classList.add("show-modal");
+        this.$store.commit("toggleMeter");
+      }
 
-      //if checklist
-      // let date = event.target.getAttribute("date");
-      // document.getElementById("checklist-date").value = date;
-      // document.getElementsByClassName("checklist__menu")[0].classList.add("show-menu");
+      if(this.$store.getters.showChecklist === true) {
+        let date = event.target.getAttribute("date");
+        document.getElementById("checklist-date").value = date;
+        document.getElementsByClassName("checklist__menu")[0].classList.add("show-menu");
+        this.$store.commit("toggleChecklist");
+      }
     }
   },
 

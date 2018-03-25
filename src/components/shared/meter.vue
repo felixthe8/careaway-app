@@ -3,27 +3,33 @@
   <div class="meter">
     <button class="meter__button green-button" draggable="true" id="meter" @drag="onDrag">Meter</button>
 
-    <div class="meter__menu">
-      <label>Question:</label>
-      <input class="meter__menu--input" name="meter" type="text" id="meter-question">
-      <label>Date Requested:</label>
-      <input class="meter__menu--input" name="date" type="text" id="meter-date">
-      <button id="meter" class="meter__menu--create green-button" @click="create">Create Event</button>
-    </div>
+      <div class="meter__modal">
+        <div class="meter__modal--form">
+          <h1>Generate Meter</h1>
+          <label>Question:</label>
+          <input class="meter__modal--input" name="meter" type="text" id="meter-question">
+          <p>Set Scale:</p>
+          <label>From:</label><input type="number"><label>To:</label><input type="number">
+          <label>Date Requested:</label>
+          <input class="meter__modal--input" name="date" type="text" id="meter-date">
+          <button id="meter" class="meter__modal--create green-button" @click="create">Create Event</button>
+        </div>
+      </div>
+
   </div>
 
 </template>
 
 <script>
 
-import axios from 'axios';
-import moment from 'moment';
-import timeChangers from './time';
+import axios from "axios";
+import moment from "moment";
+import timeChangers from "./time";
 
 export default {
-  name: 'meter',
+  name: "meter",
 
-  props: ['calendar'],
+  props: ["calendar"],
 
   components: { timeChangers },
 
@@ -38,9 +44,7 @@ export default {
 
   methods: {
     onDrag:function(event) {
-      event.dataTransfer.setData("text", event.target.id);
-      event.dataTransfer.effectAllowed = 'move';
-      event.dropEffect = "move";
+      this.$store.commit("toggleMeter");
     },
     create: function() {
       this.question = document.getElementById("meter-question").value;
@@ -54,7 +58,7 @@ export default {
         }
       }
 
-      document.getElementsByClassName("meter__menu")[0].classList.remove("show-menu");
+      document.getElementsByClassName("meter__modal")[0].classList.remove("show-modal");
       // this.saveMeter();
     },
     saveMeter: function() {
@@ -94,28 +98,27 @@ export default {
     margin-left: 1rem;
   }
 
-  &__button {
-
-  }
-
-  &__menu {
+  &__modal {
+    position: absolute;
+    background: rgba(0,0,0,0.8);
     display: none;
     z-index: 1;
-    position: absolute;
-    top: 50%;
+    width: 100%;
+    height: 100%;
+    top: 0;
     left: 0;
-    background: $green-light;
-    margin-left: 1rem;
-    padding: 1rem;
 
-    &--create {
-
+    &--form {
+      background: $green-light;
+      padding: 1rem;
     }
   }
 
 }
 
-.show-menu {
-  display: block;
+.show-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
