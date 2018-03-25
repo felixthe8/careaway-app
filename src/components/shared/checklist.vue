@@ -52,8 +52,8 @@ export default {
         }
       }
 
-      // this.saveChecklist();
       document.getElementsByClassName("checklist__menu")[0].classList.remove("show-menu");
+      // this.saveChecklist();
     },
     saveChecklist: function() {
       const checklist = {
@@ -62,11 +62,11 @@ export default {
         due_date: this.due_date,
       }
 
-      axios.post(this.$store.getters.createMeterURL, checklist).then(function(response) {
+      axios.post(this.$store.getters.createChecklistURL, checklist).then(function(response) {
         if(response.date.success) {
-          console.log("Successfully Created Meter");
+          console.log("Successfully Created Checklist");
         } else {
-          console.log("Failed to Create Meter");
+          console.log("Failed to Create Checklist");
         }
       }).catch(function(err) {
         console.log(err);

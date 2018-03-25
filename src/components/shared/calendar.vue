@@ -136,7 +136,7 @@ export default {
       if(this.$store.getters.showMeter === true) {
         let date = event.target.getAttribute("date");
         document.getElementById("meter-date").value = date;
-        document.getElementsByClassName("meter__modal")[0].classList.add("show-modal");
+        document.getElementsByClassName("meter-modal")[0].classList.add("show-modal");
         this.$store.commit("toggleMeter");
       }
 
