@@ -1,10 +1,17 @@
 <template>
   <div class="checklist-modal">
     <div class="checklist-modal--form">
-      <label>Reason for checklist:</label>
-      <input class="checklist-modal--form--input" name="checklist" type="text" id="checklist">
-      <label>Date Requested:</label>
-      <input class="checklist-modal--form--input" name="date" type="text" id="checklist-date">
+      <div class="row">
+        <h1>Checklist</h1>
+      </div>
+      <div class="row">
+        <label>Reason for checklist:</label>
+        <input class="checklist-modal--form--input" name="checklist" type="text" id="checklist">
+      </div>
+      <div class="row">
+        <label>Date Requested:</label>
+        <input class="checklist-modal--form--input" name="date" type="text" id="checklist-date">
+      </div>
       <button class="checklist-modal--form--create green-button" @click="create">Create Event</button>
     </div>
   </div>
@@ -81,6 +88,7 @@ export default {
   &--form {
     background: $green-light;
     padding: 1rem;
+    text-align: left;
   }
 }
 

@@ -3,14 +3,6 @@
   <div class="checklist">
     <button class="checklist__button green-button" draggable="true" @drag="onDrag">Checklist</button>
 
-    <!-- <div class="checklist__menu">
-      <label>Reason for checklist:</label>
-      <input class="checklist__menu--input" name="checklist" type="text" id="checklist">
-      <label>Date Requested:</label>
-      <input class="checklist__menu--input" name="date" type="text" id="checklist-date">
-      <button class="checklist__menu--create green-button" @click="create">Create Event</button>
-    </div> -->
-
     <create :calendar="calendar"/>
   </div>
 

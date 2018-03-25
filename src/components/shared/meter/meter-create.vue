@@ -2,13 +2,24 @@
 
   <div class="meter-modal">
     <div class="meter-modal--form">
-      <h1>Generate Meter</h1>
-      <label>Question:</label>
-      <input class="meter-modal--input" name="meter" type="text" id="meter-question">
-      <p>Set Scale:</p>
-      <label>From:</label><input type="number"><label>To:</label><input type="number">
-      <label>Date Requested:</label>
-      <input class="meter-modal--input" name="date" type="text" id="meter-date">
+      <div class="row">
+        <h1>Generate Meter</h1>
+      </div>
+      <div class="row">
+        <label>Question:</label>
+        <input class="meter-modal--input" name="meter" type="text" id="meter-question">
+      </div>
+      <div class="row">
+        <p>Set Scale:</p>
+        <label>From:</label>
+        <input type="number">
+        <label>To:</label>
+        <input type="number">
+      </div>
+      <div class="row">
+        <label>Date Requested:</label>
+        <input class="meter-modal--input" name="date" type="text" id="meter-date">
+      </div>
       <button id="meter" class="meter-modal--create green-button" @click="create">Create Event</button>
     </div>
   </div>
@@ -87,6 +98,7 @@ export default {
   &--form {
     background: $green-light;
     padding: 1rem;
+    text-align: left;
   }
 }
 
