@@ -3,74 +3,33 @@
   <div class="checklist">
     <button class="checklist__button green-button" draggable="true" @drag="onDrag">Checklist</button>
 
-    <div class="checklist__menu">
+    <!-- <div class="checklist__menu">
       <label>Reason for checklist:</label>
       <input class="checklist__menu--input" name="checklist" type="text" id="checklist">
       <label>Date Requested:</label>
       <input class="checklist__menu--input" name="date" type="text" id="checklist-date">
       <button class="checklist__menu--create green-button" @click="create">Create Event</button>
-    </div>
+    </div> -->
+
+    <create :calendar="calendar"/>
   </div>
 
 </template>
 
 <script>
 
-import axios from "axios";
-import moment from "moment";
-import timeChangers from "./time";
+import create from "./checklist/checklist-create";
 
 export default {
   name: "checklist",
 
   props: ["calendar"],
 
-  components: { timeChangers },
-
-  data() {
-    return {
-      label: "checklist",
-      list: [],
-      due_date: {}
-    }
-  },
+  components: { create },
 
   methods: {
     onDrag: function() {
         this.$store.commit("toggleChecklist");
-    },
-    create: function() {
-      this.list = [];
-      this.due_date = document.getElementById("checklist-date").value;
-
-
-      // get element by date attribute
-      for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].object == this.due_date) {
-          this.calendar[i].checklist = this;
-          this.calendar[i].checklist.created = true;
-        }
-      }
-
-      document.getElementsByClassName("checklist__menu")[0].classList.remove("show-menu");
-      // this.saveChecklist();
-    },
-    saveChecklist: function() {
-      const checklist = {
-        label: this.label,
-        list: this.list,
-        due_date: this.due_date,
-      }
-
-      axios.post(this.$store.getters.createChecklistURL, checklist).then(function(response) {
-        if(response.date.success) {
-          console.log("Successfully Created Checklist");
-        } else {
-          console.log("Failed to Create Checklist");
-        }
-      }).catch(function(err) {
-        console.log(err);
-      });
     }
   }
 }
@@ -94,25 +53,6 @@ export default {
   &__button {
 
   }
-
-  &__menu {
-    display: none;
-    z-index: 1;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    background: $green-light;
-    margin-left: 1rem;
-    padding: 1rem;
-
-    &--create {
-
-    }
-  }
-
 }
 
-.show-menu {
-  display: block;
-}
 </style>

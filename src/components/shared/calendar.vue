@@ -143,7 +143,7 @@ export default {
       if(this.$store.getters.showChecklist === true) {
         let date = event.target.getAttribute("date");
         document.getElementById("checklist-date").value = date;
-        document.getElementsByClassName("checklist__menu")[0].classList.add("show-menu");
+        document.getElementsByClassName("checklist-modal")[0].classList.add("show-modal");
         this.$store.commit("toggleChecklist");
       }
     }
