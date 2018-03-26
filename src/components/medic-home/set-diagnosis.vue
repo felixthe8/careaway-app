@@ -2,15 +2,16 @@
   <div class = "diagnosis-input">
     <div class = "search">  
         <input 
-            type = "text" 
+            type = "text"
             class = "input is-rounded"
             v-model="search" 
             @input="onChange" 
             @keyup.down = "onArrowDown"
             @keyup.up = "onArrowUp"
             @keyup.enter = "onEnter"
-            placeholder="Set Patient Diagnosis"/>
-            <i class="fas fa-angle-right fa-2x"></i>
+            placeholder="Set Diagnosis"
+            :class = "[ {'is-danger': inputError}, {'is-success':inputSuccess} ]" />
+            <span @click = "saveDiagnosis"><i class="fas fa-arrow-circle-right fa-2x"></i> </span>
     </div>
       <ul class = "condition-results" v-show="isOpen">
           <li class = "condition"
@@ -35,7 +36,9 @@ import axios from'axios';
               conditionList: [],
               results: [],
               isOpen: false,
-              arrowCounter: -1
+              arrowCounter: -1,
+              inputError: false,
+              inputSuccess: false
           }
       },
       methods: {
@@ -66,7 +69,7 @@ import axios from'axios';
                    this.arrowCounter = this.results.length - 1;
                }
           },
-          // Function to handle when the user is going through the list using the arrows.
+          // Function to handle when the user is going through the list using the arrows and they press Enter.
           onEnter() {
              this.search = this.results[this.arrowCounter];
              // Close the list
@@ -89,13 +92,44 @@ import axios from'axios';
             .catch(err => {
               console.log(err);
             })
+          },
+          saveDiagnosis() {
+            // Check if the user input isn't a valid diagnosis
+            if(!this.conditionList.includes(this.search)) {
+                // Toggle the is-danger class to make the input box red
+                this.inputError = true;
+                this.alertError();
+            } else {
+                // Otherwise, the diagnosis is valid. Toggle the is-danger class to make the box green
+                this.inputSuccess = true;
+                this.alertSuccess();
+                
+            }
+          },
+          alertError() {
+              // Toggle the is-danger class to make the input box red
+            this.inputError = true;
+            // Input box will remain red for a period of time, then revert back to normal color
+            var time = setTimeout(() => {
+                clearTimeout(time);
+                this.inputError = false;
+            }, 1800)
+          },
+          alertSuccess() {
+            // Input box will remain green for a period of time, then revert back to normal color
+            var time = setTimeout(() => {
+                clearTimeout(time);
+                this.inputSuccess = false;
+                // Clear out the search value
+                this.search = '';
+            }, 1800)
           }
       },
       created() {
           this.getDiagnoses();
           document.addEventListener('click', this.handleClickOutside);
       },
-      destroyed() {
+      beforeDestroy() {
           document.removeEventListener('click', this.handleClickOutside);
       }
 
@@ -106,16 +140,19 @@ import axios from'axios';
 <style lang = "scss" scoped>
   .diagnosis-input {
       position: relative;
-      width: 90%;
+      width: 95%;
       margin-left: 2%;
   }
   .search {
       display: inline-flex;
   }
- .fa-angle-right{
-    margin-left: 3%;
-    transform: translateY(15%);
+ .fa-arrow-circle-right{
+    margin-left: 5%;
+    transform: translateY(25%);
     color: #92CC92;
+}
+.fa-arrow-circle-right:hover {
+    cursor: pointer;
 }
   .condition-results {
       padding: 0;
