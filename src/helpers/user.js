@@ -18,6 +18,11 @@ User.install = function(Vue, options) {
         // Sets the authenticated username
         this.$store.dispatch('authenticatedUsername', userName);
     }
+
+    Vue.prototype.$regCheck = function(inputFields) {
+        // Checks to see if each element in the array has a value of 'is-success'
+        return inputFields.every((field) => {return field == 'is-success'})
+    }
 }
 
 export default User
