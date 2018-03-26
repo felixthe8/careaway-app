@@ -69,7 +69,7 @@ import axios from'axios';
                    this.arrowCounter = this.results.length - 1;
                }
           },
-          // Function to handle when the user is going through the list using the arrows.
+          // Function to handle when the user is going through the list using the arrows and they press Enter.
           onEnter() {
              this.search = this.results[this.arrowCounter];
              // Close the list
@@ -98,30 +98,38 @@ import axios from'axios';
             if(!this.conditionList.includes(this.search)) {
                 // Toggle the is-danger class to make the input box red
                 this.inputError = true;
-                // Input box will remain red for a period of time, then revert back to normal color
-                var time = setTimeout(() => {
-                    clearTimeout(time);
-                    this.inputError = false;
-                }, 1800)
+                this.alertError();
             } else {
                 // Otherwise, the diagnosis is valid. Toggle the is-danger class to make the box green
                 this.inputSuccess = true;
-                // Input box will remain red for a period of time, then revert back to normal color
-                var time = setTimeout(() => {
-                    clearTimeout(time);
-                    this.inputSuccess = false;
-                    // Clear out the search value
-                    this.search = '';
-                }, 1800)
-
+                this.alertSuccess();
+                
             }
+          },
+          alertError() {
+              // Toggle the is-danger class to make the input box red
+            this.inputError = true;
+            // Input box will remain red for a period of time, then revert back to normal color
+            var time = setTimeout(() => {
+                clearTimeout(time);
+                this.inputError = false;
+            }, 1800)
+          },
+          alertSuccess() {
+            // Input box will remain green for a period of time, then revert back to normal color
+            var time = setTimeout(() => {
+                clearTimeout(time);
+                this.inputSuccess = false;
+                // Clear out the search value
+                this.search = '';
+            }, 1800)
           }
       },
       created() {
           this.getDiagnoses();
           document.addEventListener('click', this.handleClickOutside);
       },
-      destroyed() {
+      beforeDestroy() {
           document.removeEventListener('click', this.handleClickOutside);
       }
 
@@ -132,7 +140,7 @@ import axios from'axios';
 <style lang = "scss" scoped>
   .diagnosis-input {
       position: relative;
-      width: 90%;
+      width: 95%;
       margin-left: 2%;
   }
   .search {
