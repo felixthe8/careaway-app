@@ -71,6 +71,7 @@ export default {
         // Check the array in the response to see if it is empty. If it is, do not create the graph
         if(response.data.length == 0) {
           self.wellnessWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
+           self.$emptyBar("aggregate-wellness",self.days);
         } else {
           // Loop through each object holding meter widget treatment data
           for (var meter of response.data) {
