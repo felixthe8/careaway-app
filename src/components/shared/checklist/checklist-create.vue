@@ -5,7 +5,7 @@
         <h1>Checklist</h1>
       </div>
       <div class="row">
-        <label>Reason for checklist:</label>
+        <label>Checklist Prompt</label>
         <input class="checklist-modal--form--input" name="checklist" type="text" id="checklist">
       </div>
       <div class="row">
@@ -48,7 +48,7 @@ export default {
       }
 
       document.getElementsByClassName("checklist-modal")[0].classList.remove("show-modal");
-      // this.saveChecklist();
+      this.saveChecklist();
     },
     saveChecklist: function() {
       const checklist = {

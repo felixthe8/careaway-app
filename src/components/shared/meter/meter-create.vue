@@ -57,7 +57,7 @@ export default {
       }
 
       document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
-      // this.saveMeter();
+      this.saveMeter();
     },
     saveMeter: function() {
       const meter = {

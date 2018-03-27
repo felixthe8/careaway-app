@@ -64,8 +64,8 @@ export const store = new Vuex.Store({
     deleteAppt: 'http://localhost:8080/deleteAppt',
 
     // Widget URLs
-    createMeterURL: 'http://localhost:8080/createMeter',
-    createChecklistURL: 'http://localhost:8080/createChecklist',
+    createMeterURL: 'http://localhost:8080/createTreatmentMeter',
+    createChecklistURL: 'http://localhost:8080/createTreatmentChecklist',
 
     // Login Data
     validUsername: '',

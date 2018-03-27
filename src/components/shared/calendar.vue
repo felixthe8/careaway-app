@@ -129,6 +129,9 @@ export default {
     },
     dragOver: function(event) {
       event.preventDefault();
+
+      // define hover style
+      // event.target.style.background = "red";
     },
     drop: function(event) {
       event.preventDefault();
