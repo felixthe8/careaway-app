@@ -48,17 +48,15 @@ export default {
      // Create a wellness object to hold and store the wellness data computations
      var wellness_obj = {};
      // Generate the 5 days of the previous week
-      for(var i = 0; i <=4; i++) {
-        // Loop will begin from the previous Friday and count backwards 1 day at a time till the Monday of that week
-        var singleDay = moment().day(-2).subtract(i,'days').format("YYYY-MM-DD");
-        this.days.unshift(singleDay);
-        wellness_obj[singleDay] = {
+      this.days = this.$generateDays();
+      this.days.forEach(singleDay => {
+      wellness_obj[singleDay] = {
           // Value will hold the sum of the meter widget data
           value: 0,
           // Counter will be used to represent the number of patients who had meter widget data on a specific day
           counter: 0,
-        }  
-      }
+        }
+      });
       var self = this;
       // Request to return meter widget data
       axios.get(this.$store.getters.getTreatmentmeterURL, {
@@ -94,8 +92,8 @@ export default {
               }
             }
           }
-           // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
-          self.averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse()
+           // Turn the average data into an array.
+          self.averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average })
           // Define the graph and it's styles
           new Chart(document.getElementById("aggregate-wellness"), {
             type: 'bar',
