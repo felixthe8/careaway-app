@@ -195,105 +195,15 @@ export default {
       var average = numbers.reduce((a,b) => a+b,0) / numbers.length;
       this.averageWellness = "The average wellness for this week is "+average.toFixed(2)+"%";
     },
-    getTrends(data) {
-      // Create 2 arrays - 1 for holding the positive trends and one for holding the negative trends
-      var positiveTrends = [], negativeTrends = [];
-      var startIndex = 0;
-      // Determine the positive trends first. Loop through the data
-      for(var i = 0; i < data.length; i++) {
-        // If the data at one index is less than the one at the next, this is the start of a positive trend
-        if(data[i] <= data[i+1]) {
-          continue;
-        } else {
-          // When the if condition fails, push the starting index and ending index of the positive trend into an array  
-          positiveTrends.push({
-            start: startIndex, 
-            end: i
-          })
-          // Set the new starting index
-          startIndex = i + 1
-        }
-      }
-      // Remove the instances where start and end values are the same. 
-      positiveTrends = positiveTrends.filter(trend => trend.start != trend.end);
-      
-      // Determine the negative trends next. Reset the startIndex variable to 0. 
-      startIndex = 0;
-      for(var i = 0; i < data.length; i++) {
-            // If the data at one index is greater than the one at the next, this is the start of a negative trend. 
-            if(data[i] >= data[i+1]) {
-              continue;
-            } else {
-              // When the condition fails, pushing the starting index and ending index of the negative trend to the array
-              negativeTrends.push({
-                start: startIndex, 
-                end: i
-              })
-              startIndex = i + 1
-            } 
-      }
-      // Remove the instances where start and end values are the same. 
-      negativeTrends = negativeTrends.filter(trend => trend.start != trend.end);
-      return {positiveTrends, negativeTrends};
-    },
-    getTrendsIgnore(data) {
-      // Create 2 arrays - 1 for holding the positive trends and one for holding the negative trends
-      var positiveTrends = [], negativeTrends = [];
-      // Keep track of the start index when a new trend begins
-      // Keep a marker of the last index that was read in the data array so we know where to read next
-      var startIndex = 0, marker = 0;
-      // From the original data, strip out the values that aren't 0s and make a new array
-      var filteredData = data.filter(value => value != 0)
-      // Determine the positive trends
-      for(var i = 0; i < filteredData.length; i++) {
-       if(filteredData[i] <= filteredData[i+1]) {
-          continue;
-        } else {
-           positiveTrends.push({
-            // Find starting value from the original data set and determine its index
-            start: data.indexOf(filteredData[startIndex], marker), 
-            // Find the ending value from the original data set and determine its index. Start search from where the start value was last found
-            end: data.indexOf(filteredData[i], marker)
-          })
-          // Set the new starting index
-          startIndex = i + 1;
-          // The new marker becomes the 1 index past where the last value was read
-          marker = positiveTrends.slice(-1)[0].end + 1
-        }
-      }
-       // Remove the instances where start and end values are the same. 
-      positiveTrends = positiveTrends.filter(trend => trend.start != trend.end);
-      // Reset the value of startIndex 
-      startIndex = 0;
-      // Reset the marker
-      marker = 0;
-      // Determine the negative trends
-      for(var i =0; i < filteredData.length; i++) {
-        if(filteredData[i] >= filteredData[i+1]) {
-          continue;
-        } else {
-          negativeTrends.push({
-            start: data.indexOf(filteredData[startIndex], marker),
-            end: data.indexOf(filteredData[i] , marker)
-          })
-          // Set the new starting index
-          startIndex = i + 1
-          marker = negativeTrends.slice(-1)[0].end + 1
-        }
-      }
-      negativeTrends = negativeTrends.filter(trend => trend.start != trend.end);
-      return {positiveTrends, negativeTrends};
-   
-    },
     analyzeData() {
       // Call to determine the average wellness
       this.getAvg(this.averageData);
       // If the user chose to ignore the empty values
       if(this.ignoreEmpty) {
-        this.trends = this.getTrendsIgnore(this.averageData);
+        this.trends = this.$getTrendsIgnore(this.averageData);
       } else {
         // Otherwise, the use didn't choose to ignore the empty values
-        this.trends = this.getTrends(this.averageData);
+        this.trends = this.$getTrends(this.averageData);
       }
     }
   },
