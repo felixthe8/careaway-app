@@ -144,7 +144,7 @@ axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
     },
     computed: {
       showReset(){
-        return this.$store.state.showReset;
+        return this.$store.getters.showReset;
       },
     }
   }

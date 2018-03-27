@@ -170,6 +170,18 @@ export const store = new Vuex.Store({
     showLogin: (state) => {
       return state.showLogin;
     },
+    showRegistration: (state) => {
+      return state.showRegistration;
+    },
+    showReset: (state) => {
+      return state.showReset
+    },
+    showQuestions: (state) => {
+      return state.showQuestions;
+    },
+    showPassword: (state) => {
+      return state.showPassword;
+    },
     authenticatedUsername: (state) => {
       return state.authenticatedUsername;
     },
