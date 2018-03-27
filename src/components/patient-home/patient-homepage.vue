@@ -7,7 +7,7 @@
     </div>
 
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
-    
+
     <appointment-status :appointment="getAppointment()" v-if="this.$store.getters.showAppointment" ></appointment-status>
 
     <create
