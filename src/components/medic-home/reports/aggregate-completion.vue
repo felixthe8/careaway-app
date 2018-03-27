@@ -51,7 +51,7 @@ export default {
         }
       })
       .then(function(response) {
-        if(response.data.every((item) => {return item.length == 0} )) {
+        if(response.data.length == 0) {
           self.completionWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
         } else {
           // Loop through each object holding checklist data
