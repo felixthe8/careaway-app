@@ -1,6 +1,7 @@
 import moment from 'moment';
 
 const Report = {};
+
 Report.install = function(Vue, options) {
     // Generate the dates of the past Monday - Friday
     Vue.prototype.$generateDays = function () {
@@ -11,5 +12,6 @@ Report.install = function(Vue, options) {
         }
         return days;
     }
+
 }
 export default Report
