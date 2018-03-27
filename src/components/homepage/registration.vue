@@ -204,8 +204,8 @@
                           this.passwordInput, 
                           this.answer1Input, 
                           this.answer2Input, 
-                          this.answer3Input]),
-          this.medicalProfessionalCodeInput == 'is-success' &&
+                          this.answer3Input,
+                          this.medicalProfessionalCodeInput]),
           this.checkSecurityQuestions() &&
           this.checkTermsandAgreement() &&
           this.patientForm)
