@@ -1,10 +1,9 @@
 <template>
 
   <div class="meter-modal">
-
     <div class="meter-modal--form">
       <div class="row">
-        <h1>Generate Meter</h1>
+        <h1>Edit Meter</h1>
       </div>
       <div class="row">
         <label>Question:</label>
@@ -23,9 +22,6 @@
       </div>
       <button id="meter" class="meter-modal--create green-button" @click="create">Create Event</button>
     </div>
-
-    <button class='modal-close is-large' aria-label='close' @click='close'></button>
-
   </div>
 
 </template>
@@ -80,9 +76,6 @@ export default {
       }).catch(function(err) {
         console.log(err);
       });
-    },
-    close: function() {
-      document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
     }
   }
 }

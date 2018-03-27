@@ -1,5 +1,7 @@
 <template>
+
   <div class="checklist-modal">
+
     <div class="checklist-modal--form">
       <div class="row">
         <h1>Checklist</h1>
@@ -14,6 +16,9 @@
       </div>
       <button class="checklist-modal--form--create green-button" @click="create">Create Event</button>
     </div>
+
+    <button class='modal-close is-large' aria-label='close' @click='close'></button>
+
   </div>
 
 </template>
@@ -66,6 +71,9 @@ export default {
       }).catch(function(err) {
         console.log(err);
       });
+    },
+    close: function() {
+      document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
     }
   }
 }
