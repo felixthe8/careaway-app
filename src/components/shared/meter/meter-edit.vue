@@ -20,7 +20,7 @@
         <label>Date Requested:</label>
         <input class="meter-modal--input" name="date" type="text" id="meter-date">
       </div>
-      <button id="meter" class="meter-modal--create green-button" @click="create">Create Event</button>
+      <button id="meter" class="meter-modal--create green-button" @click="update">Update Meter</button>
     </div>
   </div>
 
@@ -44,7 +44,7 @@ export default {
   },
 
   methods: {
-    create: function() {
+    update: function() {
       this.question = document.getElementById("meter-question").value;
       this.due_date = document.getElementById("meter-date").value;
 
@@ -57,25 +57,26 @@ export default {
       }
 
       document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
-      this.saveMeter();
+      this.updateMeter();
     },
-    saveMeter: function() {
-      const meter = {
-        label: this.label,
-        question: this.question,
-        scale: this.scale,
-        due_date: this.due_date,
+    updateMeter: function() {
+      axios.put(this.$store.getters.modifyAppointmentURL, appointments)
+        .then(response => {
+          if(response.data.success) {
+            console.log("Modify appointment success.");
+            this.$store.dispatch('editAppointment', appointments);
+            this.$emit("storeAppointment", appointments.newAppointment);
+            this.errors.msg = false;
+            this.cancel();
+          } else {
+            console.log("Modify appointment fail.");
+            this.errorMsg = response.data.reason;
+            this.errors.msg = true;
+          }
+        });
+      } else {
+        console.log("Error, invalid inputs.");
       }
-
-      axios.post(this.$store.getters.createMeterURL, meter).then(function(response) {
-        if(response.date.success) {
-          console.log("Successfully Created Meter");
-        } else {
-          console.log("Failed to Create Meter");
-        }
-      }).catch(function(err) {
-        console.log(err);
-      });
     }
   }
 }

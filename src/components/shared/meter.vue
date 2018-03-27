@@ -4,19 +4,23 @@
     <button class="meter__button green-button" draggable="true" id="meter" @drag="onDrag">Meter</button>
 
     <create :calendar="calendar"/>
+
+    <status :calendar="calendar"/>
+
   </div>
 
 </template>
 
 <script>
 import create from "./meter/meter-create";
+import status from "./meter/meter-status";
 
 export default {
   name: "meter",
 
   props: ["calendar"],
 
-  components: { create },
+  components: { create, status },
 
   methods: {
     onDrag:function(event) {

@@ -42,7 +42,8 @@
 
           <div class="calendar__day--appointment"
             v-if="calendar[index].appointment.created">
-              <button class="button calendar__day--button" @click="toggleCreate(calendar[index].appointment.date)"
+              <button class="button calendar__day--button"
+                @click="toggleCreate(calendar[index].appointment.date)"
                 :id="calendar[index].appointment.date">
                 {{calendar[index].appointment.date}}
               </button>
@@ -50,7 +51,8 @@
 
           <div class="calendar__day--meter"
             v-if="calendar[index].meter.created">
-            <button class="button calendar__day--button">
+            <button class="button calendar__day--button"
+              @click="toggleStatus(calendar[index].appointment.date)">
                 {{calendar[index].meter.label}}
             </button>
           </div>
@@ -126,6 +128,10 @@ export default {
     toggleCreate: function(index) {
       this.$store.dispatch("editableAppointment", index);
       this.$store.dispatch("alternateAppointment");
+    },
+    toggleStatus: function() {
+        console.log( document.getElementsByClassName("meter-status-modal"));
+      document.getElementsByClassName("meter-status-modal")[0].classList.add("show-modal");
     },
     dragOver: function(event) {
       event.preventDefault();
