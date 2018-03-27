@@ -48,20 +48,18 @@ export default {
      // Create a wellness object to hold and store the wellness data computations
      var wellness_obj = {};
      // Generate the 5 days of the previous week
-      for(var i = 0; i <=4; i++) {
-        // Loop will begin from the previous Friday and count backwards 1 day at a time till the Monday of that week
-        var singleDay = moment().day(-2).subtract(i,'days').format("YYYY-MM-DD");
-        this.days.unshift(singleDay);
-        wellness_obj[singleDay] = {
+      this.days = this.$generateDays();
+      this.days.forEach(singleDay => {
+      wellness_obj[singleDay] = {
           // Value will hold the sum of the meter widget data
           value: 0,
           // Counter will be used to represent the number of patients who had meter widget data on a specific day
           counter: 0,
-        }  
-      }
+        }
+      });
       var self = this;
       // Request to return meter widget data
-      axios.get(this.$store.getters.getTreatmentmeterURL, {
+      axios.get(this.$store.getters.getTreatmentMeterURL, {
         params: {
           medicalcode:this.$store.getters.medicalCode,
           // Pass the first and last elements from the day array. These dates will be used to filter the response in the backend
@@ -70,9 +68,10 @@ export default {
         }
       })
       .then(function (response) { 
-        // Check each individual array in the response to see if they are empty. If they are, do not create the graph
-        if(response.data.every((item) => { return item.length == 0})) {
+        // Check the array in the response to see if it is empty. If it is, do not create the graph
+        if(response.data.length == 0) {
           self.wellnessWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
+           self.$emptyBar("aggregate-wellness",self.days);
         } else {
           // Loop through each object holding meter widget treatment data
           for (var meter of response.data) {
@@ -94,8 +93,8 @@ export default {
               }
             }
           }
-           // Turn the average data into an array. Must reverse the array because the days were instantiated backwards
-          self.averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average }).reverse()
+           // Turn the average data into an array.
+          self.averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average })
           // Define the graph and it's styles
           new Chart(document.getElementById("aggregate-wellness"), {
             type: 'bar',
@@ -196,105 +195,15 @@ export default {
       var average = numbers.reduce((a,b) => a+b,0) / numbers.length;
       this.averageWellness = "The average wellness for this week is "+average.toFixed(2)+"%";
     },
-    getTrends(data) {
-      // Create 2 arrays - 1 for holding the positive trends and one for holding the negative trends
-      var positiveTrends = [], negativeTrends = [];
-      var startIndex = 0;
-      // Determine the positive trends first. Loop through the data
-      for(var i = 0; i < data.length; i++) {
-        // If the data at one index is less than the one at the next, this is the start of a positive trend
-        if(data[i] <= data[i+1]) {
-          continue;
-        } else {
-          // When the if condition fails, push the starting index and ending index of the positive trend into an array  
-          positiveTrends.push({
-            start: startIndex, 
-            end: i
-          })
-          // Set the new starting index
-          startIndex = i + 1
-        }
-      }
-      // Remove the instances where start and end values are the same. 
-      positiveTrends = positiveTrends.filter(trend => trend.start != trend.end);
-      
-      // Determine the negative trends next. Reset the startIndex variable to 0. 
-      startIndex = 0;
-      for(var i = 0; i < data.length; i++) {
-            // If the data at one index is greater than the one at the next, this is the start of a negative trend. 
-            if(data[i] >= data[i+1]) {
-              continue;
-            } else {
-              // When the condition fails, pushing the starting index and ending index of the negative trend to the array
-              negativeTrends.push({
-                start: startIndex, 
-                end: i
-              })
-              startIndex = i + 1
-            } 
-      }
-      // Remove the instances where start and end values are the same. 
-      negativeTrends = negativeTrends.filter(trend => trend.start != trend.end);
-      return {positiveTrends, negativeTrends};
-    },
-    getTrendsIgnore(data) {
-      // Create 2 arrays - 1 for holding the positive trends and one for holding the negative trends
-      var positiveTrends = [], negativeTrends = [];
-      // Keep track of the start index when a new trend begins
-      // Keep a marker of the last index that was read in the data array so we know where to read next
-      var startIndex = 0, marker = 0;
-      // From the original data, strip out the values that aren't 0s and make a new array
-      var filteredData = data.filter(value => value != 0)
-      // Determine the positive trends
-      for(var i = 0; i < filteredData.length; i++) {
-       if(filteredData[i] <= filteredData[i+1]) {
-          continue;
-        } else {
-           positiveTrends.push({
-            // Find starting value from the original data set and determine its index
-            start: data.indexOf(filteredData[startIndex], marker), 
-            // Find the ending value from the original data set and determine its index. Start search from where the start value was last found
-            end: data.indexOf(filteredData[i], marker)
-          })
-          // Set the new starting index
-          startIndex = i + 1;
-          // The new marker becomes the 1 index past where the last value was read
-          marker = positiveTrends.slice(-1)[0].end + 1
-        }
-      }
-       // Remove the instances where start and end values are the same. 
-      positiveTrends = positiveTrends.filter(trend => trend.start != trend.end);
-      // Reset the value of startIndex 
-      startIndex = 0;
-      // Reset the marker
-      marker = 0;
-      // Determine the negative trends
-      for(var i =0; i < filteredData.length; i++) {
-        if(filteredData[i] >= filteredData[i+1]) {
-          continue;
-        } else {
-          negativeTrends.push({
-            start: data.indexOf(filteredData[startIndex], marker),
-            end: data.indexOf(filteredData[i] , marker)
-          })
-          // Set the new starting index
-          startIndex = i + 1
-          marker = negativeTrends.slice(-1)[0].end + 1
-        }
-      }
-      negativeTrends = negativeTrends.filter(trend => trend.start != trend.end);
-      return {positiveTrends, negativeTrends};
-   
-    },
     analyzeData() {
       // Call to determine the average wellness
       this.getAvg(this.averageData);
       // If the user chose to ignore the empty values
       if(this.ignoreEmpty) {
-        this.trends = this.getTrendsIgnore(this.averageData);
+        this.trends = this.$getTrendsIgnore(this.averageData);
       } else {
         // Otherwise, the use didn't choose to ignore the empty values
-        this.trends = this.getTrends(this.averageData);
+        this.trends = this.$getTrends(this.averageData);
       }
     }
   },

@@ -16,8 +16,8 @@ export default {
   },
   methods: {
     logOut() {
-      this.$store.dispatch('deauthenticatedUsername', '');
-      this.$store.dispatch('signOut', '');
+      // Call to user plugin to logout user
+      this.$logout();
       this.$router.push('/');
     },
     viewAppointments() {

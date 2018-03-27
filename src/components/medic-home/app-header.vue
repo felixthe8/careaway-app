@@ -17,9 +17,8 @@ export default {
   },
   methods: {
     logOut() {
-      this.$store.dispatch('deauthenticatedUsername', '');
-      this.$store.dispatch('medicalCode', '');
-      this.$store.dispatch('signOut', '');
+      // Call to user plugin to logout user
+      this.$logout();
       axios.get(this.$store.getters.logoutURL).then(response => {
         console.log(response);
         this.$router.push('/');

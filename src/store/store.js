@@ -49,6 +49,8 @@ export const store = new Vuex.Store({
     getPatientUserNamesURL: 'http://localhost:8080/getPatientUserNames',
     getPatientTreatmentURL: 'http://localhost:8080/getPatientTreatment?username=',
     updatePatientTreatmentURL: 'http://localhost:8080/updatePatientTreatment',
+    getDiagnosisListURL: 'http://localhost:8080/getDiagnosisList',
+    saveDiagnosisURL : 'http://localhost:8080/getDiagnosisList',
     
     patientInfoURL: 'http://localhost:8080/get-patients?code=',
     userInfoURL: 'http://localhost:8080/get-user?username=',
@@ -76,7 +78,8 @@ export const store = new Vuex.Store({
     singlePatientWellness: [],
   
     appointments: [],
-    currentAppointment: {}
+    currentAppointment: {},
+
   },
   getters: {
 
@@ -122,13 +125,13 @@ export const store = new Vuex.Store({
     patientBreakdownURL: (state) => {
       return state.patientBreakdownURL;
     },
-    getTreatmentmeterURL: (state) => {
+    getTreatmentMeterURL: (state) => {
       return state.getTreatmentmeterURL;
     },
     getSingleTreatmentmeterURL:(state) =>{
       return state.getSingleTreatmentmeterURL;
     },
-    getTreatmentchecklistURL: (state) => {
+    getTreatmentChecklistURL: (state) => {
       return state.getTreatmentchecklistURL;
     },
     getPatientTreatmentURL: (state) => {
@@ -136,6 +139,9 @@ export const store = new Vuex.Store({
     },
     updatePatientTreatmentURL: (state) => {
       return state.updatePatientTreatmentURL;
+    },
+    getDiagnosisListURL: (state) => {
+      return state.getDiagnosisListURL;
     },
     getAppointmentURL: (state) =>  {
       return state.appointmentURL;
@@ -163,6 +169,18 @@ export const store = new Vuex.Store({
     },
     showLogin: (state) => {
       return state.showLogin;
+    },
+    showRegistration: (state) => {
+      return state.showRegistration;
+    },
+    showReset: (state) => {
+      return state.showReset
+    },
+    showQuestions: (state) => {
+      return state.showQuestions;
+    },
+    showPassword: (state) => {
+      return state.showPassword;
     },
     authenticatedUsername: (state) => {
       return state.authenticatedUsername;
@@ -202,6 +220,9 @@ export const store = new Vuex.Store({
     },
     currentAppointment: (state) => {
       return state.currentAppointment;
+    },
+    saveDiagnosisURL : (state) => {
+      return state.saveDiagnosisURL;
     },
     appointments: (state) => {
       return state.appointments;

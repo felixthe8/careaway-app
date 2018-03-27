@@ -30,20 +30,19 @@ export default {
   },
   methods: {
     getInfo() {
-      // Generate the 5 days from the previous week
-      for(var i = 0; i <=4; i++) {
-        var singleDay = moment().day(-2).subtract(i,'days').format("YYYY-MM-DD");
-        this.days.unshift(singleDay);
-        this.completionData[singleDay] = {
-          // Value will hold the sum of the checklist widget data
+      // Generate the 5 days of the previous week
+      this.days = this.$generateDays();
+      this.days.forEach(singleDay => {
+      this.completionData[singleDay] = {
+          // This vaule will hold the number of completed tasks
           complete: 0,
-          // Counter will represent the number of patients who had checklist widget data on a specific day
-          taskCount: 0
+          //  This will hold the number of tasks on a specific day
+          taskCount: 0,
         }
-      }
+      });
       var self = this;
       // Request to return checklist widget data
-      axios.get(this.$store.getters.getTreatmentchecklistURL, {
+      axios.get(this.$store.getters.getTreatmentChecklistURL, {
         params: {
           medicalcode:this.$store.getters.medicalCode,
           // Pass the first and last elements from the day array. These dates will be used to filter the response in the backend
@@ -52,8 +51,9 @@ export default {
         }
       })
       .then(function(response) {
-        if(response.data.every((item) => {return item.length == 0} )) {
+        if(response.data.length == 0) {
           self.completionWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
+          self.$emptyBar("aggregate-complete",self.days);
         } else {
           // Loop through each object holding checklist data
           for (var checklist of response.data) {
@@ -86,8 +86,8 @@ export default {
               datasets: [{
                 label: "Completion Percentage",
                 backgroundColor: Array(self.days.length).fill('#3892f1'),
-                // Turn the completion percentage data into an array. Must reverse the array because the days were instantiated backwards
-                data: Object.keys(self.completionData).map(key => {return self.completionData[key].average}).reverse()
+                // Turn the completion percentage data into an array. 
+                data: Object.keys(self.completionData).map(key => {return self.completionData[key].average})
               }]
             },
             options: {

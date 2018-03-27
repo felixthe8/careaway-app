@@ -6,9 +6,8 @@
 
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
     <p class = "subtitle" id = "code-display">CareAway Medical Code: {{medicalcode}} </p>
-
     <div v-if="isLoaded">
-    <router-view class="wrapper"></router-view>
+      <router-view class="wrapper"></router-view>
     </div>
 
   </div>
@@ -136,6 +135,9 @@ export default {
   padding-top: 1rem;
   color: $purple;
   font-size: 1.25em;
+}
+#diagnosis-container{
+  margin-left: 25%;
 }
 
 </style>

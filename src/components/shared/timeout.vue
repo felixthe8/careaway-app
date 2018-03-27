@@ -78,11 +78,8 @@
           document.onmousemove = null;
           document.onkeypress = null;
           document.onclick = null;
-          this.$store.dispatch('deauthenticatedUsername', '');
-          this.$store.dispatch('medicalCode', '');
-          // Clear the username in the Vue store
-          this.$store.dispatch('signOut', '');
-          // Redirect to CareAway Homepage
+          // Call to user plugin to logout user
+          this.$logout();
           this.$router.push('/');
         }
       },

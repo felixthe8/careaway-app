@@ -91,27 +91,22 @@
     },
     computed:{
       showRegistration(){
-        return this.$store.state.showRegistration;
+        return this.$store.getters.showRegistration;
       },
       showLogin() {
         return this.$store.getters.showLogin;
       },
       showReset(){
-        return this.$store.state.showReset;
+        return this.$store.getters.showReset;
       },
       showQuestions(){
-        return this.$store.state.showQuestions;
+        return this.$store.getters.showQuestions;
       },
       showPassword(){
-        return this.$store.state.showPassword;
-      },
-      showAdmin(){
-        return this.$store.state.showAdmin;
-      },
-      mounted(){
-        
+        return this.$store.getters.showPassword;
       }
     }
+    
   }
 
 </script>
@@ -136,8 +131,4 @@
     font-size: 3.0em;
   }
 
-</style>
-
-<style>
-  @import "https://use.fontawesome.com/releases/v5.0.6/css/all.css"; 
 </style>

@@ -156,13 +156,13 @@
       },
       registerUser(){
         //Checks if all input fields for a patient are valid
-        if(
-        this.firstNameInput== 'is-success'&&
-        this.lastNameInput== 'is-success'&&
-        this.medicalProfessionalCodeInput == 'is-success' &&
-        this.answer1Input == 'is-success' &&
-        this.answer2Input == 'is-success' &&
-        this.answer3Input == 'is-success' &&
+        if( this.$regCheck([
+                  this.firstNameInput, 
+                  this.lastNameInput, 
+                  this.answer1Input, 
+                  this.answer2Input, 
+                  this.answer3Input, 
+                  this.medicalProfessionalCodeInput]) &&
         this.checkSecurityQuestions() &&
         this.checkTermsandAgreement() &&
         this.isPatient=="true")
@@ -210,14 +210,14 @@
           });
         }
         //Checks if all input fields for a medicalprofessional are valid
-        else if(
-        this.firstNameInput== 'is-success'&&
-        this.lastNameInput== 'is-success'&&
-        this.answer1Input == 'is-success' &&
-        this.answer2Input == 'is-success' &&
-        this.answer3Input == 'is-success' &&
-        this.checkSecurityQuestions() &&
-        this.isPatient=="false"
+        else if( this.$regCheck([
+                  this.firstNameInput, 
+                  this.lastNameInput, 
+                  this.answer1Input, 
+                  this.answer2Input, 
+                  this.answer3Input]) &&
+          this.checkSecurityQuestions() &&
+          this.isPatient=="false"
         ){
           //resets the warning
           this.warning = ""

@@ -26,7 +26,8 @@ export default {
         .then(function(response) {
           // If there are no diagnoses returned
           if(response.data.length == 0) {
-            self.breakdownWarning = 'Sorry, you need to add patients before you can view reports';
+            self.breakdownWarning = 'Sorry, you need to add patients before you can view this report';
+            self.$emptyDoughnut("patient-breakdown");
           } else {
           // Object that will hold the diagnosis count
           var conditionCount = {};
