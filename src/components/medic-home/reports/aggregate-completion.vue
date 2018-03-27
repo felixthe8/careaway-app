@@ -42,7 +42,7 @@ export default {
       });
       var self = this;
       // Request to return checklist widget data
-      axios.get(this.$store.getters.getTreatmentchecklistURL, {
+      axios.get(this.$store.getters.getTreatmentChecklistURL, {
         params: {
           medicalcode:this.$store.getters.medicalCode,
           // Pass the first and last elements from the day array. These dates will be used to filter the response in the backend

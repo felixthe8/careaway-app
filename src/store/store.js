@@ -125,13 +125,13 @@ export const store = new Vuex.Store({
     patientBreakdownURL: (state) => {
       return state.patientBreakdownURL;
     },
-    getTreatmentmeterURL: (state) => {
+    getTreatmentMeterURL: (state) => {
       return state.getTreatmentmeterURL;
     },
     getSingleTreatmentmeterURL:(state) =>{
       return state.getSingleTreatmentmeterURL;
     },
-    getTreatmentchecklistURL: (state) => {
+    getTreatmentChecklistURL: (state) => {
       return state.getTreatmentchecklistURL;
     },
     getPatientTreatmentURL: (state) => {

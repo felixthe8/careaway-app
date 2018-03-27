@@ -59,7 +59,7 @@ export default {
       });
       var self = this;
       // Request to return meter widget data
-      axios.get(this.$store.getters.getTreatmentmeterURL, {
+      axios.get(this.$store.getters.getTreatmentMeterURL, {
         params: {
           medicalcode:this.$store.getters.medicalCode,
           // Pass the first and last elements from the day array. These dates will be used to filter the response in the backend
