@@ -132,7 +132,3 @@
   }
 
 </style>
-
-<style>
-  @import "https://use.fontawesome.com/releases/v5.0.6/css/all.css"; 
-</style>
