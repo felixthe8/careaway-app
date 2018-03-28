@@ -20,6 +20,8 @@ export const store = new Vuex.Store({
     showPassword: false,
     ssoRegistration: false,
     showAppointment: false,
+    showMeter: false,
+    showChecklist: false,
 
     // Appointment boolean values.
     showAppointmentCreation: false,
@@ -64,8 +66,8 @@ export const store = new Vuex.Store({
     deleteAppt: 'http://localhost:8080/deleteAppt',
 
     // Widget URLs
-    createMeterURL: 'http://localhost:8080/createMeter',
-    createChecklistURL: 'http://localhost:8080/createChecklist',
+    createMeterURL: 'http://localhost:8080/createTreatmentMeter',
+    createChecklistURL: 'http://localhost:8080/createTreatmentChecklist',
 
     // Login Data
     validUsername: '',
@@ -76,13 +78,13 @@ export const store = new Vuex.Store({
     authStatus: '',
     singlePatientCompletion: [],
     singlePatientWellness: [],
-  
+
     appointments: [],
     currentAppointment: {},
 
   },
-  getters: {
 
+  getters: {
     checkBreachURL: (state) => {
       return state.checkBreachURL;
     },
@@ -194,6 +196,12 @@ export const store = new Vuex.Store({
     showAppointment: (state) => {
       return state.showAppointment;
     },
+    showMeter: (state) => {
+      return state.showMeter;
+    },
+    showChecklist: (state) => {
+      return state.showChecklist;
+    },
     deleteAppt: (state) => {
       return state.deleteAppt;
     },
@@ -233,7 +241,7 @@ export const store = new Vuex.Store({
     singlePatientWellness:(state) => {
       return state.singlePatientWellness;
     },
-  }, 
+  },
   mutations: {
     // function to flip the value of showLogin
     alternateLogin: (state) => {
@@ -253,6 +261,12 @@ export const store = new Vuex.Store({
     },
     changeQuestionValue3: (state, value) => {
       state.questionSelected3=value;
+    },
+    toggleMeter: (state) => {
+      state.showMeter = !state.showMeter;
+    },
+    toggleChecklist: (state) => {
+      state.showChecklist = !state.showChecklist;
     },
     alternateReset: (state) => {
       state.showReset = !state.showReset;
