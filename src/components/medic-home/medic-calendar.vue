@@ -3,12 +3,14 @@
   <div class="columns medic-calendar">
     <div class="menu column is-one-fifth">
       <appointment :calendar="calendar" :isMed="isMed" />
-
       <div class="menu__widgets">
         <meterWidget :calendar="calendar"/>
         <checklistWidget :calendar="calendar"/>
       </div>
       <diagnosis/>
+      <div id="patientLabel">
+        <patientSelector @selected = "routeIndividualTreatment"/>
+      </div>
     </div>
 
     <calendar :calendar="calendar" class="column is-four-fifths"/>
@@ -22,20 +24,25 @@ import appointment from '../shared/appointment.vue';
 import meterWidget from '../shared/meter.vue';
 import checklistWidget from '../shared/checklist.vue';
 import calendar from '../shared/calendar.vue';
-import diagnosis from './set-diagnosis';
+import diagnosis from './set-diagnosis.vue';
+import patientSelector from './patient-selector.vue';
 import moment from 'moment';
 
 export default {
   name: 'medic-calendar',
-
   components: {
     appointment,
     meterWidget,
     checklistWidget,
     calendar,
-    diagnosis
+    diagnosis,
+    patientSelector
   },
-
+  methods: {
+    routeIndividualTreatment() {
+      alert("this is supposed to go to individual treatment");
+    }
+  },
   created: function() {
     this.calendar = this.$renderCalendar(0);
 
@@ -74,6 +81,9 @@ export default {
       border-radius: 10px;
       text-align: center;
     }
+  }
+    #patientLabel{
+    float: right;
   }
 }
 
