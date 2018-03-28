@@ -4,7 +4,7 @@
     <select class = "selectPatient" v-model="selected" @change="choosePatient" name="Patients"> 
       <option value ="0" selected disabled >Choose Patient</option>
       <option  v-for="patient in patientList" v-bind:value="patient.userName">
-        Name: {{ patient.fullName }} 
+        Name - {{ patient.fullName }}   ({{patient.diagnosis}})
       </option>
     </select>
   </div>
@@ -50,10 +50,7 @@ export default {
       this.getPatientNames();
     }
 }
-
-
 </script>
-
 
 <style lang="scss" scoped>
   #patientText{
@@ -68,4 +65,3 @@ export default {
   }
 
 </style>
-
