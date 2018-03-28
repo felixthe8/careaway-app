@@ -2,27 +2,27 @@
 
   <div class="meter-modal">
 
-    <div class="meter-modal--form">
+    <form class="meter-modal--form">
       <div class="row">
         <h1>Generate Meter</h1>
       </div>
       <div class="row">
         <label>Question:</label>
-        <input class="meter-modal--input" name="meter" type="text" id="meter-question">
+        <input class="meter-modal--input" name="meter" type="text" id="meter-question" required>
       </div>
       <div class="row">
         <p>Set Scale:</p>
         <label>From:</label>
-        <input type="number">
+        <input type="number" min="0" max="10" required>
         <label>To:</label>
-        <input type="number">
+        <input type="number" min="10" max="100" required>
       </div>
       <div class="row">
         <label>Date Requested:</label>
         <input class="meter-modal--input" name="date" type="text" id="meter-date">
       </div>
-      <button id="meter" class="meter-modal--create green-button" @click="create">Create Event</button>
-    </div>
+      <button id="meter" class="meter-modal--create green-button" @submit="create">Create Event</button>
+    </form>
 
     <button class='modal-close is-large' aria-label='close' @click='close'></button>
 
