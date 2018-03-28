@@ -130,7 +130,6 @@ export default {
       this.$store.dispatch("alternateAppointment");
     },
     toggleStatus: function() {
-        console.log( document.getElementsByClassName("meter-status-modal"));
       document.getElementsByClassName("meter-status-modal")[0].classList.add("show-modal");
     },
     dragOver: function(event) {
@@ -141,7 +140,7 @@ export default {
     },
     drop: function(event) {
       event.preventDefault();
-
+      
       if(this.$store.getters.showMeter === true) {
         let date = event.target.getAttribute("date");
         document.getElementById("meter-date").value = date;

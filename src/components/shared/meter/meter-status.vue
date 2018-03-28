@@ -2,7 +2,7 @@
 
   <div class="meter-status-modal">
 
-    <div class="meter-modal-status--form">
+    <div class="meter-status-modal--form">
       <div class="row">
         <h1>Meter</h1>
       </div>

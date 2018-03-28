@@ -1,7 +1,11 @@
 <template>
 
   <div class="meter">
-    <button class="meter__button green-button" draggable="true" id="meter" @drag="onDrag">Meter</button>
+    <button class="meter__button green-button"
+      id="meter"
+      draggable="true"
+      @mousedown="dragStart"
+      @drag="onDrag">Meter</button>
 
     <create :calendar="calendar"/>
 
@@ -23,8 +27,11 @@ export default {
   components: { create, status },
 
   methods: {
-    onDrag:function(event) {
+    dragStart: function(event) {
       this.$store.commit("toggleMeter");
+    },
+    onDrag: function(event) {
+      event.preventDefault();
     }
   }
 
