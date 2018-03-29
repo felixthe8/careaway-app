@@ -43,8 +43,6 @@ export const store = new Vuex.Store({
     LoginInfoURL: 'http://localhost:8080/getLoginInfo?token=',
     returnCodeURL : 'http://localhost:8080/returnCode?username=',
     patientBreakdownURL: 'http://localhost:8080/getDiagnoses?medicalcode=',
-    getTreatmentmeterURL: 'http://localhost:8080/getTreatmentmeter',
-    getSingleTreatmentmeterURL: 'http://localhost:8080/getSingleTreatmentmeter',
     getSingleDiagnosisURL: 'http://localhost:8080/getSingleDiagnosis',
     getTreatmentchecklistURL: 'http://localhost:8080/getTreatmentchecklist',
     getSingleTreatmentchecklistURL: 'http://localhost:8080/getSingleTreatmentchecklist',
@@ -66,8 +64,13 @@ export const store = new Vuex.Store({
     deleteAppt: 'http://localhost:8080/deleteAppt',
 
     // Widget URLs
-    createMeterURL: 'http://localhost:8080/createTreatmentMeter',
-    createChecklistURL: 'http://localhost:8080/createTreatmentChecklist',
+    createMeterURL: 'http://localhost:8080/createTreatmentMeter?username=',
+    createChecklistURL: 'http://localhost:8080/createTreatmentChecklist?username=',
+
+    getTreatmentMeterURL: 'http://localhost:8080/getTreatmentMeter',
+    getSingleTreatmentMeterURL: 'http://localhost:8080/getSingleTreatmentMeter',
+    getTreatmentChecklistURL: 'http://localhost:8080/getTreatmentChecklist',
+    getSingleTreatmentChecklistURL: 'http://localhost:8080/getSingleTreatmentChecklist',
 
     // Login Data
     validUsername: '',
@@ -81,7 +84,6 @@ export const store = new Vuex.Store({
 
     appointments: [],
     currentAppointment: {},
-
   },
 
   getters: {
@@ -128,13 +130,16 @@ export const store = new Vuex.Store({
       return state.patientBreakdownURL;
     },
     getTreatmentMeterURL: (state) => {
-      return state.getTreatmentmeterURL;
+      return state.getTreatmentMeterURL;
     },
-    getSingleTreatmentmeterURL:(state) =>{
-      return state.getSingleTreatmentmeterURL;
+    getSingleTreatmentMeterURL:(state) =>{
+      return state.getSingleTreatmentMeterURL;
     },
     getTreatmentChecklistURL: (state) => {
-      return state.getTreatmentchecklistURL;
+      return state.getTreatmentChecklistURL;
+    },
+    getSingleTreatmentChecklistURL:(state) =>{
+      return state.getSingleTreatmentChecklistURL;
     },
     getPatientTreatmentURL: (state) => {
       return state.getPatientTreatmentURL;
@@ -235,6 +240,12 @@ export const store = new Vuex.Store({
     appointments: (state) => {
       return state.appointments;
     },
+    meters: (state) => {
+      return state.meters;
+    },
+    checklists: (state) => {
+      return state.checklists;
+    },
     singlePatientCompletion:(state) => {
       return state.singlePatientCompletion;
     },
@@ -327,6 +338,47 @@ export const store = new Vuex.Store({
       }
       state.appointments = temp;
     },
+    // Widget Operations
+    addMeter: (state, payload) => {
+      state.meters.push(payload);
+    },
+    editMeter: (state, payload) => {
+      function findOldMeter(element){
+        return element.date === payload.originalMeter.date;
+      }
+      var index = state.meters.findIndex(findOldMeter);
+      state.meters[index] = payload.newMeter;
+    },
+    deleteMeter: (state, payload) => {
+      var temp = [];
+      for(var i=0; i < state.meters.length; i++) {
+        if(state.meters[i].date !== payload.date) {
+          temp.push(state.meters[i]);
+        }
+      }
+      state.meters = temp;
+    },
+    //
+    addChecklist: (state, payload) => {
+      state.checklists.push(payload);
+    },
+    editChecklist: (state, payload) => {
+      function findOldChecklist(element){
+        return element.date === payload.originalChecklist.date;
+      }
+      var index = state.checklists.findIndex(findOldChecklist);
+      state.checklists[index] = payload.newChecklist;
+    },
+    deleteChecklist: (state, payload) => {
+      var temp = [];
+      for(var i=0; i < state.checklists.length; i++) {
+        if(state.checklists[i].date !== payload.date) {
+          temp.push(state.checklists[i]);
+        }
+      }
+      state.checklists = temp;
+    },
+    // end widgets
     singlePatientWellness:(state,payload) =>{
       state.singlePatientWellness = payload;
     },

@@ -6,7 +6,7 @@
     <div class = "report" v-if="showReport">
       <p> Total completed tasks for this period: {{totalComplete}} </p>
       <p> Total assigned tasks for this period: {{totalAssigned}}</p>
-    </div>  
+    </div>
   </div>
 </template>
 
@@ -45,7 +45,7 @@ export default {
       }
       var self = this;
       // Request to return checklist widget data
-      axios.get(this.$store.getters.getSingleTreatmentchecklistURL, {
+      axios.get(this.$store.getters.getSingleTreatmentChecklistURL, {
         params: {
           username:self.$store.state.username,
           // Pass the first and last elements from the day array. These dates will be used to filter the response in the backend
@@ -162,4 +162,3 @@ export default {
   }
 
 </style>
-
