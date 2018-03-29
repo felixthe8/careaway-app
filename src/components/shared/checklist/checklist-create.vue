@@ -35,7 +35,8 @@ export default {
     return {
       label: "checklist",
       list: [],
-      due_date: {}
+      due_date: {},
+      user: "test1111"
     }
   },
 
