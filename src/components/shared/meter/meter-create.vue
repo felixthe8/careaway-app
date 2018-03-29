@@ -72,7 +72,9 @@ export default {
         due_date: this.due_date,
       }
 
+      console.log("posting...");
       axios.post(this.$store.getters.createMeterURL, meter).then(function(response) {
+          console.log("in axios loop");
         if(response.date.success) {
           console.log("Successfully Created Meter");
         } else {

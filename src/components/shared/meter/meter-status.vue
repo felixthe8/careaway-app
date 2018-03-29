@@ -4,7 +4,7 @@
 
     <div class="meter-status-modal--form">
       <div class="row">
-        <h1>Meter</h1>
+        <h1>{{label}}</h1>
       </div>
       <p>Question: {{question}}</p>
       <p>Scale: {{scale[0]}} - {{scale[1]}}</p>
@@ -37,6 +37,9 @@ export default {
   },
 
   methods: {
+    edit: function() {
+
+    },
     deleteMeter: function() {
       // this.question = document.getElementById("meter-question").value;
       // this.due_date = document.getElementById("meter-date").value;
@@ -51,12 +54,6 @@ export default {
 
       document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
       // this.postDelete();
-    },
-    edit: function() {
-
-    },
-    editMeter: function() {
-      // open edit modal
     },
     postDelete: function() {
       axios.post(this.$store.getters.deleteAppt,{'appointment' : this.appointment}).then(
