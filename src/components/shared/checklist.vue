@@ -1,7 +1,11 @@
 <template>
 
   <div class="checklist">
-    <button class="checklist__button green-button" draggable="true" @drag="onDrag">Checklist</button>
+    <button class="checklist__button green-button"
+      id="checklist"
+      draggable="true"
+      @mousedown="dragStart"
+      @drag="onDrag">Checklist</button>
 
     <create :calendar="calendar"/>
   </div>
@@ -20,8 +24,11 @@ export default {
   components: { create },
 
   methods: {
-    onDrag: function() {
-        this.$store.commit("toggleChecklist");
+    dragStart: function(event) {
+      this.$store.commit("toggleMeter");
+    },
+    onDrag: function(event) {
+      event.preventDefault();
     }
   }
 }

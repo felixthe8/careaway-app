@@ -1,32 +1,27 @@
 <template>
 
   <div class="meter-modal">
-
     <div class="meter-modal--form">
       <div class="row">
-        <h1>Generate Meter</h1>
+        <h1>Edit Meter</h1>
       </div>
       <div class="row">
         <label>Question:</label>
-        <input class="meter-modal--input" name="meter" type="text" id="meter-question" required>
+        <input class="meter-modal--input" name="meter" type="text" id="meter-question">
       </div>
       <div class="row">
         <p>Set Scale:</p>
         <label>From:</label>
-        <input type="number" min="0" max="10" required>
+        <input type="number">
         <label>To:</label>
-        <input type="number" min="10" max="100" required>
+        <input type="number">
       </div>
       <div class="row">
         <label>Date Requested:</label>
         <input class="meter-modal--input" name="date" type="text" id="meter-date">
       </div>
-      <button id="meter" class="meter-modal--create green-button" @click="create">Create Event</button>
+      <button id="meter" class="meter-modal--create green-button" @click="update">Update Meter</button>
     </div>
-
-
-    <button class='modal-close is-large' aria-label='close' @click='close'></button>
-
   </div>
 
 </template>
@@ -49,7 +44,7 @@ export default {
   },
 
   methods: {
-    create: function(event) {
+    update: function() {
       this.question = document.getElementById("meter-question").value;
       this.due_date = document.getElementById("meter-date").value;
 
@@ -62,30 +57,26 @@ export default {
       }
 
       document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
-      this.saveMeter();
+      this.updateMeter();
     },
-    saveMeter: function() {
-      const meter = {
-        label: this.label,
-        question: this.question,
-        scale: this.scale,
-        due_date: this.due_date,
-        user: "test1111"
+    updateMeter: function() {
+      axios.put(this.$store.getters.modifyAppointmentURL, appointments)
+        .then(response => {
+          if(response.data.success) {
+            console.log("Modify appointment success.");
+            this.$store.dispatch('editAppointment', appointments);
+            this.$emit("storeAppointment", appointments.newAppointment);
+            this.errors.msg = false;
+            this.cancel();
+          } else {
+            console.log("Modify appointment fail.");
+            this.errorMsg = response.data.reason;
+            this.errors.msg = true;
+          }
+        });
+      } else {
+        console.log("Error, invalid inputs.");
       }
-
-      axios.post(this.$store.getters.createMeterURL, meter).then(function(response) {
-          console.log("in axios loop");
-        if(response.date.success) {
-          console.log("Successfully Created Meter");
-        } else {
-          console.log("Failed to Create Meter");
-        }
-      }).catch(function(err) {
-        console.log(err);
-      });
-    },
-    close: function() {
-      document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
     }
   }
 }

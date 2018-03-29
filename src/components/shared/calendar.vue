@@ -42,7 +42,8 @@
 
           <div class="calendar__day--appointment"
             v-if="calendar[index].appointment.created">
-              <button class="button is-primary is-rounded" @click="toggleCreate(calendar[index].appointment.date)"
+              <button class="button calendar__day--button"
+                @click="toggleCreate(calendar[index].appointment.date)"
                 :id="calendar[index].appointment.date">
                 {{calendar[index].appointment.date}}
               </button>
@@ -50,14 +51,15 @@
 
           <div class="calendar__day--meter"
             v-if="calendar[index].meter.created">
-            <button class="button is-primary is-rounded">
+            <button class="button calendar__day--button"
+              @click="toggleStatus(calendar[index].appointment.date)">
                 {{calendar[index].meter.label}}
             </button>
           </div>
 
           <div class="calendar__day--checklist"
             v-if="calendar[index].checklist.created">
-            <button class="button is-primary is-rounded">
+            <button class="button calendar__day--button">
                 {{calendar[index].checklist.label}}
             </button>
           </div>
@@ -127,6 +129,9 @@ export default {
       this.$store.dispatch("editableAppointment", index);
       this.$store.dispatch("alternateAppointment");
     },
+    toggleStatus: function() {
+      document.getElementsByClassName("meter-status-modal")[0].classList.add("show-modal");
+    },
     dragOver: function(event) {
       event.preventDefault();
 
@@ -135,7 +140,7 @@ export default {
     },
     drop: function(event) {
       event.preventDefault();
-
+      
       if(this.$store.getters.showMeter === true) {
         let date = event.target.getAttribute("date");
         document.getElementById("meter-date").value = date;
@@ -320,6 +325,11 @@ export default {
     &--label {
       margin-top: -20%;
       color: $purple-dark;
+    }
+
+    &--button {
+      background: $green-light;
+      font-size: 8px;
     }
 
     &.no-right {
