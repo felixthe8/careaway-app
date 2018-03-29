@@ -2,7 +2,7 @@
 
   <div class="meter-modal">
 
-    <form class="meter-modal--form">
+    <div class="meter-modal--form">
       <div class="row">
         <h1>Generate Meter</h1>
       </div>
@@ -21,8 +21,9 @@
         <label>Date Requested:</label>
         <input class="meter-modal--input" name="date" type="text" id="meter-date">
       </div>
-      <button id="meter" class="meter-modal--create green-button" @submit="create">Create Event</button>
-    </form>
+      <button id="meter" class="meter-modal--create green-button" @click="create">Create Event</button>
+    </div>
+
 
     <button class='modal-close is-large' aria-label='close' @click='close'></button>
 
@@ -48,7 +49,7 @@ export default {
   },
 
   methods: {
-    create: function() {
+    create: function(event) {
       this.question = document.getElementById("meter-question").value;
       this.due_date = document.getElementById("meter-date").value;
 

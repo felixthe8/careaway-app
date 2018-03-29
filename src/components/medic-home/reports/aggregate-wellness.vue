@@ -57,11 +57,11 @@ export default {
           value: 0,
           // Counter will be used to represent the number of patients who had meter widget data on a specific day
           counter: 0,
-        }  
+        }
       }
       var self = this;
       // Request to return meter widget data
-      axios.get(this.$store.getters.getTreatmentmeterURL, {
+      axios.get(this.$store.getters.getTreatmentMeterURL, {
         params: {
           medicalcode:this.$store.getters.medicalCode,
           // Pass the first and last elements from the day array. These dates will be used to filter the response in the backend
@@ -69,18 +69,18 @@ export default {
           finalDate: self.days.slice(-1)[0]
         }
       })
-      .then(function (response) { 
+      .then(function (response) {
         // Check each individual array in the response to see if they are empty. If they are, do not create the graph
         if(response.data.every((item) => { return item.length == 0})) {
           self.wellnessWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
         } else {
           // Loop through each object holding meter widget treatment data
           for (var meter of response.data) {
-              // Write the sum of the meter widget data 
+              // Write the sum of the meter widget data
               wellness_obj[meter.due_date].value += (parseFloat(meter.patient_input) / parseFloat(meter.scale[1]) ) * 100
               // Increment the counter
               wellness_obj[meter.due_date].counter+=1
-            
+
           }
           // Compute the average of the meter widget data for each day
           for(var key in wellness_obj) {
@@ -89,7 +89,7 @@ export default {
               if(wellness_obj[key].counter == 0) {
                 wellness_obj[key].average = 0;
               } else {
-                // Average is the sum of meter widget data divided by the number of patients who had data for that day 
+                // Average is the sum of meter widget data divided by the number of patients who had data for that day
                 wellness_obj[key].average = wellness_obj[key].value / wellness_obj[key].counter
               }
             }
@@ -133,7 +133,7 @@ export default {
                 borderWidth: 3,
                 fill: true,
               }, {
-                // Create the 'Little Pain' line 
+                // Create the 'Little Pain' line
                 data: Array(self.days.length).fill(99),
                 type: 'line',
                 label: "Little Pain",
@@ -150,7 +150,7 @@ export default {
                display: true,
                position: "right",
                labels: {fontSize: 14},
-               // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing. 
+               // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing.
                onClick: null
              },
              scales: {
@@ -173,10 +173,10 @@ export default {
                   }
                 }
               },
-              elements: {point: {radius: 0}}           
+              elements: {point: {radius: 0}}
             }
           });
-        // Call to run the functions to analyze the data  
+        // Call to run the functions to analyze the data
         self.analyzeData();
         // If the GET was successfully completed and the graph has been made, then show the report
         self.showReport = true;
@@ -206,34 +206,34 @@ export default {
         if(data[i] <= data[i+1]) {
           continue;
         } else {
-          // When the if condition fails, push the starting index and ending index of the positive trend into an array  
+          // When the if condition fails, push the starting index and ending index of the positive trend into an array
           positiveTrends.push({
-            start: startIndex, 
+            start: startIndex,
             end: i
           })
           // Set the new starting index
           startIndex = i + 1
         }
       }
-      // Remove the instances where start and end values are the same. 
+      // Remove the instances where start and end values are the same.
       positiveTrends = positiveTrends.filter(trend => trend.start != trend.end);
-      
-      // Determine the negative trends next. Reset the startIndex variable to 0. 
+
+      // Determine the negative trends next. Reset the startIndex variable to 0.
       startIndex = 0;
       for(var i = 0; i < data.length; i++) {
-            // If the data at one index is greater than the one at the next, this is the start of a negative trend. 
+            // If the data at one index is greater than the one at the next, this is the start of a negative trend.
             if(data[i] >= data[i+1]) {
               continue;
             } else {
               // When the condition fails, pushing the starting index and ending index of the negative trend to the array
               negativeTrends.push({
-                start: startIndex, 
+                start: startIndex,
                 end: i
               })
               startIndex = i + 1
-            } 
+            }
       }
-      // Remove the instances where start and end values are the same. 
+      // Remove the instances where start and end values are the same.
       negativeTrends = negativeTrends.filter(trend => trend.start != trend.end);
       return {positiveTrends, negativeTrends};
     },
@@ -252,7 +252,7 @@ export default {
         } else {
            positiveTrends.push({
             // Find starting value from the original data set and determine its index
-            start: data.indexOf(filteredData[startIndex], marker), 
+            start: data.indexOf(filteredData[startIndex], marker),
             // Find the ending value from the original data set and determine its index. Start search from where the start value was last found
             end: data.indexOf(filteredData[i], marker)
           })
@@ -262,9 +262,9 @@ export default {
           marker = positiveTrends.slice(-1)[0].end + 1
         }
       }
-       // Remove the instances where start and end values are the same. 
+       // Remove the instances where start and end values are the same.
       positiveTrends = positiveTrends.filter(trend => trend.start != trend.end);
-      // Reset the value of startIndex 
+      // Reset the value of startIndex
       startIndex = 0;
       // Reset the marker
       marker = 0;
@@ -284,7 +284,7 @@ export default {
       }
       negativeTrends = negativeTrends.filter(trend => trend.start != trend.end);
       return {positiveTrends, negativeTrends};
-   
+
     },
     analyzeData() {
       // Call to determine the average wellness
@@ -315,4 +315,3 @@ export default {
     color: #E74C3C;
   }
 </style>
-

@@ -39,6 +39,8 @@ export default {
     },
     beforeCreate() {
       var self = this;
+
+      // get Appointments for VueX
       axios.get(this.$store.getters.getAppointmentURL + this.$store.getters.authenticatedUsername).then(result => {
         var appointments = result.data.appointments;
         if(appointments) {
@@ -52,6 +54,31 @@ export default {
       }).catch(error => {
         console.log(error);
       });
+
+      console.log("getting widgets");
+
+      // get Meters for VueX
+      axios.get(this.$store.getters.getTreatmentMeterURL+this.$store.getters.authenticatedUsername).then(result => {
+        var meters = result.data.meters;
+        for(var i=0; i < meters.length; i++) {
+          self.$store.dispatch('addMeter', meters[i]);
+          self.isLoaded = true;
+        }
+      }).catch(error => {
+        console.log(error);
+      });
+
+      // get Checklists for VueX
+      axios.get(this.$store.getters.getTreatmentChecklistURL+this.$store.getters.authenticatedUsername).then(result => {
+        var meters = result.data.meters;
+        for(var i=0; i < meters.length; i++) {
+          self.$store.dispatch('addMeter', meters[i]);
+          self.isLoaded = true;
+        }
+      }).catch(error => {
+        console.log(error);
+      });
+
     },
     mounted () {
       // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.

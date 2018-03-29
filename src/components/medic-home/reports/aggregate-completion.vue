@@ -6,7 +6,7 @@
     <div class = "report" v-if="showReport">
       <p> Total completed tasks for this period: {{totalComplete}} </p>
       <p> Total assigned tasks for this period: {{totalAssigned}}</p>
-    </div>  
+    </div>
   </div>
 </template>
 
@@ -43,7 +43,7 @@ export default {
       }
       var self = this;
       // Request to return checklist widget data
-      axios.get(this.$store.getters.getTreatmentchecklistURL, {
+      axios.get(this.$store.getters.getTreatmentChecklistURL, {
         params: {
           medicalcode:this.$store.getters.medicalCode,
           // Pass the first and last elements from the day array. These dates will be used to filter the response in the backend
@@ -110,7 +110,7 @@ export default {
                 display: true,
                 position: "right",
                 labels: {fontSize: 14},
-                // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing. 
+                // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing.
                 onClick: null
               },
               tooltips: {
@@ -156,4 +156,3 @@ export default {
       margin-left: 2%;
   }
 </style>
-
