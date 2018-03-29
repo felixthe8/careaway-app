@@ -32,8 +32,7 @@ export const store = new Vuex.Store({
     checkBreachURL: 'http://localhost:8080/isBreached',
     breachURL: 'http://localhost:8080/breach',
     loginURL: 'http://localhost:8080/login',
-    registerPatientURL: 'http://localhost:8080/registerPatient',
-    registerMedicalProURL: 'http://localhost:8080/registerMed',
+    registerURL: 'http://localhost:8080/register',
     resetCredURL: 'http://localhost:8080/reset-creds',
     getSecurityQURL:'http://localhost:8080/security-questions?username=',
     validateAnswerURL: 'http://localhost:8080/validate-answers',
@@ -94,11 +93,8 @@ export const store = new Vuex.Store({
     loginURL: (state) => {
       return state.loginURL;
     },
-    registerPatientURL: (state) => {
-      return state.registerPatientURL;
-    },
-    registerMedicalProURL:(state) => {
-      return state.registerMedicalProURL;
+    registerURL: (state) => {
+      return state.registerURL;
     },
     resetCredURL: (state) => {
       return state.resetCredURL;
