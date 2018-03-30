@@ -2,7 +2,7 @@
   <div class = "breakdown">
     <h1 class = "title is-3 is-spaced"> Patient Breakdown by Diagnosis </h1>
     <h2 class="subtitle"> {{breakdownWarning}} </h2>
-    <canvas id = "patient-breakdown" width = "450" height = "300"> </canvas>
+    <canvas id = "patient-breakdown" width = "650" height = "350"> </canvas>
   </div>
 </template>
 
