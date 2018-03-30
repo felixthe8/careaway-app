@@ -66,6 +66,8 @@ export const store = new Vuex.Store({
     // Widget URLs
     createMeterURL: 'http://localhost:8080/createTreatmentMeter?username=',
     createChecklistURL: 'http://localhost:8080/createTreatmentChecklist?username=',
+    deleteTreatment: 'http://localhost:8080/deleteTreatment?username=',
+    getTreatment: 'http://localhost:8080/getTreatment?username=',
 
     getTreatmentMeterURL: 'http://localhost:8080/getTreatmentMeter',
     getSingleTreatmentMeterURL: 'http://localhost:8080/getSingleTreatmentMeter',
@@ -229,6 +231,12 @@ export const store = new Vuex.Store({
     },
     createChecklistURL: (state) => {
       return state.createChecklistURL;
+    },
+    deleteTreatmentURL: (state) => {
+      return state.deleteTreatmentURL;
+    },
+    getTreatment: (state) => {
+      return state.getTreatment;
     },
     modifyAppointmentURL: (state) => {
       return state.modifyAppointmentURL;
