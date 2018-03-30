@@ -3,9 +3,11 @@
   <div class="columns medic-calendar">
     <div class="menu column is-one-fifth">
       <appointment :calendar="calendar" :isMed="isMed" />
+
       <div id="patientLabel">
-        <patientSelector @selected = "routeIndividualTreatment"/>
+        <patientSelector @selected="routeIndividualTreatment"/>
       </div>
+
     </div>
 
     <calendar :calendar="calendar" class="column is-four-fifths"/>
@@ -25,6 +27,7 @@ import moment from 'moment';
 
 export default {
   name: 'medic-calendar',
+
   components: {
     appointment,
     meterWidget,
@@ -33,11 +36,13 @@ export default {
     diagnosis,
     patientSelector
   },
+
   methods: {
     routeIndividualTreatment() {
       this.$router.push("/patient-treatment");
     }
   },
+
   created: function() {
     this.calendar = this.$renderCalendar(0);
 

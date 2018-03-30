@@ -51,7 +51,7 @@ export const store = new Vuex.Store({
     updatePatientTreatmentURL: 'http://localhost:8080/updatePatientTreatment',
     getDiagnosisListURL: 'http://localhost:8080/getDiagnosisList',
     saveDiagnosisURL : 'http://localhost:8080/getDiagnosisList',
-    
+
     patientInfoURL: 'http://localhost:8080/get-patients?code=',
     userInfoURL: 'http://localhost:8080/get-user?username=',
     logoutURL: 'http://localhost:8080/logout',
@@ -82,6 +82,8 @@ export const store = new Vuex.Store({
     singlePatientCompletion: [],
     singlePatientWellness: [],
 
+    // Treatment Plan Data
+    currentPatient: {},
     appointments: [],
     currentAppointment: {},
   },
@@ -252,6 +254,9 @@ export const store = new Vuex.Store({
     singlePatientWellness:(state) => {
       return state.singlePatientWellness;
     },
+    getCurrentPatient:(state) => {
+      return state.currentPatient;
+    }
   },
   mutations: {
     // function to flip the value of showLogin
@@ -387,6 +392,9 @@ export const store = new Vuex.Store({
     },
     editableAppointment: (state, payload) => {
       state.editableAppointment = payload;
+    },
+    setCurrentPatient: (state, payload) => {
+      state.currentPatient = payload;
     }
   },
 
@@ -460,6 +468,9 @@ export const store = new Vuex.Store({
     },
     editableAppointment: (context, payload) => {
       context.commit('editableAppointment', payload);
+    },
+    setCurrentPatient: (context, payload) => {
+      context.commit('setCurrentPatient', payload);
     }
   }
 });
