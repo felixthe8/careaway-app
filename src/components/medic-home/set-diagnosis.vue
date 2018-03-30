@@ -111,9 +111,6 @@ import axios from'axios';
                 this.inputError = true;
                 this.alertError();
             } else {
-                // Otherwise, the diagnosis is valid. Toggle the is-danger class to make the box green
-                this.inputSuccess = true;
-                this.alertSuccess();
                 var self = this;
                 // PUT request to store the updated patient diagnosis
                 axios.put(this.$store.getters.saveDiagnosisURL, {
@@ -121,12 +118,18 @@ import axios from'axios';
                   updatedDiagnosis: self.search
                 })
                 .then(function(response){
-                  // After response is fulfilled, overwrite the information about the current user  
-                  var currentPatient = self.$store.getters.getCurrentPatient
-                  // Overwrite the current user's diagnosis
-                  currentPatient.diagnosis = self.search
-                  // Store the updated current user
-                  self.$store.dispatch('setCurrentPatient', currentPatient);
+                   // Runs if the client was able to receive the success flag
+                   if(response.data.success) {
+                     // The diagnosis is valid. Toggle the is-success class to make the box green
+                     self.inputSuccess = true;
+                     self.alertSuccess();
+                     // After response is fulfilled, overwrite the information about the current user  
+                     var currentPatient = self.$store.getters.getCurrentPatient
+                     // Overwrite the current user's diagnosis
+                     currentPatient.diagnosis = self.search
+                     // Store the updated current user
+                     self.$store.dispatch('setCurrentPatient', currentPatient);
+                   }
                 })
                 .catch (function(err){
                     console.log(err);
@@ -150,7 +153,7 @@ import axios from'axios';
                 this.inputSuccess = false;
                 // Clear out the search value
                 this.search = '';
-            }, 1800)
+            }, 1500)
           }
       },
       created() {
