@@ -1,9 +1,9 @@
 <template>
   <div>
     <p class ="subtitle is-5" id = "patientText">Select a Patient </p>
-    <select class = "selectPatient" v-model="selected" @change="choosePatient" name="Patients"> 
+    <select class = "selectPatient" v-model="selected" @change="choosePatient" name="Patients">
       <option value ="0" selected disabled >Choose Patient</option>
-      <option  v-for="patient in patientList" v-bind:value="patient.userName">
+      <option  v-for="patient in patientList" :value="patient.userName">
         Name - {{ patient.fullName }}   ({{patient.diagnosis}})
       </option>
     </select>
@@ -20,6 +20,7 @@ export default {
         patientList: [],
         // Create a variable to store the username of the selected patient
         selected: '',
+        index: 0
       }
     },
     methods: {
@@ -42,6 +43,11 @@ export default {
       choosePatient() {
         // After the MP selects a patient, save their username
         this.$store.dispatch('saveUsername',this.selected);
+
+        // find current patient
+        let patient = this.patientList.filter(patient => patient.userName === this.selected);
+        this.$store.dispatch("setCurrentPatient", patient[0]);
+
         // Emit a signal. This signal will be handled on receipt by the parent component
         this.$emit('selected');
       }

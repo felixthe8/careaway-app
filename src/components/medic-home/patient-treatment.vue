@@ -2,15 +2,19 @@
 
   <div class="columns medic-calendar">
     <div class="menu column is-one-fifth">
+
       <appointment :calendar="calendar" :isMed="isMed" />
+
+      <h1>{{patient}}</h1>
+      <h1>{{diagnosis}}</h1>
+
+      <diagnosis/>
+
       <div class="menu__widgets">
         <meterWidget :calendar="calendar"/>
         <checklistWidget :calendar="calendar"/>
       </div>
-      <diagnosis/>
-      <div id="patientLabel">
-        <patientSelector @selected = "routeIndividualTreatment"/>
-      </div>
+
     </div>
 
     <calendar :calendar="calendar" class="column is-four-fifths"/>
@@ -30,21 +34,34 @@ import moment from 'moment';
 
 export default {
   name: 'medic-calendar',
+
   components: {
     appointment,
     meterWidget,
     checklistWidget,
     calendar,
     diagnosis,
-    patientSelector
   },
-  methods: {
-    routeIndividualTreatment() {
-      alert("this is supposed to go to individual treatment");
+
+  data() {
+    return {
+      calendar: [],
+      isMed: true,
+      meter: false,
+      checklist: false,
+      patient: "",
+      diagnosis: ""
     }
   },
+
+  methods: {
+
+  },
+
   created: function() {
     this.calendar = this.$renderCalendar(0);
+    this.patient = this.$store.getters.getCurrentPatient.fullName;
+    this.diagnosis = this.$store.getters.getCurrentPatient.diagnosis;
 
     let appointments = this.$store.getters.appointments;
     for(var i=0; i < appointments.length; i++) {
@@ -54,15 +71,6 @@ export default {
           appointments[i].created = true;
         }
       }
-    }
-  },
-
-  data() {
-    return {
-      calendar: [],
-      isMed: true,
-      meter: false,
-      checklist: false
     }
   }
 
