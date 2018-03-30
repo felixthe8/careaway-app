@@ -6,7 +6,7 @@
     <div class = "report" v-if="showReport">
       <p> Total completed tasks for this period: {{totalComplete}} </p>
       <p> Total assigned tasks for this period: {{totalAssigned}}</p>
-    </div>  
+    </div>
   </div>
 </template>
 
@@ -110,7 +110,7 @@ export default {
                 display: true,
                 position: "right",
                 labels: {fontSize: 14},
-                // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing. 
+                // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing.
                 onClick: null
               },
               tooltips: {
@@ -156,4 +156,3 @@ export default {
       margin-left: 2%;
   }
 </style>
-

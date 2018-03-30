@@ -75,11 +75,11 @@ export default {
         } else {
           // Loop through each object holding meter widget treatment data
           for (var meter of response.data) {
-              // Write the sum of the meter widget data 
+              // Write the sum of the meter widget data
               wellness_obj[meter.due_date].value += (parseFloat(meter.patient_input) / parseFloat(meter.scale[1]) ) * 100
               // Increment the counter
               wellness_obj[meter.due_date].counter+=1
-            
+
           }
           // Compute the average of the meter widget data for each day
           for(var key in wellness_obj) {
@@ -88,7 +88,7 @@ export default {
               if(wellness_obj[key].counter == 0) {
                 wellness_obj[key].average = 0;
               } else {
-                // Average is the sum of meter widget data divided by the number of patients who had data for that day 
+                // Average is the sum of meter widget data divided by the number of patients who had data for that day
                 wellness_obj[key].average = wellness_obj[key].value / wellness_obj[key].counter
               }
             }
@@ -132,7 +132,7 @@ export default {
                 borderWidth: 3,
                 fill: true,
               }, {
-                // Create the 'Little Pain' line 
+                // Create the 'Little Pain' line
                 data: Array(self.days.length).fill(99),
                 type: 'line',
                 label: "Little Pain",
@@ -149,7 +149,7 @@ export default {
                display: true,
                position: "right",
                labels: {fontSize: 14},
-               // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing. 
+               // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing.
                onClick: null
              },
              scales: {
@@ -172,10 +172,10 @@ export default {
                   }
                 }
               },
-              elements: {point: {radius: 0}}           
+              elements: {point: {radius: 0}}
             }
           });
-        // Call to run the functions to analyze the data  
+        // Call to run the functions to analyze the data
         self.analyzeData();
         // If the GET was successfully completed and the graph has been made, then show the report
         self.showReport = true;
@@ -224,4 +224,3 @@ export default {
     color: #E74C3C;
   }
 </style>
-

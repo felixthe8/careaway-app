@@ -2,13 +2,19 @@
 
   <div class="columns medic-calendar">
     <div class="menu column is-one-fifth">
+
       <appointment :calendar="calendar" :isMed="isMed" />
+
+      <h1>{{patient}}</h1>
+      <h1>{{diagnosis}}</h1>
+
+      <diagnosis/>
 
       <div class="menu__widgets">
         <meterWidget :calendar="calendar"/>
         <checklistWidget :calendar="calendar"/>
       </div>
-      <diagnosis/>
+
     </div>
 
     <calendar :calendar="calendar" class="column is-four-fifths"/>
@@ -22,7 +28,8 @@ import appointment from '../shared/appointment.vue';
 import meterWidget from '../shared/meter.vue';
 import checklistWidget from '../shared/checklist.vue';
 import calendar from '../shared/calendar.vue';
-import diagnosis from './set-diagnosis';
+import diagnosis from './set-diagnosis.vue';
+import patientSelector from './patient-selector.vue';
 import moment from 'moment';
 
 export default {
@@ -33,11 +40,28 @@ export default {
     meterWidget,
     checklistWidget,
     calendar,
-    diagnosis
+    diagnosis,
+  },
+
+  data() {
+    return {
+      calendar: [],
+      isMed: true,
+      meter: false,
+      checklist: false,
+      patient: "",
+      diagnosis: ""
+    }
+  },
+
+  methods: {
+
   },
 
   created: function() {
     this.calendar = this.$renderCalendar(0);
+    this.patient = this.$store.getters.getCurrentPatient.fullName;
+    this.diagnosis = this.$store.getters.getCurrentPatient.diagnosis;
 
     let appointments = this.$store.getters.appointments;
     for(var i=0; i < appointments.length; i++) {
@@ -47,15 +71,6 @@ export default {
           appointments[i].created = true;
         }
       }
-    }
-  },
-
-  data() {
-    return {
-      calendar: [],
-      isMed: true,
-      meter: false,
-      checklist: false
     }
   }
 
@@ -76,6 +91,9 @@ export default {
       border-radius: 10px;
       text-align: center;
     }
+  }
+    #patientLabel{
+    float: right;
   }
 }
 

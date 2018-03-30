@@ -1,0 +1,113 @@
+<template>
+
+  <div class="meter-status-modal">
+
+    <div class="meter-status-modal--form">
+      <div class="row">
+        <h1>{{label}}</h1>
+      </div>
+      <p>Question: {{question}}</p>
+      <p>Scale: {{scale[0]}} - {{scale[1]}}</p>
+      <p>Date Assigned: {{due_date}}</p>
+      <button id="meter-edit" class="meter-modal--create green-button" @click="edit">Edit Meter</button>
+      <button id="meter-delete" class="meter-modal--create green-button" @click="deleteMeter">Delete Meter</button>
+    </div>
+
+    <button class='modal-close is-large' aria-label='close' @click='close'></button>
+
+  </div>
+
+</template>
+
+<script>
+import axios from "axios";
+import moment from "moment";
+
+export default {
+
+  props: ["calendar"],
+
+  data() {
+    return {
+      label: "meter",
+      question: "",
+      scale: [1,10],
+      due_date: {}
+    }
+  },
+
+  methods: {
+    edit: function() {
+
+    },
+    deleteMeter: function() {
+      // this.question = document.getElementById("meter-question").value;
+      // this.due_date = document.getElementById("meter-date").value;
+      //
+      // // get element by date attribute
+      // for(var i=0; i < this.calendar.length; i++) {
+      //   if(this.calendar[i].object === this.due_date) {
+      //     this.calendar[i].meter = this;
+      //     this.calendar[i].meter.created = true;
+      //   }
+      // }
+
+      document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
+      // this.postDelete();
+    },
+    postDelete: function() {
+      axios.post(this.$store.getters.deleteAppt,{'appointment' : this.appointment}).then(
+      function(response)
+      {
+        // Check if the status of the response is successful
+        if(response.status === 200){
+          console.log("Success");
+          // Closes this vue
+          self.$store.commit("alternateAppointment");
+          // Deletes the appointment from the appointment array in the VueX
+          self.$store.dispatch('deleteAppointment', self.appointment);
+          self.showWarning = false;
+        } else {
+          console.log(response.data.response);
+          self.showWarning = true;
+        }
+      }).catch(function(err){
+        // Display an error message if the connection went wrong
+        console.log("There was an error handling the request");
+        self.showWarning = true;
+      });
+    },
+    close: function() {
+      document.getElementsByClassName("meter-status-modal")[0].classList.remove("show-modal");
+    }
+  }
+}
+
+</script>
+
+<style lang="scss">
+@import "../../../assets/sass/settings.scss";
+
+.meter-status-modal {
+  position: absolute;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+
+  &--form {
+    background: $green-light;
+    padding: 1rem;
+    text-align: left;
+  }
+}
+
+.show-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>

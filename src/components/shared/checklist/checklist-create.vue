@@ -1,19 +1,24 @@
 <template>
+
   <div class="checklist-modal">
-    <div class="checklist-modal--form">
+
+    <form class="checklist-modal--form">
       <div class="row">
         <h1>Checklist</h1>
       </div>
       <div class="row">
         <label>Checklist Prompt</label>
-        <input class="checklist-modal--form--input" name="checklist" type="text" id="checklist">
+        <input class="checklist-modal--form--input" name="checklist" type="text" id="checklist" required>
       </div>
       <div class="row">
         <label>Date Requested:</label>
         <input class="checklist-modal--form--input" name="date" type="text" id="checklist-date">
       </div>
-      <button class="checklist-modal--form--create green-button" @click="create">Create Event</button>
-    </div>
+      <button class="checklist-modal--form--create green-button" @submit="create">Create Event</button>
+    </form>
+
+    <button class='modal-close is-large' aria-label='close' @click='close'></button>
+
   </div>
 
 </template>
@@ -30,7 +35,8 @@ export default {
     return {
       label: "checklist",
       list: [],
-      due_date: {}
+      due_date: {},
+      user: "test1111"
     }
   },
 
@@ -66,6 +72,9 @@ export default {
       }).catch(function(err) {
         console.log(err);
       });
+    },
+    close: function() {
+      document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
     }
   }
 }
