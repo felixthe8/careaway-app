@@ -4,7 +4,8 @@ import Router from 'vue-router';
 import {store} from '../store/store';
 import homepage from '../components/homepage/homepage.vue';
 import medicHome from '../components/medic-home/medic-homepage.vue';
-import medicCalendar from '../components/medic-home/medic-calendar.vue'
+import medicAppointments from '../components/medic-home/medic-appointments.vue';
+import patientTreatment from '../components/medic-home/patient-treatment.vue'
 import medicDataAnalysis from '../components/medic-home/data-analysis.vue';
 import medicSingleDataAnalysis from '../components/medic-home/single-analysis.vue';
 import patientHome from '../components/patient-home/patient-homepage.vue';
@@ -20,7 +21,7 @@ const router = new Router ({
   routes: [
     // Homepage Route
     {  path: '/' ,
-       name: 'Home', 
+       name: 'Home',
        component: homepage,
        meta: {
          title: "CareAway Homepage"
@@ -29,8 +30,8 @@ const router = new Router ({
     // Medical Professional Homepage (:jwt is stating it's expecting a query)
     {  path: '/MedicHome/:jwt',
        name: 'MedicHome',
-       beforeEnter: (to, from, next) => {      
-         // Check if there is a jwt query string attached use third party request handler to log user into the client    
+       beforeEnter: (to, from, next) => {
+         // Check if there is a jwt query string attached use third party request handler to log user into the client
          if(to.query.jwt) {
 
            // Calls the careaway server to get more information about the user
@@ -51,8 +52,8 @@ const router = new Router ({
             })
            }).catch( function(err) {
              console.log(err);
-           });      
-           // Checks if the request to login in was local         
+           });
+           // Checks if the request to login in was local
          } else {
             // If the login local request roletype is medical professional log them into the system
           if(store.getters.authStatus === 'medical-professional') {
@@ -70,17 +71,25 @@ const router = new Router ({
          }
        },
        component: medicHome,
-       children:[ 
-         {  path: '/MedicHome', 
-            component: medicCalendar, 
-            name: 'medicCalendar',  
+       children:[
+         {  path: '/MedicHome',
+            component: medicAppointments,
+            name: 'medicAppointments',
             meta: {
               title: "CareAway Medical Home"
             }
         },
-        {  path: '/MedicHome/Report', 
-           component: medicDataAnalysis, 
-           name: 'medicReport', 
+        {
+          path: '/patient-treatment',
+          component: patientTreatment,
+          name: 'patientTreatment',
+          meta: {
+            title: "Patient Treatment Creation"
+          }
+        },
+        {  path: '/MedicHome/Report',
+           component: medicDataAnalysis,
+           name: 'medicReport',
            meta: {
              title: "CareAway Medical Reports"
                 }},
@@ -95,7 +104,7 @@ const router = new Router ({
          title: "CareAway Patient Home"
        },
        beforeEnter: (to, from, next) => {
-         // Check if there is a jwt query string attached use third party request handler to log user into the client   
+         // Check if there is a jwt query string attached use third party request handler to log user into the client
          if(to.query.jwt){
            // Calls the careaway server to get more information about the user
            axios.get(store.getters.getLoginInfoURL + to.query.jwt).then(response => {
@@ -109,7 +118,7 @@ const router = new Router ({
            }).catch(function(err) {
              console.log(err);
            });
-           // If the login local request roletype is a patient log them into the system               
+           // If the login local request roletype is a patient log them into the system
          } else {
             if(store.getters.authStatus === 'patient') {
               next();
@@ -127,7 +136,7 @@ const router = new Router ({
         title: "CareAway Admin Home"
       },
       beforeEnter: (to, from, next) => {
-        // Check if there is a jwt query string attached use third party request handler to log user into the client 
+        // Check if there is a jwt query string attached use third party request handler to log user into the client
         if(to.query.jwt) {
           // Calls the careaway server to get more information about the user
           axios.get(store.getters.getLoginInfoURL + to.query.jwt).then(response => {
@@ -140,8 +149,8 @@ const router = new Router ({
             next();
           }).catch(function(err) {
             console.log(err);
-          });      
-          // If the login local request roletype is a system admin log them into the system           
+          });
+          // If the login local request roletype is a system admin log them into the system
         } else {
           if(store.getters.authStatus === 'system-admin') {
             next();
@@ -153,12 +162,12 @@ const router = new Router ({
       component: adminHome
     },
     {  path: '/Registration' ,
-       name: 'Registration', 
+       name: 'Registration',
        component: registration,
        meta: {
          title: "Registration"
        },
-       beforeEnter: (to, from, next) => {        
+       beforeEnter: (to, from, next) => {
          if(to.query.jwt){
             // Calls the careaway server to get more information about the user
             axios.get(store.getters.getLoginInfoURL + to.query.jwt).then(response => {
@@ -172,7 +181,7 @@ const router = new Router ({
               next();
             }).catch(function(err) {
               console.log(err);
-            });               
+            });
           } else {
             // If it's from any other place redirect them to the homepage
             next({path: '/'});

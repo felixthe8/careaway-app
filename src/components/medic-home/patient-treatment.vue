@@ -8,9 +8,6 @@
         <checklistWidget :calendar="calendar"/>
       </div>
       <diagnosis/>
-      <div id="patientLabel">
-        <patientSelector @selected = "routeIndividualTreatment"/>
-      </div>
     </div>
 
     <calendar :calendar="calendar" class="column is-four-fifths"/>
