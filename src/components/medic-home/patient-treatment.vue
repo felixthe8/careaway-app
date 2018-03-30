@@ -2,18 +2,18 @@
 
   <div class="columns medic-calendar">
     <div class="menu column is-one-fifth">
-
+      <div class = "patient-info">
+        <h1>{{this.$store.getters.getCurrentPatient.fullName}}</h1>
+        <h1>{{this.$store.getters.getCurrentPatient.diagnosis}}</h1>
+      </div>
       <appointment :calendar="calendar" :isMed="isMed" />
-
-      <h1>{{patient}}</h1>
-      <h1>{{diagnosis}}</h1>
-
-      <diagnosis/>
 
       <div class="menu__widgets">
         <meterWidget :calendar="calendar"/>
         <checklistWidget :calendar="calendar"/>
       </div>
+
+      <diagnosis/>
 
     </div>
 
@@ -29,12 +29,10 @@ import meterWidget from '../shared/meter.vue';
 import checklistWidget from '../shared/checklist.vue';
 import calendar from '../shared/calendar.vue';
 import diagnosis from './set-diagnosis.vue';
-import patientSelector from './patient-selector.vue';
 import moment from 'moment';
 
 export default {
   name: 'medic-calendar',
-
   components: {
     appointment,
     meterWidget,
@@ -49,8 +47,6 @@ export default {
       isMed: true,
       meter: false,
       checklist: false,
-      patient: "",
-      diagnosis: ""
     }
   },
 
@@ -60,8 +56,6 @@ export default {
 
   created: function() {
     this.calendar = this.$renderCalendar(0);
-    this.patient = this.$store.getters.getCurrentPatient.fullName;
-    this.diagnosis = this.$store.getters.getCurrentPatient.diagnosis;
 
     let appointments = this.$store.getters.appointments;
     for(var i=0; i < appointments.length; i++) {
@@ -92,8 +86,8 @@ export default {
       text-align: center;
     }
   }
-    #patientLabel{
-    float: right;
+  .patient-info{
+    margin: 0% 1% 0% 3%;
   }
 }
 

@@ -32,28 +32,34 @@ import axios from'axios';
       name: 'setDiagnosis',
       data() {
           return {
-              search: '',
-              conditionList: [],
-              results: [],
-              isOpen: false,
-              arrowCounter: -1,
-              inputError: false,
-              inputSuccess: false
+            search: '',
+            conditionList: [],
+            results: [],
+            isOpen: false,
+            arrowCounter: -1,
+            inputError: false,
+            inputSuccess: false
           }
       },
       methods: {
           onChange() {
-              this.isOpen = true;
-              this.filterResults();
+            // When the user types into the input box, toggle to show the matching fields
+            this.isOpen = true;
+            // Call to filter the matching fields
+            this.filterResults();
           },
           filterResults() {
+            // Based on the input value provided by the user, return an array that returns all elements in the array that contain the user input
             this.results = this.conditionList.filter(condition => condition.toLowerCase().indexOf(this.search.toLowerCase()) > -1).sort();
           },
           setResult(result) {
-              this.search = result;
-              this.isOpen = false;
+            // When the user clicks on a field in the list, store it 
+            this.search = result;
+            // Close the matching fields
+            this.isOpen = false;
           },
           onArrowDown() {
+              // User can keep going down the potential matching fields till they hit the end
               if(this.arrowCounter < this.results.length - 1) {
                   this.arrowCounter = this.arrowCounter + 1;
               }  else {
@@ -62,15 +68,17 @@ import axios from'axios';
                }
           },
           onArrowUp() {
+              // User can keep going up the potential matching fields till they hit the top
               if(this.arrowCounter > 0) {
                   this.arrowCounter = this.arrowCounter - 1;
                }  else {
-                    // Reset to the end when you hit the top
+                    // Reset to the end when you hit the top of the list
                    this.arrowCounter = this.results.length - 1;
                }
           },
           // Function to handle when the user is going through the list using the arrows and they press Enter.
           onEnter() {
+             // Store the value at the index of the matching fields array  
              this.search = this.results[this.arrowCounter];
              // Close the list
              this.isOpen = false;
@@ -79,14 +87,17 @@ import axios from'axios';
           // Check if the user clicks outside the Set Diagnosis view. If they do, close it. 
           handleClickOutside(evt) {
               if(!this.$el.contains(evt.target)) {
+                  // Close the matching fields list
                   this.isOpen = false;
                   this.arrowCounter = -1;
               }
           }, 
+          // Function that returns the diganoses from the data store
           getDiagnoses() {
             var self = this;  
             axios.get(this.$store.getters.getDiagnosisListURL)
             .then(response => {
+              // Store the returned diagnosis list  
               self.conditionList = response.data.conditions;
             })
             .catch(err => {
@@ -103,6 +114,23 @@ import axios from'axios';
                 // Otherwise, the diagnosis is valid. Toggle the is-danger class to make the box green
                 this.inputSuccess = true;
                 this.alertSuccess();
+                var self = this;
+                // PUT request to store the updated patient diagnosis
+                axios.put(this.$store.getters.saveDiagnosisURL, {
+                  username: self.$store.getters.getCurrentPatient.userName,
+                  updatedDiagnosis: self.search
+                })
+                .then(function(response){
+                  // After response is fulfilled, overwrite the information about the current user  
+                  var currentPatient = self.$store.getters.getCurrentPatient
+                  // Overwrite the current user's diagnosis
+                  currentPatient.diagnosis = self.search
+                  // Store the updated current user
+                  self.$store.dispatch('setCurrentPatient', currentPatient);
+                })
+                .catch (function(err){
+                    console.log(err);
+                })
                 
             }
           },
@@ -132,7 +160,6 @@ import axios from'axios';
       beforeDestroy() {
           document.removeEventListener('click', this.handleClickOutside);
       }
-
   }
 
 </script>
