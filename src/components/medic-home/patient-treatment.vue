@@ -6,6 +6,7 @@
       <appointment :calendar="calendar" :isMed="isMed" />
 
       <h1>{{patient}}</h1>
+      <h1>{{diagnosis}}</h1>
 
       <diagnosis/>
 
@@ -48,7 +49,8 @@ export default {
       isMed: true,
       meter: false,
       checklist: false,
-      patient: ""
+      patient: "",
+      diagnosis: ""
     }
   },
 
@@ -59,6 +61,7 @@ export default {
   created: function() {
     this.calendar = this.$renderCalendar(0);
     this.patient = this.$store.getters.getCurrentPatient.fullName;
+    this.diagnosis = this.$store.getters.getCurrentPatient.diagnosis;
 
     let appointments = this.$store.getters.appointments;
     for(var i=0; i < appointments.length; i++) {
