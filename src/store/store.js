@@ -87,6 +87,7 @@ export const store = new Vuex.Store({
     // Treatment Plan Data
     currentPatient: {},
     appointments: [],
+    meters: [],
     currentAppointment: {},
   },
 
@@ -461,6 +462,9 @@ export const store = new Vuex.Store({
     },
     addAppointment: (context, payload) => {
       context.commit('addAppointment', payload);
+    },
+    addMeter: (context, payload) => {
+      context.commit('addMeter', payload);
     },
     editAppointment: (context, payload) => {
       context.commit('editAppointment', payload);

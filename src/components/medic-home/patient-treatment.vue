@@ -31,6 +31,7 @@ import calendar from '../shared/calendar.vue';
 import diagnosis from './set-diagnosis.vue';
 import patientSelector from './patient-selector.vue';
 import moment from 'moment';
+import axios from 'axios';
 
 export default {
   name: 'medic-calendar',
@@ -54,10 +55,6 @@ export default {
     }
   },
 
-  methods: {
-
-  },
-
   created: function() {
     this.calendar = this.$renderCalendar(0);
     this.patient = this.$store.getters.getCurrentPatient.fullName;
@@ -72,6 +69,26 @@ export default {
         }
       }
     }
+
+    // get Widgets for VueX
+    let patientName = this.$store.getters.getCurrentPatient.userName;
+    axios.get(this.$store.getters.getTreatment+patientName).then(result => {
+      var meters = result.data.treatments;
+      console.log(meters);
+      for(var i=0; i < meters.length; i++) {
+        if(meters[i].label === "meter") {
+            self.$store.dispatch('addMeter', meters[i]);
+            self.isLoaded = true;
+        }
+      }
+    }).catch(error => {
+      console.log(error);
+    });
+
+  },
+
+  methods: {
+
   }
 
 }
