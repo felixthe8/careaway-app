@@ -61,9 +61,12 @@ export default {
     this.diagnosis = this.$store.getters.getCurrentPatient.diagnosis;
 
     let appointments = this.$store.getters.appointments;
+    let patientName = this.$store.getters.getCurrentPatient.userName;
+
     for(var i=0; i < appointments.length; i++) {
       for(var j=0; j < this.calendar.length; j++) {
-        if(appointments[i].date === this.calendar[j].object) {
+        if(appointments[i].date === this.calendar[j].object
+          && appointments[i].appointee === patientName) {
           this.calendar[j].appointment = appointments[i];
           appointments[i].created = true;
         }
@@ -71,10 +74,8 @@ export default {
     }
 
     // get Widgets for VueX
-    let patientName = this.$store.getters.getCurrentPatient.userName;
     axios.get(this.$store.getters.getTreatment+patientName).then(result => {
       var meters = result.data.treatments;
-      console.log(meters);
       for(var i=0; i < meters.length; i++) {
         if(meters[i].label === "meter") {
             this.$store.dispatch('addMeter', meters[i]);
