@@ -77,8 +77,8 @@ export default {
       console.log(meters);
       for(var i=0; i < meters.length; i++) {
         if(meters[i].label === "meter") {
-            self.$store.dispatch('addMeter', meters[i]);
-            self.isLoaded = true;
+            this.$store.dispatch('addMeter', meters[i]);
+            this.isLoaded = true;
         }
       }
     }).catch(error => {
