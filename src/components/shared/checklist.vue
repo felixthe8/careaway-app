@@ -25,7 +25,6 @@ export default {
 
   methods: {
     dragStart: function(event) {
-        console.log(this.$store.getters.showChecklist);
       this.$store.dispatch("toggleChecklist");
     },
     onDrag: function(event) {

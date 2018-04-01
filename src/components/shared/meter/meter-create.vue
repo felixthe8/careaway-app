@@ -70,12 +70,11 @@ export default {
         question: this.question,
         scale: this.scale,
         due_date: this.due_date,
-        user: "test1111"
+        user: this.$store.getters.getCurrentPatient.userName
       }
 
       axios.post(this.$store.getters.createMeterURL, meter).then(function(response) {
-          console.log("in axios loop");
-        if(response.date.success) {
+        if(response.data.success) {
           console.log("Successfully Created Meter");
         } else {
           console.log("Failed to Create Meter");

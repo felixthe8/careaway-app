@@ -358,7 +358,7 @@ export const store = new Vuex.Store({
       state.meters.push(payload);
     },
     addChecklist: (state, payload) => {
-      state.meters.push(payload);
+      state.checklists.push(payload);
     },
     editMeter: (state, payload) => {
       function findOldMeter(element){

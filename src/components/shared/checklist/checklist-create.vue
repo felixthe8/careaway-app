@@ -2,7 +2,7 @@
 
   <div class="checklist-modal">
 
-    <form class="checklist-modal--form">
+    <div class="checklist-modal--form">
       <div class="row">
         <h1>Checklist</h1>
       </div>
@@ -14,8 +14,8 @@
         <label>Date Requested:</label>
         <input class="checklist-modal--form--input" name="date" type="text" id="checklist-date">
       </div>
-      <button class="checklist-modal--form--create green-button" @submit="create">Create Event</button>
-    </form>
+      <button class="checklist-modal--form--create green-button" @click="create">Create Event</button>
+    </div>
 
     <button class='modal-close is-large' aria-label='close' @click='close'></button>
 
@@ -61,10 +61,11 @@ export default {
         label: this.label,
         list: this.list,
         due_date: this.due_date,
+        user: this.$store.getters.getCurrentPatient.userName
       }
 
       axios.post(this.$store.getters.createChecklistURL, checklist).then(function(response) {
-        if(response.date.success) {
+        if(response.data.success) {
           console.log("Successfully Created Checklist");
         } else {
           console.log("Failed to Create Checklist");

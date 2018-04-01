@@ -58,7 +58,7 @@
           </div>
 
           <div class="calendar__day--checklist"
-            v-if="calendar[index].checklist.created">
+            v-if="calendar[index].checklist.due_date">
             <button class="button calendar__day--button">
                 {{calendar[index].checklist.label}}
             </button>
@@ -142,7 +142,6 @@ export default {
       event.preventDefault();
 
       if(this.$store.getters.showMeter === true) {
-          console.log(this.$store.getters.showMeter);
         let date = event.target.getAttribute("date");
         document.getElementById("meter-date").value = date;
         document.getElementsByClassName("meter-modal")[0].classList.add("show-modal");
@@ -150,7 +149,6 @@ export default {
       }
 
       if(this.$store.getters.showChecklist === true) {
-          console.log(this.$store.getters.showChecklist);
         let date = event.target.getAttribute("date");
         document.getElementById("checklist-date").value = date;
         document.getElementsByClassName("checklist-modal")[0].classList.add("show-modal");

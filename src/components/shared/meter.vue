@@ -9,7 +9,7 @@
 
     <create :calendar="calendar"/>
 
-    <status :calendar="calendar" :meter="getMeter()"/>
+    <status :calendar="calendar"/>
 
   </div>
 
@@ -28,23 +28,10 @@ export default {
 
   methods: {
     dragStart: function(event) {
-        console.log(this.$store.getters.showMeter);
       this.$store.dispatch("toggleMeter");
     },
     onDrag: function(event) {
       event.preventDefault();
-    },
-    getMeter() {
-      // get meter from store
-      // let date = this.$store.getters.getEditableAppointment;
-      // let appointments = this.$store.getters.appointments;
-      // let current = {};
-      // for(var i=0; i < appointments.length; i++) {
-      //   if(appointments[i].date === date) {
-      //       current = appointments[i];
-      //   }
-      // }
-      // return current;
     }
   }
 
