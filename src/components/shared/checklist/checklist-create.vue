@@ -74,7 +74,7 @@ export default {
       });
     },
     close: function() {
-      document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
+      document.getElementsByClassName("checklist-modal")[0].classList.remove("show-modal");
     }
   }
 }

@@ -25,7 +25,8 @@ export default {
 
   methods: {
     dragStart: function(event) {
-      this.$store.commit("toggleMeter");
+        console.log(this.$store.getters.showChecklist);
+      this.$store.dispatch("toggleChecklist");
     },
     onDrag: function(event) {
       event.preventDefault();

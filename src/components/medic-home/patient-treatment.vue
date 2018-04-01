@@ -78,28 +78,34 @@ export default {
 
     // get Widgets for VueX
     axios.get(this.$store.getters.getTreatment+patientName).then(result => {
-      var meters = result.data.treatments;
-      for(var i=0; i < meters.length; i++) {
+      var treatments = result.data.treatments;
+      for(var i=0; i < treatments.length; i++) {
         // get patient meters and add to store
-        if(meters[i].label === "meter") {
-          this.$store.dispatch('addMeter', meters[i]);
+        if(treatments[i].label === "meter") {
+          this.$store.dispatch("addMeter", treatments[i]);
           this.isLoaded = true;
+          // check and add to calendar
+          for(var j=0; j < this.calendar.length; j++) {
+            if(treatments[i].due_date === this.calendar[j].object) {
+              this.calendar[j].meter = treatments[i];
+            }
+          }
         }
-
-        // check and add to calendar
-        for(var j=0; j < this.calendar.length; j++) {
-          if(meters[i].due_date === this.calendar[j].object) {
-            this.calendar[j].meter = meters[i];
+        // get patient checklists and add to store
+        if(treatments[i].label === "checklist") {
+          this.$store.dispatch("addChecklist", treatments[i]);
+          this.isLoaded = true;
+          // check and add to calendar
+          for(var j=0; j < this.calendar.length; j++) {
+            if(treatments[i].due_date === this.calendar[j].object) {
+              this.calendar[j].checklist = treatments[i];
+            }
           }
         }
       }
     }).catch(error => {
       console.log(error);
     });
-
-  },
-
-  methods: {
 
   }
 

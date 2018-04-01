@@ -28,7 +28,8 @@ export default {
 
   methods: {
     dragStart: function(event) {
-      this.$store.commit("toggleMeter");
+        console.log(this.$store.getters.showMeter);
+      this.$store.dispatch("toggleMeter");
     },
     onDrag: function(event) {
       event.preventDefault();

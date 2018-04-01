@@ -88,6 +88,7 @@ export const store = new Vuex.Store({
     currentPatient: {},
     appointments: [],
     meters: [],
+    checklists: [],
     currentAppointment: {},
   },
 
@@ -356,6 +357,9 @@ export const store = new Vuex.Store({
     addMeter: (state, payload) => {
       state.meters.push(payload);
     },
+    addChecklist: (state, payload) => {
+      state.meters.push(payload);
+    },
     editMeter: (state, payload) => {
       function findOldMeter(element){
         return element.date === payload.originalMeter.date;
@@ -463,8 +467,17 @@ export const store = new Vuex.Store({
     addAppointment: (context, payload) => {
       context.commit('addAppointment', payload);
     },
+    toggleMeter: (context, payload) => {
+      context.commit("toggleMeter", payload);
+    },
+    toggleChecklist: (context, payload) => {
+      context.commit("toggleChecklist", payload);
+    },
     addMeter: (context, payload) => {
       context.commit('addMeter', payload);
+    },
+    addChecklist: (context, payload) =>  {
+      context.commit('addChecklist', payload);
     },
     editAppointment: (context, payload) => {
       context.commit('editAppointment', payload);
