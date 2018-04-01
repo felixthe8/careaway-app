@@ -73,13 +73,24 @@ export default {
       }
     }
 
+    // filter function for meters (fix for appointments)
+    // let test = this.patientList.filter(patient => patient.userName === this.selected);
+
     // get Widgets for VueX
     axios.get(this.$store.getters.getTreatment+patientName).then(result => {
       var meters = result.data.treatments;
       for(var i=0; i < meters.length; i++) {
+        // get patient meters and add to store
         if(meters[i].label === "meter") {
-            this.$store.dispatch('addMeter', meters[i]);
-            this.isLoaded = true;
+          this.$store.dispatch('addMeter', meters[i]);
+          this.isLoaded = true;
+        }
+
+        // check and add to calendar
+        for(var j=0; j < this.calendar.length; j++) {
+          if(meters[i].due_date === this.calendar[j].object) {
+            this.calendar[j].meter = meters[i];
+          }
         }
       }
     }).catch(error => {

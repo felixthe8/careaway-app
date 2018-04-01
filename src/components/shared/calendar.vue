@@ -50,7 +50,7 @@
           </div>
 
           <div class="calendar__day--meter"
-            v-if="calendar[index].meter.created">
+            v-if="calendar[index].meter.due_date">
             <button class="button calendar__day--button"
               @click="toggleStatus(calendar[index].appointment.date)">
                 {{calendar[index].meter.label}}
@@ -140,7 +140,7 @@ export default {
     },
     drop: function(event) {
       event.preventDefault();
-      
+
       if(this.$store.getters.showMeter === true) {
         let date = event.target.getAttribute("date");
         document.getElementById("meter-date").value = date;
