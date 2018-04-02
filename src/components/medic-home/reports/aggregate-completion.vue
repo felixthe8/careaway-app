@@ -78,51 +78,8 @@ export default {
               }
             }
           }
-           // Define the graph and it's styles
-          new Chart (document.getElementById("aggregate-complete"), {
-            type: 'bar',
-            data: {
-              labels: self.days,
-              datasets: [{
-                label: "Completion Percentage",
-                backgroundColor: Array(self.days.length).fill('#3892f1'),
-                // Turn the completion percentage data into an array. 
-                data: Object.keys(self.completionData).map(key => {return self.completionData[key].average})
-              }]
-            },
-            options: {
-              responsive: false,
-              maintainAspectRatio: true,
-              scales: {
-                xAxes: [{
-                  barPercentage: 0.55,
-                  scaleLabel: {display: true, labelString: "Date", fontSize: 14}
-                }],
-                yAxes: [{
-                  ticks: {
-                    beginAtZero: true,
-                    suggestedMax: 100
-                  },
-                  scaleLabel: {display: true, labelString: "Completion Percentage", fontSize: 14}
-                }]
-              },
-              legend: {
-                display: true,
-                position: "right",
-                labels: {fontSize: 14},
-                // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing.
-                onClick: null
-              },
-              tooltips: {
-                callbacks: {
-                  label: function(tooltipItems, data) {
-                    // Overwrite the tooltip function to reformat the presented data
-                    return 'Patient Completion: '+data.datasets[0].data[tooltipItems.index] + '%'
-                  }
-                }
-              }
-            }
-          })
+        var data = Object.keys(self.completionData).map(key => {return self.completionData[key].average})
+        self.$makeWellnessGraph("aggregate-complete", self.days, data );
         self.analyzeData(self.completionData);
         // If the GET was successfully completed and the graph has been made, then show the report
         self.showReport = true;

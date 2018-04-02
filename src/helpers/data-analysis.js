@@ -60,6 +60,53 @@ Report.install = function(Vue, options) {
       })
     }
 
+    Vue.prototype.$makeWellnessGraph = function(id ,days, data) {
+      // Define the graph and it's styles
+        new Chart (document.getElementById(id), {
+          type: 'bar',
+          data: {
+            labels: days,
+              datasets: [{
+                label: "Completion Percentage",
+                backgroundColor: Array(days.length).fill('#3892f1'),
+                data: data
+              }]
+          },
+          options: {
+            responsive: false,
+            maintainAspectRatio: true,
+            scales: {
+              xAxes: [{
+                barPercentage: 0.55,
+                scaleLabel: {display: true, labelString: "Date", fontSize: 14}
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  suggestedMax: 100
+                },
+                scaleLabel: {display: true, labelString: "Completion Percentage", fontSize: 14}
+              }]
+            },
+            legend: {
+              display: true,
+              position: "right",
+              labels: {fontSize: 14},
+              // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing.
+              onClick: null
+            },
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItems, data) {
+                  // Overwrite the tooltip function to reformat the presented data
+                  return 'Patient Completion: '+data.datasets[0].data[tooltipItems.index] + '%'
+                }
+              }
+            }
+          }
+        })
+    }
+
     Vue.prototype.$getTrends = function(data) {
       // Create 2 arrays - 1 for holding the positive trends and 1 for holding the negative trends
       var positiveTrends = [], negativeTrends = [];
