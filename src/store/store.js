@@ -88,7 +88,13 @@ export const store = new Vuex.Store({
     currentPatient: {},
     appointments: [],
     meters: [],
+    currentMeter: {
+        "label": "",
+        "scale": ["",""],
+        "due_date": ""
+    },
     checklists: [],
+    currentChecklist: {},
     currentAppointment: {},
   },
 
@@ -255,8 +261,14 @@ export const store = new Vuex.Store({
     meters: (state) => {
       return state.meters;
     },
+    currentMeter: (state) => {
+      return state.currentMeter;
+    },
     checklists: (state) => {
       return state.checklists;
+    },
+    currentChecklist: (state) => {
+      return state.currentChecklist;
     },
     singlePatientCompletion:(state) => {
       return state.singlePatientCompletion;
@@ -357,8 +369,14 @@ export const store = new Vuex.Store({
     addMeter: (state, payload) => {
       state.meters.push(payload);
     },
+    currentMeter: (state, payload) => {
+      state.currentMeter = payload;
+    },
     addChecklist: (state, payload) => {
       state.checklists.push(payload);
+    },
+    currentChecklist: (state, payload) => {
+      state.currentChecklist = payload;
     },
     editMeter: (state, payload) => {
       function findOldMeter(element){
@@ -476,8 +494,14 @@ export const store = new Vuex.Store({
     addMeter: (context, payload) => {
       context.commit('addMeter', payload);
     },
+    currentMeter: (context, payload) => {
+      context.commit('currentMeter', payload);
+    },
     addChecklist: (context, payload) =>  {
       context.commit('addChecklist', payload);
+    },
+    currentChecklist: (context, payload) =>  {
+      context.commit('currentChecklist', payload);
     },
     editAppointment: (context, payload) => {
       context.commit('editAppointment', payload);

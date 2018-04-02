@@ -9,7 +9,9 @@
 
     <create :calendar="calendar"/>
 
-    <status :calendar="calendar"/>
+    <status
+      :calendar="calendar"
+      :meter="this.$store.getters.currentMeter"/>
 
   </div>
 

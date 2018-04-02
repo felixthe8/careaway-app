@@ -43,7 +43,7 @@
           <div class="calendar__day--appointment"
             v-if="calendar[index].appointment.created">
               <button class="button calendar__day--button"
-                @click="toggleCreate(calendar[index].appointment.date)"
+                @click="toggleAppointment(calendar[index].appointment.date)"
                 :id="calendar[index].appointment.date">
                 {{calendar[index].appointment.date}}
               </button>
@@ -52,7 +52,7 @@
           <div class="calendar__day--meter"
             v-if="calendar[index].meter.due_date">
             <button class="button calendar__day--button"
-              @click="toggleStatus(calendar[index].appointment.date)">
+              @click="toggleMeter(calendar[index].meter.due_date)">
                 {{calendar[index].meter.label}}
             </button>
           </div>
@@ -125,12 +125,14 @@ export default {
         document.getElementsByClassName("calendar__menu--button")[1].classList.add("active");
         document.getElementsByClassName("calendar__menu--button")[0].classList.remove("active");
     },
-    toggleCreate: function(index) {
+    toggleAppointment: function(index) {
       this.$store.dispatch("editableAppointment", index);
       this.$store.dispatch("alternateAppointment");
     },
-    toggleStatus: function() {
+    toggleMeter(date) {
       document.getElementsByClassName("meter-status-modal")[0].classList.add("show-modal");
+      let current = this.calendar.filter(day => day.object === date)[0];
+      this.$store.dispatch("currentMeter", current.meter);
     },
     dragOver: function(event) {
       event.preventDefault();
@@ -328,7 +330,7 @@ export default {
     }
 
     &--button {
-      background: $green-light;
+      background: $green-light !important;
       font-size: 8px;
     }
 

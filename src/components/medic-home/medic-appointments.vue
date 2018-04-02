@@ -84,7 +84,8 @@ export default {
       text-align: center;
     }
   }
-    #patientLabel{
+  
+  #patientLabel{
     float: right;
   }
 }

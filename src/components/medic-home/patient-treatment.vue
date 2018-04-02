@@ -73,9 +73,6 @@ export default {
       }
     }
 
-    // filter function for meters (fix for appointments)
-    // let test = this.patientList.filter(patient => patient.userName === this.selected);
-
     // get Widgets for VueX
     axios.get(this.$store.getters.getTreatment+patientName).then(result => {
       var treatments = result.data.treatments;
@@ -127,7 +124,8 @@ export default {
       text-align: center;
     }
   }
-    #patientLabel{
+
+  #patientLabel{
     float: right;
   }
 }

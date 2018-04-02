@@ -4,11 +4,11 @@
 
     <div class="meter-status-modal--form">
       <div class="row">
-        <h1>{{label}}</h1>
+        <h1>{{meter.label}}</h1>
       </div>
-      <p>Question: {{question}}</p>
-      <p>Scale: {{scale[0]}} - {{scale[1]}}</p>
-      <p>Date Assigned: {{due_date}}</p>
+      <p>Question: {{meter.question}}</p>
+      <p>Scale: {{meter.scale[0]}} - {{meter.scale[1]}}</p>
+      <p>Date Assigned: {{meter.due_date}}</p>
       <button id="meter-edit" class="meter-modal--create green-button" @click="edit">Edit Meter</button>
       <button id="meter-delete" class="meter-modal--create green-button" @click="deleteMeter">Delete Meter</button>
     </div>
@@ -25,16 +25,7 @@ import moment from "moment";
 
 export default {
 
-  props: ["calendar"],
-
-  data() {
-    return {
-      label: "meter",
-      question: "",
-      scale: [1,10],
-      due_date: {}
-    }
-  },
+  props: ["calendar", "meter"],
 
   methods: {
     edit: function() {
