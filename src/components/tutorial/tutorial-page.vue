@@ -2,8 +2,14 @@
   <div class = "tutorial-container">
     <navbar/>  
     <div class = "columns">
-      <div class = "column is-one-quarter left-side">  
+      <div class = "column is-one-fifth left-side">  
         <tutorialMenu />  
+      </div>
+
+      <div class = "column">
+        
+        <router-view></router-view>
+  
       </div>
     </div>
   </div>
