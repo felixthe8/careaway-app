@@ -60,7 +60,7 @@ Report.install = function(Vue, options) {
       })
     }
 
-    Vue.prototype.$makeWellnessGraph = function(id ,days, data) {
+    Vue.prototype.$makeCompletionGraph = function(id ,days, data) {
       // Define the graph and it's styles
         new Chart (document.getElementById(id), {
           type: 'bar',
@@ -105,6 +105,89 @@ Report.install = function(Vue, options) {
             }
           }
         })
+    }
+
+    Vue.prototype.$makeWellnessGraph = function (id ,days, data) {
+      // Define the graph and it's styles
+      new Chart(document.getElementById(id), {
+          type: 'bar',
+          data: {
+            labels: days,
+            datasets: [{
+              label: "Average Wellness",
+              backgroundColor: Array(days.length).fill("#2e4053"),
+              data: data
+            }, {
+              // Create the 'Severe Pain' line
+              data: Array(days.length).fill(20),
+              type: 'line',
+              label: "Severe Pain",
+              borderColor: "#ff0000",
+              backgroundColor: "#e6b0aa",
+              borderWidth: 3,
+              fill: true,
+            }, {
+              // Create the 'Moderate Pain' line
+              data: Array(days.length).fill(50),
+              type: 'line',
+              label: "Moderate Pain",
+              borderColor: "#f4d03f",
+              backgroundColor: "#fcf3cf",
+              borderWidth: 3,
+              fill: true,
+            }, {
+              // Create the 'Some Pain' line
+              data: Array(days.length).fill(80),
+              type: 'line',
+              label: "Some Pain",
+              borderColor: "#3273dc",
+              backgroundColor: "#d6eaf8",
+              borderWidth: 3,
+              fill: true,
+            }, {
+              // Create the 'Little Pain' line
+              data: Array(days.length).fill(99),
+              type: 'line',
+              label: "Little Pain",
+              borderColor: "#117a65",
+              backgroundColor: "#d4efdf",
+              borderWidth: 3,
+            }]
+          },
+          options: {
+            responsive: false,
+            maintainAspectRatio: true,
+            hover: {mode: null},
+            legend: {
+              display: true,
+              position: "right",
+              labels: {fontSize: 14},
+              // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing.
+              onClick: null
+            },
+            scales: {
+              xAxes: [{
+                barPercentage: 0.55,
+                scaleLabel: {display: true, labelString: "Date", fontSize: 14}
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  suggestedMax: 100,
+                },
+                scaleLabel: {display: true, labelString: "Wellness Percentage", fontSize: 14}
+              }]
+            },
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItems, data) {
+                  return 'Patient Wellness: '+data.datasets[0].data[tooltipItems.index] + '%'
+                }
+              }
+            },
+            elements: {point: {radius: 0}}
+          }
+        });
     }
 
     Vue.prototype.$getTrends = function(data) {
