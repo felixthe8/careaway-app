@@ -12,6 +12,7 @@ import patientHome from '../components/patient-home/patient-homepage.vue';
 import adminHome from '../components/admin-home/admin-homepage.vue';
 import error from '../components/error/error.vue';
 import registration from '../components/homepage/sso_registration.vue';
+import tutorial from '../components/tutorial/tutorial-page.vue';
 import cookies from 'browser-cookies';
 Vue.use(Router);
 Vue.use(store);
@@ -188,6 +189,15 @@ const router = new Router ({
           }
             next();
         }
+    },
+    {
+      path: '/Tutorial',
+      name: 'Tutorial',
+      component: tutorial,
+      meta: {
+        title: "CareAway Tutorials"
+      },
+
     },
     // Wildcard catch all route; Redirects to error page
     {  path: '*',
