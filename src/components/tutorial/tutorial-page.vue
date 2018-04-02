@@ -1,5 +1,6 @@
 <template>
   <div class = "tutorial-container">
+    <navbar/>  
     <div class = "columns">
       <div class = "column is-one-quarter left-side">  
         <tutorialMenu />  
@@ -10,10 +11,11 @@
 </template>
 
 <script>
+import navbar from './app-header';
 import tutorialMenu from './tutorial-menu';
 export default {
   name: 'tutorial',
-  components: {tutorialMenu}
+  components: {navbar, tutorialMenu}
 }
 </script>
 
