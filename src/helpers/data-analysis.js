@@ -1,5 +1,7 @@
 import moment from 'moment';
 import Chart from 'chart.js';
+import * as chromatism from 'chromatism';
+import pieceLabel from 'chart.piecelabel.js';
 
 const Report = {};
 
@@ -41,7 +43,7 @@ Report.install = function(Vue, options) {
       new Chart(document.getElementById(id), {
         type: 'doughnut',
         data: {
-          labels: ["No Patients"],
+          labels: ["Patients"],
           datasets: [{
             data: [1],
           }]
@@ -54,10 +56,191 @@ Report.install = function(Vue, options) {
             position: "left",
             labels: {fontSize: 14},
             // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing. 
-            onClick: null
+            onClick: null,
           },
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItems, data) {
+                return data.labels[tooltipItems.index]+': '+ ' 0 patient(s)'
+              }
+            }
+          }
         }
       })
+    }
+
+    Vue.prototype.$makeBreakdownGraph = function (id, labels, values) {
+      new Chart (document.getElementById("patient-breakdown").getContext('2d'), {
+        type: 'doughnut',
+        data: {
+          // Use the names of the conditions as the labels
+          labels: labels,
+          datasets: [{
+            // Use the number of patients with that condition as the data values
+            data: values,
+            backgroundColor: chromatism.adjacent(30, labels.length, '#e52525').hex
+          }]
+        },
+        options: {
+          responsive: false,
+          maintainAspectRatio: true,
+          animation: {
+            duration: 1000
+          },
+          pieceLabel: {
+            render: 'percentage',
+            precision: 2,
+            position: 'border',
+            fontSize: 14,
+            fontStyle: 'bold',
+            fontColor: '#fff',
+          },
+          legend: {
+            display: true,
+            position: "left",
+            labels: {fontSize: 14},
+            // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing. 
+            onClick: null
+          },
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItems, data) {
+                return data.labels[tooltipItems.index]+': '+data.datasets[0].data[tooltipItems.index] + ' patient(s)'
+              }
+            }
+          }
+        }
+      })
+    }
+
+    Vue.prototype.$makeCompletionGraph = function(id ,days, data) {
+      // Define the graph and it's styles
+        new Chart (document.getElementById(id), {
+          type: 'bar',
+          data: {
+            labels: days,
+              datasets: [{
+                label: "Completion Percentage",
+                backgroundColor: Array(days.length).fill('#3892f1'),
+                data: data
+              }]
+          },
+          options: {
+            responsive: false,
+            maintainAspectRatio: true,
+            scales: {
+              xAxes: [{
+                barPercentage: 0.55,
+                scaleLabel: {display: true, labelString: "Date", fontSize: 14}
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  suggestedMax: 100
+                },
+                scaleLabel: {display: true, labelString: "Completion Percentage", fontSize: 14}
+              }]
+            },
+            legend: {
+              display: true,
+              position: "right",
+              labels: {fontSize: 14},
+              // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing.
+              onClick: null
+            },
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItems, data) {
+                  // Overwrite the tooltip function to reformat the presented data
+                  return 'Patient Completion: '+data.datasets[0].data[tooltipItems.index] + '%'
+                }
+              }
+            }
+          }
+        })
+    }
+
+    Vue.prototype.$makeWellnessGraph = function (id ,days, data) {
+      // Define the graph and it's styles
+      new Chart(document.getElementById(id), {
+          type: 'bar',
+          data: {
+            labels: days,
+            datasets: [{
+              label: "Average Wellness",
+              backgroundColor: Array(days.length).fill("#2e4053"),
+              data: data
+            }, {
+              // Create the 'Severe Pain' line
+              data: Array(days.length).fill(20),
+              type: 'line',
+              label: "Severe Pain",
+              borderColor: "#ff0000",
+              backgroundColor: "#e6b0aa",
+              borderWidth: 3,
+              fill: true,
+            }, {
+              // Create the 'Moderate Pain' line
+              data: Array(days.length).fill(50),
+              type: 'line',
+              label: "Moderate Pain",
+              borderColor: "#f4d03f",
+              backgroundColor: "#fcf3cf",
+              borderWidth: 3,
+              fill: true,
+            }, {
+              // Create the 'Some Pain' line
+              data: Array(days.length).fill(80),
+              type: 'line',
+              label: "Some Pain",
+              borderColor: "#3273dc",
+              backgroundColor: "#d6eaf8",
+              borderWidth: 3,
+              fill: true,
+            }, {
+              // Create the 'Little Pain' line
+              data: Array(days.length).fill(99),
+              type: 'line',
+              label: "Little Pain",
+              borderColor: "#117a65",
+              backgroundColor: "#d4efdf",
+              borderWidth: 3,
+            }]
+          },
+          options: {
+            responsive: false,
+            maintainAspectRatio: true,
+            hover: {mode: null},
+            legend: {
+              display: true,
+              position: "right",
+              labels: {fontSize: 14},
+              // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing.
+              onClick: null
+            },
+            scales: {
+              xAxes: [{
+                barPercentage: 0.55,
+                scaleLabel: {display: true, labelString: "Date", fontSize: 14}
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  suggestedMax: 100,
+                },
+                scaleLabel: {display: true, labelString: "Wellness Percentage", fontSize: 14}
+              }]
+            },
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItems, data) {
+                  return 'Patient Wellness: '+data.datasets[0].data[tooltipItems.index] + '%'
+                }
+              }
+            },
+            elements: {point: {radius: 0}}
+          }
+        });
     }
 
     Vue.prototype.$getTrends = function(data) {

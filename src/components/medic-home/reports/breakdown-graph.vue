@@ -8,9 +8,7 @@
 
 <script>
 import axios from 'axios';
-import * as chromatism from 'chromatism';
 import Chart from 'chart.js';
-import pieceLabel from 'chart.piecelabel.js';
 export default {
   name: 'breakdown',
   data() {
@@ -41,47 +39,10 @@ export default {
               conditionCount[d]+=1;
             }
           } 
-         new Chart (document.getElementById("patient-breakdown").getContext('2d'), {
-            type: 'doughnut',
-            data: {
-              // Use the names of the conditions as the labels
-              labels: Object.keys(conditionCount),
-              datasets: [{
-                // Use the number of patients with that condition as the data values
-                data: Object.values(conditionCount),
-                backgroundColor: chromatism.adjacent(30, Object.keys(conditionCount).length, '#e52525').hex
-              }]
-            },
-            options: {
-              responsive: false,
-              maintainAspectRatio: true,
-              animation: {
-                duration: 1000
-              },
-              pieceLabel: {
-                render: 'percentage',
-                precision: 2,
-                position: 'border',
-                fontSize: 14,
-                fontStyle: 'bold',
-                fontColor: '#fff',
-              },
-              legend: {
-                display: true,
-                position: "left",
-                labels: {fontSize: 14},
-                // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing. 
-                onClick: null
-              },
-              tooltips: {
-                callbacks: {
-                  label: function(tooltipItems, data) {
-                    return data.labels[tooltipItems.index]+': '+data.datasets[0].data[tooltipItems.index] + ' patient(s)'
-                  }
-                }
-              }
-            }
-          })
+          // Create arrays for the graph values and labels
+          var conditionLabels = Object.keys(conditionCount);
+          var conditionValues = Object.values(conditionCount);
+          self.$makeBreakdownGraph("patient-breakdown", conditionLabels, conditionValues)
         }
        
         })
