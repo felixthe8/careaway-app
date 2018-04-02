@@ -1,5 +1,7 @@
 import moment from 'moment';
 import Chart from 'chart.js';
+import * as chromatism from 'chromatism';
+import pieceLabel from 'chart.piecelabel.js';
 
 const Report = {};
 
@@ -41,7 +43,7 @@ Report.install = function(Vue, options) {
       new Chart(document.getElementById(id), {
         type: 'doughnut',
         data: {
-          labels: ["No Patients"],
+          labels: ["Patients"],
           datasets: [{
             data: [1],
           }]
@@ -54,8 +56,59 @@ Report.install = function(Vue, options) {
             position: "left",
             labels: {fontSize: 14},
             // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing. 
+            onClick: null,
+          },
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItems, data) {
+                return data.labels[tooltipItems.index]+': '+ ' 0 patient(s)'
+              }
+            }
+          }
+        }
+      })
+    }
+
+    Vue.prototype.$makeBreakdownGraph = function (id, labels, values) {
+      new Chart (document.getElementById("patient-breakdown").getContext('2d'), {
+        type: 'doughnut',
+        data: {
+          // Use the names of the conditions as the labels
+          labels: labels,
+          datasets: [{
+            // Use the number of patients with that condition as the data values
+            data: values,
+            backgroundColor: chromatism.adjacent(30, labels.length, '#e52525').hex
+          }]
+        },
+        options: {
+          responsive: false,
+          maintainAspectRatio: true,
+          animation: {
+            duration: 1000
+          },
+          pieceLabel: {
+            render: 'percentage',
+            precision: 2,
+            position: 'border',
+            fontSize: 14,
+            fontStyle: 'bold',
+            fontColor: '#fff',
+          },
+          legend: {
+            display: true,
+            position: "left",
+            labels: {fontSize: 14},
+            // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing. 
             onClick: null
           },
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItems, data) {
+                return data.labels[tooltipItems.index]+': '+data.datasets[0].data[tooltipItems.index] + ' patient(s)'
+              }
+            }
+          }
         }
       })
     }
