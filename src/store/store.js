@@ -91,7 +91,8 @@ export const store = new Vuex.Store({
     currentMeter: {
         "label": "",
         "scale": ["",""],
-        "due_date": ""
+        "due_date": "",
+        "user": ""
     },
     checklists: [],
     currentChecklist: {},
@@ -240,8 +241,8 @@ export const store = new Vuex.Store({
     createChecklistURL: (state) => {
       return state.createChecklistURL;
     },
-    deleteTreatmentURL: (state) => {
-      return state.deleteTreatmentURL;
+    deleteTreatment: (state) => {
+      return state.deleteTreatment;
     },
     getTreatment: (state) => {
       return state.getTreatment;
@@ -493,6 +494,9 @@ export const store = new Vuex.Store({
     },
     addMeter: (context, payload) => {
       context.commit('addMeter', payload);
+    },
+    deleteMeter: (context, payload) => {
+      context.commit('deleteMeter', payload);
     },
     currentMeter: (context, payload) => {
       context.commit('currentMeter', payload);

@@ -32,22 +32,19 @@ export default {
 
     },
     deleteMeter: function() {
-      // this.question = document.getElementById("meter-question").value;
-      // this.due_date = document.getElementById("meter-date").value;
-      //
-      // // get element by date attribute
-      // for(var i=0; i < this.calendar.length; i++) {
-      //   if(this.calendar[i].object === this.due_date) {
-      //     this.calendar[i].meter = this;
-      //     this.calendar[i].meter.created = true;
-      //   }
-      // }
-
-      document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
-      // this.postDelete();
+      for(var i=0; i < this.calendar.length; i++) {
+        if(this.calendar[i].object === meter.due_date) {
+          this.calendar[i].meter = {};
+        }
+      }
+      this.$store.dispatch("deleteMeter", meter);
+      document.getElementsByClassName("meter-status-modal")[0].classList.remove("show-modal");
+      this.postDelete();
     },
     postDelete: function() {
-      axios.post(this.$store.getters.deleteAppt,{'appointment' : this.appointment}).then(
+      let patientName = this.$store.getters.getCurrentPatient.userName;
+      console.log(patientName);
+      axios.post(this.$store.getters.deleteTreatment+patientName, {'meter' : meter}).then(
       function(response)
       {
         // Check if the status of the response is successful
@@ -56,11 +53,9 @@ export default {
           // Closes this vue
           self.$store.commit("alternateAppointment");
           // Deletes the appointment from the appointment array in the VueX
-          self.$store.dispatch('deleteAppointment', self.appointment);
-          self.showWarning = false;
+          self.$store.dispatch('deleteMeter', self.appointment);
         } else {
           console.log(response.data.response);
-          self.showWarning = true;
         }
       }).catch(function(err){
         // Display an error message if the connection went wrong

@@ -44,7 +44,8 @@ export default {
       label: "meter",
       question: "",
       scale: [1,10],
-      due_date: ""
+      due_date: "",
+      user: this.$store.getters.getCurrentPatient.userName
     }
   },
 
