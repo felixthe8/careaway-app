@@ -33,15 +33,20 @@ export default {
     },
     deleteMeter: function() {
       for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].object === meter.due_date) {
+        if(this.calendar[i].object === this.meter.due_date) {
+          // logical delete of meter from calendar
           this.calendar[i].meter = {};
         }
       }
+      // close modal
       document.getElementsByClassName("meter-status-modal")[0].classList.remove("show-modal");
+      // post delete to database
       this.postDelete();
+      // remove meter from vuex
       this.$store.dispatch("deleteMeter", this.meter);
     },
     postDelete: function() {
+      // get current patient username for post
       let user = this.$store.getters.getCurrentPatient.userName;
 
       axios.post(this.$store.getters.deleteTreatment+user, {'meter' : this.meter}).then(
