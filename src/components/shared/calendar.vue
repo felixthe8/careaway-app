@@ -26,20 +26,14 @@
           :class="{
             'no-right' : (index+1)%5 === 0,
             'no-bottom': (index > 19),
-            'no-bottom__mobile': calendar[index].date === getCurrent.friday
+            'no-bottom__mobile': calendar[index].date === getCurrent.friday,
+            'calendar__day__blocked': calendar[index].month != calendar[12].month
           }">
 
           <div class="calendar__day--date"
             :class="{
                 'today' : getCurrent.date === calendar[index].date
           }">{{calendar[index].day}}</div>
-
-          <div class="blocked"
-            v-if="calendar[index].month != calendar[4].month"
-            :class="{
-              'rounded-left': (index === 0),
-              'rounded-right': (index === 24),
-          }"></div>
 
           <div class="calendar__day--label" v-if="index < 5">{{calendar[index].name}}</div>
 
@@ -55,6 +49,7 @@
           <div class="calendar__day--meter"
             v-if="calendar[index].meter.due_date">
             <button class="button calendar__day--button"
+              :date="calendar[index].meter.due_date"
               @click="toggleMeter(calendar[index].meter.due_date)">
                 {{calendar[index].meter.label}}
             </button>
@@ -63,6 +58,7 @@
           <div class="calendar__day--checklist"
             v-if="calendar[index].checklist.due_date">
             <button class="button calendar__day--button"
+              :date="calendar[index].checklist.due_date"
               @click="toggleChecklist(calendar[index].checklist.due_date)">
                 {{calendar[index].checklist.label}}
             </button>
@@ -178,7 +174,7 @@ export default {
       // show meter status modal
       document.getElementsByClassName("meter-status-modal")[0].classList.add("show-modal");
       // find current meter based on day
-      let current = this.calendar.filter(day => day.object === date)[0];
+      let current = this.calendar.filter(day => day.date === date)[0];
       // update vuex
       this.$store.dispatch("currentMeter", current.meter);
     },
@@ -186,7 +182,7 @@ export default {
       // show checklist status modal
       document.getElementsByClassName("checklist-status-modal")[0].classList.add("show-modal");
       // find current checklist based on day
-      let current = this.calendar.filter(day => day.object === date)[0];
+      let current = this.calendar.filter(day => day.date === date)[0];
       // update vuex
       this.$store.dispatch("currentChecklist", current.checklist);
     },
@@ -273,19 +269,6 @@ export default {
 
     &--label {
       color: $purple-dark;
-
-      // &.current-week {
-      //   @media #{$tablet} {
-      //     display: none;
-      //   }
-      // }
-      //
-      // &.current-month {
-      //   display: none;
-      //   @media #{$tablet} {
-      //     display: block;
-      //   }
-      // }
     }
 
     &--button {
@@ -373,6 +356,11 @@ export default {
       font-size: 8px;
     }
 
+    &__blocked {
+      background-color: $green-light;
+      opacity: .5;
+    }
+
     &.no-right {
       border-right: none;
     }
@@ -394,25 +382,6 @@ export default {
 
 .week-height {
   height: 500px;
-}
-
-.blocked {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0;
-  background-color: $green-light;
-  opacity: .5;
-  width: 100%;
-  height: 100%;
-
-  &.rounded-left {
-    border-top-left-radius: 10px;
-  }
-
-  &.rounded-right {
-    border-bottom-right-radius: 10px;
-  }
 }
 
 </style>
