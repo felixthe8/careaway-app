@@ -19,7 +19,10 @@ export default {
     logOut() {
       // Call to user plugin to logout user
       this.$logout();
-      this.$router.push('/');
+      axios.get(this.$store.getters.logoutURL).then(response => {
+        console.log(response);
+        this.$router.push('/');
+      });
     },
     viewAppointments() {
       this.$store.dispatch('alternateAppointmentCreation');
