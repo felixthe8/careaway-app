@@ -16,14 +16,15 @@ Calendar.install = function (Vue, options) {
       let SIZE = 25;
       // if is set, get initial month request or set initial month to the current month
       initial = initial || today;
-      // get month start ~ first day of calendar month + days to monday
-      let start = new Date(today.getFullYear(), initial.getMonth(), 1);
+      // initialize start date variable
+      let start = new Date();
 
-      // if state is set -> create week
-      if(state) {
+      if(!state) {
+        // get month start ~ first day of calendar month + days to monday
+        start = new Date(today.getFullYear(), initial.getMonth(), 1);
+      }
+      else {
         SIZE = 5;
-        // if is set, get initial day request or set initial day to the current day
-        initial = initial || today;
         // get week start ~ first day of calendar month + days to monday
         let start = new Date(today.getFullYear(), today.getMonth, initial.getDate());
       }
