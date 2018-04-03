@@ -2,20 +2,21 @@
 
   <div class="checklist-modal">
 
-    <form class="checklist-modal--form">
+    <div class="checklist-modal--form">
       <div class="row">
         <h1>Checklist</h1>
       </div>
-      <div class="row">
+      <div class="row checklist-prompt">
         <label>Checklist Prompt</label>
-        <input class="checklist-modal--form--input" name="checklist" type="text" id="checklist" required>
+        <input class="checklist-modal--form--input prompt-input" name="checklist" type="text" id="checklist">
       </div>
+      <button id="add-prompt" @click="addPrompt">+</button>
       <div class="row">
         <label>Date Requested:</label>
         <input class="checklist-modal--form--input" name="date" type="text" id="checklist-date">
       </div>
-      <button class="checklist-modal--form--create green-button" @submit="create">Create Event</button>
-    </form>
+      <button class="checklist-modal--form--create green-button" @click="create">Create Event</button>
+    </div>
 
     <button class='modal-close is-large' aria-label='close' @click='close'></button>
 
@@ -36,35 +37,69 @@ export default {
       label: "checklist",
       list: [],
       due_date: {},
-      user: "test1111"
+      user: this.$store.getters.getCurrentPatient.userName
     }
   },
 
   methods: {
+    addPrompt: function() {
+      // create new input prompt
+      let old = document.getElementsByClassName("checklist-prompt")[0];
+      let newInput = document.createElement("input");
+      newInput.className = "prompt-input";
+      newInput.name ="checklist";
+      newInput.type = "text";
+      newInput.id="checklist";
+
+      // limit to 5
+      let limit = document.getElementsByClassName("prompt-input");
+      if(limit.length < 5) {
+        old.appendChild(newInput);
+      } else {
+        let error = document.createElement("span");
+        error.innerHTML = "Maximum Prompts Reached";
+        // show error message
+        old.appendChild(error);
+        // disable button
+        document.getElementById("add-prompt").disabled = true;
+      }
+    },
     create: function() {
-      this.list = [];
+      // get form input for checklist
+      let list = document.getElementsByClassName("prompt-input");
+      for(var i=0; i < list.length-1; i++) {
+        this.list[i] = list[i].value;
+      }
       this.due_date = document.getElementById("checklist-date").value;
 
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].object == this.due_date) {
+        if(this.calendar[i].date == this.due_date) {
+          // show checklist on calendar
           this.calendar[i].checklist = this;
           this.calendar[i].checklist.created = true;
         }
       }
 
+      // close modal on create
       document.getElementsByClassName("checklist-modal")[0].classList.remove("show-modal");
+      // post new meter to database
       this.saveChecklist();
+      // add new checklist to vuex
+      this.$store.dispatch("addChecklist", this.$data);
     },
     saveChecklist: function() {
+      // get current user
+      let user = this.$store.getters.getCurrentPatient.userName;
+
       const checklist = {
         label: this.label,
         list: this.list,
-        due_date: this.due_date,
+        due_date: this.due_date
       }
 
-      axios.post(this.$store.getters.createChecklistURL, checklist).then(function(response) {
-        if(response.date.success) {
+      axios.post(this.$store.getters.createChecklistURL+user, {'treatment' : checklist, user}).then(function(response) {
+        if(response.data.success) {
           console.log("Successfully Created Checklist");
         } else {
           console.log("Failed to Create Checklist");
@@ -74,7 +109,8 @@ export default {
       });
     },
     close: function() {
-      document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
+      // close meter if exited
+      document.getElementsByClassName("checklist-modal")[0].classList.remove("show-modal");
     }
   }
 }
@@ -99,6 +135,18 @@ export default {
     padding: 1rem;
     text-align: left;
   }
+}
+
+.checklist-prompt {
+  input {
+    display: block;
+    margin: 10px;
+  }
+}
+
+.max-message {
+    display: none;
+    color: red;
 }
 
 .show-modal {

@@ -61,12 +61,12 @@ export default {
     },
 
     created: function() {
-      this.calendar = this.$renderCalendar(0);
+      this.calendar = this.$renderCalendar();
 
       let appointments = this.$store.getters.appointments;
       for(var i=0; i < appointments.length; i++) {
         for(var j=0; j < this.calendar.length; j++) {
-          if(appointments[i].date === this.calendar[j].object) {
+          if(appointments[i].date === this.calendar[j].date) {
             this.calendar[j].appointment = appointments[i];
             appointments[i].created = true;
           }
@@ -88,25 +88,33 @@ export default {
         console.log(error);
       });
 
-      console.log("getting widgets");
-
-      // get Meters for VueX
-      axios.get(this.$store.getters.getTreatmentMeterURL+this.$store.getters.authenticatedUsername).then(result => {
-        var meters = result.data.meters;
-        for(var i=0; i < meters.length; i++) {
-          self.$store.dispatch('addMeter', meters[i]);
-          self.isLoaded = true;
-        }
-      }).catch(error => {
-        console.log(error);
-      });
-
-      // get Checklists for VueX
-      axios.get(this.$store.getters.getTreatmentChecklistURL+this.$store.getters.authenticatedUsername).then(result => {
-        var meters = result.data.meters;
-        for(var i=0; i < meters.length; i++) {
-          self.$store.dispatch('addMeter', meters[i]);
-          self.isLoaded = true;
+      // get Widgets for VueX
+      axios.get(this.$store.getters.getTreatment+this.$store.getters.authenticatedUsername).then(result => {
+          console.log(result.data);
+        var treatments = result.data.treatments;
+        for(var i=0; i < treatments.length; i++) {
+          // get patient meters and add to store
+          if(treatments[i].label === "meter") {
+            this.$store.dispatch("addMeter", treatments[i]);
+            this.isLoaded = true;
+            // check and add to calendar
+            for(var j=0; j < this.calendar.length; j++) {
+              if(treatments[i].due_date === this.calendar[j].date) {
+                this.calendar[j].meter = treatments[i];
+              }
+            }
+          }
+          // get patient checklists and add to store
+          if(treatments[i].label === "checklist") {
+            this.$store.dispatch("addChecklist", treatments[i]);
+            this.isLoaded = true;
+            // check and add to calendar
+            for(var j=0; j < this.calendar.length; j++) {
+              if(treatments[i].due_date === this.calendar[j].date) {
+                this.calendar[j].checklist = treatments[i];
+              }
+            }
+          }
         }
       }).catch(error => {
         console.log(error);
