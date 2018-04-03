@@ -61,7 +61,7 @@ export default {
     let patientName = this.$store.getters.getCurrentPatient.userName;
 
     // set meter
-    this.calendar = this.$renderCalendar(0);
+    this.calendar = this.$renderCalendar();
     this.patient = this.$store.getters.getCurrentPatient.fullName;
     this.diagnosis = this.$store.getters.getCurrentPatient.diagnosis;
     this.user = patientName;
@@ -69,7 +69,7 @@ export default {
     // update calendar
     for(var i=0; i < appointments.length; i++) {
       for(var j=0; j < this.calendar.length; j++) {
-        if(appointments[i].date === this.calendar[j].object
+        if(appointments[i].date === this.calendar[j].date
           && appointments[i].appointee === patientName) {
           this.calendar[j].appointment = appointments[i];
           appointments[i].created = true;
@@ -87,7 +87,7 @@ export default {
           this.isLoaded = true;
           // check and add to calendar
           for(var j=0; j < this.calendar.length; j++) {
-            if(treatments[i].due_date === this.calendar[j].object) {
+            if(treatments[i].due_date === this.calendar[j].date) {
               this.calendar[j].meter = treatments[i];
             }
           }
@@ -98,7 +98,7 @@ export default {
           this.isLoaded = true;
           // check and add to calendar
           for(var j=0; j < this.calendar.length; j++) {
-            if(treatments[i].due_date === this.calendar[j].object) {
+            if(treatments[i].due_date === this.calendar[j].date) {
               this.calendar[j].checklist = treatments[i];
             }
           }

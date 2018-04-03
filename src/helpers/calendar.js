@@ -7,23 +7,28 @@ Calendar.install = function (Vue, options) {
   Vue.prototype.$renderCalendar = function (initial, state) {
       let moment = require("moment");
 
-      // size default to month
-      let SIZE = 25;
-
-      if(state) {
-        SIZE = 5;
-      }
-
       // week day array
       let week = ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"];
       // get today's date object
       let today = new Date();
 
-      // get initial month request or set initial month to the current month
-      initial = initial || today.getMonth();
+      // state default to month
+      let SIZE = 25;
+      // if is set, get initial month request or set initial month to the current month
+      initial = initial || today;
+      // get month start ~ first day of calendar month + days to monday
+      let start = new Date(today.getFullYear(), initial.getMonth(), 1);
 
-      // get calendar start ~ first day of calendar month + days to monday
-      let start = new Date(today.getFullYear(), initial, 1);
+      // if state is set -> create week
+      if(state) {
+        SIZE = 5;
+        // if is set, get initial day request or set initial day to the current day
+        initial = initial || today;
+        // get week start ~ first day of calendar month + days to monday
+        let start = new Date(today.getFullYear(), today.getMonth, initial.getDate());
+      }
+
+      // set start to current monday
       start = new Date(start.getFullYear(), start.getMonth(), start.getDate() + (start.getDay() == 0?-6:1) - start.getDay());
 
       // careaway calendar month
@@ -42,8 +47,9 @@ Calendar.install = function (Vue, options) {
 
         // add day object to month
         calendar[count] = {
-          "object": moment(new Date(start.getFullYear(), start.getMonth(), start.getDate())).format("YYYY-MM-DD"),
-          "date": start.getDate(),
+          "object": new Date(start.getFullYear(), start.getMonth(), start.getDate()),
+          "date": moment(new Date(start.getFullYear(), start.getMonth(), start.getDate())).format("YYYY-MM-DD"),
+          "day": start.getDate(),
           "code": start.getDay(),
           "month": start.getMonth(),
           "name": week[start.getDay()],

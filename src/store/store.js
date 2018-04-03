@@ -11,6 +11,9 @@ export const store = new Vuex.Store({
     questionSelected2:0,
     questionSelected3:0,
 
+    // Calendar State
+    calendarState: false,
+
     // Boolean value for controlling if the modals will display
     showRegistration: false,
     showLogin: false,
@@ -100,6 +103,9 @@ export const store = new Vuex.Store({
   },
 
   getters: {
+    calendarState: (state) => {
+      return state.calendarState;
+    },
     checkBreachURL: (state) => {
       return state.checkBreachURL;
     },
@@ -282,7 +288,9 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
-    // function to flip the value of showLogin
+    calendarState: (state) => {
+      state.calendarState = !state.calendarState;
+    },
     alternateLogin: (state) => {
        state.showLogin = !state.showLogin;
     },
@@ -430,7 +438,9 @@ export const store = new Vuex.Store({
   },
 
   actions: {
-    // action that will call the AlternateLogin mutation
+    calendarState: (context) => {
+      context.commit('calendarState');
+    },
     alternateLogin: (context) => {
       context.commit('alternateLogin');
     },

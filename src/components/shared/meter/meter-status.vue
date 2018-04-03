@@ -33,7 +33,7 @@ export default {
     },
     deleteMeter: function() {
       for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].object === this.meter.due_date) {
+        if(this.calendar[i].date === this.meter.due_date) {
           // logical delete of meter from calendar
           this.calendar[i].meter = {};
         }

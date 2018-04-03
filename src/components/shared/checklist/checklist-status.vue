@@ -32,7 +32,7 @@ export default {
     },
     deleteChecklist: function() {
       for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].object === this.checklist.due_date) {
+        if(this.calendar[i].date === this.checklist.due_date) {
           // logical delete of checklist from calendar
           this.calendar[i].checklist = {};
         }

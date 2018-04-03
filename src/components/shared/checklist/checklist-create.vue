@@ -48,7 +48,7 @@ export default {
 
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].object == this.due_date) {
+        if(this.calendar[i].date == this.due_date) {
           // show checklist on calendar
           this.calendar[i].checklist = this;
           this.calendar[i].checklist.created = true;
