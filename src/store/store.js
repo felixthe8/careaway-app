@@ -503,6 +503,9 @@ export const store = new Vuex.Store({
     addChecklist: (context, payload) =>  {
       context.commit('addChecklist', payload);
     },
+    deleteChecklist: (context, payload) => {
+      context.commit('deleteChecklist', payload);
+    },
     currentChecklist: (context, payload) =>  {
       context.commit('currentChecklist', payload);
     },
