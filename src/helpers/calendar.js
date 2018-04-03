@@ -25,7 +25,6 @@ Calendar.install = function (Vue, options) {
       // get calendar start ~ first day of calendar month + days to monday
       let start = new Date(today.getFullYear(), initial, 1);
       start = new Date(start.getFullYear(), start.getMonth(), start.getDate() + (start.getDay() == 0?-6:1) - start.getDay());
-      console.log(start);
 
       // careaway calendar month
       let calendar = [];
@@ -60,8 +59,6 @@ Calendar.install = function (Vue, options) {
         // increment date
         start.setDate(start.getDate() + next);
       }
-
-      console.log(calendar);
 
       // return array of day objects
       return calendar;
