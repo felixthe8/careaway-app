@@ -27,7 +27,7 @@
             'no-right' : (index+1)%5 === 0,
             'no-bottom': (index > 19),
             'no-bottom__mobile': calendar[index].date === getCurrent.friday,
-            'calendar__day__blocked': calendar[index].month != calendar[12].month
+            /* 'calendar__day__blocked': calendar[index].month != calendar[12].month */
           }">
 
           <div class="calendar__day--date"
