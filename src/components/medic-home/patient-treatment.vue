@@ -51,18 +51,22 @@ export default {
       meter: false,
       checklist: false,
       patient: "",
-      diagnosis: ""
+      diagnosis: "",
+      user: ""
     }
   },
 
   created: function() {
-    this.calendar = this.$renderCalendar(0);
-    this.patient = this.$store.getters.getCurrentPatient.fullName;
-    this.diagnosis = this.$store.getters.getCurrentPatient.diagnosis;
-
     let appointments = this.$store.getters.appointments;
     let patientName = this.$store.getters.getCurrentPatient.userName;
 
+    // set meter
+    this.calendar = this.$renderCalendar(0);
+    this.patient = this.$store.getters.getCurrentPatient.fullName;
+    this.diagnosis = this.$store.getters.getCurrentPatient.diagnosis;
+    this.user = patientName;
+
+    // update calendar
     for(var i=0; i < appointments.length; i++) {
       for(var j=0; j < this.calendar.length; j++) {
         if(appointments[i].date === this.calendar[j].object

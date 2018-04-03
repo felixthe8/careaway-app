@@ -70,8 +70,7 @@ export default {
         label: this.label,
         question: this.question,
         scale: this.scale,
-        due_date: this.due_date,
-        user: this.$store.getters.getCurrentPatient.userName
+        due_date: this.due_date
       }
 
       axios.post(this.$store.getters.createMeterURL, meter).then(function(response) {

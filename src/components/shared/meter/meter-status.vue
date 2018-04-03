@@ -37,30 +37,23 @@ export default {
           this.calendar[i].meter = {};
         }
       }
-      this.$store.dispatch("deleteMeter", meter);
       document.getElementsByClassName("meter-status-modal")[0].classList.remove("show-modal");
       this.postDelete();
+      this.$store.dispatch("deleteMeter", this.meter);
     },
     postDelete: function() {
-      let patientName = this.$store.getters.getCurrentPatient.userName;
-      console.log(patientName);
-      axios.post(this.$store.getters.deleteTreatment+patientName, {'meter' : meter}).then(
+      let user = this.$store.getters.getCurrentPatient.userName;
+
+      axios.post(this.$store.getters.deleteTreatment+user, {'meter' : this.meter}).then(
       function(response)
       {
-        // Check if the status of the response is successful
         if(response.status === 200){
-          console.log("Success");
-          // Closes this vue
-          self.$store.commit("alternateAppointment");
-          // Deletes the appointment from the appointment array in the VueX
-          self.$store.dispatch('deleteMeter', self.appointment);
+          console.log("Successfully deleted Meter");
         } else {
-          console.log(response.data.response);
+            console.log("Failed to Create Meter");
         }
       }).catch(function(err){
-        // Display an error message if the connection went wrong
-        console.log("There was an error handling the request");
-        self.showWarning = true;
+        console.log(err);
       });
     },
     close: function() {
