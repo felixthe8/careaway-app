@@ -87,21 +87,19 @@ export default {
     return {
       months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
       week: ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"],
-      state: 0
+      state: false
     }
   },
 
   methods: {
     next: function(event) {
-      if(this.state < 1)
-        this.state = this.state + 1;
-      this.calendar = this.$renderCalendarMonth(this.state);
+      let next = this.calendar[12].month + 1;
+      this.calendar = this.$renderCalendar(next, this.state);
       this.getEvents();
     },
     previous: function(event) {
-      if(this.state > -1)
-        this.state = this.state - 1;
-      this.calendar = this.$renderCalendarMonth(this.state);
+      let previous = this.calendar[12].month - 1;
+      this.calendar = this.$renderCalendar(previous, this.state);
       this.getEvents();
     },
     getEvents: function() {

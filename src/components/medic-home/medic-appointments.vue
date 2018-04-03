@@ -44,7 +44,7 @@ export default {
   },
 
   created: function() {
-    this.calendar = this.$renderCalendarMonth(0);
+    this.calendar = this.$renderCalendar();
 
     let appointments = this.$store.getters.appointments;
     for(var i=0; i < appointments.length; i++) {
