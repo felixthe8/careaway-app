@@ -70,7 +70,7 @@ Report.install = function(Vue, options) {
     }
 
     Vue.prototype.$makeBreakdownGraph = function (id, labels, values) {
-      new Chart (document.getElementById("patient-breakdown").getContext('2d'), {
+      new Chart (document.getElementById(id).getContext('2d'), {
         type: 'doughnut',
         data: {
           // Use the names of the conditions as the labels

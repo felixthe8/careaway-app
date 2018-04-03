@@ -46,11 +46,11 @@ export default {
   methods: {
     getInfo() {
      // Create a wellness object to hold and store the wellness data computations
-     var wellness_obj = {};
+     var wellnessObj = {};
      // Generate the 5 days of the previous week
       this.days = this.$generateDays();
       this.days.forEach(singleDay => {
-      wellness_obj[singleDay] = {
+      wellnessObj[singleDay] = {
           // Value will hold the sum of the meter widget data
           value: 0,
           // Counter will be used to represent the number of patients who had meter widget data on a specific day
@@ -76,30 +76,30 @@ export default {
           // Loop through each object holding meter widget treatment data
           for (var meter of response.data) {
               // Write the sum of the meter widget data
-              wellness_obj[meter.due_date].value += (parseFloat(meter.patient_input) / parseFloat(meter.scale[1]) ) * 100
+              wellnessObj[meter.due_date].value += (parseFloat(meter.patient_input) / parseFloat(meter.scale[1]) ) * 100
               // Increment the counter
-              wellness_obj[meter.due_date].counter+=1
+              wellnessObj[meter.due_date].counter+=1
 
           }
           // Compute the average of the meter widget data for each day
-          for(var key in wellness_obj) {
-            if(wellness_obj.hasOwnProperty(key)) {
+          for(var key in wellnessObj) {
+            if(wellnessObj.hasOwnProperty(key)) {
               // If no patients had a meter widget that day, set the average to 0 for that day
-              if(wellness_obj[key].counter == 0) {
-                wellness_obj[key].average = 0;
+              if(wellnessObj[key].counter == 0) {
+                wellnessObj[key].average = 0;
               } else {
                 // Average is the sum of meter widget data divided by the number of patients who had data for that day
-                wellness_obj[key].average = wellness_obj[key].value / wellness_obj[key].counter
+                wellnessObj[key].average = wellnessObj[key].value / wellnessObj[key].counter
               }
             }
           }
            // Turn the average data into an array.
-          self.averageData = Object.keys(wellness_obj).map(key => { return wellness_obj[key].average })
+          self.averageData = Object.keys(wellnessObj).map(key => { return wellnessObj[key].average })
           self.$makeWellnessGraph("aggregate-wellness",self.days, self.averageData);
-        // Call to run the functions to analyze the data
-        self.analyzeData();
-        // If the GET was successfully completed and the graph has been made, then show the report
-        self.showReport = true;
+          // Call to run the functions to analyze the data
+          self.analyzeData();
+          // Show the report after the analysis data has been finished
+          self.showReport = true;
         }
       })
       .catch(function(err) {
@@ -114,7 +114,7 @@ export default {
       }
       // Compute the average for the week
       var average = numbers.reduce((a,b) => a+b,0) / numbers.length;
-      this.averageWellness = "The average wellness for this week is "+average.toFixed(2)+"%";
+      this.averageWellness = `The average wellness for this week is ${average.toFixed(2)} %`;
     },
     analyzeData() {
       // Call to determine the average wellness

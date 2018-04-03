@@ -81,7 +81,7 @@ export default {
         var data = Object.keys(self.completionData).map(key => {return self.completionData[key].average})
         self.$makeCompletionGraph("aggregate-complete", self.days, data );
         self.analyzeData(self.completionData);
-        // If the GET was successfully completed and the graph has been made, then show the report
+         // Show the report after the analysis data has been finished
         self.showReport = true;
         }
       })
