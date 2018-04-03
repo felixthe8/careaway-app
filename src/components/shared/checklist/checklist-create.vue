@@ -36,35 +36,43 @@ export default {
       label: "checklist",
       list: [],
       due_date: {},
-      user: "test1111"
+      user: this.$store.getters.getCurrentPatient.userName
     }
   },
 
   methods: {
     create: function() {
+      // get form input for checklist
       this.list = [];
       this.due_date = document.getElementById("checklist-date").value;
 
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
         if(this.calendar[i].object == this.due_date) {
+          // show checklist on calendar
           this.calendar[i].checklist = this;
           this.calendar[i].checklist.created = true;
         }
       }
 
+      // close modal on create
       document.getElementsByClassName("checklist-modal")[0].classList.remove("show-modal");
+      // post new meter to database
       this.saveChecklist();
+      // add new checklist to vuex
+      this.$store.dispatch("addChecklist", this.$data);
     },
     saveChecklist: function() {
+      // get current user
+      let user = this.$store.getters.getCurrentPatient.userName;
+
       const checklist = {
         label: this.label,
         list: this.list,
-        due_date: this.due_date,
-        user: this.$store.getters.getCurrentPatient.userName
+        due_date: this.due_date
       }
 
-      axios.post(this.$store.getters.createChecklistURL, checklist).then(function(response) {
+      axios.post(this.$store.getters.createChecklistURL+user, {'treatment' : checklist, user}).then(function(response) {
         if(response.data.success) {
           console.log("Successfully Created Checklist");
         } else {
@@ -75,6 +83,7 @@ export default {
       });
     },
     close: function() {
+      // close meter if exited
       document.getElementsByClassName("checklist-modal")[0].classList.remove("show-modal");
     }
   }

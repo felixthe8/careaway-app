@@ -44,8 +44,7 @@ export default {
       label: "meter",
       question: "",
       scale: [1,10],
-      due_date: "",
-      user: this.$store.getters.getCurrentPatient.userName
+      due_date: ""
     }
   },
 
@@ -68,8 +67,13 @@ export default {
       document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
       // post new meter to database
       this.saveMeter();
+      // add new meter to Vuex
+      this.$store.dispatch("addMeter", this.$data);
     },
     saveMeter: function() {
+      // get current user
+      let user = this.$store.getters.getCurrentPatient.userName;
+
       const meter = {
         label: this.label,
         question: this.question,
@@ -77,7 +81,7 @@ export default {
         due_date: this.due_date
       }
 
-      axios.post(this.$store.getters.createMeterURL, meter).then(function(response) {
+      axios.post(this.$store.getters.createMeterURL+user, {'treatment' : meter, user}).then(function(response) {
         if(response.data.success) {
           console.log("Successfully Created Meter");
         } else {
