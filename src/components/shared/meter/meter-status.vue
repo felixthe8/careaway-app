@@ -48,8 +48,15 @@ export default {
     postDelete: function() {
       // get current patient username for post
       let user = this.$store.getters.getCurrentPatient.userName;
+      // define meter to ensure proper format
+      const meter = {
+          label: this.meter.label,
+          question: this.meter.question,
+          scale: this.meter.scale,
+          due_date: this.meter.due_date,
+      }
 
-      axios.post(this.$store.getters.deleteTreatment+user, {'meter' : this.meter}).then(
+      axios.post(this.$store.getters.deleteTreatment+user, {'treatment' : meter, user}).then(
       function(response)
       {
         if(response.status === 200){

@@ -92,14 +92,28 @@ export default {
 
   methods: {
     next: function(event) {
-      // if(this.state < 1)
-      //   this.state = this.state + 1;
-      // this.calendar = this.$renderCalendar(this.state);
+      if(this.state < 1)
+        this.state = this.state + 1;
+      this.calendar = this.$renderCalendar(this.state);
+      this.getEvents();
     },
     previous: function(event) {
-      // if(this.state > -1)
-      //   this.state = this.state - 1;
-      // this.calendar = this.$renderCalendar(this.state);
+      if(this.state > -1)
+        this.state = this.state - 1;
+      this.calendar = this.$renderCalendar(this.state);
+    },
+    getEvents: function() {
+      let appointments = this.$store.getters.appointments;
+      let meters = this.$store.getters.meters;
+      let checklists = this.$store.checklists;
+      for(var i=0; i < this.calendar.length; i++) {
+        // get current events based on calendar date
+        let test = appointments.find(appointment  => appointment.date === this.calendar[i].object);
+        if(test) { console.log("defined"); }
+        // this.calendar[i].appointment =
+        // this.calendar[i].meter = meters.filter(meter  => meter.date === this.calendar[i].object);
+        // this.calendar[i].checklist = checklists.filter(checklist  => checklist.date === this.calendar[i].object);
+      }
     },
     weekly: function(event) {
       let days = document.getElementsByClassName("monthly")[0].children;
