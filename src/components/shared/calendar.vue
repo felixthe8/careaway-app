@@ -9,7 +9,7 @@
           <h1 v-if="!this.$store.getters.calendarState">{{months[calendar[12].month]}}</h1>
         </div>
         <div class="item calendar__menu--label current-week">
-          <h1 v-if="this.$store.getters.calendarState">Week of the {{getCurrent.monday}}th</h1>
+          <h1 v-if="this.$store.getters.calendarState">Week of {{months[calendar[4].month]}} {{getCurrent.monday}}</h1>
         </div>
         <div class="item"><div class="calendar__menu--arrow-right" @click="next"></div></div>
 
