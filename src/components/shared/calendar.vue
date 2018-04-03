@@ -192,21 +192,24 @@ export default {
     dragOver: function(event) {
       event.preventDefault();
 
-      // define hover style
-      // event.target.style.background = "red";
+      // TODO: define hover state to indicate drop area
     },
     drop: function(event) {
       event.preventDefault();
+      let date = event.target.getAttribute("date");
+      let now = moment(new Date()).format("YYYY-MM-DD");
+      if(date < now) {
+        alert("Must choose date greater than today's date, try again.");
+        return;
+      }
 
       if(this.$store.getters.showMeter === true) {
-        let date = event.target.getAttribute("date");
         document.getElementById("meter-date").value = date;
         document.getElementsByClassName("meter-modal")[0].classList.add("show-modal");
         this.$store.dispatch("toggleMeter");
       }
 
       if(this.$store.getters.showChecklist === true) {
-        let date = event.target.getAttribute("date");
         document.getElementById("checklist-date").value = date;
         document.getElementsByClassName("checklist-modal")[0].classList.add("show-modal");
         this.$store.dispatch("toggleChecklist");
