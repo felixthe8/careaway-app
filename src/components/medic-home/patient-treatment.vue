@@ -61,7 +61,7 @@ export default {
     let patientName = this.$store.getters.getCurrentPatient.userName;
 
     // set meter
-    this.calendar = this.$renderCalendar(0);
+    this.calendar = this.$renderCalendarMonth(0);
     this.patient = this.$store.getters.getCurrentPatient.fullName;
     this.diagnosis = this.$store.getters.getCurrentPatient.diagnosis;
     this.user = patientName;

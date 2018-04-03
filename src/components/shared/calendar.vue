@@ -32,7 +32,7 @@
           }">{{calendar[index].date}}</div>
 
           <div class="blocked"
-            v-if="calendar[index].month != getCurrent.month"
+            v-if="calendar[index].month != calendar[15].month"
             :class="{
               'rounded-left': (index === 0),
               'rounded-right': (index === 24),
@@ -95,13 +95,13 @@ export default {
     next: function(event) {
       if(this.state < 1)
         this.state = this.state + 1;
-      this.calendar = this.$renderCalendar(this.state);
+      this.calendar = this.$renderCalendarMonth(this.state);
       this.getEvents();
     },
     previous: function(event) {
       if(this.state > -1)
         this.state = this.state - 1;
-      this.calendar = this.$renderCalendar(this.state);
+      this.calendar = this.$renderCalendarMonth(this.state);
       this.getEvents();
     },
     getEvents: function() {
