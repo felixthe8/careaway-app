@@ -102,18 +102,20 @@ export default {
       if(this.state > -1)
         this.state = this.state - 1;
       this.calendar = this.$renderCalendar(this.state);
+      this.getEvents();
     },
     getEvents: function() {
       let appointments = this.$store.getters.appointments;
       let meters = this.$store.getters.meters;
-      let checklists = this.$store.checklists;
+      let checklists = this.$store.getters.checklists;
       for(var i=0; i < this.calendar.length; i++) {
         // get current events based on calendar date
-        let test = appointments.find(appointment  => appointment.date === this.calendar[i].object);
-        if(test) { console.log("defined"); }
-        // this.calendar[i].appointment =
-        // this.calendar[i].meter = meters.filter(meter  => meter.date === this.calendar[i].object);
-        // this.calendar[i].checklist = checklists.filter(checklist  => checklist.date === this.calendar[i].object);
+        let appointmentMatch = appointments.find(appointment  => appointment.date === this.calendar[i].object);
+        if(appointmentMatch) { this.calendar[i].appointment = appointmentMatch; }
+        let meterMatch = meters.find(meter  => meter.due_date === this.calendar[i].object);
+        if(meterMatch) { this.calendar[i].meter = meterMatch; }
+        let checklistMatch = checklists.find(checklist  => checklist.due_date === this.calendar[i].object);
+        if(checklistMatch) { this.calendar[i].checklist = checklistMatch; }
       }
     },
     weekly: function(event) {
