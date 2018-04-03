@@ -389,13 +389,12 @@ export const store = new Vuex.Store({
     deleteMeter: (state, payload) => {
       var temp = [];
       for(var i=0; i < state.meters.length; i++) {
-        if(state.meters[i].date !== payload.date) {
+        if(state.meters[i].due_date !== payload.due_date) {
           temp.push(state.meters[i]);
         }
       }
       state.meters = temp;
     },
-    //
     addChecklist: (state, payload) => {
       state.checklists.push(payload);
     },
@@ -409,7 +408,7 @@ export const store = new Vuex.Store({
     deleteChecklist: (state, payload) => {
       var temp = [];
       for(var i=0; i < state.checklists.length; i++) {
-        if(state.checklists[i].date !== payload.date) {
+        if(state.checklists[i].due_date !== payload.due_date) {
           temp.push(state.checklists[i]);
         }
       }

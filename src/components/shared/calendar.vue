@@ -59,7 +59,8 @@
 
           <div class="calendar__day--checklist"
             v-if="calendar[index].checklist.due_date">
-            <button class="button calendar__day--button">
+            <button class="button calendar__day--button"
+              @click="toggleChecklist(calendar[index].checklist.due_date)">
                 {{calendar[index].checklist.label}}
             </button>
           </div>
@@ -144,9 +145,20 @@ export default {
       this.$store.dispatch("alternateAppointment");
     },
     toggleMeter(date) {
+      // show meter status modal
       document.getElementsByClassName("meter-status-modal")[0].classList.add("show-modal");
+      // find current meter based on day
       let current = this.calendar.filter(day => day.object === date)[0];
+      // update vuex
       this.$store.dispatch("currentMeter", current.meter);
+    },
+    toggleChecklist(date) {
+      // show checklist status modal
+      document.getElementsByClassName("checklist-status-modal")[0].classList.add("show-modal");
+      // find current checklist based on day
+      let current = this.calendar.filter(day => day.object === date)[0];
+      // update vuex
+      this.$store.dispatch("currentChecklist", current.checklist);
     },
     dragOver: function(event) {
       event.preventDefault();
