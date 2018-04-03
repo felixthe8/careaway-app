@@ -8,9 +8,9 @@
       </div>
       <div class="row checklist-prompt">
         <label>Checklist Prompt</label>
-        <input class="checklist-modal--form--input" name="checklist" type="text" id="checklist">
+        <input class="checklist-modal--form--input prompt-input" name="checklist" type="text" id="checklist">
       </div>
-      <button class="add-prompt" @click="addPrompt">+</button>
+      <button id="add-prompt" @click="addPrompt">+</button>
       <div class="row">
         <label>Date Requested:</label>
         <input class="checklist-modal--form--input" name="date" type="text" id="checklist-date">
@@ -43,21 +43,33 @@ export default {
 
   methods: {
     addPrompt: function() {
+      // create new input prompt
       let old = document.getElementsByClassName("checklist-prompt")[0];
       let newInput = document.createElement("input");
-      newInput.className = "checklist-modal--form--input";
+      newInput.className = "prompt-input";
       newInput.name ="checklist";
       newInput.type = "text";
       newInput.id="checklist";
-      old.appendChild(newInput);
+
+      // limit to 5
+      let limit = document.getElementsByClassName("prompt-input");
+      if(limit.length < 5) {
+        old.appendChild(newInput);
+      } else {
+        let error = document.createElement("span");
+        error.innerHTML = "Maximum Prompts Reached";
+        // show error message
+        old.appendChild(error);
+        // disable button
+        document.getElementById("add-prompt").disabled = true;
+      }
     },
     create: function() {
       // get form input for checklist
-      let list = document.getElementsByClassName("checklist-modal--form--input");
+      let list = document.getElementsByClassName("prompt-input");
       for(var i=0; i < list.length-1; i++) {
         this.list[i] = list[i].value;
       }
-      console.log(this.list);
       this.due_date = document.getElementById("checklist-date").value;
 
       // get element by date attribute
@@ -130,6 +142,11 @@ export default {
     display: block;
     margin: 10px;
   }
+}
+
+.max-message {
+    display: none;
+    color: red;
 }
 
 .show-modal {
