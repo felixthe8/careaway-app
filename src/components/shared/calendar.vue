@@ -149,13 +149,14 @@ export default {
       return new Date(current.add(shift, 'days'));
     },
     getEvents: function() {
+      let patientName = this.$store.getters.getCurrentPatient.userName;
       // updates events on calendar
       let appointments = this.$store.getters.appointments;
       let meters = this.$store.getters.meters;
       let checklists = this.$store.getters.checklists;
       for(var i=0; i < this.calendar.length; i++) {
         // get current events based on calendar date
-        let appointmentMatch = appointments.find(appointment  => appointment.date === this.calendar[i].date);
+        let appointmentMatch = appointments.find(appointment  => appointment.date === this.calendar[i].date && appointment.appointee === patientName);
         if(appointmentMatch) { this.calendar[i].appointment = appointmentMatch; }
         let meterMatch = meters.find(meter  => meter.due_date === this.calendar[i].date);
         if(meterMatch) { this.calendar[i].meter = meterMatch; }
