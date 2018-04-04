@@ -2,6 +2,7 @@
   <nav class="nav-bar">
     <img class="nav-bar__logo" @click = "goHome" src="../../assets/images/careaway-logo.png">
     <a class="nav-bar__button button is-link is-rounded" @click="logOut"> <i class="fas fa-sign-out-alt"></i> {{button}} </a>
+    <a class="nav-bar__button button is-link is-rounded" @click="toggleCreate"> <i class="fas fa-sign-out-alt"></i> Create Appointment </a>
   </nav>
 </template>
 
@@ -18,13 +19,19 @@ export default {
     logOut() {
       // Call to user plugin to logout user
       this.$logout();
-      this.$router.push('/');
+      axios.get(this.$store.getters.logoutURL).then(response => {
+        console.log(response);
+        this.$router.push('/');
+      });
     },
     viewAppointments() {
       this.$store.dispatch('alternateAppointmentCreation');
     },
     goHome() {
       this.$router.push('/PatientHome');
+    },
+    toggleCreate() {
+      this.$store.dispatch('alternateAppointmentCreation')
     }
   }
 }
