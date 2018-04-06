@@ -11,8 +11,6 @@
       :xLabel = 'xLabel' 
       :yLabel = 'yLabel'/>
     <div class = "report" v-if="showReport">
-      <input type = "checkbox" id = "empty-selection" v-model="ignoreEmpty" @change="analyzeData">
-      <label for = "empty-selection">Ignore Missing Data</label>
       <p>{{averageWellness}} </p>
       <br>
       <ul>
@@ -51,7 +49,6 @@ export default {
       // Create an array to hold the starting and ending values of positive and negative trends on the graph
       trends: [],
       showReport: false,
-      ignoreEmpty: false,
       chartID: this.$options.name,
       chartType: 'line',
       showChart: false,
@@ -130,15 +127,8 @@ export default {
       this.averageWellness = "The average wellness for this week is "+average.toFixed(2)+"%";
     },
     analyzeData() {
-      // Call to determine the average wellness
       this.getAvg(this.averageData);
-      // If the user chose to ignore the empty values
-      if(this.ignoreEmpty) {
-        this.trends = this.$getTrendsIgnore(this.averageData);
-      } else {
-        // Otherwise, the use didn't choose to ignore the empty values
-        this.trends = this.$getTrends(this.averageData);
-      }
+      this.trends = this.$getTrends(this.averageData);  
     }
   },
   mounted() {
