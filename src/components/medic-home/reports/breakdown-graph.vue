@@ -62,14 +62,14 @@ export default {
         self.chartValues = Object.values(self.conditionCount)
         // Max value for this graph will be the greatest number of the conditions 
         self.maxValue = Math.max.apply(Math, self.chartValues)
-        // STEP 2 - Display the chart
-        self.showChart = true
+        self.showChart = true;
         })
         .catch(function (err) {
           self.breakdownWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
         })
+        
         // Remove the is-loading class
-        self.loading = false
+        this.loading = false
       }
   },
   mounted() {

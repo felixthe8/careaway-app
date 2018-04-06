@@ -76,7 +76,7 @@ export default {
 
 <style lang="scss" scoped>
 .box {
-  width: 850px;
+  display: inline-block;
 }
 </style>
 

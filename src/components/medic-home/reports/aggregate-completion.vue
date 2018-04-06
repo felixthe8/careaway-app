@@ -22,7 +22,6 @@
 <script>
 
 import axios from 'axios';
-import moment from 'moment';
 import Chart from 'chart.js';
 import chart from './chart';
 export default {
@@ -96,20 +95,17 @@ export default {
               }
             }
           }
-
-        self.analyzeData(self.completion);
-        // Show the report
-        self.showReport = true;
-        }
         self.completionData = Object.keys(self.completion).map(key => {return self.completion[key].average})
-        self.showChart = true;
+        self.analyzeData(self.completion);
+        }
       })
       .catch(function(err) {
         console.log(err);
         self.completionWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
       })
+      this.showChart = true
       // Remove the is-loading class
-      self.loading = false
+      this.loading = false
     },
     analyzeData(data) {
       // Loop through the object that holds the completion data for each day

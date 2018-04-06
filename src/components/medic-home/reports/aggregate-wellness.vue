@@ -32,7 +32,6 @@
 
 <script>
 import axios from 'axios';
-import moment from 'moment';
 import Chart from 'chart.js';
 import chart from './chart';
 export default {
@@ -110,15 +109,14 @@ export default {
           // Show the report
           self.showReport = true;
         }
-        // STEP 2 - Display the chart itself
-        self.showChart = true
       })
       .catch(function(err) {
          self.wellnessWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
          console.log(err);
       })
+      this.showChart = true
       // Remove the is-loading class
-      self.loading = false
+      this.loading = false
     },
     analyzeData() {
       this.averageWellness = "The average wellness for this week is "+ this.$getAverageWellness(this.averageData).toFixed(2)+"%";
