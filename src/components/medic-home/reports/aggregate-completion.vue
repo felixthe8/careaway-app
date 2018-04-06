@@ -96,6 +96,7 @@ export default {
           }
         self.completionData = Object.keys(self.completion).map(key => {return self.completion[key].average})
         self.analyzeData(self.completion);
+        self.showReport = true
         }
         self.showChart = true
       })
