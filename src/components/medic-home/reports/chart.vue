@@ -26,7 +26,7 @@ export default {
           datasets: [{
             label: self.yLabel,
             data: self.chartValues,
-            backgroundColor: (self.type === 'bar' ? Array(self.chartLabels.length).fill('#ed2939') : '#ed2939'),
+            backgroundColor: (self.type === 'bar' ? Array(self.chartLabels.length).fill('#1e90ff') : '#1e90ff'),
             borderWidth: 3,
             fill: false
           }]

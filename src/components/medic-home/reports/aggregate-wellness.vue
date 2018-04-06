@@ -103,16 +103,15 @@ export default {
            // Turn the average data into an array.
           self.averageData = Object.keys(self.wellness).map(key => { return self.wellness[key].average })
           self.analyzeData();
-          // Show the report
-          self.showReport = true;
+          self.showReport = true
+          
         }
+        self.showChart = true
       })
       .catch(function(err) {
          self.wellnessWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
          console.log(err);
       })
-      this.showChart = true
-      // Remove the is-loading class
       this.loading = false
     },
     analyzeData() {

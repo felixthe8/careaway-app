@@ -97,12 +97,12 @@ export default {
         self.completionData = Object.keys(self.completion).map(key => {return self.completion[key].average})
         self.analyzeData(self.completion);
         }
+        self.showChart = true
       })
       .catch(function(err) {
         console.log(err);
         self.completionWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
       })
-      this.showChart = true
       // Remove the is-loading class
       this.loading = false
     },
