@@ -1,10 +1,9 @@
 <template>
-  <div class = "breakdown">
+  <div class = "breakdown control">
     <h1 class = "title is-3 is-spaced"> Patient Breakdown by Diagnosis </h1>
     <h2 class="subtitle"> {{breakdownWarning}} </h2>
+    <spinner v-if = 'loading'/>
     <chart v-if = 'showChart' 
-      class = 'control'
-      v-bind:class = "{'is-loading': loading}"
       :elemID = 'chartID' 
       :type = 'chartType' 
       :chartLabels = 'chartLabels' 
@@ -18,6 +17,7 @@
 <script>
 import axios from 'axios';
 import Chart from 'chart.js';
+import spinner from 'vue-simple-spinner';
 import chart from './chart';
 export default {
   name: 'aggregate-breakdown',
@@ -36,7 +36,7 @@ export default {
         yLabel: '# of Patients'
       }
   },
-  components: {chart},
+  components: {chart, spinner},
   methods: {
       getInfo() {
         // STEP 1 - Gather the information necessary to create the chart

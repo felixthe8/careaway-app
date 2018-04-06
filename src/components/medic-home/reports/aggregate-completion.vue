@@ -2,9 +2,8 @@
   <div class = "a-completion">
     <h1 class = "title is-3 is-spaced"> Average Patient Task Completion From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{completionWarning}} </h2>
+    <spinner v-if = 'loading'/>
     <chart v-if = 'showChart'
-      class = 'control'
-      v-bind:class = "{'is-loading': loading}" 
       :elemID = 'chartID' 
       :type = 'chartType' 
       :chartLabels = 'days' 
@@ -23,6 +22,7 @@
 
 import axios from 'axios';
 import Chart from 'chart.js';
+import spinner from 'vue-simple-spinner';
 import chart from './chart';
 export default {
   name: 'aggregate-completion',
@@ -45,7 +45,7 @@ export default {
         showChart: false,
       }
   },
-  components: {chart},
+  components: {chart, spinner},
   methods: {
     getInfo() {
       // Generate the 5 days from the previous week

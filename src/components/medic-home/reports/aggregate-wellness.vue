@@ -2,9 +2,8 @@
   <div class = "a-wellness">
     <h1 class = "title is-3 is-spaced"> Average Patient Wellness From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{wellnessWarning}} </h2>
+     <spinner v-if = 'loading'/>
     <chart v-if = 'showChart' 
-      class = 'control'
-      v-bind:class = "{'is-loading': loading}"
       :elemID = 'chartID' 
       :type = 'chartType' 
       :chartLabels = 'days' 
@@ -33,6 +32,7 @@
 <script>
 import axios from 'axios';
 import Chart from 'chart.js';
+import spinner from 'vue-simple-spinner';
 import chart from './chart';
 export default {
   name: 'aggregate-wellness',
@@ -59,7 +59,7 @@ export default {
       yLabel: 'Wellness Percentage'
     }
   },
-  components: {chart},
+  components: {chart, spinner},
   methods: {
     getInfo() {
      // Generate the 5 days of the previous week
