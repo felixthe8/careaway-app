@@ -2,7 +2,9 @@
   <div class = "a-completion">
     <h1 class = "title is-3 is-spaced"> Average Patient Task Completion From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{completionWarning}} </h2>
-    <chart v-if = 'showChart' 
+    <chart v-if = 'showChart'
+      class = 'control'
+      v-bind:class = "{'is-loading': loading}" 
       :elemID = 'chartID' 
       :type = 'chartType' 
       :chartLabels = 'days' 
@@ -27,6 +29,7 @@ export default {
   name: 'aggregate-completion',
   data() {
       return {
+        loading: true,
         completionWarning: '',
         completionData: [],
         // Create an array to store the 5 dates made from moment.js
@@ -38,8 +41,8 @@ export default {
         chartID: this.$options.name,
         chartType: 'bar',
         maxValue: 100,
-        xLabel: 'Patient Wellness',
-        yLabel: 'Wellness Percentage',
+        xLabel: 'Date',
+        yLabel: 'Completion Percentage',
         showChart: false,
       }
   },
@@ -105,6 +108,8 @@ export default {
         console.log(err);
         self.completionWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
       })
+      // Remove the is-loading class
+      self.loading = false
     },
     analyzeData(data) {
       // Loop through the object that holds the completion data for each day

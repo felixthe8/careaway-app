@@ -3,6 +3,8 @@
     <h1 class = "title is-3 is-spaced"> Patient Breakdown by Diagnosis </h1>
     <h2 class="subtitle"> {{breakdownWarning}} </h2>
     <chart v-if = 'showChart' 
+      class = 'control'
+      v-bind:class = "{'is-loading': loading}"
       :elemID = 'chartID' 
       :type = 'chartType' 
       :chartLabels = 'chartLabels' 
@@ -15,14 +17,13 @@
 
 <script>
 import axios from 'axios';
-import * as chromatism from 'chromatism';
 import Chart from 'chart.js';
-import pieceLabel from 'chart.piecelabel.js';
 import chart from './chart';
 export default {
   name: 'aggregate-breakdown',
   data() {
       return {
+        loading: true,
         conditionCount: {},
         breakdownWarning: '',
         chartID: this.$options.name,
@@ -63,11 +64,12 @@ export default {
         self.maxValue = Math.max.apply(Math, self.chartValues)
         // STEP 2 - Display the chart
         self.showChart = true
-       
         })
         .catch(function (err) {
           self.breakdownWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
         })
+        // Remove the is-loading class
+        self.loading = false
       }
   },
   mounted() {

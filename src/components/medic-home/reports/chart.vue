@@ -11,7 +11,7 @@ export default {
   name: 'chart',
   data() {
     return {
-      width: 750,
+      width: 800,
       height: 350
     }
   },
@@ -47,7 +47,7 @@ export default {
           },
           scales: {
             xAxes: [{
-               barPercentage: 0.75,
+               barPercentage: 0.55,
               scaleLabel: {display: true, labelString: self.xLabel, fontSize: 14}
             }],
             yAxes: [{
@@ -73,6 +73,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.box {
+  width: 850px;
+}
+</style>
+
 
 
 

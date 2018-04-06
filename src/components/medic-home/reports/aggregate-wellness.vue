@@ -3,6 +3,8 @@
     <h1 class = "title is-3 is-spaced"> Average Patient Wellness From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{wellnessWarning}} </h2>
     <chart v-if = 'showChart' 
+      class = 'control'
+      v-bind:class = "{'is-loading': loading}"
       :elemID = 'chartID' 
       :type = 'chartType' 
       :chartLabels = 'days' 
@@ -37,6 +39,7 @@ export default {
   name: 'aggregate-wellness',
   data() {
     return {
+      loading: true,
       wellnessWarning: '',
       wellness: {},
       averageWellness: '',
@@ -53,7 +56,7 @@ export default {
       chartType: 'line',
       showChart: false,
       maxValue: 100,
-      xLabel: 'Patient Wellness',
+      xLabel: 'Date',
       yLabel: 'Wellness Percentage'
     }
   },
@@ -114,6 +117,8 @@ export default {
          self.wellnessWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
          console.log(err);
       })
+      // Remove the is-loading class
+      self.loading = false
     },
     analyzeData() {
       this.averageWellness = "The average wellness for this week is "+ this.$getAverageWellness(this.averageData).toFixed(2)+"%";
