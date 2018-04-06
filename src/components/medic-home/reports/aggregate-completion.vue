@@ -95,7 +95,7 @@ export default {
           }
 
         self.analyzeData(self.completion);
-        // If the GET was successfully completed and the graph has been made, then show the report
+        // Show the report
         self.showReport = true;
         }
         self.completionData = Object.keys(self.completion).map(key => {return self.completion[key].average})

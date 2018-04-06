@@ -104,7 +104,7 @@ export default {
            // Turn the average data into an array.
           self.averageData = Object.keys(self.wellness).map(key => { return self.wellness[key].average })
           self.analyzeData();
-          // If the GET was successfully completed and the graph has been made, then show the report
+          // Show the report
           self.showReport = true;
         }
         // STEP 2 - Display the chart itself
@@ -115,17 +115,8 @@ export default {
          console.log(err);
       })
     },
-    getAvg(numbers) {
-      // If we choose to ignore empty input, then we must strip out the values that are 0
-      if(this.ignoreEmpty) {
-        numbers = numbers.filter(value => value!=0)
-      }
-      // Compute the average for the week
-      var average = numbers.reduce((a,b) => a+b,0) / numbers.length;
-      this.averageWellness = "The average wellness for this week is "+average.toFixed(2)+"%";
-    },
     analyzeData() {
-      this.getAvg(this.averageData);
+      this.averageWellness = "The average wellness for this week is "+ this.$getAverageWellness(this.averageData).toFixed(2)+"%";
       this.trends = this.$getTrends(this.averageData);  
     }
   },

@@ -14,6 +14,10 @@ Report.install = function(Vue, options) {
       return days;
   }
 
+  Vue.prototype.$getAverageWellness = function (data) {
+    return data.reduce((a,b) => a+b,0) / data.length;
+  }
+
   Vue.prototype.$getTrends = function(data) {
     // Create 2 arrays - 1 for holding the positive trends and 1 for holding the negative trends
     var positiveTrends = [], negativeTrends = [];
