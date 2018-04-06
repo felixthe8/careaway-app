@@ -4,11 +4,13 @@
     <div id = "patientLabel">
       <patientSelector @selected = "routeIndividualReport"/>
     </div>
-    <breakdownGraph/>
-    <br>
-    <aggregateWellness/>
-    <br>
-    <aggregateComplete/>
+    <div id="graphs">
+      <breakdownGraph/>
+      <br>
+      <aggregateWellness/>
+      <br>
+      <aggregateComplete/>
+    </div>
   </div>
 </template>
 
@@ -39,5 +41,8 @@ export default {
   }
   #patientLabel{
     float: right;
+  }
+  #graphs {
+    margin-top: 5%;
   }
 </style>

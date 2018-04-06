@@ -20,7 +20,7 @@ import Chart from 'chart.js';
 import pieceLabel from 'chart.piecelabel.js';
 import chart from './chart';
 export default {
-  name: 'breakdown',
+  name: 'aggregate-breakdown',
   data() {
       return {
         conditionCount: {},
@@ -54,7 +54,7 @@ export default {
               self.conditionCount[d] = 1;
             } else {
               // Increment an value of a condition
-              self.conditionCount[d]+=1;
+              self.conditionCount[d]++;
             }
           }
         }

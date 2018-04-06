@@ -28,7 +28,9 @@ export default {
           datasets: [{
             label: self.yLabel,
             data: self.chartValues,
-            backgroundColor: Array(self.chartLabels.length).fill('#ed2939')
+            backgroundColor: (self.type === 'bar' ? Array(self.chartLabels.length).fill('#ed2939') : '#ed2939'),
+            borderWidth: 3,
+            fill: false
           }]
         },
         options: {
@@ -47,7 +49,7 @@ export default {
           },
           scales: {
             xAxes: [{
-              barPercentage: 0.55,
+               barPercentage: 0.75,
               scaleLabel: {display: true, labelString: self.xLabel, fontSize: 14}
             }],
             yAxes: [{
@@ -58,6 +60,12 @@ export default {
               scaleLabel: {display: true, labelString: self.yLabel, fontSize: 14}
             }]
           },
+          elements: {
+            point: {
+              radius: 4,
+              hoverRadius: 6
+            }
+          }
         }    
       })
     }
