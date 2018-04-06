@@ -48,7 +48,6 @@ export default {
   components: {chart},
   methods: {
     getInfo() {
-      // STEP 1 - Generate the information for the chart
       // Generate the 5 days from the previous week
       this.days = this.$generateDays();
       this.days.forEach(singleDay => {

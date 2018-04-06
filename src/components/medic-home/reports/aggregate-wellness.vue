@@ -62,7 +62,6 @@ export default {
   components: {chart},
   methods: {
     getInfo() {
-     // STEP 1 - Generate the information for the chart 
      // Generate the 5 days of the previous week
       this.days = this.$generateDays();
       this.days.forEach(singleDay => {
@@ -74,7 +73,6 @@ export default {
         }
       });
       var self = this;
-      // Request to return meter widget data
       axios.get(this.$store.getters.getTreatmentMeterURL, {
         params: {
           medicalcode:this.$store.getters.medicalCode,
@@ -84,7 +82,6 @@ export default {
         }
       })
       .then(function (response) { 
-        // Check the array in the response to see if it is empty. 
         if(response.data === undefined || response.data.length == 0) {
           self.wellnessWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
         } else {
