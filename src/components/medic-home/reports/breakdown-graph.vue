@@ -60,14 +60,13 @@ export default {
         }
         self.chartLabels = Object.keys(self.conditionCount)
         self.chartValues = Object.values(self.conditionCount)
-        // Max value for this graph will be the greatest number of the conditions 
-        self.maxValue = Math.max.apply(Math, self.chartValues)
-        self.showChart = true;
         })
         .catch(function (err) {
           self.breakdownWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
         })
-        
+        // Max value for this graph will be the greatest number of the conditions 
+        this.maxValue = Math.max.apply(Math, this.chartValues)
+        this.showChart = true
         // Remove the is-loading class
         this.loading = false
       }
