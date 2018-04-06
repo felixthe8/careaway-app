@@ -6,7 +6,7 @@
     <div class = "report" v-if="showReport">
       <p> Total completed tasks for this period: {{totalComplete}} </p>
       <p> Total assigned tasks for this period: {{totalAssigned}}</p>
-    </div>
+    </div>  
   </div>
 </template>
 
@@ -16,33 +16,34 @@ import axios from 'axios';
 import moment from 'moment';
 import Chart from 'chart.js';
 export default {
-  name: '',
+  name: 'completion',
   data() {
-      return {
-        completionWarning: '',
-        // Create an array to store the 5 dates made from moment.js
-        days: [],
-        completionData: {},
-        totalComplete: 0,
-        totalAssigned: 0,
-        showReport: false
-      }
+    return {
+      completionWarning: '',
+      // Create an array to store the 5 dates made from moment.js
+      days: [],
+      completionData: {},
+      totalComplete: 0,
+      totalAssigned: 0,
+      showReport: false
+    }
   },
   methods: {
     getInfo() {
-      // Generate the 5 days of the previous week
-      this.days = this.$generateDays();
-      this.days.forEach(singleDay => {
-      this.completionData[singleDay] = {
-          // This vaule will hold the number of completed tasks
+      // Generate the 5 days from the previous week
+      for(var i = 0; i <=4; i++) {
+        var singleDay = moment().day(-2).subtract(i,'days').format("YYYY-MM-DD");
+        this.days.unshift(singleDay);
+        this.completionData[singleDay] = {
+          // Value will hold the sum of the checklist widget data
           complete: 0,
-          //  This will hold the number of tasks on a specific day
-          taskCount: 0,
+          // Counter will represent the number of patients who had checklist widget data on a specific day
+          taskCount: 0
         }
-      });
+      }
       var self = this;
       // Request to return checklist widget data
-      axios.get(this.$store.getters.getTreatmentChecklistURL, {
+      axios.get(this.$store.getters.getTreatmentchecklistURL, {
         params: {
           medicalcode:this.$store.getters.medicalCode,
           // Pass the first and last elements from the day array. These dates will be used to filter the response in the backend
@@ -53,12 +54,12 @@ export default {
       .then(function(response) {
         if(response.data.length == 0) {
           self.completionWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
-          self.$emptyBar("aggregate-complete",self.days);
         } else {
           // Loop through each object holding checklist data
           for (var checklist of response.data) {
             for(var task of checklist.list) {
-              // If the task has been 'checked' (ie. completed), then increment the completed counter for that day
+              // If the task has been 'checked' (ie. completed), then 
+              // increment the completed counter for that day
               if(task.check) {
                 self.completionData[checklist.due_date].complete +=1
               }
@@ -86,8 +87,8 @@ export default {
               datasets: [{
                 label: "Completion Percentage",
                 backgroundColor: Array(self.days.length).fill('#3892f1'),
-                // Turn the completion percentage data into an array. 
-                data: Object.keys(self.completionData).map(key => {return self.completionData[key].average})
+                // Turn the completion percentage data into an array. Must reverse the array because the days were instantiated backwards
+                data: Object.keys(self.completionData).map(key => {return self.completionData[key].average}).reverse()
               }]
             },
             options: {
@@ -110,7 +111,7 @@ export default {
                 display: true,
                 position: "right",
                 labels: {fontSize: 14},
-                // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing.
+                // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing. 
                 onClick: null
               },
               tooltips: {
@@ -156,3 +157,4 @@ export default {
       margin-left: 2%;
   }
 </style>
+

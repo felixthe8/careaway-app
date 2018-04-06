@@ -155,7 +155,11 @@ export default {
              scales: {
                xAxes: [{
                   barPercentage: 0.55,
-                  scaleLabel: {display: true, labelString: "Date", fontSize: 14}
+                  scaleLabel: {display: true, labelString: "Date", fontSize: 14},
+                  ticks: {
+                    stepSize: 1,
+                    autoSkip: false
+                  }
                 }],
                yAxes: [{
                  ticks: {
