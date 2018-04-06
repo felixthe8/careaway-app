@@ -2,7 +2,14 @@
   <div class = "a-completion">
     <h1 class = "title is-3 is-spaced"> Average Patient Task Completion From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{completionWarning}} </h2>
-    <canvas id = "aggregate-complete" width = "750" height = "300"> </canvas>
+    <chart v-if = 'showChart' 
+      :elemID = 'chartID' 
+      :type = 'chartType' 
+      :chartLabels = 'days' 
+      :chartValues = 'completionData'
+      :maxValue = 'maxValue' 
+      :xLabel = 'xLabel' 
+      :yLabel = 'yLabel'/>
     <div class = "report" v-if="showReport">
       <p> Total completed tasks for this period: {{totalComplete}} </p>
       <p> Total assigned tasks for this period: {{totalAssigned}}</p>
@@ -15,35 +22,43 @@
 import axios from 'axios';
 import moment from 'moment';
 import Chart from 'chart.js';
+import chart from './chart';
 export default {
-  name: 'completion',
+  name: 'aggregate-completion',
   data() {
-    return {
-      completionWarning: '',
-      // Create an array to store the 5 dates made from moment.js
-      days: [],
-      completionData: {},
-      totalComplete: 0,
-      totalAssigned: 0,
-      showReport: false
-    }
+      return {
+        completionWarning: '',
+        completionData: [],
+        // Create an array to store the 5 dates made from moment.js
+        days: [],
+        completion: {},
+        totalComplete: 0,
+        totalAssigned: 0,
+        showReport: false,
+        chartID: this.$options.name,
+        chartType: 'bar',
+        maxValue: 100,
+        xLabel: 'Patient Wellness',
+        yLabel: 'Wellness Percentage',
+        showChart: false,
+      }
   },
+  components: {chart},
   methods: {
     getInfo() {
+      // STEP 1 - Generate the information for the chart
       // Generate the 5 days from the previous week
-      for(var i = 0; i <=4; i++) {
-        var singleDay = moment().day(-2).subtract(i,'days').format("YYYY-MM-DD");
-        this.days.unshift(singleDay);
-        this.completionData[singleDay] = {
-          // Value will hold the sum of the checklist widget data
-          complete: 0,
-          // Counter will represent the number of patients who had checklist widget data on a specific day
-          taskCount: 0
+      this.days = this.$generateDays();
+      this.days.forEach(singleDay => {
+      this.completion[singleDay] = {
+        // Number of completed tasks
+        complete: 0,
+        // Number of tasks on a given day
+        taskCount: 0,
         }
-      }
+      });
       var self = this;
-      // Request to return checklist widget data
-      axios.get(this.$store.getters.getTreatmentchecklistURL, {
+      axios.get(this.$store.getters.getTreatmentChecklistURL, {
         params: {
           medicalcode:this.$store.getters.medicalCode,
           // Pass the first and last elements from the day array. These dates will be used to filter the response in the backend
@@ -52,82 +67,39 @@ export default {
         }
       })
       .then(function(response) {
-        if(response.data.length == 0) {
+        if(response.data === undefined || response.data.length == 0) {
           self.completionWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
         } else {
           // Loop through each object holding checklist data
           for (var checklist of response.data) {
             for(var task of checklist.list) {
-              // If the task has been 'checked' (ie. completed), then 
-              // increment the completed counter for that day
+              // If the task has been 'checked' (ie. completed), then increment the completed counter for that day
               if(task.check) {
-                self.completionData[checklist.due_date].complete +=1
+                self.completion[checklist.due_date].complete++
               }
               // When a new task is encountered, add that new task and increment the task counter
-              self.completionData[checklist.due_date].taskCount +=1
+              self.completion[checklist.due_date].taskCount++
             }
           }
           // Compute the completion percentage for each day
-          for(var key in self.completionData) {
-            if(self.completionData.hasOwnProperty(key)) {
+          for(var key in self.completion) {
+            if(self.completion.hasOwnProperty(key)) {
               // If there was no patient checklist data for that day, set the completion percentage to 0 for that day
-              if(self.completionData[key].taskCount == 0) {
-                self.completionData[key].average = 0;
+              if(self.completion[key].taskCount == 0) {
+                self.completion[key].average = 0;
               } else {
                 // Task completion percentage is the number of tasks completed / total tasks for that day
-                self.completionData[key].average = Math.round( (self.completionData[key].complete / self.completionData[key].taskCount) * 100 )
+                self.completion[key].average = Math.round( (self.completion[key].complete / self.completion[key].taskCount) * 100 )
               }
             }
           }
-           // Define the graph and it's styles
-          new Chart (document.getElementById("aggregate-complete"), {
-            type: 'bar',
-            data: {
-              labels: self.days,
-              datasets: [{
-                label: "Completion Percentage",
-                backgroundColor: Array(self.days.length).fill('#3892f1'),
-                // Turn the completion percentage data into an array. Must reverse the array because the days were instantiated backwards
-                data: Object.keys(self.completionData).map(key => {return self.completionData[key].average}).reverse()
-              }]
-            },
-            options: {
-              responsive: false,
-              maintainAspectRatio: true,
-              scales: {
-                xAxes: [{
-                  barPercentage: 0.55,
-                  scaleLabel: {display: true, labelString: "Date", fontSize: 14}
-                }],
-                yAxes: [{
-                  ticks: {
-                    beginAtZero: true,
-                    suggestedMax: 100
-                  },
-                  scaleLabel: {display: true, labelString: "Completion Percentage", fontSize: 14}
-                }]
-              },
-              legend: {
-                display: true,
-                position: "right",
-                labels: {fontSize: 14},
-                // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing. 
-                onClick: null
-              },
-              tooltips: {
-                callbacks: {
-                  label: function(tooltipItems, data) {
-                    // Overwrite the tooltip function to reformat the presented data
-                    return 'Patient Completion: '+data.datasets[0].data[tooltipItems.index] + '%'
-                  }
-                }
-              }
-            }
-          })
-        self.analyzeData(self.completionData);
+
+        self.analyzeData(self.completion);
         // If the GET was successfully completed and the graph has been made, then show the report
         self.showReport = true;
         }
+        self.completionData = Object.keys(self.completion).map(key => {return self.completion[key].average})
+        self.showChart = true;
       })
       .catch(function(err) {
         console.log(err);
@@ -157,4 +129,3 @@ export default {
       margin-left: 2%;
   }
 </style>
-

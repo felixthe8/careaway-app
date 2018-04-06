@@ -82,17 +82,15 @@ export default {
         }
       })
       .then(function (response) { 
-        // Check the array in the response to see if it is empty. If it is, do not create the graph
-        if(response.data.length == 0 || response.data === undefined) {
+        // Check the array in the response to see if it is empty. 
+        if(response.data === undefined || response.data.length == 0) {
           self.wellnessWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
         } else {
           for (var meter of response.data) {
             // Write the sum of the meter widget data
             self.wellness[meter.due_date].value += (parseFloat(meter.patient_input) / parseFloat(meter.scale[1]) ) * 100
-            // Increment the counter
             self.wellness[meter.due_date].counter++;
           }
-          // Compute the average of the meter widget data for each day
           for(var key in self.wellness) {
             if(self.wellness.hasOwnProperty(key)) {
               // If no patients had a meter widget that day, set the average to 0 for that day

@@ -44,7 +44,7 @@ export default {
         axios.get(this.$store.getters.patientBreakdownURL+this.$store.getters.medicalCode)
         .then(function(response) {
           // If there are no diagnoses returned
-          if(response.data.length == 0 || response.data === undefined) {
+          if(response.data === undefined || response.data.length == 0) {
             self.breakdownWarning = 'Sorry, you need to add patients before you can view this report';
           } else {
           // Loop through the patient diagnoses that was returned. In the conditionCount object, use the diagnoses as keys
@@ -53,13 +53,13 @@ export default {
               // If the diagnosis does not exist as a key, add it and set the initial value to 1
               self.conditionCount[d] = 1;
             } else {
-              // Increment an value of a condition
               self.conditionCount[d]++;
             }
           }
         }
         self.chartLabels = Object.keys(self.conditionCount)
-        self.chartValues = Object.values(self.conditionCount) 
+        self.chartValues = Object.values(self.conditionCount)
+        // Max value for this graph will be the greatest number of the conditions 
         self.maxValue = Math.max.apply(Math, self.chartValues)
         // STEP 2 - Display the chart
         self.showChart = true

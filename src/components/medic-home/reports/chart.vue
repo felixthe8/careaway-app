@@ -6,9 +6,7 @@
 </template>
 
 <script>
-import * as chromatism from 'chromatism';
 import Chart from 'chart.js';
-import pieceLabel from 'chart.piecelabel.js';
 export default {
   name: 'chart',
   data() {
