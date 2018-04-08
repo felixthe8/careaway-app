@@ -45,9 +45,6 @@
               invalid. In this example below, we want to submit <i>{{sampleDiagnosis}}</i>, but it is 
               spelled incorrectly, so the box will glow red.
           </p>
-          <figure>
-            <img :src = "error" alt = "Set Diagnosis Error" />
-          </figure>
       </div>
 
 
@@ -59,7 +56,6 @@ import modal from '../../assets/images/tutorial/set-diagnosis/set-diagnosis-moda
 import modalAutocomplete from '../../assets/images/tutorial/set-diagnosis/set-diagnosis-autocomplete.png'
 import autocompleteDemo from '../../assets/images/tutorial/set-diagnosis/autocomplete-demo.gif'
 import success from '../../assets/images/tutorial/set-diagnosis/set-diagnosis-success.gif'
-import error from '../../assets/images/tutorial/set-diagnosis/set-diagnosis-error.gif'
 export default {
   name: 'setDiagnosisTutorial',
   data() {
@@ -69,7 +65,6 @@ export default {
         modalAutocomplete: modalAutocomplete,
         autocompleteDemo: autocompleteDemo,
         success: success,
-        error: error
       }
   },
   computed: {
