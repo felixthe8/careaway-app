@@ -7,9 +7,12 @@
       </div>
 
       <div class = "column">
-        
-        <router-view></router-view>
-  
+        <div class="box">
+          <div class = "logo-container">
+            <img class = "logo" src = '../../assets/images/careaway-full1.png'>
+          </div>
+          <router-view></router-view>
+        </div>
       </div>
     </div>
   </div>
@@ -26,9 +29,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .left-side{
-    margin-top: 2%;
-   margin-left: 1%;
+.left-side{
+  margin-top: 2%;
+  margin-left: 1%;
+}
+.logo-container {
+      text-align: center;
+  }
+.logo {
+      width: 30%;
+      min-width: 20%;
+}
+.box {
+  margin-right: 2%;
 }
 </style>
 

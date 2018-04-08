@@ -1,9 +1,5 @@
 <template>
     <div id="welcome">
-    <div class="box">
-      <div class = "logo-container">
-        <img class = "logo" src = '../../assets/images/careaway-full1.png'>
-      </div>
 
       <div class = "content is-size-5">
           <p>  
@@ -18,7 +14,6 @@
             the CareAway Treatment Planner. 
           </p>
       </div>
-      </div>
     </div>
     
   
@@ -27,18 +22,11 @@
 <script>
 
 export default {
-  name: 'welcomePage'
+  name: 'welcomeTutorial'
 }
 </script>
 
 <style lang="scss" scoped>
-  .logo-container {
-      text-align: center;
-  }
-  .logo {
-      width: 30%;
-      min-width: 20%;
-  }
   .content {
       padding: 4%;
   }

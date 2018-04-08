@@ -4,7 +4,7 @@
         General
     </p>
     <ul class="menu-list">
-        <li><a>Welcome to CareAway</a></li>
+        <li><a @click = "routeTutorialWelcome">Welcome to CareAway</a></li>
     </ul>
     <p class="menu-label">
         Medical Widgets
@@ -25,6 +25,9 @@
               <li><a>Meter Widget Interaction</a></li>
             </ul>
         </li>
+        <li>
+            <a @click = "routeSetDiagnosisTutorial">Setting Patient Diagnosis</a>
+        </li>
      </ul>  
     </aside>
 </template>
@@ -32,5 +35,13 @@
 <script>
 export default {
    name: 'tutorialMenu',
+   methods: {
+    routeTutorialWelcome(){
+       this.$router.push('/Tutorial')
+    },
+     routeSetDiagnosisTutorial() {
+        this.$router.push('/Tutorial/SetDiagnosis')
+     }
+   }
 }
 </script>

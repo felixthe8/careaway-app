@@ -99,6 +99,8 @@ export const store = new Vuex.Store({
     checklists: [],
     currentChecklist: {},
     currentAppointment: {},
+
+    mpTutorialOnly: 'NOTE: This feature is only available under the Medical Professional Account'
   },
 
   getters: {
@@ -281,7 +283,11 @@ export const store = new Vuex.Store({
     },
     getCurrentPatient:(state) => {
       return state.currentPatient;
+    },
+    mpTutorialOnly: (state) => {
+      return state.mpTutorialOnly;
     }
+
   },
   mutations: {
     calendarState: (state) => {
