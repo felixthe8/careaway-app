@@ -4,11 +4,11 @@
 
     <div class="meter-status-modal--form">
       <div class="row">
-        <h1>{{label}}</h1>
+        <h1>{{meter.label}}</h1>
       </div>
-      <p>Question: {{question}}</p>
-      <p>Scale: {{scale[0]}} - {{scale[1]}}</p>
-      <p>Date Assigned: {{due_date}}</p>
+      <p>Question: {{meter.question}}</p>
+      <p>Scale: {{meter.scale[0]}} - {{meter.scale[1]}}</p>
+      <p>Date Assigned: {{meter.due_date}}</p>
       <button id="meter-edit" class="meter-modal--create green-button" @click="edit">Edit Meter</button>
       <button id="meter-delete" class="meter-modal--create green-button" @click="deleteMeter">Delete Meter</button>
     </div>
@@ -25,56 +25,47 @@ import moment from "moment";
 
 export default {
 
-  props: ["calendar"],
-
-  data() {
-    return {
-      label: "meter",
-      question: "",
-      scale: [1,10],
-      due_date: {}
-    }
-  },
+  props: ["calendar", "meter"],
 
   methods: {
     edit: function() {
 
     },
     deleteMeter: function() {
-      // this.question = document.getElementById("meter-question").value;
-      // this.due_date = document.getElementById("meter-date").value;
-      //
-      // // get element by date attribute
-      // for(var i=0; i < this.calendar.length; i++) {
-      //   if(this.calendar[i].object === this.due_date) {
-      //     this.calendar[i].meter = this;
-      //     this.calendar[i].meter.created = true;
-      //   }
-      // }
-
-      document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
-      // this.postDelete();
+      for(var i=0; i < this.calendar.length; i++) {
+        if(this.calendar[i].date === this.meter.due_date) {
+          // logical delete of meter from calendar
+          this.calendar[i].meter = {};
+        }
+      }
+      // close modal
+      document.getElementsByClassName("meter-status-modal")[0].classList.remove("show-modal");
+      // post delete to database
+      this.postDelete();
+      // remove meter from vuex
+      this.$store.dispatch("deleteMeter", this.meter);
     },
     postDelete: function() {
-      axios.post(this.$store.getters.deleteAppt,{'appointment' : this.appointment}).then(
+      // get current patient username for post
+      let user = this.$store.getters.getCurrentPatient.userName;
+      // define meter to ensure proper format
+      const meter = {
+          label: this.meter.label,
+          question: this.meter.question,
+          scale: this.meter.scale,
+          due_date: this.meter.due_date,
+      }
+
+      axios.post(this.$store.getters.deleteTreatment+user, {'treatment' : meter, user}).then(
       function(response)
       {
-        // Check if the status of the response is successful
         if(response.status === 200){
-          console.log("Success");
-          // Closes this vue
-          self.$store.commit("alternateAppointment");
-          // Deletes the appointment from the appointment array in the VueX
-          self.$store.dispatch('deleteAppointment', self.appointment);
-          self.showWarning = false;
+          console.log("Successfully deleted Meter");
         } else {
-          console.log(response.data.response);
-          self.showWarning = true;
+            console.log("Failed to Create Meter");
         }
       }).catch(function(err){
-        // Display an error message if the connection went wrong
-        console.log("There was an error handling the request");
-        self.showWarning = true;
+        console.log(err);
       });
     },
     close: function() {

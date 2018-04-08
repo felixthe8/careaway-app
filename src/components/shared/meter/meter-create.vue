@@ -44,38 +44,45 @@ export default {
       label: "meter",
       question: "",
       scale: [1,10],
-      due_date: {}
+      due_date: ""
     }
   },
 
   methods: {
     create: function(event) {
+      // get form input for meter
       this.question = document.getElementById("meter-question").value;
       this.due_date = document.getElementById("meter-date").value;
 
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].object === this.due_date) {
+        if(this.calendar[i].date === this.due_date) {
+          // show meter on calendar
           this.calendar[i].meter = this;
           this.calendar[i].meter.created = true;
         }
       }
 
+      // close modal on create
       document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
+      // post new meter to database
       this.saveMeter();
+      // add new meter to Vuex
+      this.$store.dispatch("addMeter", this.$data);
     },
     saveMeter: function() {
+      // get current user
+      let user = this.$store.getters.getCurrentPatient.userName;
+
       const meter = {
         label: this.label,
         question: this.question,
         scale: this.scale,
-        due_date: this.due_date,
-        user: "test1111"
+        due_date: this.due_date
       }
 
-      axios.post(this.$store.getters.createMeterURL, meter).then(function(response) {
-          console.log("in axios loop");
-        if(response.date.success) {
+      axios.post(this.$store.getters.createMeterURL+user, {'treatment' : meter, user}).then(function(response) {
+        if(response.data.success) {
           console.log("Successfully Created Meter");
         } else {
           console.log("Failed to Create Meter");
@@ -85,6 +92,7 @@ export default {
       });
     },
     close: function() {
+      // close meter if exited
       document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
     }
   }

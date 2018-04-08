@@ -11,6 +11,9 @@ export const store = new Vuex.Store({
     questionSelected2:0,
     questionSelected3:0,
 
+    // Calendar State
+    calendarState: false,
+
     // Boolean value for controlling if the modals will display
     showRegistration: false,
     showLogin: false,
@@ -32,8 +35,7 @@ export const store = new Vuex.Store({
     checkBreachURL: 'http://localhost:8080/isBreached',
     breachURL: 'http://localhost:8080/breach',
     loginURL: 'http://localhost:8080/login',
-    registerPatientURL: 'http://localhost:8080/registerPatient',
-    registerMedicalProURL: 'http://localhost:8080/registerMed',
+    registerURL: 'http://localhost:8080/register',
     resetCredURL: 'http://localhost:8080/reset-creds',
     getSecurityQURL:'http://localhost:8080/security-questions?username=',
     validateAnswerURL: 'http://localhost:8080/validate-answers',
@@ -66,6 +68,8 @@ export const store = new Vuex.Store({
     // Widget URLs
     createMeterURL: 'http://localhost:8080/createTreatmentMeter?username=',
     createChecklistURL: 'http://localhost:8080/createTreatmentChecklist?username=',
+    deleteTreatment: 'http://localhost:8080/deleteTreatment?username=',
+    getTreatment: 'http://localhost:8080/getTreatment?username=',
 
     getTreatmentMeterURL: 'http://localhost:8080/getTreatmentMeter',
     getSingleTreatmentMeterURL: 'http://localhost:8080/getSingleTreatmentMeter',
@@ -85,10 +89,22 @@ export const store = new Vuex.Store({
     // Treatment Plan Data
     currentPatient: {},
     appointments: [],
+    meters: [],
+    currentMeter: {
+        "label": "",
+        "scale": ["",""],
+        "due_date": "",
+        "user": ""
+    },
+    checklists: [],
+    currentChecklist: {},
     currentAppointment: {},
   },
 
   getters: {
+    calendarState: (state) => {
+      return state.calendarState;
+    },
     checkBreachURL: (state) => {
       return state.checkBreachURL;
     },
@@ -98,11 +114,8 @@ export const store = new Vuex.Store({
     loginURL: (state) => {
       return state.loginURL;
     },
-    registerPatientURL: (state) => {
-      return state.registerPatientURL;
-    },
-    registerMedicalProURL:(state) => {
-      return state.registerMedicalProURL;
+    registerURL: (state) => {
+      return state.registerURL;
     },
     resetCredURL: (state) => {
       return state.resetCredURL;
@@ -230,6 +243,12 @@ export const store = new Vuex.Store({
     createChecklistURL: (state) => {
       return state.createChecklistURL;
     },
+    deleteTreatment: (state) => {
+      return state.deleteTreatment;
+    },
+    getTreatment: (state) => {
+      return state.getTreatment;
+    },
     modifyAppointmentURL: (state) => {
       return state.modifyAppointmentURL;
     },
@@ -245,8 +264,14 @@ export const store = new Vuex.Store({
     meters: (state) => {
       return state.meters;
     },
+    currentMeter: (state) => {
+      return state.currentMeter;
+    },
     checklists: (state) => {
       return state.checklists;
+    },
+    currentChecklist: (state) => {
+      return state.currentChecklist;
     },
     singlePatientCompletion:(state) => {
       return state.singlePatientCompletion;
@@ -259,7 +284,9 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
-    // function to flip the value of showLogin
+    calendarState: (state) => {
+      state.calendarState = !state.calendarState;
+    },
     alternateLogin: (state) => {
        state.showLogin = !state.showLogin;
     },
@@ -347,6 +374,15 @@ export const store = new Vuex.Store({
     addMeter: (state, payload) => {
       state.meters.push(payload);
     },
+    currentMeter: (state, payload) => {
+      state.currentMeter = payload;
+    },
+    addChecklist: (state, payload) => {
+      state.checklists.push(payload);
+    },
+    currentChecklist: (state, payload) => {
+      state.currentChecklist = payload;
+    },
     editMeter: (state, payload) => {
       function findOldMeter(element){
         return element.date === payload.originalMeter.date;
@@ -357,13 +393,12 @@ export const store = new Vuex.Store({
     deleteMeter: (state, payload) => {
       var temp = [];
       for(var i=0; i < state.meters.length; i++) {
-        if(state.meters[i].date !== payload.date) {
+        if(state.meters[i].due_date !== payload.due_date) {
           temp.push(state.meters[i]);
         }
       }
       state.meters = temp;
     },
-    //
     addChecklist: (state, payload) => {
       state.checklists.push(payload);
     },
@@ -377,7 +412,7 @@ export const store = new Vuex.Store({
     deleteChecklist: (state, payload) => {
       var temp = [];
       for(var i=0; i < state.checklists.length; i++) {
-        if(state.checklists[i].date !== payload.date) {
+        if(state.checklists[i].due_date !== payload.due_date) {
           temp.push(state.checklists[i]);
         }
       }
@@ -399,7 +434,9 @@ export const store = new Vuex.Store({
   },
 
   actions: {
-    // action that will call the AlternateLogin mutation
+    calendarState: (context) => {
+      context.commit('calendarState');
+    },
     alternateLogin: (context) => {
       context.commit('alternateLogin');
     },
@@ -453,6 +490,30 @@ export const store = new Vuex.Store({
     },
     addAppointment: (context, payload) => {
       context.commit('addAppointment', payload);
+    },
+    toggleMeter: (context, payload) => {
+      context.commit("toggleMeter", payload);
+    },
+    toggleChecklist: (context, payload) => {
+      context.commit("toggleChecklist", payload);
+    },
+    addMeter: (context, payload) => {
+      context.commit('addMeter', payload);
+    },
+    deleteMeter: (context, payload) => {
+      context.commit('deleteMeter', payload);
+    },
+    currentMeter: (context, payload) => {
+      context.commit('currentMeter', payload);
+    },
+    addChecklist: (context, payload) =>  {
+      context.commit('addChecklist', payload);
+    },
+    deleteChecklist: (context, payload) => {
+      context.commit('deleteChecklist', payload);
+    },
+    currentChecklist: (context, payload) =>  {
+      context.commit('currentChecklist', payload);
     },
     editAppointment: (context, payload) => {
       context.commit('editAppointment', payload);

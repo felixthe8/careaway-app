@@ -44,12 +44,12 @@ export default {
   },
 
   created: function() {
-    this.calendar = this.$renderCalendar(0);
+    this.calendar = this.$renderCalendar();
 
     let appointments = this.$store.getters.appointments;
     for(var i=0; i < appointments.length; i++) {
       for(var j=0; j < this.calendar.length; j++) {
-        if(appointments[i].date === this.calendar[j].object) {
+        if(appointments[i].date === this.calendar[j].date) {
           this.calendar[j].appointment = appointments[i];
           appointments[i].created = true;
         }
@@ -84,7 +84,8 @@ export default {
       text-align: center;
     }
   }
-    #patientLabel{
+
+  #patientLabel{
     float: right;
   }
 }

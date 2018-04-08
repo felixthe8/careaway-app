@@ -4,30 +4,39 @@ const Calendar = {}
 Calendar.install = function (Vue, options) {
 
   // Instance Method
-  Vue.prototype.$renderCalendar = function (start) {
-      var moment = require("moment");
+  Vue.prototype.$renderCalendar = function (initial, state) {
+      let moment = require("moment");
 
       // week day array
       let week = ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"];
       // get today's date object
       let today = new Date();
-      // get the first day of the month
-      if(start === 1) {
-        start = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-      } else if(start === 0) {
-        start = new Date(today.getFullYear(), today.getMonth(), 1);
-      } else {
-        start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+
+      // state default to month
+      let SIZE = 25;
+      // if is set, get initial month request or set initial month to the current month
+      initial = initial || today;
+      // initialize start date variable
+      let start = new Date();
+
+      if(!state) {
+        // get month start ~ first day of calendar month + days to monday
+        start = new Date(today.getFullYear(), initial.getMonth(), 1);
+      }
+      else {
+        SIZE = 5;
+        // get week start ~ first day of calendar month + days to monday
+        let start = new Date(today.getFullYear(), today.getMonth, initial.getDate());
       }
 
-      // start on monday
+      // set start to current monday
       start = new Date(start.getFullYear(), start.getMonth(), start.getDate() + (start.getDay() == 0?-6:1) - start.getDay());
 
       // careaway calendar month
-      let month = [];
+      let calendar = [];
 
       let next = 0, count = 0;
-      while(count < 25) {
+      while(count < SIZE) {
         //skip saturdays and sundays
         if(start.getDay() === 0) {
           next = 1; //set next after first itr
@@ -38,9 +47,10 @@ Calendar.install = function (Vue, options) {
         }
 
         // add day object to month
-        month[count] = {
-          "object": moment(new Date(start.getFullYear(), start.getMonth(), start.getDate())).format("YYYY-MM-DD"),
-          "date": start.getDate(),
+        calendar[count] = {
+          "object": new Date(start.getFullYear(), start.getMonth(), start.getDate()),
+          "date": moment(new Date(start.getFullYear(), start.getMonth(), start.getDate())).format("YYYY-MM-DD"),
+          "day": start.getDate(),
           "code": start.getDay(),
           "month": start.getMonth(),
           "name": week[start.getDay()],
@@ -58,8 +68,9 @@ Calendar.install = function (Vue, options) {
       }
 
       // return array of day objects
-      return month;
+      return calendar;
   }
+
 }
 
 // Automatic installation of plugin within web context

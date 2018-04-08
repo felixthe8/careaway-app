@@ -152,13 +152,14 @@
             console.log(this.appointment.date);
             // get element by date attribute
             for(var i=0; i < this.calendar.length; i++) {
-              if(this.calendar[i].object === this.appointment.date) {
+              if(this.calendar[i].date === this.appointment.date) {
                 this.calendar[i].appointment = {};
               }
           } 
         } else {
             console.log("You can't cancel right now");
-              self.showWarning = true;
+            this.showWarning = true;
+            this.warning = "You can't cancel right now";
           }
       }
     }

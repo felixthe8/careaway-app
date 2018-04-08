@@ -8,6 +8,11 @@
       @drag="onDrag">Checklist</button>
 
     <create :calendar="calendar"/>
+
+    <status
+      :calendar="calendar"
+      :checklist="this.$store.getters.currentChecklist"/>
+
   </div>
 
 </template>
@@ -15,17 +20,18 @@
 <script>
 
 import create from "./checklist/checklist-create";
+import status from "./checklist/checklist-status";
 
 export default {
   name: "checklist",
 
   props: ["calendar"],
 
-  components: { create },
+  components: { create, status },
 
   methods: {
     dragStart: function(event) {
-      this.$store.commit("toggleMeter");
+      this.$store.dispatch("toggleChecklist");
     },
     onDrag: function(event) {
       event.preventDefault();

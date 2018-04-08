@@ -5,8 +5,12 @@
 
       <div class="columns is-mobile calendar__menu">
         <div class="item"><div class="calendar__menu--arrow-left" @click="previous"></div></div>
-        <div class="item calendar__menu--label current-month"><h1>{{months[calendar[15].month]}}</h1></div>
-        <div class="item calendar__menu--label current-week"><h1>Week of the {{getCurrent.monday}}th</h1></div>
+        <div class="item calendar__menu--label current-month">
+          <h1 v-if="!this.$store.getters.calendarState">{{months[calendar[12].month]}}</h1>
+        </div>
+        <div class="item calendar__menu--label current-week">
+          <h1 v-if="this.$store.getters.calendarState">Week of {{months[calendar[4].month]}} {{getCurrent.monday}}</h1>
+        </div>
         <div class="item"><div class="calendar__menu--arrow-right" @click="next"></div></div>
 
         <div class="item calendar__menu--button" @click="monthly"><h1 class="text">Month</h1></div>
@@ -18,48 +22,44 @@
           @dragover="dragOver"
           @drop="drop"
           v-for="day, index in calendar.length"
-          :date="calendar[index].object"
+          :date="calendar[index].date"
           :class="{
             'no-right' : (index+1)%5 === 0,
             'no-bottom': (index > 19),
-            'weekly': calendar[index].date < getCurrent.monday || calendar[index].date > getCurrent.friday,
-            'no-bottom__mobile': calendar[index].date === getCurrent.friday
+            'no-bottom__mobile': calendar[index].date === getCurrent.friday,
+            /* 'calendar__day__blocked': calendar[index].month != calendar[12].month */
           }">
 
           <div class="calendar__day--date"
             :class="{
                 'today' : getCurrent.date === calendar[index].date
-          }">{{calendar[index].date}}</div>
-
-          <div class="blocked"
-            v-if="calendar[index].month != getCurrent.month"
-            :class="{
-              'rounded-left': (index === 0),
-              'rounded-right': (index === 24),
-          }"></div>
+          }">{{calendar[index].day}}</div>
 
           <div class="calendar__day--label" v-if="index < 5">{{calendar[index].name}}</div>
 
           <div class="calendar__day--appointment"
             v-if="calendar[index].appointment.created">
               <button class="button calendar__day--button"
-                @click="toggleCreate(calendar[index].appointment.date)"
+                @click="toggleAppointment(calendar[index].appointment.date)"
                 :id="calendar[index].appointment.date">
                 {{calendar[index].appointment.date}}
               </button>
           </div>
 
           <div class="calendar__day--meter"
-            v-if="calendar[index].meter.created">
+            v-if="calendar[index].meter.due_date">
             <button class="button calendar__day--button"
-              @click="toggleStatus(calendar[index].appointment.date)">
+              :date="calendar[index].meter.due_date"
+              @click="toggleMeter(calendar[index].meter.due_date)">
                 {{calendar[index].meter.label}}
             </button>
           </div>
 
           <div class="calendar__day--checklist"
-            v-if="calendar[index].checklist.created">
-            <button class="button calendar__day--button">
+            v-if="calendar[index].checklist.due_date">
+            <button class="button calendar__day--button"
+              :date="calendar[index].checklist.due_date"
+              @click="toggleChecklist(calendar[index].checklist.due_date)">
                 {{calendar[index].checklist.label}}
             </button>
           </div>
@@ -85,74 +85,135 @@ export default {
   data() {
     return {
       months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      week: ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"],
-      state: 0
+      week: ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"]
     }
   },
 
   methods: {
+
+    /* Next Previous Button Click Handlers */
     next: function(event) {
-      // if(this.state < 1)
-      //   this.state = this.state + 1;
-      // this.calendar = this.$renderCalendar(this.state);
+      let state = this.$store.getters.calendarState;
+      // default to current month
+      let next = this.getWeek(this.calendar[0].object, 7);
+      if(!state) { next = this.getMonth(this.calendar[12].object, 1); }
+      this.calendar = this.$renderCalendar(next, state);
+      this.getEvents();
     },
     previous: function(event) {
-      // if(this.state > -1)
-      //   this.state = this.state - 1;
-      // this.calendar = this.$renderCalendar(this.state);
+      let state = this.$store.getters.calendarState;
+      // default to current month
+      let previous = this.getWeek(this.calendar[0].object, -7);
+      if(!state) { previous = this.getMonth(this.calendar[12].object, -1); }
+      this.calendar = this.$renderCalendar(previous, this.$store.getters.calendarState);
+      this.getEvents();
     },
-    weekly: function(event) {
-      let days = document.getElementsByClassName("monthly")[0].children;
-      Array.from(days).forEach((item)=> {
-        if(item.classList.contains("weekly"))
-          item.classList.add("weekly--toggle");
-        else
-          item.classList.add("week-height");
-      });
+    /* End Previous Button Click Handlers */
 
+    /* Tab Click Handlers */
+    weekly: function(event) {
+      this.$store.dispatch("calendarState");
+      this.calendar = this.$renderCalendar(this.calendar[0].object, true);
+      this.getEvents();
+
+      // get day elements from html add week height
+      let days = document.getElementsByClassName("monthly")[0].children;
+      Array.from(days).forEach((item)=> { item.classList.add("week-height"); });
+
+      // add/remove active class to tabs
       document.getElementsByClassName("calendar__menu--button")[0].classList.add("active");
       document.getElementsByClassName("calendar__menu--button")[1].classList.remove("active");
     },
     monthly: function(event) {
-        let days = document.getElementsByClassName("monthly")[0].children;
-        Array.from(days).forEach((item)=> {
-          if(item.classList.contains("weekly"))
-            item.classList.remove("weekly--toggle");
-          else
-            item.classList.remove("week-height");
-        });
+        this.$store.dispatch("calendarState");
+        this.calendar = this.$renderCalendar();
+        this.getEvents();
 
+        // get day elements from html remove week height
+        let days = document.getElementsByClassName("monthly")[0].children;
+        Array.from(days).forEach((item)=> { item.classList.remove("week-height"); });
+
+        // add/remove active class to tabs
         document.getElementsByClassName("calendar__menu--button")[1].classList.add("active");
         document.getElementsByClassName("calendar__menu--button")[0].classList.remove("active");
     },
-    toggleCreate: function(index) {
+    /* End Tab Click Handlers */
+
+    /* Calendar Helper Functions */
+    getMonth(current, shift) {
+      current = moment(current);
+      return new Date(current.add(shift, 'months'));
+    },
+    getWeek(current, shift) {
+      current = moment(current);
+      return new Date(current.add(shift, 'days'));
+    },
+    getEvents: function() {
+      let patientName = this.$store.getters.getCurrentPatient.userName;
+      // updates events on calendar
+      let appointments = this.$store.getters.appointments;
+      let meters = this.$store.getters.meters;
+      let checklists = this.$store.getters.checklists;
+      for(var i=0; i < this.calendar.length; i++) {
+        // get current events based on calendar date
+        let appointmentMatch = appointments.find(appointment  => appointment.date === this.calendar[i].date && appointment.appointee === patientName);
+        if(appointmentMatch) { this.calendar[i].appointment = appointmentMatch; }
+        let meterMatch = meters.find(meter  => meter.due_date === this.calendar[i].date);
+        if(meterMatch) { this.calendar[i].meter = meterMatch; }
+        let checklistMatch = checklists.find(checklist  => checklist.due_date === this.calendar[i].date);
+        if(checklistMatch) { this.calendar[i].checklist = checklistMatch; }
+      }
+    },
+    /* End Calendar Helper Functions */
+
+    /* Modal Toggle Functions */
+    toggleAppointment: function(index) {
       this.$store.dispatch("editableAppointment", index);
       this.$store.dispatch("alternateAppointment");
     },
-    toggleStatus: function() {
+    toggleMeter(date) {
+      // show meter status modal
       document.getElementsByClassName("meter-status-modal")[0].classList.add("show-modal");
+      // find current meter based on day
+      let current = this.calendar.filter(day => day.date === date)[0];
+      // update vuex
+      this.$store.dispatch("currentMeter", current.meter);
     },
+    toggleChecklist(date) {
+      // show checklist status modal
+      document.getElementsByClassName("checklist-status-modal")[0].classList.add("show-modal");
+      // find current checklist based on day
+      let current = this.calendar.filter(day => day.date === date)[0];
+      // update vuex
+      this.$store.dispatch("currentChecklist", current.checklist);
+    },
+    /* End Modal Toggle Functions */
+
+    /* Widget Drag Drop Event Handlers */
     dragOver: function(event) {
       event.preventDefault();
 
-      // define hover style
-      // event.target.style.background = "red";
+      // TODO: define hover state to indicate drop area
     },
     drop: function(event) {
       event.preventDefault();
-      
+      let date = event.target.getAttribute("date");
+      let now = moment(new Date()).format("YYYY-MM-DD");
+      if(date < now) {
+        alert("Must choose date greater than today's date, try again.");
+        return;
+      }
+
       if(this.$store.getters.showMeter === true) {
-        let date = event.target.getAttribute("date");
         document.getElementById("meter-date").value = date;
         document.getElementsByClassName("meter-modal")[0].classList.add("show-modal");
-        this.$store.commit("toggleMeter");
+        this.$store.dispatch("toggleMeter");
       }
 
       if(this.$store.getters.showChecklist === true) {
-        let date = event.target.getAttribute("date");
         document.getElementById("checklist-date").value = date;
         document.getElementsByClassName("checklist-modal")[0].classList.add("show-modal");
-        this.$store.commit("toggleChecklist");
+        this.$store.dispatch("toggleChecklist");
       }
     }
   },
@@ -186,26 +247,6 @@ export default {
   position: relative;
 }
 
-.weekly {
-  display: none;
-
-  @media #{$tablet} {
-    display: block;
-  }
-
-  &--toggle {
-      display: none;
-  }
-}
-
-.monthly {
-  display: block;
-
-  @media #{$smallTablet} {
-    display: flex;
-  }
-}
-
 .calendar {
   position: absolute;
   left: 0;
@@ -232,19 +273,6 @@ export default {
 
     &--label {
       color: $purple-dark;
-
-      &.current-week {
-        @media #{$tablet} {
-          display: none;
-        }
-      }
-
-      &.current-month {
-        display: none;
-        @media #{$tablet} {
-          display: block;
-        }
-      }
     }
 
     &--button {
@@ -328,8 +356,13 @@ export default {
     }
 
     &--button {
-      background: $green-light;
+      background: $green-light !important;
       font-size: 8px;
+    }
+
+    &__blocked {
+      background-color: $green-light;
+      opacity: .5;
     }
 
     &.no-right {
@@ -353,25 +386,6 @@ export default {
 
 .week-height {
   height: 500px;
-}
-
-.blocked {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0;
-  background-color: $green-light;
-  opacity: .5;
-  width: 100%;
-  height: 100%;
-
-  &.rounded-left {
-    border-top-left-radius: 10px;
-  }
-
-  &.rounded-right {
-    border-bottom-right-radius: 10px;
-  }
 }
 
 </style>

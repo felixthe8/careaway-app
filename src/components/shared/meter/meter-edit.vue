@@ -50,7 +50,7 @@ export default {
 
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].object === this.due_date) {
+        if(this.calendar[i].date === this.due_date) {
           this.calendar[i].meter = this;
           this.calendar[i].meter.created = true;
         }

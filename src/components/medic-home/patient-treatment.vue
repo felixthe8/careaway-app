@@ -30,6 +30,7 @@ import checklistWidget from '../shared/checklist.vue';
 import calendar from '../shared/calendar.vue';
 import diagnosis from './set-diagnosis.vue';
 import moment from 'moment';
+import axios from 'axios';
 
 export default {
   name: 'medic-calendar',
@@ -47,25 +48,64 @@ export default {
       isMed: true,
       meter: false,
       checklist: false,
+      patient: "",
+      diagnosis: "",
+      user: ""
     }
   },
 
-  methods: {
-
-  },
-
   created: function() {
-    this.calendar = this.$renderCalendar(0);
-
     let appointments = this.$store.getters.appointments;
+    let patientName = this.$store.getters.getCurrentPatient.userName;
+
+    // set meter
+    this.calendar = this.$renderCalendar();
+    this.patient = this.$store.getters.getCurrentPatient.fullName;
+    this.diagnosis = this.$store.getters.getCurrentPatient.diagnosis;
+    this.user = patientName;
+
+    // update calendar
     for(var i=0; i < appointments.length; i++) {
       for(var j=0; j < this.calendar.length; j++) {
-        if(appointments[i].date === this.calendar[j].object) {
+        if(appointments[i].date === this.calendar[j].date
+          && appointments[i].appointee === patientName) {
           this.calendar[j].appointment = appointments[i];
           appointments[i].created = true;
         }
       }
     }
+
+    // get Widgets for VueX
+    axios.get(this.$store.getters.getTreatment+patientName).then(result => {
+      var treatments = result.data.treatments;
+      for(var i=0; i < treatments.length; i++) {
+        // get patient meters and add to store
+        if(treatments[i].label === "meter") {
+          this.$store.dispatch("addMeter", treatments[i]);
+          this.isLoaded = true;
+          // check and add to calendar
+          for(var j=0; j < this.calendar.length; j++) {
+            if(treatments[i].due_date === this.calendar[j].date) {
+              this.calendar[j].meter = treatments[i];
+            }
+          }
+        }
+        // get patient checklists and add to store
+        if(treatments[i].label === "checklist") {
+          this.$store.dispatch("addChecklist", treatments[i]);
+          this.isLoaded = true;
+          // check and add to calendar
+          for(var j=0; j < this.calendar.length; j++) {
+            if(treatments[i].due_date === this.calendar[j].date) {
+              this.calendar[j].checklist = treatments[i];
+            }
+          }
+        }
+      }
+    }).catch(error => {
+      console.log(error);
+    });
+
   }
 
 }
@@ -86,8 +126,9 @@ export default {
       text-align: center;
     }
   }
-  .patient-info{
-    margin: 0% 1% 0% 3%;
+
+  #patientLabel{
+    float: right;
   }
 }
 
