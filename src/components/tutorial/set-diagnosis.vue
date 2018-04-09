@@ -9,7 +9,7 @@
               It will be located on the left hand side of the page.
           </p>
           <figure>
-            <img :src = "modal" atl = "Set Diagnosis Widget"/>
+            <img :src = "modal" alt = "Set Diagnosis Widget"/>
           </figure>
           <p>
              This is the widget that will be used to set each individual patient diagnosis. 

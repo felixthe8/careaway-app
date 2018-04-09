@@ -17,6 +17,7 @@ import registration from '../components/homepage/sso_registration.vue';
 import tutorial from '../components/tutorial/tutorial-page.vue';
 import welcomePage from '../components/tutorial/welcome.vue';
 import setDiagnosisTutorial from '../components/tutorial/set-diagnosis.vue';
+import createMeterWidgetTutorial from '../components/tutorial/meter-widget-creation.vue';
 
 import cookies from 'browser-cookies';
 Vue.use(Router);
@@ -207,6 +208,10 @@ const router = new Router ({
         {
           path: '/Tutorial/SetDiagnosis',
           component: setDiagnosisTutorial
+        },
+        {
+          path: '/Tutorial/CreateMeter',
+          component: createMeterWidgetTutorial
         }
       ],
       meta: {

@@ -21,7 +21,7 @@
         <li>
             <a> Meter Widget </a>
             <ul>
-              <li><a>Meter Widget Creation</a></li>
+              <li><a @click = "routeCreateMeterWidgetTutorial">Meter Widget Creation</a></li>
               <li><a>Meter Widget Interaction</a></li>
             </ul>
         </li>
@@ -41,6 +41,9 @@ export default {
     },
      routeSetDiagnosisTutorial() {
         this.$router.push('/Tutorial/SetDiagnosis')
+     },
+     routeCreateMeterWidgetTutorial() {
+        this.$router.push('/Tutorial/CreateMeter')
      }
    }
 }
