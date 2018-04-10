@@ -51,6 +51,7 @@ export default {
   methods: {
     create: function(event) {
       // get form input for meter
+      // TODO: use v-bind
       this.question = document.getElementById("meter-question").value;
       this.due_date = document.getElementById("meter-date").value;
 
@@ -64,6 +65,7 @@ export default {
       }
 
       // close modal on create
+      // TODO: change to id (this.$ref)
       document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
       // post new meter to database
       this.saveMeter();

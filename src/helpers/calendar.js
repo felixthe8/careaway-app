@@ -2,7 +2,7 @@
 const Calendar = {}
 
 Calendar.install = function (Vue, options) {
-
+    // TODO: add new prototype methods global constants
   // Instance Method
   Vue.prototype.$renderCalendar = function (initial, state) {
       let moment = require("moment");
@@ -58,6 +58,7 @@ Calendar.install = function (Vue, options) {
           "meter": {},
           "checklist": {}
         }
+        // TODO: change object to null
 
         // update count & set next after first itr
         count++;
