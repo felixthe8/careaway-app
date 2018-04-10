@@ -28,7 +28,6 @@ Calendar.install = function (Vue, options) {
         // get week start ~ first day of calendar month + days to monday
         start = new Date(today.getFullYear(), today.getMonth(), initial.getDate());
         console.log("set week start");
-        console.log(start);
       }
       console.log(start);
 

@@ -9,7 +9,7 @@
           <h1 v-if="!this.$store.getters.calendarState">{{months[calendar[12].month]}}</h1>
         </div>
         <div class="item calendar__menu--label current-week">
-          <h1 v-if="this.$store.getters.calendarState">Week of {{months[calendar[4].month]}} {{getCurrent.monday}}</h1>
+          <h1 v-if="this.$store.getters.calendarState">Week of {{months[calendar[0].month]}} {{calendar[0].day}}</h1>
         </div>
         <div class="item"><div class="calendar__menu--arrow-right" @click="next"></div></div>
 
@@ -113,7 +113,7 @@ export default {
     /* Tab Click Handlers */
     weekly: function(event) {
       this.$store.dispatch("calendarState");
-      this.calendar = this.$renderCalendar(this.calendar[0].object, true);
+      this.calendar = this.$renderCalendar(new Date(), true);
       this.getEvents();
 
       // get day elements from html add week height
