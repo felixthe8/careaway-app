@@ -34,7 +34,7 @@ import axios from 'axios';
 import appointmentStatus from '../shared/appointment/appointment-status';
 import create from '../shared/appointment/appointment-creation';
 import modify from '../shared/appointment/appointment-modification';
-import calendar from '../shared/calendar';
+import calendar from './calendar';
 import debounce from 'debounce';
 
 export default {
@@ -80,6 +80,7 @@ export default {
       // get Appointments for VueX
       axios.get(this.$store.getters.getAppointmentURL+this.$store.getters.authenticatedUsername).then(result => {
         var appointments = result.data.appointments;
+        self.isLoaded = true;
         for(var i=0; i < appointments.length; i++) {
           self.$store.dispatch('addAppointment', appointments[i]);
           self.isLoaded = true;

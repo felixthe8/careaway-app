@@ -254,7 +254,7 @@ export default {
       const sameMonth = dueDate.month-1 === todayDate.getMonth();
       const sameDay = dueDate.day === todayDate.getDate();
 
-      if (!sameYear || !sameMonth || !sameDay) return;
+      //if (!sameYear || !sameMonth || !sameDay) return;
 
       this.selectedWidget = widget;
       this.active = widget.label;
