@@ -158,7 +158,8 @@
           } 
         } else {
             console.log("You can't cancel right now");
-              self.showWarning = true;
+            this.showWarning = true;
+            this.warning = "You can't cancel right now";
           }
       }
     }

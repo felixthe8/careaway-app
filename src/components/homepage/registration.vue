@@ -231,7 +231,7 @@
             patient: this.patientForm
           }
           // Sends data to the proxy server on this route
-          axios.post(this.$store.getters.registerPatientURL, newPatient).then((
+          axios.post(this.$store.getters.registerURL, newPatient).then((
             function(response){
               self.$store.dispatch('authenticatedUsername', newPatient.username);
               //This allows the user to be signed in as a patient
@@ -280,7 +280,7 @@
             patient: this.patientForm
           }
           // Sends data to the proxy server on this route
-          axios.post(this.$store.getters.registerMedicalProURL,newMedicalProfessional).then((
+          axios.post(this.$store.getters.registerURL,newMedicalProfessional).then((
             function(response){
               //This allows the user to sign in as a medical professional
               self.$store.dispatch('authenticatedUsername', newMedicalProfessional.username);

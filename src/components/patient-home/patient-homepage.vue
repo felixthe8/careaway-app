@@ -56,7 +56,7 @@ export default {
         appointee: [],
         isMed: true,
         calendar: [0],
-        isLoaded: false
+        isLoaded: true
       }
     },
 
