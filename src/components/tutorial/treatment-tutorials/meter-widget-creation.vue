@@ -18,7 +18,7 @@
       <p>
         To assign a meter widget on a specific day, drag and hold the meter widget and drop it on a 
         specific day. A popup should display with fields to input the meter widget question, scale, and
-        date. If you want to close the popup, click the X in the top right corner. 
+        date. If you want to close the popup, click the <i>X</i> in the top right corner. 
       </p>
       <figure class = "gif">
         <img :src = "dragDemo" alt = "Drag 'n Drop Meter'"/>
@@ -63,11 +63,11 @@ export default {
 
 <style lang="scss" scoped>
 .instructions{
-    margin-top: 2%;
+  margin-top: 2%;
 }
 .instructions p{
-    margin-top: 2%;
-    margin-bottom: 2%;
+  margin-top: 2%;
+  margin-bottom: 2%;
 }
 figure{
   width: 25%

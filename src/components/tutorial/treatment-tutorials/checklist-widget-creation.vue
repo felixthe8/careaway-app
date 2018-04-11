@@ -12,14 +12,27 @@
         After selecting a patient, locate the widget labeled <i>Checklist</i> on the Patient Treatment 
         Creation page. It will be located on the left hand side of the page inside a green box.
       </p>
+      <figure>
+        <img :src = "widgetBox" alt = "Create Checklist Widget"/>
+      </figure>
+      <p>
+        To assign a checklist widget on a specific day, drag and hold the checklist widget and drop it on
+        a specific day. A popup should display with fields to input       
+      </p>
     </div>
   </div>
   
 </template>
 
 <script>
+import widgetBox from '../../../assets/images/tutorial/widgets/checklist/checklist-widget.png'
 export default {
   name: 'meterWidgetCreationTutorial',
+  data() {
+    return {
+      widgetBox: widgetBox
+    }
+  },
   computed: {
     showMedicalOnly(){
        return this.$store.getters.mpTutorialOnly
