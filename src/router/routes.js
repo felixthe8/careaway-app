@@ -204,24 +204,33 @@ const router = new Router ({
       children: [
         {
           path: '/Tutorial',
-          component: welcomePage
+          component: welcomePage,
+          meta: {
+            title: "CareAway Tutorials Page"
+          },
         },
         {
           path: '/Tutorial/SetDiagnosis',
-          component: setDiagnosisTutorial
+          component: setDiagnosisTutorial,
+          meta: {
+            title: "Set Diagnosis Tutorial"
+          },
         },
         {
           path: '/Tutorial/CreateMeter',
-          component: createMeterWidgetTutorial
+          component: createMeterWidgetTutorial,
+          meta: {
+            title: "Meter Creation Tutorial"
+          },
         },
         {
           path: '/Tutorial/CreateChecklist',
-          component: createChecklistWidgetTutorial
+          component: createChecklistWidgetTutorial,
+          meta: {
+            title: "Checklist Creation Tutorial"
+          },
         }
       ],
-      meta: {
-        title: "CareAway Tutorials"
-      },
 
     },
     // Wildcard catch all route; Redirects to error page
