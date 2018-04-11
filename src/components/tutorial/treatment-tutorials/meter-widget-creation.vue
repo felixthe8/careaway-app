@@ -38,9 +38,9 @@
 </template>
 
 <script>
-import widgetBox from '../../assets/images/tutorial/widgets/meter/meter-widget.png'
-import dragDemo from '../../assets/images/tutorial/widgets/meter/meter-drag-demo.gif'
-import createDemo from '../../assets/images/tutorial/widgets/meter/meter-input-demo.gif'
+import widgetBox from '../../../assets/images/tutorial/widgets/meter/meter-widget.png'
+import dragDemo from '../../../assets/images/tutorial/widgets/meter/meter-drag-demo.gif'
+import createDemo from '../../../assets/images/tutorial/widgets/meter/meter-input-demo.gif'
 export default {
   name: 'meterWidgetCreationTutorial',
   data(){

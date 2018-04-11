@@ -52,10 +52,10 @@
 </template>
 
 <script>
-import modal from '../../assets/images/tutorial/set-diagnosis/set-diagnosis-modal.png'
-import modalAutocomplete from '../../assets/images/tutorial/set-diagnosis/set-diagnosis-autocomplete.png'
-import autocompleteDemo from '../../assets/images/tutorial/set-diagnosis/autocomplete-demo.gif'
-import success from '../../assets/images/tutorial/set-diagnosis/set-diagnosis-success.gif'
+import modal from '../../../assets/images/tutorial/set-diagnosis/set-diagnosis-modal.png'
+import modalAutocomplete from '../../../assets/images/tutorial/set-diagnosis/set-diagnosis-autocomplete.png'
+import autocompleteDemo from '../../../assets/images/tutorial/set-diagnosis/autocomplete-demo.gif'
+import success from '../../../assets/images/tutorial/set-diagnosis/set-diagnosis-success.gif'
 export default {
   name: 'setDiagnosisTutorial',
   data() {
