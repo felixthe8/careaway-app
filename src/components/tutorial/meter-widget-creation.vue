@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class = "title">Creating the Meter Widget</h1>
-    {{showMedicalOnly}}
+    <i>{{showMedicalOnly}}</i>
 
     <div class="instructions">
     <p>
@@ -25,7 +25,7 @@
      </figure>
       <p>
           Next, you need to input a question and a scale. For this example, we will use <i> {{question}}</i>
-          as the widget question. We will set the scale from {{scale[0]}} - {{scale[1]}}. You simply type 
+          as the widget question. We will set the scale from <i>{{scale[0]}} - {{scale[1]}} </i>. You simply type 
           in the question and the scale. The date should be already filled in with the date that you 
           dropped the meter widget on. After the fields have been input, click <i>{{done}}</i> and that's 
           it! 
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import widgetBox from '../../assets/images/tutorial/widgets/widgets.png'
+import widgetBox from '../../assets/images/tutorial/widgets/meter/meter-widget.png'
 import dragDemo from '../../assets/images/tutorial/widgets/meter/meter-drag-demo.gif'
 import createDemo from '../../assets/images/tutorial/widgets/meter/meter-input-demo.gif'
 export default {

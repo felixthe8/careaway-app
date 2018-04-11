@@ -1,13 +1,13 @@
 <template>
     <aside class="menu">
     <p class="menu-label">
-        General
+      General
     </p>
     <ul class="menu-list">
-        <li><a @click = "routeTutorialWelcome">Welcome to CareAway</a></li>
+      <li><a @click = "routeTutorialWelcome">Welcome to CareAway</a></li>
     </ul>
     <p class="menu-label">
-        Medical Widgets
+      Medical Widgets
     </p>
     <ul class="menu-list">
         <li>
@@ -19,7 +19,7 @@
         </li>
 
         <li>
-            <a> Meter Widget </a>
+          <a> Meter Widget </a>
             <ul>
               <li><a @click = "routeCreateMeterWidgetTutorial">Meter Widget Creation</a></li>
               <li><a>Meter Widget Interaction</a></li>
@@ -37,13 +37,13 @@ export default {
    name: 'tutorialMenu',
    methods: {
     routeTutorialWelcome(){
-       this.$router.push('/Tutorial')
+      this.$router.push('/Tutorial')
     },
      routeSetDiagnosisTutorial() {
-        this.$router.push('/Tutorial/SetDiagnosis')
+      this.$router.push('/Tutorial/SetDiagnosis')
      },
      routeCreateMeterWidgetTutorial() {
-        this.$router.push('/Tutorial/CreateMeter')
+      this.$router.push('/Tutorial/CreateMeter')
      }
    }
 }
