@@ -7,10 +7,11 @@
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
 
     <div class="patient-calendar" v-if="isLoaded">
-      <calendar :calendar="calendar" class="column is-four-fifths"/>
-      <meter-widget :widget="this.$store.getters.currentMeter" v-on:close="close" v-on:save="save" />
-      <checklist-widget :widget="this.$store.getters.currentChecklist" v-on:close="close" v-on:save="save" />
+      <calendar :calendar="calendar" class="column"/>
     </div>
+
+    <meter-widget :widget="this.$store.getters.currentMeter" v-on:close="close" v-on:save="save" />
+    <checklist-widget :widget="this.$store.getters.currentChecklist" v-on:close="close" v-on:save="save" />
 
     <appointment-status :appointment="getAppointment()" v-if="this.$store.getters.showAppointment" ></appointment-status>
 
@@ -39,6 +40,8 @@ import appointmentStatus from '../shared/appointment/appointment-status';
 import create from '../shared/appointment/appointment-creation';
 import modify from '../shared/appointment/appointment-modification';
 import calendar from '../shared/calendar';
+import meterWidget from './meter';
+import checklistWidget from './checklist';
 import debounce from 'debounce';
 
 export default {
@@ -49,7 +52,9 @@ export default {
       timeout,
       appointmentStatus,
       create,
-      modify
+      modify,
+      meterWidget,
+      checklistWidget
     },
 
     data() {
