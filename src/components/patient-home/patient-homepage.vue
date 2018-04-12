@@ -1,12 +1,16 @@
 <template>
+
   <div>
+
     <navbar class = "nav-bar"/>
 
-    <div class="patient-calendar"  v-if="isLoaded">
-      <calendar :calendar="calendar"/>
-    </div>
-
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
+
+    <div class="patient-calendar" v-if="isLoaded">
+      <calendar :calendar="calendar" class="column is-four-fifths"/>
+      <meter-widget :widget="this.$store.getters.currentMeter" v-on:close="close" v-on:save="save" />
+      <checklist-widget :widget="this.$store.getters.currentChecklist" v-on:close="close" v-on:save="save" />
+    </div>
 
     <appointment-status :appointment="getAppointment()" v-if="this.$store.getters.showAppointment" ></appointment-status>
 
@@ -34,7 +38,7 @@ import axios from 'axios';
 import appointmentStatus from '../shared/appointment/appointment-status';
 import create from '../shared/appointment/appointment-creation';
 import modify from '../shared/appointment/appointment-modification';
-import calendar from './calendar';
+import calendar from '../shared/calendar';
 import debounce from 'debounce';
 
 export default {
@@ -166,7 +170,27 @@ export default {
       },
       displaySessionwarning() {
         this.showWarning = true;
-      }
+      },
+      close() {
+        //this.active = '';
+        var modals = document.getElementsByClassName("modal");
+        for (var i=0;i<modals.length;i++) {
+          modals[i].classList.remove("is-active");
+        }
+      },
+      save(payload) {
+        const obj = {
+          treatment: payload,
+          username: this.$store.getters.authenticatedUsername
+        }
+        axios.put(this.$store.getters.updatePatientTreatmentURL,obj)
+        .then(function(response) {
+          // Updated
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
+      },
     },
     // beforeDestroy will run right before the user leaves the component.
     beforeDestroy() {
