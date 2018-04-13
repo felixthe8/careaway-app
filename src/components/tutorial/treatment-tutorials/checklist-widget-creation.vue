@@ -17,8 +17,22 @@
       </figure>
       <p>
         To assign a checklist widget on a specific day, drag and hold the checklist widget and drop it on
-        a specific day. A popup should display with fields to input       
+        a specific day. A popup should display with fields to input the checklist tasks and the date.  
+        If you want to close the popup, click the <i>X</i> in the top right corner.      
       </p>
+      <figure class = "gif">
+        <img :src = "dragDemo" alt = "Drag 'n Drop Checklist'"/>
+      </figure>
+      <p>
+        Next we need to input task(s) for the widget. For this example, here are the tasks that 
+        we will be adding: 
+        <ul id = "taskList">
+          <li v-for= "task in taskList">
+            <i>{{task}}</i>
+          </li>
+        </ul>
+      </p>
+
     </div>
   </div>
   
@@ -26,11 +40,14 @@
 
 <script>
 import widgetBox from '../../../assets/images/tutorial/widgets/checklist/checklist-widget.png'
+import dragDemo from '../../../assets/images/tutorial/widgets/checklist/checklist-drag-demo.gif'
 export default {
   name: 'meterWidgetCreationTutorial',
   data() {
     return {
-      widgetBox: widgetBox
+      widgetBox: widgetBox,
+      dragDemo: dragDemo,
+      taskList: ['Take calcium pills', 'Measure blood pressure', 'Exercise for 15 minutes']
     }
   },
   computed: {
@@ -55,6 +72,10 @@ figure{
 }
 .gif{
     width: 55%
+}
+#taskList {
+  list-style-type: square;
+  margin-left: 2%;
 }
 </style>
 
