@@ -42,7 +42,9 @@ export default {
 }
 .box {
   margin-right: 2%;
+  position: relative;
 }
+
 </style>
 
 

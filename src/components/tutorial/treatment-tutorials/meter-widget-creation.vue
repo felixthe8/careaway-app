@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class = "container">
     <h1 class = "title">Creating the Meter Widget</h1>
     <i>{{showMedicalOnly}}</i>
 
@@ -33,7 +33,13 @@
       <figure class = "gif">
        <img :src = "createDemo" alt = "Create Meter'"/>
       </figure>
+
+      <p>
+        
+        <a class="button is-link is-small" @click ="displayWidget">{{tryButton}}</a>
+      </p>
     </div>
+    <meterWidget v-if="showWidget" class = "show-modal"/>
   </div>  
 </template>
 
@@ -41,17 +47,26 @@
 import widgetBox from '../../../assets/images/tutorial/widgets/meter/meter-widget.png'
 import dragDemo from '../../../assets/images/tutorial/widgets/meter/meter-drag-demo.gif'
 import createDemo from '../../../assets/images/tutorial/widgets/meter/meter-input-demo.gif'
+import meterWidget from '../../shared/meter/meter-create.vue'
 export default {
   name: 'meterWidgetCreationTutorial',
+  components: {meterWidget},
   data(){
       return {
         widgetBox: widgetBox,
         dragDemo: dragDemo,
         createDemo: createDemo,
         scale: [1 , 10],
+        tryButton: 'Try Widget',
         question: 'How much pain are you in?',
-        done: 'Create Event'
+        done: 'Create Event',
+        showWidget: false,
       }
+  },
+  methods: {
+    displayWidget() {
+      this.showWidget = !(this.showWidget);
+    }
   },
   computed: {
     showMedicalOnly(){
