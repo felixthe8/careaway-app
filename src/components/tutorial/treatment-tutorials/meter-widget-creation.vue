@@ -33,13 +33,12 @@
       <figure class = "gif">
        <img :src = "createDemo" alt = "Create Meter'"/>
       </figure>
-
       <p>
-        
-        <a class="button is-link is-small" @click ="displayWidget">{{tryButton}}</a>
+        Click the button to try out the Meter Widget.
+        <a class="button is-link is-small try" @click ="displayWidget">{{tryButton}}</a>
       </p>
     </div>
-    <meterWidget v-if="showWidget" class = "show-modal"/>
+    <meterWidget v-if="showWidget" class = "show-modal" @close = "displayWidget"/>
   </div>  
 </template>
 
@@ -66,6 +65,7 @@ export default {
   methods: {
     displayWidget() {
       this.showWidget = !(this.showWidget);
+
     }
   },
   computed: {
@@ -90,5 +90,6 @@ figure{
 .gif{
     width: 55%
 }
+
 </style>
 

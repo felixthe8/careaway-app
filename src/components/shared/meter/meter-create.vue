@@ -47,28 +47,36 @@ export default {
       due_date: ""
     }
   },
+  computed: {
+    isTutorial() {
+      return this.$store.getters.isTutorial;
+    }
+  },
 
   methods: {
     create: function(event) {
-      // get form input for meter
-      this.question = document.getElementById("meter-question").value;
-      this.due_date = document.getElementById("meter-date").value;
+      console.log(this.isTutorial)
+      if(!this.isTutorial) {
+        // get form input for meter
+        this.question = document.getElementById("meter-question").value;
+        this.due_date = document.getElementById("meter-date").value;
 
-      // get element by date attribute
-      for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].date === this.due_date) {
-          // show meter on calendar
-          this.calendar[i].meter = this;
-          this.calendar[i].meter.created = true;
+        // get element by date attribute
+        for(var i=0; i < this.calendar.length; i++) {
+          if(this.calendar[i].date === this.due_date) {
+            // show meter on calendar
+            this.calendar[i].meter = this;
+            this.calendar[i].meter.created = true;
+          }
         }
-      }
 
-      // close modal on create
-      document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
-      // post new meter to database
-      this.saveMeter();
-      // add new meter to Vuex
-      this.$store.dispatch("addMeter", this.$data);
+        // close modal on create
+        document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
+        // post new meter to database
+        this.saveMeter();
+        // add new meter to Vuex
+        this.$store.dispatch("addMeter", this.$data);
+      }
     },
     saveMeter: function() {
       // get current user
@@ -94,6 +102,9 @@ export default {
     close: function() {
       // close meter if exited
       document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
+      if(this.isTutorial) {
+        this.$emit('close')
+      }
     }
   }
 }
