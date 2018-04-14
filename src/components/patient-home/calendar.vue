@@ -1,13 +1,16 @@
 <template>
 
-
   <div class="calendar-wrapper">
     <div class="calendar">
 
       <div class="columns is-mobile calendar__menu">
         <div class="item"><div class="calendar__menu--arrow-left" @click="previous"></div></div>
-        <div class="item calendar__menu--label current-month"><h1>{{getCurrent().monthName}}</h1></div>
-        <div class="item calendar__menu--label current-week"><h1>Week of the {{getCurrent().monday}}th</h1></div>
+        <div class="item calendar__menu--label current-month">
+          <h1>{{getCurrent().monthName}}</h1>
+        </div>
+        <div class="item calendar__menu--label current-week">
+          <h1>Week of the {{getCurrent().monday}}th</h1>
+        </div>
         <div class="item"><div class="calendar__menu--arrow-right" @click="next"></div></div>
 
         <div class="item calendar__menu--button active" @click="displayMonth"><h1 class="text">Month</h1></div>
@@ -254,7 +257,7 @@ export default {
       const sameMonth = dueDate.month-1 === todayDate.getMonth();
       const sameDay = dueDate.day === todayDate.getDate();
 
-      if (!sameYear || !sameMonth || !sameDay) return;
+      //if (!sameYear || !sameMonth || !sameDay) return;
 
       this.selectedWidget = widget;
       this.active = widget.label;
