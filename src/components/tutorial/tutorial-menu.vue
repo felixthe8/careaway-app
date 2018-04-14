@@ -18,7 +18,7 @@
     </p>
     <ul class="menu-list">
       <li><a @click = "routeCreateMeterWidgetTutorial">Meter Widget Creation</a></li>
-      <li><a>Meter Widget Interaction</a></li>
+      <li><a @click = "routeInteractMeterWidgetTutorial">Meter Widget Interaction</a></li>
     </ul>
 
     <p class="menu-label">
@@ -45,6 +45,9 @@ export default {
      },
      routeCreateChecklistWidgetTutorial() {
        this.$router.push('/Tutorial/CreateChecklist')
+     },
+     routeInteractMeterWidgetTutorial() {
+       this.$router.push('/Tutorial/InteractMeter')
      }
    }
 }

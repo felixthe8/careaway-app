@@ -101,7 +101,8 @@ export const store = new Vuex.Store({
     currentAppointment: {},
 
     isTutorial: false,
-    mpTutorialOnly: 'NOTE: This feature is only available under the Medical Professional Account'
+    mpTutorialOnly: 'NOTE: This feature is only available under the Medical Professional Account',
+    patientTutorialOnly: 'NOTE: This feature is only available under the Patient Account'
   },
 
   getters: {
@@ -290,6 +291,9 @@ export const store = new Vuex.Store({
     },
     mpTutorialOnly: (state) => {
       return state.mpTutorialOnly;
+    },
+    patientTutorialOnly: (state) => {
+      return state.patientTutorialOnly;
     }
 
   },

@@ -19,6 +19,7 @@ import welcomePage from '../components/tutorial/welcome.vue';
 import setDiagnosisTutorial from '../components/tutorial/treatment-tutorials/set-diagnosis.vue';
 import createMeterWidgetTutorial from '../components/tutorial/treatment-tutorials/meter-widget-creation.vue';
 import createChecklistWidgetTutorial from '../components/tutorial/treatment-tutorials/checklist-widget-creation.vue';
+import interactionMeterWidget from '../components/tutorial/treatment-tutorials/meter-widget-interaction.vue'
 
 import cookies from 'browser-cookies';
 Vue.use(Router);
@@ -229,6 +230,13 @@ const router = new Router ({
           meta: {
             title: "Checklist Creation Tutorial"
           },
+        },
+        {
+          path: '/Tutorial/InteractMeter',
+          component: interactionMeterWidget,
+          meta: {
+            title: "Meter Interaction Tutorial"
+          }
         }
       ],
 
