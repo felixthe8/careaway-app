@@ -24,7 +24,14 @@ import navbar from './app-header';
 import tutorialMenu from './tutorial-menu';
 export default {
   name: 'tutorial',
-  components: {navbar, tutorialMenu}
+  components: {navbar, tutorialMenu},
+  mounted() {
+    // Toggle the isTutorial flag when the user enters the tutorials page
+    this.$store.dispatch('alternateTutorials')
+  },
+  beforeDestroy() {
+    this.$store.dispatch('alternateTutorials')
+  }
 }
 </script>
 
@@ -42,7 +49,9 @@ export default {
 }
 .box {
   margin-right: 2%;
+  position: relative;
 }
+
 </style>
 
 

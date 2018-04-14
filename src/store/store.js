@@ -100,6 +100,7 @@ export const store = new Vuex.Store({
     currentChecklist: {},
     currentAppointment: {},
 
+    isTutorial: false,
     mpTutorialOnly: 'NOTE: This feature is only available under the Medical Professional Account'
   },
 
@@ -284,6 +285,9 @@ export const store = new Vuex.Store({
     getCurrentPatient:(state) => {
       return state.currentPatient;
     },
+    isTutorial: (state) => {
+      return state.isTutorial
+    },
     mpTutorialOnly: (state) => {
       return state.mpTutorialOnly;
     }
@@ -436,6 +440,9 @@ export const store = new Vuex.Store({
     },
     setCurrentPatient: (state, payload) => {
       state.currentPatient = payload;
+    },
+    isTutorial: (state) => {
+      state.isTutorial = !state.isTutorial;
     }
   },
 
@@ -539,5 +546,8 @@ export const store = new Vuex.Store({
     setCurrentPatient: (context, payload) => {
       context.commit('setCurrentPatient', payload);
     },
+    alternateTutorials: (context) => {
+      context.commit('isTutorial');
+    }
   }
 });

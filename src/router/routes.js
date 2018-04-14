@@ -18,6 +18,8 @@ import tutorial from '../components/tutorial/tutorial-page.vue';
 import welcomePage from '../components/tutorial/welcome.vue';
 import setDiagnosisTutorial from '../components/tutorial/set-diagnosis.vue';
 import appointmentCreationTutorial from '../components/tutorial/appointment-tutorials/tutorial-appointment-creation.vue'
+import createMeterWidgetTutorial from '../components/tutorial/treatment-tutorials/meter-widget-creation.vue';
+import createChecklistWidgetTutorial from '../components/tutorial/treatment-tutorials/checklist-widget-creation.vue';
 
 import cookies from 'browser-cookies';
 Vue.use(Router);
@@ -203,20 +205,36 @@ const router = new Router ({
       children: [
         {
           path: '/Tutorial',
-          component: welcomePage
+          component: welcomePage,
+          meta: {
+            title: "CareAway Tutorials Page"
+          },
         },
         {
           path: '/Tutorial/SetDiagnosis',
-          component: setDiagnosisTutorial
+          component: setDiagnosisTutorial,
+          meta: {
+            title: "Set Diagnosis Tutorial"
+          },
         },
+        {
+          path: '/Tutorial/CreateMeter',
+          component: createMeterWidgetTutorial,
+          meta: {
+            title: "Meter Creation Tutorial"
+          },
+        },
+        {
+          path: '/Tutorial/CreateChecklist',
+          component: createChecklistWidgetTutorial,
+          meta: {
+            title: "Checklist Creation Tutorial"
+          },
         {
           path:'/Tutorial/AppointmentCreation',
           component: appointmentCreationTutorial
         }
       ],
-      meta: {
-        title: "CareAway Tutorials"
-      },
 
     },
     // Wildcard catch all route; Redirects to error page
