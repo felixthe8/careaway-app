@@ -31,6 +31,17 @@
             <i>{{task}}</i>
           </li>
         </ul>
+        Type the first task in the list into the input box. When you are done with that, add the 
+        second task by clicking the <i> + </i>. Add the third task the same way. After typing out 
+        all 3 tasks, click <i>{{done}}</i> and that's it !
+      </p>
+      <figure class = "gif">
+        <img :src = "createDemo" alt = "Create the Checklist"/>
+      </figure>
+      <p>
+        Click the button below to try out the Meter Widget.
+        <br>
+        <a class="button is-link is-rounded try">{{tryButton}}</a>
       </p>
 
     </div>
@@ -41,13 +52,17 @@
 <script>
 import widgetBox from '../../../assets/images/tutorial/widgets/checklist/checklist-widget.png'
 import dragDemo from '../../../assets/images/tutorial/widgets/checklist/checklist-drag-demo.gif'
+import createDemo from '../../../assets/images/tutorial/widgets/checklist/checklist-input-demo.gif'
 export default {
   name: 'meterWidgetCreationTutorial',
   data() {
     return {
       widgetBox: widgetBox,
       dragDemo: dragDemo,
-      taskList: ['Take calcium pills', 'Measure blood pressure', 'Exercise for 15 minutes']
+      createDemo: createDemo,
+      taskList: ['Take calcium pills', 'Measure blood pressure', 'Exercise for 15 minutes'],
+      done: 'Create Event',
+      tryButton: 'Try Widget',
     }
   },
   computed: {

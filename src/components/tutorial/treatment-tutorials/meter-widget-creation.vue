@@ -34,8 +34,9 @@
        <img :src = "createDemo" alt = "Create Meter'"/>
       </figure>
       <p>
-        Click the button to try out the Meter Widget.
-        <a class="button is-link is-small try" @click ="displayWidget">{{tryButton}}</a>
+        Click the button below to try out the Meter Widget.
+        <br>
+        <a class="button is-link is-rounded try" @click ="displayWidget">{{tryButton}}</a>
       </p>
     </div>
     <meterWidget v-if="showWidget" class = "show-modal" @close = "displayWidget"/>
