@@ -16,7 +16,7 @@ import registration from '../components/homepage/sso_registration.vue';
 // Tutorial components
 import tutorial from '../components/tutorial/tutorial-page.vue';
 import welcomePage from '../components/tutorial/welcome.vue';
-import setDiagnosisTutorial from '../components/tutorial/set-diagnosis.vue';
+import setDiagnosisTutorial from '../components/tutorial/treatment-tutorials/set-diagnosis.vue';
 import appointmentCreationTutorial from '../components/tutorial/appointment-tutorials/tutorial-appointment-creation.vue'
 import createMeterWidgetTutorial from '../components/tutorial/treatment-tutorials/meter-widget-creation.vue';
 import createChecklistWidgetTutorial from '../components/tutorial/treatment-tutorials/checklist-widget-creation.vue';
@@ -230,11 +230,12 @@ const router = new Router ({
           meta: {
             title: "Checklist Creation Tutorial"
           },
+        },
         {
           path:'/Tutorial/AppointmentCreation',
           component: appointmentCreationTutorial
         }
-      ],
+      ]
 
     },
     // Wildcard catch all route; Redirects to error page

@@ -10,16 +10,15 @@
       Appointment Scheduling
     </p>
     <ul class="menu-list">
-      <li>
-        <a> Appointment </a>
-        <ul>
-          <li><a @click="routeAppointmentCreationTutorial">Appointment Creation</a></li>
-          <li><a>Appointment Update</a></li>
-          <li><a>Appointment Deletion</a></li>
-          <li><a>Appointment Status</a></li>
-        </ul>
-      </li> 
+      <li><a @click="routeAppointmentCreationTutorial">Appointment Creation</a></li>
+      <li><a>Appointment Update</a></li>
+      <li><a>Appointment Deletion</a></li>
+      <li><a>Appointment Status</a></li>
     </ul>
+    <p class="menu-label">
+      Checklist Widget
+    </p>
+    <ul class="menu-list">
       <li><a @click = "routeCreateChecklistWidgetTutorial">Checklist Widget Creation</a></li>
       <li><a>Checklist Widget Interaction</a></li>
     </ul>
@@ -47,15 +46,14 @@ export default {
     routeTutorialWelcome(){
       this.$router.push('/Tutorial');
     },
-     routeSetDiagnosisTutorial() {
+    routeSetDiagnosisTutorial() {
       this.$router.push('/Tutorial/SetDiagnosis')
-     },
-     routeCreateMeterWidgetTutorial() {
+    },
+    routeCreateMeterWidgetTutorial() {
       this.$router.push('/Tutorial/CreateMeter')
-     },
-     routeCreateChecklistWidgetTutorial() {
-       this.$router.push('/Tutorial/CreateChecklist')
-     }
+    },
+    routeCreateChecklistWidgetTutorial() {
+      this.$router.push('/Tutorial/CreateChecklist')
     },
     routeAppointmentCreationTutorial() {
       this.$router.push('/Tutorial/AppointmentCreation');
