@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" v-bind:class="{ 'is-active': computedActive == 'meter' }">
+  <div class="modal meter-status-modal">
     <div class="modal-background"></div>
     <div class="modal-content box white-background">
         <!-- Any other Bulma elements you want -->
@@ -34,15 +34,6 @@ export default {
   watch: {
     widget: function(newVal, oldVal) {
       this.mutatingWidget = newVal;
-    }
-  },
-  computed: {
-    computedActive: function() {
-      if (this.active != null) {
-        return this.active;
-      }
-
-      return '';
     }
   },
   methods: {
