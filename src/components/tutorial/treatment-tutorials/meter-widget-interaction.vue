@@ -17,32 +17,56 @@
         appropriate range. And with that, you're done! 
       </p>
       <p>
-        For this example, the valid range of input is from <i>{{inputRange[0]}}</i> - 
-        <i>{{inputRange[1]}}</i>. We input <i>{{inputValue}}</i> by typing into the input box
+        For this example, the valid range of input is from <i>{{widget.scale[0]}}</i> - 
+        <i>{{widget.scale[1]}}</i>. We input <i>{{widget.patient_input}}</i> by typing into the input box
         and clicking <i>{{done}}</i>.
       </p>
       <figure class = "gif">
         <img :src = "meterWidgetInput" alt = "Meter Widget Patient View"/>
       </figure>
+
+      <p>
+        Click the button below to try out the Meter Widget.
+        <br>
+         <a class="button is-link is-rounded try" @click = "displayWidget">{{tryButton}}</a>
+      </p>
+
     </div>
-    
+    <meterDemo :class="{ 'is-active': showDemo }" :widget ="this.$store.getters.currentMeter" @close = "closeWidget"/>
   </div>
   
 </template>
 
 <script>
 import meterWidget from '../../../assets/images/tutorial/widgets/meter/meter-widget-patient.png';
-import meterWidgetInput from '../../../assets/images/tutorial/widgets/meter/meter-widget-interact.gif'
+import meterWidgetInput from '../../../assets/images/tutorial/widgets/meter/meter-widget-interact.gif';
+import meterDemo from '../../patient-home/meter.vue';
 export default {
   name: 'meterWidgetInteractionTutorial',
+  components: {meterDemo},
   data() {
     return {
       meterWidget: meterWidget,
       meterWidgetInput: meterWidgetInput,
-      inputRange : [1, 100],
-      inputValue: 20,
-      done: 'Save'
+      widget:{ 
+       label: "meter",
+       question: "How much pain are you in?",
+       patient_input: "",
+       scale: ['1', '100'],
+      },
+      done: 'Save',
+      tryButton: 'Try Widget',
+      showDemo: false
     }
+  },
+  methods: {
+      displayWidget() {
+        this.$store.dispatch("currentMeter", this.widget);
+        this.showDemo = true
+      },
+      closeWidget() {
+        this.showDemo = false
+      }
   },
   computed: {
     showPatientOnly() {
