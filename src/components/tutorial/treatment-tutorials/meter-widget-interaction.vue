@@ -6,20 +6,20 @@
     <div class="instructions">
       <p>
         On the patient account, the meter widget can be identified by the fields labeled meter on
-        their treatment calendar. 
+        the treatment calendar. 
       </p>
       <figure>
         <img :src = "meterWidget" alt = "Meter Widget Patient View"/>
       </figure>
       <p>
         To interact with the meter widget, simply click on the meter widget for the current day on
-        the treatment calendar. Then, enter a value value into the input field that is within the 
+        the treatment calendar. Then, enter a value into the input field that is within the 
         appropriate range. And with that, you're done! 
       </p>
       <p>
         For this example, the valid range of input is from <i>{{widget.scale[0]}}</i> - 
         <i>{{widget.scale[1]}}</i>. We input <i>{{widget.patient_input}}</i> by typing into the input box
-        and clicking <i>{{done}}</i>.
+        and afterwards, click <i>{{done}}</i>.
       </p>
       <figure class = "gif">
         <img :src = "meterWidgetInput" alt = "Meter Widget Patient View"/>

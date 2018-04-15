@@ -16,7 +16,7 @@
         <img :src = "widgetBox" alt = "Create Checklist Widget"/>
       </figure>
       <p>
-        To assign a checklist widget on a specific day, drag and hold the checklist widget and drop it on
+        To assign a checklist widget, drag and hold the checklist widget and drop it on
         a specific day. A popup should display with fields to input the checklist tasks and the date.  
         If you want to close the popup, click the <i>X</i> in the top right corner.      
       </p>
