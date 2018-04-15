@@ -55,7 +55,6 @@ export default {
 
   methods: {
     create: function(event) {
-      console.log(this.isTutorial)
       if(!this.isTutorial) {
         // get form input for meter
         this.question = document.getElementById("meter-question").value;

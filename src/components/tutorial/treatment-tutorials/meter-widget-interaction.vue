@@ -19,7 +19,7 @@
       <p>
         For this example, the valid range of input is from <i>{{widget.scale[0]}}</i> - 
         <i>{{widget.scale[1]}}</i>. We input <i>{{widget.patient_input}}</i> by typing into the input box
-        and afterwards, click <i>{{done}}</i>.
+        and afterwards, clicking <i>{{done}}</i>.
       </p>
       <figure class = "gif">
         <img :src = "meterWidgetInput" alt = "Meter Widget Patient View"/>
@@ -32,7 +32,7 @@
       </p>
 
     </div>
-    <meterDemo :class="{ 'is-active': showDemo }" :widget ="this.$store.getters.currentMeter" @close = "closeWidget"/>
+    <meterDemo :class="{ 'is-active': showDemo }" :widget ="this.$store.getters.currentMeter" @close = "displayWidget"/>
   </div>
   
 </template>
@@ -51,7 +51,7 @@ export default {
       widget:{ 
        label: "meter",
        question: "How much pain are you in?",
-       patient_input: "",
+       patient_input: '3',
        scale: ['1', '10'],
       },
       done: 'Save',
@@ -61,12 +61,13 @@ export default {
   },
   methods: {
     displayWidget() {
-      this.$store.dispatch("currentMeter", this.widget);
-      this.showDemo = true
+       // Toggle between True or False
+      this.showDemo = this.$toggleTutorialWidget(this.showDemo)
+      // If the widget is too be displayed, store the widget information
+      if(this.showDemo) {
+        this.$store.dispatch("currentMeter", this.widget);
+      }
     },
-    closeWidget() {
-      this.showDemo = false
-    }
   },
   computed: {
     showPatientOnly() {

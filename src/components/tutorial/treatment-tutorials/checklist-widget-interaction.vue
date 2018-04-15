@@ -22,7 +22,7 @@
          <a class="button is-link is-rounded try" @click = "displayWidget">{{tryButton}}</a>
       </p>
     </div>
-    <checklistDemo :class="{ 'is-active': showDemo }" :widget ="this.$store.getters.currentMeter" @close = "closeWidget"/>
+    <checklistDemo :class="{ 'is-active': showDemo }" :widget ="this.$store.getters.currentChecklist" @close = "displayWidget"/>
 
   </div>
   
@@ -56,12 +56,13 @@ export default {
   },
   methods: {
     displayWidget() {
-      this.$store.dispatch("currentMeter", this.widget);
-      this.showDemo = true
+      // Toggle between True or False
+      this.showDemo = this.$toggleTutorialWidget(this.showDemo)
+      // If the widget is too be displayed, store the widget information
+      if(this.showDemo) {
+        this.$store.dispatch("currentChecklist", this.widget);
+      }
     },
-    closeWidget() {
-      this.showDemo = false
-    }
   },
   computed: {
     showPatientOnly() {
