@@ -52,7 +52,7 @@ export default {
        label: "meter",
        question: "How much pain are you in?",
        patient_input: "",
-       scale: ['1', '100'],
+       scale: ['1', '10'],
       },
       done: 'Save',
       tryButton: 'Try Widget',
@@ -60,13 +60,13 @@ export default {
     }
   },
   methods: {
-      displayWidget() {
-        this.$store.dispatch("currentMeter", this.widget);
-        this.showDemo = true
-      },
-      closeWidget() {
-        this.showDemo = false
-      }
+    displayWidget() {
+      this.$store.dispatch("currentMeter", this.widget);
+      this.showDemo = true
+    },
+    closeWidget() {
+      this.showDemo = false
+    }
   },
   computed: {
     showPatientOnly() {
