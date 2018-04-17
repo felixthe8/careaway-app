@@ -1,21 +1,20 @@
 <template>
 
-  <div class="checklist-modal">
+  <div class="modal checklist-modal">
 
-    <div class="checklist-modal--form">
-      <div class="row">
-        <h1>Checklist</h1>
-      </div>
-      <div class="row checklist-prompt">
-        <label>Checklist Prompt</label>
-        <input class="checklist-modal--form--input prompt-input" name="checklist" type="text" id="checklist">
+    <div class="modal-background"></div>
+    <div class="modal-content checklist-modal--form">
+      <h1 class="checklist-modal__title">Create Checklist</h1>
+      <div class="field" id="prompt-wrapper">
+        <label class="label">Checklist Prompt</label>
+        <input class="input prompt-input" name="checklist" type="text" id="prompt-input">
       </div>
       <button id="add-prompt" @click="addPrompt">+</button>
-      <div class="row">
-        <label>Date Requested:</label>
-        <input class="checklist-modal--form--input" name="date" type="text" id="checklist-date">
+      <div class="field">
+        <label class="label">Date Requested:</label>
+        <input class="input checklist-modal--form--input" name="date" type="text" id="checklist-date">
       </div>
-      <button class="checklist-modal--form--create green-button" @click="create">Create Event</button>
+      <button class="label checklist-modal--form--create green-button" @click="create">Create Event</button>
     </div>
 
     <button class='modal-close is-large' aria-label='close' @click='close'></button>
@@ -44,9 +43,9 @@ export default {
   methods: {
     addPrompt: function() {
       // create new input prompt
-      let old = document.getElementsByClassName("checklist-prompt")[0];
+      let old = document.getElementById("prompt-wrapper") ;
       let newInput = document.createElement("input");
-      newInput.className = "prompt-input";
+      newInput.className = "input prompt-input";
       newInput.name ="checklist";
       newInput.type = "text";
       newInput.id="checklist";
@@ -57,7 +56,9 @@ export default {
         old.appendChild(newInput);
       } else {
         let error = document.createElement("span");
+        error.id = "max-message";
         error.innerHTML = "Maximum Prompts Reached";
+        console.log(old);
         // show error message
         old.appendChild(error);
         // disable button
@@ -67,8 +68,11 @@ export default {
     create: function() {
       // get form input for checklist
       let list = document.getElementsByClassName("prompt-input");
-      for(var i=0; i < list.length-1; i++) {
-        this.list[i] = list[i].value;
+      for(var i=0; i < list.length; i++) {
+        this.list[i] = {
+          "question" : list[i].value,
+          "check" : false
+        };
       }
       this.due_date = document.getElementById("checklist-date").value;
 
@@ -76,13 +80,13 @@ export default {
       for(var i=0; i < this.calendar.length; i++) {
         if(this.calendar[i].date == this.due_date) {
           // show checklist on calendar
-          this.calendar[i].checklist = this;
+          this.calendar[i].checklist = this.list;
           this.calendar[i].checklist.created = true;
         }
       }
 
       // close modal on create
-      document.getElementsByClassName("checklist-modal")[0].classList.remove("show-modal");
+      document.getElementsByClassName("checklist-modal")[0].classList.remove("is-active");
       // post new meter to database
       this.saveChecklist();
       // add new checklist to vuex
@@ -110,7 +114,7 @@ export default {
     },
     close: function() {
       // close meter if exited
-      document.getElementsByClassName("checklist-modal")[0].classList.remove("show-modal");
+      document.getElementsByClassName("checklist-modal")[0].classList.remove("is-active");
     }
   }
 }
@@ -121,37 +125,21 @@ export default {
 @import "../../../assets/sass/settings.scss";
 
 .checklist-modal {
-  position: absolute;
-  background: rgba(0,0,0,0.8);
-  display: none;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
+  text-align: left;
+
+  &__title {
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+  }
 
   &--form {
-    background: $green-light;
-    padding: 1rem;
-    text-align: left;
+    background: $white;
+    padding: 2rem;
   }
 }
 
-.checklist-prompt {
-  input {
-    display: block;
-    margin: 10px;
-  }
-}
-
-.max-message {
-    display: none;
-    color: red;
-}
-
-.show-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+#max-message {
+  color: red;
 }
 </style>

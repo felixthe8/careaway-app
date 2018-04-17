@@ -1,14 +1,19 @@
 <template>
 
-  <div class="meter-status-modal">
+  <div class="modal meter-status-modal">
 
-    <div class="meter-status-modal--form">
-      <div class="row">
-        <h1>{{meter.label}}</h1>
+    <div class="modal-background"></div>
+    <div class="modal-content meter-status-modal--form">
+      <h1 class="meter-status-modal__title">Current Meter</h1>
+      <div class="field">
+        <label>Question: {{meter.question}}</label>
       </div>
-      <p>Question: {{meter.question}}</p>
-      <p>Scale: {{meter.scale[0]}} - {{meter.scale[1]}}</p>
-      <p>Date Assigned: {{meter.due_date}}</p>
+      <div class="field">
+        <label>Scale: {{meter.scale[0]}} - {{meter.scale[1]}}</label>
+      </div>
+      <div class="field">
+        <label>Date Assigned: {{meter.due_date}}</label>
+      </div>
       <button id="meter-edit" class="meter-modal--create green-button" @click="edit">Edit Meter</button>
       <button id="meter-delete" class="meter-modal--create green-button" @click="deleteMeter">Delete Meter</button>
     </div>
@@ -39,7 +44,7 @@ export default {
         }
       }
       // close modal
-      document.getElementsByClassName("meter-status-modal")[0].classList.remove("show-modal");
+      document.getElementsByClassName("meter-status-modal")[0].classList.remove("is-active");
       // post delete to database
       this.postDelete();
       // remove meter from vuex
@@ -69,7 +74,7 @@ export default {
       });
     },
     close: function() {
-      document.getElementsByClassName("meter-status-modal")[0].classList.remove("show-modal");
+      document.getElementsByClassName("meter-status-modal")[0].classList.remove("is-active");
     }
   }
 }
@@ -80,25 +85,15 @@ export default {
 @import "../../../assets/sass/settings.scss";
 
 .meter-status-modal {
-  position: absolute;
-  background: rgba(0,0,0,0.8);
-  display: none;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-
+  &__title {
+    font-size: 2em;
+  }
+  
   &--form {
-    background: $green-light;
-    padding: 1rem;
+    background: $white;
+    padding: 2rem;
     text-align: left;
   }
 }
 
-.show-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 </style>
