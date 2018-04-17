@@ -20,6 +20,8 @@ import setDiagnosisTutorial from '../components/tutorial/treatment-tutorials/set
 import appointmentCreationTutorial from '../components/tutorial/appointment-tutorials/tutorial-appointment-creation.vue'
 import createMeterWidgetTutorial from '../components/tutorial/treatment-tutorials/meter-widget-creation.vue';
 import createChecklistWidgetTutorial from '../components/tutorial/treatment-tutorials/checklist-widget-creation.vue';
+import interactionMeterWidget from '../components/tutorial/treatment-tutorials/meter-widget-interaction.vue'
+import interactionChecklistWidget from '../components/tutorial/treatment-tutorials/checklist-widget-interaction.vue'
 
 import cookies from 'browser-cookies';
 Vue.use(Router);
@@ -234,6 +236,20 @@ const router = new Router ({
         {
           path:'/Tutorial/AppointmentCreation',
           component: appointmentCreationTutorial
+        },
+        {
+          path: '/Tutorial/InteractMeter',
+          component: interactionMeterWidget,
+          meta: {
+            title: "Meter Interaction Tutorial"
+          }
+        },
+        {
+          path: '/Tutorial/InteractChecklist',
+          component: interactionChecklistWidget,
+          meta: {
+            title: "Checklist Interaction Tutorial"
+          }
         }
       ]
 

@@ -1,5 +1,5 @@
 <template>
-  <div class = "container">
+  <div>
     <h1 class = "title">Creating the Meter Widget</h1>
     <i>{{showMedicalOnly}}</i>
 
@@ -39,7 +39,7 @@
         <a class="button is-link is-rounded try" @click ="displayWidget">{{tryButton}}</a>
       </p>
     </div>
-    <meterWidget v-if="showWidget" class = "show-modal" @close = "displayWidget"/>
+    <meterWidget :class="{ 'show-modal': showDemo }" @close = "displayWidget"/>
   </div>  
 </template>
 
@@ -60,13 +60,13 @@ export default {
         tryButton: 'Try Widget',
         question: 'How much pain are you in?',
         done: 'Create Event',
-        showWidget: false,
+        showDemo: false,
       }
   },
   methods: {
     displayWidget() {
-      this.showWidget = !(this.showWidget);
-
+       // Toggle between True or False
+      this.showDemo = this.$toggleTutorialWidget(this.showDemo)
     }
   },
   computed: {

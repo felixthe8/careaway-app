@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" v-bind:class="{ 'is-active': computedActive == 'checklist' }">
+  <div class="modal checklist-status-modal">
     <div class="modal-background"></div>
     <div class="modal-content box white-background">
         <!-- Any other Bulma elements you want -->
@@ -38,15 +38,8 @@ export default {
   watch: {
     widget: function(newVal, oldVal) {
       this.mutatingWidget = newVal;
-    }
-  },
-  computed: {
-    computedActive: function() {
-      if (this.active != null) {
-        return this.active;
-      }
-
-      return '';
+      console.log(newVal);
+      console.log(newVal.list);
     }
   },
   methods: {

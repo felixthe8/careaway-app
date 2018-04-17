@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class = "title">Creating the Meter Widget</h1>    
+    <h1 class = "title">Creating the Checklist Widget</h1>    
     <i>{{showMedicalOnly}}</i>
 
     <div class="instructions">
@@ -16,7 +16,7 @@
         <img :src = "widgetBox" alt = "Create Checklist Widget"/>
       </figure>
       <p>
-        To assign a checklist widget on a specific day, drag and hold the checklist widget and drop it on
+        To assign a checklist widget, drag and hold the checklist widget and drop it on
         a specific day. A popup should display with fields to input the checklist tasks and the date.  
         If you want to close the popup, click the <i>X</i> in the top right corner.      
       </p>
@@ -39,7 +39,7 @@
         <img :src = "createDemo" alt = "Create the Checklist"/>
       </figure>
       <p>
-        Click the button below to try out the Meter Widget.
+        Click the button below to try out the Checklist Widget.
         <br>
         <a class="button is-link is-rounded try">{{tryButton}}</a>
       </p>
