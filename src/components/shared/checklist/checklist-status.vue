@@ -4,11 +4,10 @@
 
     <div class="modal-background"></div>
     <div class="modal-content checklist-status-modal--form">
-      <h1 class="checklist-status-modal__title">{{checklist.label}}</h1>
-      <p>Question: {{checklist.list}}</p>
+      <p class="label" v-for="item, index in checklist.list">Task {{index+1}}: {{item.question}}</p>
       <p>Date Assigned: {{checklist.due_date}}</p>
-      <button id="checklist-edit" class="checklist-modal--create green-button" @click="edit">Edit checklist</button>
-      <button id="checklist-delete" class="checklist-modal--create green-button" @click="deleteChecklist">Delete checklist</button>
+      <button id="checklist-edit" class="button checklist-modal--create green-button" @click="edit">Edit checklist</button>
+      <button id="checklist-delete" class="button checklist-modal--create green-button" @click="deleteChecklist">Delete checklist</button>
     </div>
 
     <button class='modal-close is-large' aria-label='close' @click='close'></button>
