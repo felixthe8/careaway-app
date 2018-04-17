@@ -12,19 +12,7 @@
 
     <meter-widget :widget="this.$store.getters.currentMeter" v-on:close="close" v-on:save="save" />
     <checklist-widget :widget="this.$store.getters.currentChecklist" v-on:close="close" v-on:save="save" />
-
-    <appointment-status :appointment="getAppointment()" v-if="this.$store.getters.showAppointment" ></appointment-status>
-
-    <create
-      :appointeeType="appointeeType"
-      :appointee="appointee"
-      :isMed="isMed"
-      v-if = "showAppointmentCreation" />
-
-    <modify
-      :requestee="appointeeType"
-      :appointment="this.$store.getters.currentAppointment"
-      v-if = "showAppointmentMod" />
+    <appointment :calendar="calendar" :isMed="isMed" />
 
     <router-view></router-view>
 
@@ -33,6 +21,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import navbar from './app-header';
 import timeout from '../shared/timeout';
 import axios from 'axios';
@@ -43,6 +32,7 @@ import calendar from '../shared/calendar';
 import meterWidget from './meter';
 import checklistWidget from './checklist';
 import debounce from 'debounce';
+import appointment from '../shared/appointment.vue';
 
 export default {
     name: 'patientHome',
@@ -54,7 +44,8 @@ export default {
       create,
       modify,
       meterWidget,
-      checklistWidget
+      checklistWidget,
+      appointment
     },
 
     data() {
@@ -63,7 +54,7 @@ export default {
         appointment: {}, // Currently stores only one appointment object, will need to change to store array
         appointeeType: "",
         appointee: [],
-        isMed: true,
+        isMed: false,
         calendar: [0],
         isLoaded: true
       }
@@ -75,7 +66,7 @@ export default {
       let appointments = this.$store.getters.appointments;
       for(var i=0; i < appointments.length; i++) {
         for(var j=0; j < this.calendar.length; j++) {
-          if(appointments[i].date === this.calendar[j].date) {
+          if(moment(appointments[i].date).isSame(moment(this.calendar[j].date))) {
             this.calendar[j].appointment = appointments[i];
             appointments[i].created = true;
           }
