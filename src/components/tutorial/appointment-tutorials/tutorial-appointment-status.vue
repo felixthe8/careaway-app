@@ -26,6 +26,6 @@ Arrival entered an if drawing request. How daughters not promotion few knowledge
 
 <script>
     export default {
-        name:"tutorial-appointment-creation"
+        name:"tutorial-appointment-status"
     }
 </script>

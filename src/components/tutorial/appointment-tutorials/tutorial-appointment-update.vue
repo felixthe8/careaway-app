@@ -26,6 +26,6 @@ Written enquire painful ye to offices forming it. Then so does over sent dull on
 
 <script>
     export default {
-        name:"tutorial-appointment-creation"
+        name:"tutorial-appointment-update"
     }
 </script>

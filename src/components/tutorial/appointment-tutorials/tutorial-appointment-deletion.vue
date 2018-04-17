@@ -26,6 +26,6 @@ Up branch to easily missed by do. Admiration considered acceptance too led one m
 
 <script>
     export default {
-        name:"tutorial-appointment-creation"
+        name:"tutorial-appointment-deletion"
     }
 </script>
