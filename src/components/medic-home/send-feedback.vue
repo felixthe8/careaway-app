@@ -1,7 +1,7 @@
 <template>
   
-  <div class="column is-half is-offset-one-quarter" style="text-align:center">
-    Do you have any questions, comments, or concerns? Have any <span style="font-weight:bold">cool</span> ideas to improve Careaway?
+  <div class="column is-half is-offset-one-quarter centered">
+    Do you have any questions, comments, or concerns? Have any <span class="bolded">cool</span> ideas to improve Careaway?
     You can write down those thoughts in the text box below, send it, and the Careaway team will take your message into consideration when making updates to Careaway.
     <br/><br/>
     <textarea v-model="feedbackText" class="textarea" placeholder="Enter text"></textarea>
@@ -25,7 +25,7 @@ export default {
   methods: {
     sendFeedbackCall() {
       var feedbackObj = {feedback: this.feedbackText};
-      axios.post(/*this.$store.getters.something*/'placeholder', feedbackObj)
+      axios.post(this.$store.getters.sendFeedbackURL, feedbackObj)
         .then(response => {
           if(response.data.success) {
             this.errorMessage = '';
@@ -42,3 +42,15 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+.centered {
+  text-align:center;
+}
+
+.bolded {
+  font-weight:bold;
+}
+
+</style>

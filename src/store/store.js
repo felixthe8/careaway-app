@@ -53,6 +53,8 @@ export const store = new Vuex.Store({
     updatePatientTreatmentURL: 'http://localhost:8080/updatePatientTreatment',
     getDiagnosisListURL: 'http://localhost:8080/getDiagnosisList',
     saveDiagnosisURL : 'http://localhost:8080/getDiagnosisList',
+    sendFeedbackURL : 'http://localhost:8080/sendFeedback',
+    getFeedbackURL : 'http://localhost:8080/getFeedback',
 
     patientInfoURL: 'http://localhost:8080/get-patients?code=',
     userInfoURL: 'http://localhost:8080/get-user?username=',
