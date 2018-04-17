@@ -38,8 +38,6 @@ export default {
   watch: {
     widget: function(newVal, oldVal) {
       this.mutatingWidget = newVal;
-      console.log(newVal);
-      console.log(newVal.list);
     }
   },
   methods: {

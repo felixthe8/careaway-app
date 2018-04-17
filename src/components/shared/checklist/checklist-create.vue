@@ -67,10 +67,10 @@ export default {
     create: function() {
       // get form input for checklist
       let list = document.getElementsByClassName("prompt-input");
-      for(var i=0; i < list.length-1; i++) {
+      for(var i=0; i < list.length; i++) {
         this.list[i] = {
-            "question" : list[i].value,
-            "check" : false
+          "question" : list[i].value,
+          "check" : false
         };
       }
       this.due_date = document.getElementById("checklist-date").value;
@@ -79,7 +79,7 @@ export default {
       for(var i=0; i < this.calendar.length; i++) {
         if(this.calendar[i].date == this.due_date) {
           // show checklist on calendar
-          this.calendar[i].checklist = this;
+          this.calendar[i].checklist = this.list;
           this.calendar[i].checklist.created = true;
         }
       }
