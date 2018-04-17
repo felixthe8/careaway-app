@@ -11,9 +11,9 @@
     </p>
     <ul class="menu-list">
       <li><a @click="routeAppointmentCreationTutorial">Appointment Creation</a></li>
-      <li><a>Appointment Update</a></li>
-      <li><a>Appointment Deletion</a></li>
-      <li><a>Appointment Status</a></li>
+      <li><a @click="routeAppointmentUpdateTutorial">Appointment Update</a></li>
+      <li><a @click="routeAppointmentDeletionTutorial">Appointment Deletion</a></li>
+      <li><a @click="routeAppointmentStatusTutorial">Appointment Status</a></li>
     </ul>
     <p class="menu-label">
       Checklist Widget
@@ -60,10 +60,18 @@ export default {
      },
      routeInteractChecklistWidgetTutorial() {
        this.$router.push('/Tutorial/InteractChecklist')
-     },
-     
+     },  
     routeAppointmentCreationTutorial() {
       this.$router.push('/Tutorial/AppointmentCreation');
+    },
+    routeAppointmentStatusTutorial() {
+      this.$router.push('/Tutorial/AppointmentStatus');
+    },
+    routeAppointmentUpdateTutorial() {
+      this.$router.push('/Tutorial/AppointmentUpdate');
+    },
+    routeAppointmentDeletionTutorial() {
+      this.$router.push('/Tutorial/AppointmentDeletion');
     }
   }
 }

@@ -17,11 +17,16 @@ import registration from '../components/homepage/sso_registration.vue';
 import tutorial from '../components/tutorial/tutorial-page.vue';
 import welcomePage from '../components/tutorial/welcome.vue';
 import setDiagnosisTutorial from '../components/tutorial/treatment-tutorials/set-diagnosis.vue';
-import appointmentCreationTutorial from '../components/tutorial/appointment-tutorials/tutorial-appointment-creation.vue'
 import createMeterWidgetTutorial from '../components/tutorial/treatment-tutorials/meter-widget-creation.vue';
 import createChecklistWidgetTutorial from '../components/tutorial/treatment-tutorials/checklist-widget-creation.vue';
-import interactionMeterWidget from '../components/tutorial/treatment-tutorials/meter-widget-interaction.vue'
-import interactionChecklistWidget from '../components/tutorial/treatment-tutorials/checklist-widget-interaction.vue'
+import interactionMeterWidget from '../components/tutorial/treatment-tutorials/meter-widget-interaction.vue';
+import interactionChecklistWidget from '../components/tutorial/treatment-tutorials/checklist-widget-interaction.vue';
+
+// Appointment Tutorials
+import appointmentCreationTutorial from '../components/tutorial/appointment-tutorials/tutorial-appointment-creation.vue';
+import appointmentUpdateTutorial from '../components/tutorial/appointment-tutorials/tutorial-appointment-update.vue';
+import appointmentDeletionTutorial from '../components/tutorial/appointment-tutorials/tutorial-appointment-deletion.vue';
+import appointmentStatusTutorial from '../components/tutorial/appointment-tutorials/tutorial-appointment-status.vue';
 
 import cookies from 'browser-cookies';
 Vue.use(Router);
@@ -210,32 +215,56 @@ const router = new Router ({
           component: welcomePage,
           meta: {
             title: "CareAway Tutorials Page"
-          },
+          }
         },
         {
           path: '/Tutorial/SetDiagnosis',
           component: setDiagnosisTutorial,
           meta: {
             title: "Set Diagnosis Tutorial"
-          },
+          }
         },
         {
           path: '/Tutorial/CreateMeter',
           component: createMeterWidgetTutorial,
           meta: {
             title: "Meter Creation Tutorial"
-          },
+          }
         },
         {
           path: '/Tutorial/CreateChecklist',
           component: createChecklistWidgetTutorial,
           meta: {
             title: "Checklist Creation Tutorial"
-          },
+          }
         },
         {
           path:'/Tutorial/AppointmentCreation',
-          component: appointmentCreationTutorial
+          component: appointmentCreationTutorial,
+          meta:{
+            title: "Appointment Creation"
+          }
+        },
+        {
+          path:'/Tutorial/AppointmentDeletion',
+          component: appointmentDeletionTutorial,
+          meta:{
+            title: "Appointment Deletion"
+          }
+        },
+        {
+          path:'/Tutorial/AppointmentStatus',
+          component: appointmentStatusTutorial,
+          meta:{
+            title: "Appointment Status"
+          }
+        },
+        {
+          path:'/Tutorial/AppointmentUpdate',
+          component: appointmentUpdateTutorial,
+          meta:{
+            title: "Appointment Update"
+          }
         },
         {
           path: '/Tutorial/InteractMeter',
