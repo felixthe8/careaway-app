@@ -69,10 +69,11 @@ export default {
       let appointments = this.$store.getters.appointments;
       let current = {};
       for(var i=0; i < appointments.length; i++) {
-        if(appointments[i].date === date) {
+        if(moment(appointments[i].date).isSame(moment(date))) {
             current = appointments[i];
         }
       }
+      console.log("Gett appointment " + JSON.stringify(current));
       return current;
     },
     openCreateAppointment() {
