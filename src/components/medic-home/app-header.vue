@@ -3,6 +3,7 @@
     <img class="nav-bar__logo" @click="goHome" src="../../assets/images/careaway-logo.png">
     <a class="nav-bar__button button is-link is-rounded" @click="logOut"> <i class="fas fa-sign-out-alt"></i> {{button}} </a>
     <a class="nav-bar__button button is-link is-rounded" @click="viewReport"> <i class="fas fa-chart-line"></i> View Reports </a>
+    <a class="nav-bar__button button is-link is-rounded" @click="viewSendFeedback"> <i class="fas fa-comment"></i> {{sendFeedbackText}} </a>
   </nav>
 </template>
 
@@ -13,6 +14,7 @@ export default {
   data() {
     return {
       button: 'Logout',
+      sendFeedbackText: 'Send feedback'
     }
   },
   methods: {
@@ -26,6 +28,9 @@ export default {
     },
     viewReport(){
       this.$router.push('/MedicHome/Report');
+    },
+    viewSendFeedback(){
+      this.$router.push('/MedicHome/Feedback');
     },
     goHome(){
       this.$router.push('/MedicHome');
