@@ -1,12 +1,17 @@
 <template>
+
   <div>
+
     <navbar class = "nav-bar"/>
 
-    <div class="patient-calendar"  v-if="isLoaded">
-      <calendar :calendar="calendar"/>
+    <timeout v-if ="showWarning" @close = "showWarning = false"/>
+
+    <div class="patient-calendar" v-if="isLoaded">
+      <calendar :calendar="calendar" class="column"/>
     </div>
 
-    <timeout v-if ="showWarning" @close = "showWarning = false"/>
+    <meter-widget :widget="this.$store.getters.currentMeter" v-on:close="close" v-on:save="save" />
+    <checklist-widget :widget="this.$store.getters.currentChecklist" v-on:close="close" v-on:save="save" />
 
     <appointment-status :appointment="getAppointment()" v-if="this.$store.getters.showAppointment" ></appointment-status>
 
@@ -35,6 +40,8 @@ import appointmentStatus from '../shared/appointment/appointment-status';
 import create from '../shared/appointment/appointment-creation';
 import modify from '../shared/appointment/appointment-modification';
 import calendar from '../shared/calendar';
+import meterWidget from './meter';
+import checklistWidget from './checklist';
 import debounce from 'debounce';
 
 export default {
@@ -45,7 +52,9 @@ export default {
       timeout,
       appointmentStatus,
       create,
-      modify
+      modify,
+      meterWidget,
+      checklistWidget
     },
 
     data() {
@@ -80,6 +89,7 @@ export default {
       // get Appointments for VueX
       axios.get(this.$store.getters.getAppointmentURL+this.$store.getters.authenticatedUsername).then(result => {
         var appointments = result.data.appointments;
+        self.isLoaded = true;
         for(var i=0; i < appointments.length; i++) {
           self.$store.dispatch('addAppointment', appointments[i]);
           self.isLoaded = true;
@@ -165,7 +175,27 @@ export default {
       },
       displaySessionwarning() {
         this.showWarning = true;
-      }
+      },
+      close() {
+        //this.active = '';
+        var modals = document.getElementsByClassName("modal");
+        for (var i=0;i<modals.length;i++) {
+          modals[i].classList.remove("is-active");
+        }
+      },
+      save(payload) {
+        const obj = {
+          treatment: payload,
+          username: this.$store.getters.authenticatedUsername
+        }
+        axios.put(this.$store.getters.updatePatientTreatmentURL,obj)
+        .then(function(response) {
+          // Updated
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
+      },
     },
     // beforeDestroy will run right before the user leaves the component.
     beforeDestroy() {
