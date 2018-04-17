@@ -32,7 +32,7 @@
 
           <div class="calendar__day--date"
             :class="{
-                'today' : getCurrent.date === calendar[index].date
+                'today' : getCurrent.date === calendar[index].day
           }">{{calendar[index].day}}</div>
 
           <div class="calendar__day--label" v-if="index < 5">{{calendar[index].name}}</div>

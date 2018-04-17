@@ -68,7 +68,10 @@ export default {
       // get form input for checklist
       let list = document.getElementsByClassName("prompt-input");
       for(var i=0; i < list.length-1; i++) {
-        this.list[i] = list[i].value;
+        this.list[i] = {
+            "question" : list[i].value,
+            "check" : false
+        };
       }
       this.due_date = document.getElementById("checklist-date").value;
 
