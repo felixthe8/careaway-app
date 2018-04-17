@@ -1,11 +1,10 @@
 <template>
 
-  <div class="checklist-status-modal">
+  <div class="modal checklist-status-modal">
 
-    <div class="checklist-status-modal--form">
-      <div class="row">
-        <h1>{{checklist.label}}</h1>
-      </div>
+    <div class="modal-background"></div>
+    <div class="modal-content checklist-status-modal--form">
+      <h1 class="checklist-status-modal__title">{{checklist.label}}</h1>
       <p>Question: {{checklist.list}}</p>
       <p>Date Assigned: {{checklist.due_date}}</p>
       <button id="checklist-edit" class="checklist-modal--create green-button" @click="edit">Edit checklist</button>
@@ -38,7 +37,7 @@ export default {
         }
       }
       // close modal
-      document.getElementsByClassName("checklist-status-modal")[0].classList.remove("show-modal");
+      document.getElementsByClassName("checklist-status-modal")[0].classList.remove("is-active");
       // post delete to database
       this.postDelete();
       // remove checklist from vuex
@@ -68,7 +67,7 @@ export default {
       });
     },
     close: function() {
-      document.getElementsByClassName("checklist-status-modal")[0].classList.remove("show-modal");
+      document.getElementsByClassName("checklist-status-modal")[0].classList.remove("is-active");
     }
   }
 }
@@ -79,25 +78,11 @@ export default {
 @import "../../../assets/sass/settings.scss";
 
 .checklist-status-modal {
-  position: absolute;
-  background: rgba(0,0,0,0.8);
-  display: none;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-
   &--form {
-    background: $green-light;
+    background: $white;
     padding: 1rem;
     text-align: left;
   }
 }
 
-.show-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 </style>

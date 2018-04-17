@@ -173,7 +173,7 @@ export default {
     },
     toggleMeter(date) {
       // show meter status modal
-      document.getElementsByClassName("meter-status-modal")[0].classList.add("show-modal", "is-active");
+      document.getElementsByClassName("meter-status-modal")[0].classList.add("is-active");
       // find current meter based on day
       let current = this.calendar.filter(day => day.date === date)[0];
       // update vuex
@@ -181,7 +181,7 @@ export default {
     },
     toggleChecklist(date) {
       // show checklist status modal
-      document.getElementsByClassName("checklist-status-modal")[0].classList.add("show-modal","is-active");
+      document.getElementsByClassName("checklist-status-modal")[0].classList.add("is-active");
       // find current checklist based on day
       let current = this.calendar.filter(day => day.date === date)[0];
       // update vuex
@@ -206,13 +206,13 @@ export default {
 
       if(this.$store.getters.showMeter === true) {
         document.getElementById("meter-date").value = date;
-        document.getElementsByClassName("meter-modal")[0].classList.add("show-modal");
+        document.getElementsByClassName("meter-modal")[0].classList.add("is-active");
         this.$store.dispatch("toggleMeter");
       }
 
       if(this.$store.getters.showChecklist === true) {
         document.getElementById("checklist-date").value = date;
-        document.getElementsByClassName("checklist-modal")[0].classList.add("show-modal");
+        document.getElementsByClassName("checklist-modal")[0].classList.add("is-active");
         this.$store.dispatch("toggleChecklist");
       }
     }

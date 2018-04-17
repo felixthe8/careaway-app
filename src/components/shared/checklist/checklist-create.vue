@@ -83,7 +83,7 @@ export default {
       }
 
       // close modal on create
-      document.getElementsByClassName("checklist-modal")[0].classList.remove("show-modal");
+      document.getElementsByClassName("checklist-modal")[0].classList.remove("is-active");
       // post new meter to database
       this.saveChecklist();
       // add new checklist to vuex
@@ -111,7 +111,7 @@ export default {
     },
     close: function() {
       // close meter if exited
-      document.getElementsByClassName("checklist-modal")[0].classList.remove("show-modal");
+      document.getElementsByClassName("checklist-modal")[0].classList.remove("is-active");
     }
   }
 }
@@ -138,11 +138,5 @@ export default {
 
 #max-message {
   color: red;
-}
-
-.show-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 </style>
