@@ -13,6 +13,7 @@ import adminHome from '../components/admin-home/admin-homepage.vue';
 import error from '../components/error/error.vue';
 import registration from '../components/homepage/sso_registration.vue';
 import cookies from 'browser-cookies';
+
 Vue.use(Router);
 Vue.use(store);
 
