@@ -50,14 +50,16 @@ export default {
   },
 
   methods: {
-    addAppointment(appointment) {
+    addAppointment(appointment) { 
+      // Adds an appointment to the store.
       this.$store.dispatch("addAppointment", appointment);
       this.appointment = appointment;
       this.appointment.created = true;
 
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].date === this.appointment.date) {
+        if((moment(appointment.date).isSame(moment(this.calendar[i].date)))) {
+          // Display appointment.
           this.calendar[i].appointment = this.appointment;
         }
       }

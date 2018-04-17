@@ -120,6 +120,7 @@
       editAppointment(){
         // Close this modal and open the modification appointment modal
         this.$store.dispatch("storeAppointment", this.appointment);
+        console.log(this.appointment);
         this.$store.dispatch("alternateAppointmentModification");
       },
       // This deletes the appointment vue from both appointee and initiator appointment list

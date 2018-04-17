@@ -52,6 +52,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import timeChangers from '../time';
+
 export default {
   name: 'appointmentCreation',
   components: { timeChangers }, // Pass in list of patients from global store
@@ -89,6 +90,7 @@ export default {
   },
 
   methods: {
+    // Parses the start time for display.
     parseStart(timeStr) {
       let time = this.parseTime(timeStr);
 
@@ -98,7 +100,9 @@ export default {
 
       this.startHour = this.startPM ? (hour - 12) : hour;
     },
+    // Parses the end time for display.
     parseEnd(timeStr) {
+      // Create a moment time object and separates it into an array of time - hours and minutes
       let time = this.parseTime(timeStr);
 
       this.endMinute = time[1];
@@ -107,6 +111,7 @@ export default {
 
       this.endHour = this.endPM ? (hour - 12) : hour;
     },
+    // Creates a moment object of time.
     parseTime(time) {
       // Convert time to a moment object.
       time = new moment(time);
@@ -121,18 +126,28 @@ export default {
     create() {
       this.removeAllErrors();
       if(this.check()) {
+        // Constructs the appointment objects.
         const appointments = this.constructAppointments();
 
+        // Put request to server
         axios.put(this.$store.getters.modifyAppointmentURL, appointments)
         .then(response => {
+          // Successful appointment modification
           if(response.data.success) {
             console.log("Modify appointment success.");
+
+            // Stores the editted appointment in front end.
             this.$store.dispatch('editAppointment', appointments);
             this.$emit("storeAppointment", appointments.newAppointment);
+
+            // Removes all errors.
             this.errors.msg = false;
             this.cancel();
           } else {
+            // Modified appointment fail.
             console.log("Modify appointment fail.");
+
+            // Displays error message.
             this.errorMsg = response.data.reason;
             this.errors.msg = true;
           }
@@ -142,17 +157,20 @@ export default {
       }
     },
     check() {
+      // Checks if all the fields are filled out and the times are valid.
       if(!this.appointee || !this.date || !this.startHour || !this.endHour) {
-        console.log("Incomplete");
+        // Sets all error message.
         this.errors.date = true;
         this.errors.startTime = true;
         this.errors.endTime = true;
         this.showErrorMessage("Error, please complete all fields.");
         return false;
       } else {
+        // Checks the date for validity.
         return this.checkDate();
       }
     },
+    // Checks to make sure the date is correct.
     checkDate() {
       // Valid date formats.
       const formats = ["YYYY-MM-DD HH:mm",
@@ -171,21 +189,28 @@ export default {
       if(this.startPM) {
         hour += 12;
       }
-
+      // Create the time format.
       this.startTime = `${hour.toString()}:${this.startMinute}`;
+
+      // Create the date time format.
       const startStr = `${this.date} ${this.startTime}`;
+
+      // Create moment object from date time format.
       const start = moment(startStr, formats);
 
-      if(!start.isValid()) {
+      if(!start.isValid()) { 
+        // If the date is an invalid format, show error messages.
         this.errors.date = true;
         this.showErrorMessage("Error, invalid date. Preferrable formats: YYYY-MM-DD or MM/DD/YYYY");
         return false;
       } else if(start.day() === 0 || start.day() === 6) {
-        // The day the appointment is scheduled is a Sunday (0) or Saturday (6)
+        // The day the appointment is scheduled is a Sunday (0) or Saturday (6). 
         this.errors.date = true;
         this.showErrorMessage("Error, this date is not a weekday, please choose a different date.");
         return false;
       }
+
+      // Sets the start time to the moment date object to be used by the appointment object later.
       this.startTime = start;
 
       const now = moment();
@@ -194,10 +219,11 @@ export default {
       const difference = start.diff(now);
 
       if(difference >= 0) {
-        // Valid start date, checks the duration.
+        // Valid start date, checks the duration between the start time and end time.
         return this.checkDuration(start, formats);
       }
 
+      // Start date was not after the current day, show error messages.
       this.errors.date = true;
 
       this.showErrorMessage("Error, invalid date. Please select a date in the future.");
@@ -207,27 +233,34 @@ export default {
     checkDuration(start, formats) {
       // Make sure the duration of the appointment is valid.
       let hour = this.endHour;
-      if(this.endPM) {
+
+      if(this.endPM) { // Adjust the hour if it's pm.
         hour += 12;
       }
+
       this.endTime = `${hour.toString()}:${this.endMinute}`;
 
-      // Convert end time.
+      // Construct the end time of the appointment.
       const endStr = `${this.date} ${this.endTime}`;
       const end = moment(endStr, formats);
       this.endTime = end;
 
       // Calculate the difference between the start and end time.
       const difference = end.diff(start);
+
       if(difference <= 0) {
+        // The end time comes before the start time.
         this.errors.startTime = true;
         this.errors.endTime = true;
+
         this.showErrorMessage("Error, invalid times.");
+
         return false;
       }
 
       // Valid appointment duration.
       this.removeAllErrors();
+
       return true;
     },
     closeThis() {
@@ -238,39 +271,47 @@ export default {
       // Close modify appointment.
       this.closeThis();
       // Reopens appointment-status.
-      //this.$store.dispatch('authenticatedUsername', this.appointment.initiator);
-      //this.$store.dispatch('authenticatedUsername', this.currentAppointmentObject.appointee);
+    
       this.$store.commit("alternateAppointment");
     },
     changeStartHour(hour) {
+      // Toggles the hour portion of the starting time.
       this.startHour = hour;
     },
     changeStartMin(min) {
+      // Toggles the minute portion of the starting time.
       this.startMinute = min;
     },
     togglePMStart() {
+      // Toggles if the appointment is am or pm for the start time.
       this.startPM = !this.startPM;
     },
     changeEndHour(hour) {
+      // Toggles the hour portion of the end time.
       this.endHour = hour;
     },
     changeEndMin(min) {
+      // Toggles the minute portion of the end time.
       this.endMinute = min;
     },
     togglePMEnd() {
+      // Toggles if the end time is am or pm.
       this.endPM = !this.endPM;
     },
     removeAllErrors() {
+      // Remove all errors.
       this.errors.date = false;
       this.errors.startTime = false;
       this.errors.endTime = false;
       this.errors.msg = false;
     },
     showErrorMessage(msg) {
+      // Show an error message.
       this.errors.msg = true;
       this.errorMsg = msg;
     },
     constructAppointments() {
+      // The original appointment.
       const originalAppointment = {
         date: this.appointment.date,
         startTime: this.appointment.startTime,
@@ -292,9 +333,11 @@ export default {
         appointeeName: this.appointment.appointeeName,
         status: "Pending"
       };
+      // Both appointments - original and modified.
       const appointments = {
         originalAppointment: originalAppointment,
         newAppointment: modified_appointment};
+
       return appointments;
     }
   }
