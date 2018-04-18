@@ -115,7 +115,14 @@ export const store = new Vuex.Store({
       widgetBox: 'https://dl.dropboxusercontent.com/s/sekkifl00u4n6ug/meter-widget.png',
       dragDemo: 'https://dl.dropboxusercontent.com/s/0yzoyplso9tr2cz/meter-drag-demo.gif',
       createDemo: 'https://dl.dropbox.com/s/ge2o85jdn3ak2ac/meter-input-demo.gif'
+    },
+
+    meterInteractionTutorial: {
+      widgetBox: 'https://dl.dropboxusercontent.com/s/3611lyia0qbqj68/meter-widget-patient.png',
+      widgetInteract: 'https://dl.dropboxusercontent.com/s/6bh6hrqu8xfl8z2/meter-widget-interact.gif'
     }
+
+
     
   },
 
@@ -329,6 +336,12 @@ export const store = new Vuex.Store({
     },
     meterCreationTutorialCreateDemo: (state) => {
       return state.meterCreationTutorial.createDemo
+    },
+    meterInteractionTutorialWidget: (state) => {
+      return state.meterInteractionTutorial.widgetBox
+    },
+    meterInteractionTutorialInteract: (state) => {
+      return state.meterInteractionTutorial.widgetInteract
     }
 
 
