@@ -35,7 +35,7 @@ export default {
           responsive: false,
           maintainAspectRatio: true,
           animation: {
-            duration: 1000
+            duration: 1500
           },
           legend: {
             display: true,
