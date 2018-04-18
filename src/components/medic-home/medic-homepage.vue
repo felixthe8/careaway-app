@@ -10,6 +10,8 @@
       <router-view class="wrapper"></router-view>
     </div>
 
+    <mail/>
+
   </div>
 
 </template>
@@ -18,13 +20,14 @@
 
 import navbar from './app-header';
 import timeout from '../shared/timeout';
+import mail from '../shared/mail';
 import axios from 'axios';
 import debounce from 'debounce';
 axios.defaults.withCredentials = true;
 axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
 export default {
     name: 'medicHome',
-    components: {navbar, timeout},
+    components: {navbar, timeout, mail},
     data() {
       return {
         showWarning: false,

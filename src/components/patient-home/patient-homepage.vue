@@ -28,6 +28,8 @@
 
     <router-view></router-view>
 
+    <mail/>
+
   </div>
 
 </template>
@@ -42,6 +44,7 @@ import modify from '../shared/appointment/appointment-modification';
 import calendar from '../shared/calendar';
 import meterWidget from './meter';
 import checklistWidget from './checklist';
+import mail from '../shared/mail';
 import debounce from 'debounce';
 
 export default {
@@ -54,7 +57,8 @@ export default {
       create,
       modify,
       meterWidget,
-      checklistWidget
+      checklistWidget,
+      mail
     },
 
     data() {
