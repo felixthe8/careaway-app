@@ -16,6 +16,10 @@
         day on the treatment calendar. Then, click on the checkbox for the tasks that have been 
         completed. And with that you're done !  
       </p>
+      <figure class = "gif">
+        <img :src = "checklistInteraction" alt = "Checklist Widget Patient Interaction"/>
+      </figure>
+
       <p>
         Click the button below to try out the Checklist Widget.
         <br>
@@ -31,6 +35,7 @@
 <script>
 import checklistDemo from '../../patient-home/checklist.vue';
 import checklistWidget from '../../../assets/images/tutorial/widgets/checklist/checklist-widget-patient.png'
+import checklistInteraction from '../../../assets/images/tutorial/widgets/checklist/checklist-interaction.gif'
 export default {
   name: 'checklistWidgetInteraction',
   components: {checklistDemo},
@@ -51,7 +56,8 @@ export default {
           }
         ]
       },
-      checklistWidget: checklistWidget
+      checklistWidget: checklistWidget,
+      checklistInteraction: checklistInteraction
     }
   },
   methods: {
