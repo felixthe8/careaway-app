@@ -18,6 +18,9 @@
     </div>
 
     <calendar :calendar="calendar" class="column is-four-fifths"/>
+
+    <mail/>
+
   </div>
 
 </template>
@@ -30,6 +33,7 @@ import checklistWidget from '../shared/checklist.vue';
 import calendar from '../shared/calendar.vue';
 import diagnosis from './set-diagnosis.vue';
 import patientSelector from './patient-selector.vue';
+import mail from '../shared/mail';
 import moment from 'moment';
 import axios from 'axios';
 
@@ -42,6 +46,7 @@ export default {
     checklistWidget,
     calendar,
     diagnosis,
+    mail
   },
 
   data() {
