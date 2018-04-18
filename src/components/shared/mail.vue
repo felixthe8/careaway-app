@@ -6,7 +6,7 @@
           <i class="fas fa-envelope"></i>
       </button>
 
-      <div class="mail__menu">
+      <div class="mail__menu" :class="{ 'show-mail': open }">
         <div class="mail__menu--current-message">{{message}}</div>
         <hr class="line">
         <input class="input" name="message" type="text" id="message">
@@ -23,13 +23,17 @@ export default {
   data() {
     return {
       count: 0,
-      message: "no messages"
+      message: "no messages",
+      open: false,
     }
   },
 
   methods: {
     toggleMail: function() {
-      document.getElementsByClassName("mail__menu")[0].classList.toggle("show-mail");
+      this.open = !this.open;
+    },
+    create: function() {
+
     }
   }
 
