@@ -39,7 +39,7 @@
         <a class="button is-link is-rounded try" @click ="displayWidget">{{tryButton}}</a>
       </p>
     </div>
-    <meterWidget :class="{ 'show-modal': showDemo }" @close = "displayWidget"/>
+    <meterWidget :class="{ 'is-active': showDemo }" @close = "displayWidget"/>
   </div>  
 </template>
 

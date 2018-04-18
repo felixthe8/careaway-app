@@ -20,7 +20,7 @@
         <label>Date Requested:</label>
         <input class="meter-modal--input" name="date" type="text" id="meter-date">
       </div>
-      <button id="meter" class="meter-modal--create green-button" @click="create">Create Event</button>
+      <button id="meter" class="meter-modal--create green-button" @click="create" :disabled = "isTutorial">Create Event</button>
     </div>
 
 
@@ -54,7 +54,6 @@ export default {
 
   methods: {
     create: function(event) {
-      if(!this.isTutorial) {
         // get form input for meter
         this.question = document.getElementById("meter-question").value;
         this.due_date = document.getElementById("meter-date").value;
@@ -74,7 +73,7 @@ export default {
         this.saveMeter();
         // add new meter to Vuex
         this.$store.dispatch("addMeter", this.$data);
-      }
+      
 
       // close modal on create
       document.getElementsByClassName("meter-modal")[0].classList.remove("is-active");
