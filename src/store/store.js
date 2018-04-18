@@ -102,7 +102,15 @@ export const store = new Vuex.Store({
 
     isTutorial: false,
     mpTutorialOnly: 'NOTE: This feature is only available under the Medical Professional Account',
-    patientTutorialOnly: 'NOTE: This feature is only available under the Patient Account'
+    patientTutorialOnly: 'NOTE: This feature is only available under the Patient Account',
+
+    setDiagnosisTutorial:{
+      modal: 'https://dl.dropboxusercontent.com/s/088vxz3pyep06dp/set-diagnosis-modal.png',
+      modalAutocomplete : 'https://dl.dropboxusercontent.com/s/xfo1y1fgb3h2rh5/set-diagnosis-autocomplete.png',
+      autocompleteDemo: 'https://dl.dropboxusercontent.com/s/bmm9ysxb76kroqp/autocomplete-demo.gif',
+      success : 'https://dl.dropboxusercontent.com/s/amu317pvb4aq1dn/set-diagnosis-success.gif'
+    }
+    
   },
 
   getters: {
@@ -294,7 +302,20 @@ export const store = new Vuex.Store({
     },
     patientTutorialOnly: (state) => {
       return state.patientTutorialOnly;
+    },
+    setDiagnosisTutorialModal: (state) => {
+      return state.setDiagnosisTutorial.modal
+    },
+    setDiagnosisTutorialAutocomplete: (state) => {
+      return state.setDiagnosisTutorial.modalAutocomplete
+    },
+    setDiagnosisTutorialAutocompleteDemo: (state) => {
+      return state.setDiagnosisTutorial.autocompleteDemo
+    },
+    setDiagnosisTutorialSuccess: (state) => {
+      return state.setDiagnosisTutorial.success
     }
+
 
   },
   mutations: {
