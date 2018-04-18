@@ -109,6 +109,12 @@ export const store = new Vuex.Store({
       modalAutocomplete : 'https://dl.dropboxusercontent.com/s/xfo1y1fgb3h2rh5/set-diagnosis-autocomplete.png',
       autocompleteDemo: 'https://dl.dropboxusercontent.com/s/bmm9ysxb76kroqp/autocomplete-demo.gif',
       success : 'https://dl.dropboxusercontent.com/s/amu317pvb4aq1dn/set-diagnosis-success.gif'
+    },
+
+    meterCreationTutorial: {
+      widgetBox: 'https://dl.dropboxusercontent.com/s/sekkifl00u4n6ug/meter-widget.png',
+      dragDemo: 'https://dl.dropboxusercontent.com/s/0yzoyplso9tr2cz/meter-drag-demo.gif',
+      createDemo: 'https://dl.dropbox.com/s/ge2o85jdn3ak2ac/meter-input-demo.gif'
     }
     
   },
@@ -314,6 +320,15 @@ export const store = new Vuex.Store({
     },
     setDiagnosisTutorialSuccess: (state) => {
       return state.setDiagnosisTutorial.success
+    },
+    meterCreationTutorialWidget: (state) => {
+      return state.meterCreationTutorial.widgetBox
+    },
+    meterCreationTutorialDragDemo: (state) => {
+      return state.meterCreationTutorial.dragDemo
+    },
+    meterCreationTutorialCreateDemo: (state) => {
+      return state.meterCreationTutorial.createDemo
     }
 
 

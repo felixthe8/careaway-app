@@ -44,18 +44,12 @@
 </template>
 
 <script>
-import widgetBox from '../../../assets/images/tutorial/widgets/meter/meter-widget.png'
-import dragDemo from '../../../assets/images/tutorial/widgets/meter/meter-drag-demo.gif'
-import createDemo from '../../../assets/images/tutorial/widgets/meter/meter-input-demo.gif'
 import meterWidget from '../../shared/meter/meter-create.vue'
 export default {
   name: 'meterWidgetCreationTutorial',
   components: {meterWidget},
   data(){
       return {
-        widgetBox: widgetBox,
-        dragDemo: dragDemo,
-        createDemo: createDemo,
         scale: [1 , 10],
         tryButton: 'Try Widget',
         question: 'How much pain are you in?',
@@ -72,6 +66,15 @@ export default {
   computed: {
     showMedicalOnly(){
       return this.$store.getters.mpTutorialOnly
+    },
+    widgetBox() {
+      return this.$store.getters.meterCreationTutorialWidget
+    },
+    dragDemo() {
+      return this.$store.getters.meterCreationTutorialDragDemo
+    },
+    createDemo() {
+      return this.$store.getters.meterCreationTutorialCreateDemo
     }
   }
 }
