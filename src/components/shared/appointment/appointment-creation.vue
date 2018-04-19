@@ -40,7 +40,7 @@
               :pm="endPM">
             </timeChangers>
         </div>
-        <a class="button is-primary is-medium is-fullwidth is-rounded" :disable="isTutorial" @click="create"> {{button}} </a>
+        <a class="button is-primary is-medium is-fullwidth is-rounded" @click="create"> {{button}} </a>
       </div>
     </div>
     <button class='modal-close is-large' id="close" aria-label='close' @click='closeThis'></button>
@@ -90,6 +90,7 @@ export default {
   },
   methods: {
     create() {
+      if(!this.$store.getters.isTutorial){
       this.removeAllErrors();
       if(this.check()) {
         // Getting the initator's first and last name.
@@ -117,6 +118,7 @@ export default {
       } else {
         console.log("Error, invalid inputs.");
       }
+    }
     },
     check() {
       if(!this.appointee || !this.date || !this.startHour || !this.endHour) {

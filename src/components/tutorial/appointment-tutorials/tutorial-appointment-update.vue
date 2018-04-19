@@ -25,14 +25,20 @@ Written enquire painful ye to offices forming it. Then so does over sent dull on
   <appointmentStatus
     :appointment="appointment"
     v-if="showAppointment"/>
+  <appointmentUpdate
+    :appointment="appointment"
+    :requestee="appointee"
+    :isMed="isMed"
+    v-if="showAppointmentMod"/>
   </div>
 </template>
 <script>
   import appointmentStatus from '../../shared/appointment/appointment-status.vue';
+  import appointmentUpdate from '../../shared/appointment/appointment-modification.vue'
   export default {
     name:"tutorial-appointment-update",
     components:{
-      appointmentStatus
+      appointmentStatus, appointmentUpdate
     },
     created(){
       this.$store.dispatch('authenticatedUsername','John Doe');
@@ -45,22 +51,30 @@ Written enquire painful ye to offices forming it. Then so does over sent dull on
           startTime:'1995-12-17T03:24:00',
           endTime: '1995-12-17T03:24:00',
           initiator:"John Doe",
+          appointee:"Other Doe",
           initiatorName: "John Doe",
           appointeeName: "Other Doe",
           status: "Pending"
         },
         appointee: "Jane Joe",
+        isMed:true
 
       }
     },
     methods:{
       displayAppointment(){
         this.$store.dispatch("alternateAppointment");
+      },
+      displayAppointmentMod(){
+        this.$store.dispatch("alternateAppointmentModification");
       }
     },
     computed:{
       showAppointment(){
         return this.$store.getters.showAppointment;
+      },
+      showAppointmentMod(){
+        return this.$store.getters.showAppointmentMod;
       }
     },
     beforeDestroy(){
