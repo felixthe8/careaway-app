@@ -52,24 +52,28 @@
 </template>
 
 <script>
-import modal from '../../../assets/images/tutorial/set-diagnosis/set-diagnosis-modal.png'
-import modalAutocomplete from '../../../assets/images/tutorial/set-diagnosis/set-diagnosis-autocomplete.png'
-import autocompleteDemo from '../../../assets/images/tutorial/set-diagnosis/autocomplete-demo.gif'
-import success from '../../../assets/images/tutorial/set-diagnosis/set-diagnosis-success.gif'
 export default {
   name: 'setDiagnosisTutorial',
   data() {
       return {
         sampleDiagnosis: 'Asthma',
-        modal: modal,
-        modalAutocomplete: modalAutocomplete,
-        autocompleteDemo: autocompleteDemo,
-        success: success,
       }
   },
   computed: {
     showMedicalOnly(){
       return this.$store.getters.mpTutorialOnly
+    },
+    modal() {
+      return this.$store.getters.setDiagnosisTutorialModal
+    },
+    modalAutocomplete() {
+      return this.$store.getters.setDiagnosisTutorialAutocomplete
+    },
+    autocompleteDemo() {
+      return this.$store.getters.setDiagnosisTutorialAutocompleteDemo
+    },
+    success() {
+      return this.$store.getters.setDiagnosisTutorialSuccess
     }
   }
 }

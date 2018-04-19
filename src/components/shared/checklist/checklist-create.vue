@@ -14,7 +14,7 @@
         <label class="label">Date Requested:</label>
         <input class="input checklist-modal--form--input" name="date" type="text" id="checklist-date">
       </div>
-      <button class="label checklist-modal--form--create green-button" @click="create">Create Event</button>
+      <button class="label checklist-modal--form--create green-button" @click="create" :disabled = "isTutorial">Create Event</button>
     </div>
 
     <button class='modal-close is-large' aria-label='close' @click='close'></button>
@@ -37,6 +37,11 @@ export default {
       list: [],
       due_date: {},
       user: this.$store.getters.getCurrentPatient.userName
+    }
+  },
+  computed: {
+    isTutorial() {
+      return this.$store.getters.isTutorial;
     }
   },
 
@@ -115,6 +120,7 @@ export default {
     close: function() {
       // close meter if exited
       document.getElementsByClassName("checklist-modal")[0].classList.remove("is-active");
+      this.$emit("close");
     }
   }
 }

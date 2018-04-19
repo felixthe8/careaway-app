@@ -41,33 +41,46 @@
       <p>
         Click the button below to try out the Checklist Widget.
         <br>
-        <a class="button is-link is-rounded try">{{tryButton}}</a>
+        <a class="button is-link is-rounded try" @click ="displayWidget">{{tryButton}}</a>
       </p>
 
     </div>
+    <checklistWidget :class="{ 'is-active': showDemo }" @close = "displayWidget"/>
   </div>
   
 </template>
 
 <script>
-import widgetBox from '../../../assets/images/tutorial/widgets/checklist/checklist-widget.png'
-import dragDemo from '../../../assets/images/tutorial/widgets/checklist/checklist-drag-demo.gif'
-import createDemo from '../../../assets/images/tutorial/widgets/checklist/checklist-input-demo.gif'
+import checklistWidget from '../../shared/checklist/checklist-create.vue';
+
 export default {
   name: 'meterWidgetCreationTutorial',
+  components: {checklistWidget},
   data() {
     return {
-      widgetBox: widgetBox,
-      dragDemo: dragDemo,
-      createDemo: createDemo,
-      taskList: ['Take calcium pills', 'Measure blood pressure', 'Exercise for 15 minutes'],
+      taskList: ['Take calcium pills', 'Exercise for 15 minutes', 'Measure blood pressure'],
       done: 'Create Event',
       tryButton: 'Try Widget',
+      showDemo: false
+    }
+  },
+  methods: {
+    displayWidget() {
+      this.showDemo = this.$toggleTutorialWidget(this.showDemo)
     }
   },
   computed: {
     showMedicalOnly(){
        return this.$store.getters.mpTutorialOnly
+    },
+    widgetBox() {
+      return this.$store.getters.checklistCreationTutorialWidget
+    },
+    dragDemo() {
+      return this.$store.getters.checklistCreationTutorialDragDemo
+    },
+    createDemo() {
+      return this.$store.getters.checklistCreationTutorialCreateDemo
     }
   }
   

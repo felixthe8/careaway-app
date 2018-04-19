@@ -38,16 +38,12 @@
 </template>
 
 <script>
-import meterWidget from '../../../assets/images/tutorial/widgets/meter/meter-widget-patient.png';
-import meterWidgetInput from '../../../assets/images/tutorial/widgets/meter/meter-widget-interact.gif';
 import meterDemo from '../../patient-home/meter.vue';
 export default {
   name: 'meterWidgetInteractionTutorial',
   components: {meterDemo},
   data() {
     return {
-      meterWidget: meterWidget,
-      meterWidgetInput: meterWidgetInput,
       widget:{ 
        label: "meter",
        question: "How much pain are you in?",
@@ -72,6 +68,12 @@ export default {
   computed: {
     showPatientOnly() {
       return this.$store.getters.patientTutorialOnly
+    },
+    meterWidget() {
+      return this.$store.getters.meterInteractionTutorialWidget
+    },
+    meterWidgetInput() {
+      return this.$store.getters.meterInteractionTutorialInteract
     }
   }
   

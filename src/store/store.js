@@ -102,7 +102,37 @@ export const store = new Vuex.Store({
 
     isTutorial: false,
     mpTutorialOnly: 'NOTE: This feature is only available under the Medical Professional Account',
-    patientTutorialOnly: 'NOTE: This feature is only available under the Patient Account'
+    patientTutorialOnly: 'NOTE: This feature is only available under the Patient Account',
+
+    setDiagnosisTutorial:{
+      modal: 'https://dl.dropboxusercontent.com/s/088vxz3pyep06dp/set-diagnosis-modal.png',
+      modalAutocomplete : 'https://dl.dropboxusercontent.com/s/xfo1y1fgb3h2rh5/set-diagnosis-autocomplete.png',
+      autocompleteDemo: 'https://dl.dropboxusercontent.com/s/bmm9ysxb76kroqp/autocomplete-demo.gif',
+      success : 'https://dl.dropboxusercontent.com/s/amu317pvb4aq1dn/set-diagnosis-success.gif'
+    },
+
+    meterCreationTutorial: {
+      widgetBox: 'https://dl.dropboxusercontent.com/s/sekkifl00u4n6ug/meter-widget.png',
+      dragDemo: 'https://dl.dropboxusercontent.com/s/0yzoyplso9tr2cz/meter-drag-demo.gif',
+      createDemo: 'https://dl.dropbox.com/s/ge2o85jdn3ak2ac/meter-input-demo.gif'
+    },
+
+    meterInteractionTutorial: {
+      widgetBox: 'https://dl.dropboxusercontent.com/s/3611lyia0qbqj68/meter-widget-patient.png',
+      widgetInteract: 'https://dl.dropboxusercontent.com/s/6bh6hrqu8xfl8z2/meter-widget-interact.gif'
+    },
+
+    checklistCreationTutorial: {
+      widgetBox: 'https://dl.dropboxusercontent.com/s/vq18bzj3n4f40b2/checklist-widget.png',
+      dragDemo: 'https://dl.dropboxusercontent.com/s/wy0p34ntcopdhhf/checklist-drag-demo.gif',
+      createDemo: 'https://dl.dropboxusercontent.com/s/uen001a3kbmn6cz/checklist-input-demo.gif'
+    },
+
+    checklistInteractionTutorial: {
+      widgetBox: 'https://dl.dropboxusercontent.com/s/i5itox2elq58e4k/checklist-widget-patient.png',
+      widgetInteract: 'https://dl.dropboxusercontent.com/s/wwpwkeyblo3synh/checklist-interaction.gif'
+    }
+  
   },
 
   getters: {
@@ -294,7 +324,50 @@ export const store = new Vuex.Store({
     },
     patientTutorialOnly: (state) => {
       return state.patientTutorialOnly;
+    },
+    setDiagnosisTutorialModal: (state) => {
+      return state.setDiagnosisTutorial.modal
+    },
+    setDiagnosisTutorialAutocomplete: (state) => {
+      return state.setDiagnosisTutorial.modalAutocomplete
+    },
+    setDiagnosisTutorialAutocompleteDemo: (state) => {
+      return state.setDiagnosisTutorial.autocompleteDemo
+    },
+    setDiagnosisTutorialSuccess: (state) => {
+      return state.setDiagnosisTutorial.success
+    },
+    meterCreationTutorialWidget: (state) => {
+      return state.meterCreationTutorial.widgetBox
+    },
+    meterCreationTutorialDragDemo: (state) => {
+      return state.meterCreationTutorial.dragDemo
+    },
+    meterCreationTutorialCreateDemo: (state) => {
+      return state.meterCreationTutorial.createDemo
+    },
+    meterInteractionTutorialWidget: (state) => {
+      return state.meterInteractionTutorial.widgetBox
+    },
+    meterInteractionTutorialInteract: (state) => {
+      return state.meterInteractionTutorial.widgetInteract
+    },
+    checklistCreationTutorialWidget: (state) => {
+      return state.checklistCreationTutorial.widgetBox
+    },
+    checklistCreationTutorialDragDemo: (state) => {
+      return state.checklistCreationTutorial.dragDemo
+    },
+    checklistCreationTutorialCreateDemo: (state) => {
+      return state.checklistCreationTutorial.createDemo
+    },
+    checklistInteractionTutorialWidget: (state) => {
+      return state.checklistInteractionTutorial.widgetBox
+    },
+    checklistInteractionTutorialInteract: (state) => {
+      return state.checklistInteractionTutorial.widgetInteract
     }
+
 
   },
   mutations: {
