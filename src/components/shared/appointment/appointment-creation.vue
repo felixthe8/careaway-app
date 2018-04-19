@@ -40,7 +40,7 @@
               :pm="endPM">
             </timeChangers>
         </div>
-        <a class="button is-primary is-medium is-fullwidth is-rounded" @click="create"> {{button}} </a>
+        <a class="button is-primary is-medium is-fullwidth is-rounded" :disable="isTutorial" @click="create"> {{button}} </a>
       </div>
     </div>
     <button class='modal-close is-large' id="close" aria-label='close' @click='closeThis'></button>
@@ -250,6 +250,11 @@ export default {
     showErrorMessage(msg) {
       this.errors.msg = true;
       this.errorMsg = msg;
+    }
+  },
+  computed:{
+    isTutorial() {
+      return this.$store.getters.isTutorial;
     }
   }
 }

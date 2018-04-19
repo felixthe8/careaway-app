@@ -19,13 +19,52 @@ Scarcely on striking packages by so property in delicate. Up or well must less r
 Was certainty remaining engrossed applauded sir how discovery. Settled opinion how enjoyed greater joy adapted too shy. Now properly surprise expenses interest nor replying she she. Bore tall nay many many time yet less. Doubtful for answered one fat indulged margaret sir shutters together. Ladies so in wholly around whence in at. Warmth he up giving oppose if. Impossible is dissimilar entreaties oh on terminated. Earnest studied article country ten respect showing had. But required offering him elegance son improved informed. 
 
 Written enquire painful ye to offices forming it. Then so does over sent dull on. Likewise offended humoured mrs fat trifling answered. On ye position greatest so desirous. So wound stood guest weeks no terms up ought. By so these am so rapid blush songs begin. Nor but mean time one over. 
-
-
+  Click the button below to try out the Checklist Widget.
+  <br>
+  <a class="button is-link is-rounded try" @click ="displayAppointment">{{tryButton}}</a>
+  <appointmentStatus
+    :appointment="appointment"
+    v-if="showAppointment"/>
   </div>
 </template>
-
 <script>
-    export default {
-        name:"tutorial-appointment-update"
+  import appointmentStatus from '../../shared/appointment/appointment-status.vue';
+  export default {
+    name:"tutorial-appointment-update",
+    components:{
+      appointmentStatus
+    },
+    created(){
+      this.$store.dispatch('authenticatedUsername','John Doe');
+    },
+    data(){
+      return{
+        tryButton: "Try Appointment Editing",
+        appointment: {
+          date:'12/25/2018',
+          startTime:'1995-12-17T03:24:00',
+          endTime: '1995-12-17T03:24:00',
+          initiator:"John Doe",
+          initiatorName: "John Doe",
+          appointeeName: "Other Doe",
+          status: "Pending"
+        },
+        appointee: "Jane Joe",
+
+      }
+    },
+    methods:{
+      displayAppointment(){
+        this.$store.dispatch("alternateAppointment");
+      }
+    },
+    computed:{
+      showAppointment(){
+        return this.$store.getters.showAppointment;
+      }
+    },
+    beforeDestroy(){
+      this.$store.dispatch('authenticatedUsername','');
     }
+  }
 </script>

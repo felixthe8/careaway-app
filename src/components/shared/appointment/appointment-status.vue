@@ -96,25 +96,25 @@
         const newAppointment = this.appointment;
         // Set the new status of the appointment
         newAppointment.status=  status;
-        // Send the request to the backend
-        axios.put(this.$store.getters.modifyAppointmentURL,{'newAppointment' : newAppointment, 'originalAppointment': this.appointment}).then(
-          function(response)
-          {
-            // Check if the status of the response is successful
-            if(response.status === 200){
-              console.log("Success");
-              // Edit the appointment in the array in the VueX
-              self.showWarning = false;
-            } else {
-              // Display an error message if the connection went wrong
-              console.log(response.data.response);
+        if(!this.$store.getters.isTutorial){
+          // Send the request to the backend
+          axios.put(this.$store.getters.modifyAppointmentURL,{'newAppointment' : newAppointment, 'originalAppointment': this.appointment}).then(
+            function(response)
+            {
+              // Check if the status of the response is successful
+              if(response.status === 200){
+                // Edit the appointment in the array in the VueX
+                self.showWarning = false;
+              } else {
+                // Display an error message if the connection went wrong
+                console.log(response.data.response);
+                self.showWarning = true;
+              }
+            }).catch(function(err){
+              console.log("There was an error handling the request");
               self.showWarning = true;
-            }
-          }).catch(function(err){
-            console.log("There was an error handling the request");
-            self.showWarning = true;
-          })
-          
+            })
+        }
       },
       // Opens the appointment-modification vue
       editAppointment(){

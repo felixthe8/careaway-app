@@ -10,11 +10,40 @@
     In on announcing if of comparison pianoforte projection. Maids hoped gay yet bed asked blind dried point. On abroad danger likely regret twenty edward do. Too horrible consider followed may differed age. An rest if more five mr of. Age just her rank met down way. Attended required so in cheerful an. Domestic replying she resolved him for did. Rather in lasted no within no. 
     There worse by an of miles civil. Manner before lively wholly am mr indeed expect. Among every merry his yet has her. You mistress get dashwood children off. Met whose marry under the merit. In it do continual consulted no listening. Devonshire sir sex motionless travelling six themselves. So colonel as greatly shewing herself observe ashamed. Demands minutes regular ye to detract is. 
     So by colonel hearted ferrars. Draw from upon here gone add one. He in sportsman household otherwise it perceived instantly. Is inquiry no he several excited am. Called though excuse length ye needed it he having. Whatever throwing we on resolved entrance together graceful. Mrs assured add private married removed believe did she. 
+    Click the button below to try out the Appointment Creation.
+  <br>
+  <a class="button is-link is-rounded try" @click ="displayAppointmentCreation">{{tryButton}}</a>
+  <appointmentCreation
+    :appointeeType="appointeeType"
+    :appointee="appointee"
+    :isMed="isMed"
+    v-if = "showAppointmentCreation" />
   </div>
 </template>
 
 <script>
-    export default {
-        name:"tutorial-appointment-creation"
+  import appointmentCreation from '../../shared/appointment/appointment-creation.vue';
+  export default {
+    name:"tutorial-appointment-creation",
+    components:{
+        appointmentCreation
+    },
+    data(){
+        return{
+            appointeeType: "Medical Professional",
+            appointee:[{firstName: "John", lastName: "Doe"}],
+            isMed: true
+        }
+    },
+    computed:{
+      showAppointmentCreation() {
+        return this.$store.getters.showAppointmentCreation;
+      },
+    },
+    methods:{
+      displayAppointmentCreation() {
+        this.$store.dispatch('alternateAppointmentCreation');
+      },
     }
+  }
 </script>

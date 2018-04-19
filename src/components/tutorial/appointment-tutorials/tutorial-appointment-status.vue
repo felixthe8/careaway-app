@@ -19,13 +19,47 @@ Insipidity the sufficient discretion imprudence resolution sir him decisively. P
 Delightful remarkably mr on announcing themselves entreaties favourable. About to in so terms voice at. Equal an would is found seems of. The particular friendship one sufficient terminated frequently themselves. It more shed went up is roof if loud case. Delay music in lived noise an. Beyond genius really enough passed is up. 
 
 Arrival entered an if drawing request. How daughters not promotion few knowledge contented. Yet winter law behind number stairs garret excuse. Minuter we natural conduct gravity if pointed oh no. Am immediate unwilling of attempted admitting disposing it. Handsome opinions on am at it ladyship. 
-
-
+  Click the button below to try out the Checklist Widget.
+  <br>
+  <a class="button is-link is-rounded try" @click ="displayAppointment">{{tryButton}}</a>
+  <appointmentStatus
+    :appointment="appointment"
+    :appointee="appointee"
+    v-if="showAppointment"/>
   </div>
 </template>
 
 <script>
-    export default {
-        name:"tutorial-appointment-status"
+  import appointmentStatus from '../../shared/appointment/appointment-status.vue';
+  export default {
+    name:"tutorial-appointment-status",
+    components:{
+      appointmentStatus
+    },
+    data(){
+      return{
+        tryButton: "Try Appointment Status",
+        appointment: {
+          date:'12/25/2018',
+          startTime:'1995-12-17T03:24:00',
+          endTime: '1995-12-17T03:24:00',
+          initiatorName: "John Doe",
+          appointeeName: "Other Doe",
+          status: "Pending"
+        },
+        appointee: "Jane Joe",
+      }
+    },
+    methods:{
+      displayAppointment(){
+        this.$store.dispatch("alternateAppointment");
+      }
+    },
+    computed:{
+      showAppointment(){
+        return this.$store.getters.showAppointment;
+      }
     }
+
+  }
 </script>
