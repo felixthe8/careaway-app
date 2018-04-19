@@ -52,17 +52,12 @@
 
 <script>
 import checklistWidget from '../../shared/checklist/checklist-create.vue';
-import widgetBox from '../../../assets/images/tutorial/widgets/checklist/checklist-widget.png'
-import dragDemo from '../../../assets/images/tutorial/widgets/checklist/checklist-drag-demo.gif'
-import createDemo from '../../../assets/images/tutorial/widgets/checklist/checklist-input-demo.gif'
+
 export default {
   name: 'meterWidgetCreationTutorial',
   components: {checklistWidget},
   data() {
     return {
-      widgetBox: widgetBox,
-      dragDemo: dragDemo,
-      createDemo: createDemo,
       taskList: ['Take calcium pills', 'Exercise for 15 minutes', 'Measure blood pressure'],
       done: 'Create Event',
       tryButton: 'Try Widget',
@@ -77,6 +72,15 @@ export default {
   computed: {
     showMedicalOnly(){
        return this.$store.getters.mpTutorialOnly
+    },
+    widgetBox() {
+      return this.$store.getters.checklistCreationTutorialWidget
+    },
+    dragDemo() {
+      return this.$store.getters.checklistCreationTutorialDragDemo
+    },
+    createDemo() {
+      return this.$store.getters.checklistCreationTutorialCreateDemo
     }
   }
   

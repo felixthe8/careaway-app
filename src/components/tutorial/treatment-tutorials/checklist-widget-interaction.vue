@@ -34,8 +34,7 @@
 
 <script>
 import checklistDemo from '../../patient-home/checklist.vue';
-import checklistWidget from '../../../assets/images/tutorial/widgets/checklist/checklist-widget-patient.png'
-import checklistInteraction from '../../../assets/images/tutorial/widgets/checklist/checklist-interaction.gif'
+
 export default {
   name: 'checklistWidgetInteraction',
   components: {checklistDemo},
@@ -56,8 +55,6 @@ export default {
           }
         ]
       },
-      checklistWidget: checklistWidget,
-      checklistInteraction: checklistInteraction
     }
   },
   methods: {
@@ -73,6 +70,12 @@ export default {
   computed: {
     showPatientOnly() {
       return this.$store.getters.patientTutorialOnly
+    },
+    checklistWidget() {
+      return this.$store.getters.checklistInteractionTutorialWidget
+    },
+    checklistInteraction() {
+      return this.$store.getters.checklistInteractionTutorialInteract
     }
   }
   
