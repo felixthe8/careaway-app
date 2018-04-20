@@ -2,10 +2,16 @@
   <div class = "a-wellness">
     <h1 class = "title is-3 is-spaced"> Average Patient Wellness From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{wellnessWarning}} </h2>
-    <canvas id = "aggregate-wellness" width = "750" height = "300"> </canvas>
+     <spinner v-if = 'loading'/>
+    <chart v-if = 'showChart' 
+      :elemID = 'chartID' 
+      :type = 'chartType' 
+      :chartLabels = 'days' 
+      :chartValues = 'averageData'
+      :maxValue = 'maxValue' 
+      :xLabel = 'xLabel' 
+      :yLabel = 'yLabel'/>
     <div class = "report" v-if="showReport">
-      <input type = "checkbox" id = "empty-selection" v-model="ignoreEmpty" @change="analyzeData">
-      <label for = "empty-selection">Ignore Missing Data</label>
       <p>{{averageWellness}} </p>
       <br>
       <ul>
@@ -25,40 +31,48 @@
 
 <script>
 import axios from 'axios';
-import moment from 'moment';
 import Chart from 'chart.js';
+import spinner from 'vue-simple-spinner';
+import chart from './chart';
 export default {
-  name: '',
+  name: 'aggregate-wellness',
   data() {
-      return {
-          wellnessWarning: '',
-          averageWellness: '',
-          // Create an array to hold the values for the average wellness
-          averageData: [],
-           // Create an array to store the 5 dates that will be displayed on the graph
-          days: [],
-          // Create an array to hold the starting and ending values of positive and negative trends on the graph
-          trends: [],
-          showReport: false,
-          ignoreEmpty: false,
-      }
+    return {
+      loading: true,
+      wellnessWarning: '',
+      wellness: {},
+      averageWellness: '',
+      // Create an array to hold the values for the average wellness
+      // This will be passed in as the yLabel
+      averageData: [],
+      // Create an array to store the 5 dates that will be displayed on the graph
+      // This will be passed in as the xLabel
+      days: [],
+      // Create an array to hold the starting and ending values of positive and negative trends on the graph
+      trends: [],
+      showReport: false,
+      chartID: this.$options.name,
+      chartType: 'line',
+      showChart: false,
+      maxValue: 100,
+      xLabel: 'Date',
+      yLabel: 'Wellness Percentage'
+    }
   },
+  components: {chart, spinner},
   methods: {
     getInfo() {
-     // Create a wellness object to hold and store the wellness data computations
-     var wellnessObj = {};
      // Generate the 5 days of the previous week
       this.days = this.$generateDays();
       this.days.forEach(singleDay => {
-      wellnessObj[singleDay] = {
-          // Value will hold the sum of the meter widget data
-          value: 0,
-          // Counter will be used to represent the number of patients who had meter widget data on a specific day
-          counter: 0,
+      this.wellness[singleDay] = {
+        // Value will hold the sum of the meter widget data
+        value: 0,
+        // Counter will be used to represent the number of patients who had meter widget data on a specific day
+        counter: 0,
         }
       });
       var self = this;
-      // Request to return meter widget data
       axios.get(this.$store.getters.getTreatmentMeterURL, {
         params: {
           medicalcode:this.$store.getters.medicalCode,
@@ -68,64 +82,41 @@ export default {
         }
       })
       .then(function (response) { 
-        // Check the array in the response to see if it is empty. If it is, do not create the graph
-        if(response.data.length == 0) {
+        if(response.data === undefined || response.data.length == 0) {
           self.wellnessWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
-           self.$emptyBar("aggregate-wellness",self.days);
         } else {
-          // Loop through each object holding meter widget treatment data
           for (var meter of response.data) {
-              // Write the sum of the meter widget data
-              wellnessObj[meter.due_date].value += (parseFloat(meter.patient_input) / parseFloat(meter.scale[1]) ) * 100
-              // Increment the counter
-              wellnessObj[meter.due_date].counter+=1
-
+            // Write the sum of the meter widget data
+            self.wellness[meter.due_date].value += (parseFloat(meter.patient_input) / parseFloat(meter.scale[1]) ) * 100
+            self.wellness[meter.due_date].counter++;
           }
-          // Compute the average of the meter widget data for each day
-          for(var key in wellnessObj) {
-            if(wellnessObj.hasOwnProperty(key)) {
+          for(var key in self.wellness) {
+            if(self.wellness.hasOwnProperty(key)) {
               // If no patients had a meter widget that day, set the average to 0 for that day
-              if(wellnessObj[key].counter == 0) {
-                wellnessObj[key].average = 0;
+              if(self.wellness[key].counter == 0) {
+                self.wellness[key].average = 0;
               } else {
-                // Average is the sum of meter widget data divided by the number of patients who had data for that day
-                wellnessObj[key].average = wellnessObj[key].value / wellnessObj[key].counter
+                self.wellness[key].average = self.wellness[key].value / self.wellness[key].counter
               }
             }
           }
            // Turn the average data into an array.
-          self.averageData = Object.keys(wellnessObj).map(key => { return wellnessObj[key].average })
-          self.$makeWellnessGraph("aggregate-wellness",self.days, self.averageData);
-          // Call to run the functions to analyze the data
+          self.averageData = Object.keys(self.wellness).map(key => { return self.wellness[key].average })
           self.analyzeData();
-          // Show the report after the analysis data has been finished
-          self.showReport = true;
+          self.showReport = true
+          
         }
+        self.showChart = true
       })
       .catch(function(err) {
          self.wellnessWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
          console.log(err);
       })
-    },
-    getAvg(numbers) {
-      // If we choose to ignore empty input, then we must strip out the values that are 0
-      if(this.ignoreEmpty) {
-        numbers = numbers.filter(value => value!=0)
-      }
-      // Compute the average for the week
-      var average = numbers.reduce((a,b) => a+b,0) / numbers.length;
-      this.averageWellness = `The average wellness for this week is ${average.toFixed(2)} %`;
+      this.loading = false
     },
     analyzeData() {
-      // Call to determine the average wellness
-      this.getAvg(this.averageData);
-      // If the user chose to ignore the empty values
-      if(this.ignoreEmpty) {
-        this.trends = this.$getTrendsIgnore(this.averageData);
-      } else {
-        // Otherwise, the use didn't choose to ignore the empty values
-        this.trends = this.$getTrends(this.averageData);
-      }
+      this.averageWellness = "The average wellness for this week is "+ this.$getAverageWellness(this.averageData).toFixed(2)+"%";
+      this.trends = this.$getTrends(this.averageData);  
     }
   },
   mounted() {

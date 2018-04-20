@@ -2,46 +2,63 @@
   <div class = "a-completion">
     <h1 class = "title is-3 is-spaced"> Average Patient Task Completion From Past Week (Monday - Friday)</h1>
     <h2 class="subtitle"> {{completionWarning}} </h2>
-    <canvas id = "aggregate-complete" width = "750" height = "300"> </canvas>
+    <spinner v-if = 'loading'/>
+    <chart v-if = 'showChart'
+      :elemID = 'chartID' 
+      :type = 'chartType' 
+      :chartLabels = 'days' 
+      :chartValues = 'completionData'
+      :maxValue = 'maxValue' 
+      :xLabel = 'xLabel' 
+      :yLabel = 'yLabel'/>
     <div class = "report" v-if="showReport">
       <p> Total completed tasks for this period: {{totalComplete}} </p>
       <p> Total assigned tasks for this period: {{totalAssigned}}</p>
-    </div>
+    </div>  
   </div>
 </template>
 
 <script>
 
 import axios from 'axios';
-import moment from 'moment';
 import Chart from 'chart.js';
+import spinner from 'vue-simple-spinner';
+import chart from './chart';
 export default {
-  name: '',
+  name: 'aggregate-completion',
   data() {
       return {
+        loading: true,
         completionWarning: '',
+        completionData: [],
         // Create an array to store the 5 dates made from moment.js
         days: [],
-        completionData: {},
+        completion: {},
         totalComplete: 0,
         totalAssigned: 0,
-        showReport: false
+        showReport: false,
+        chartID: this.$options.name,
+        chartType: 'bar',
+        maxValue: 100,
+        xLabel: 'Date',
+        yLabel: 'Completion Percentage',
+        showChart: false,
       }
   },
+  components: {chart, spinner},
   methods: {
     getInfo() {
-      // Generate the 5 days of the previous week
+      // Generate the 5 days from the previous week
       this.days = this.$generateDays();
       this.days.forEach(singleDay => {
-      this.completionData[singleDay] = {
-          // This vaule will hold the number of completed tasks
-          complete: 0,
-          //  This will hold the number of tasks on a specific day
-          taskCount: 0,
+      this.completion[singleDay] = {
+        // Number of completed tasks
+        complete: 0,
+        // Number of tasks on a given day
+        taskCount: 0,
         }
       });
       var self = this;
-      // Request to return checklist widget data
       axios.get(this.$store.getters.getTreatmentChecklistURL, {
         params: {
           medicalcode:this.$store.getters.medicalCode,
@@ -51,44 +68,44 @@ export default {
         }
       })
       .then(function(response) {
-        if(response.data.length == 0) {
+        if(response.data === undefined || response.data.length == 0) {
           self.completionWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
-          self.$emptyBar("aggregate-complete",self.days);
         } else {
           // Loop through each object holding checklist data
           for (var checklist of response.data) {
             for(var task of checklist.list) {
               // If the task has been 'checked' (ie. completed), then increment the completed counter for that day
               if(task.check) {
-                self.completionData[checklist.due_date].complete +=1
+                self.completion[checklist.due_date].complete++
               }
               // When a new task is encountered, add that new task and increment the task counter
-              self.completionData[checklist.due_date].taskCount +=1
+              self.completion[checklist.due_date].taskCount++
             }
           }
           // Compute the completion percentage for each day
-          for(var key in self.completionData) {
-            if(self.completionData.hasOwnProperty(key)) {
+          for(var key in self.completion) {
+            if(self.completion.hasOwnProperty(key)) {
               // If there was no patient checklist data for that day, set the completion percentage to 0 for that day
-              if(self.completionData[key].taskCount == 0) {
-                self.completionData[key].average = 0;
+              if(self.completion[key].taskCount == 0) {
+                self.completion[key].average = 0;
               } else {
                 // Task completion percentage is the number of tasks completed / total tasks for that day
-                self.completionData[key].average = Math.round( (self.completionData[key].complete / self.completionData[key].taskCount) * 100 )
+                self.completion[key].average = Math.round( (self.completion[key].complete / self.completion[key].taskCount) * 100 )
               }
             }
           }
-        var data = Object.keys(self.completionData).map(key => {return self.completionData[key].average})
-        self.$makeCompletionGraph("aggregate-complete", self.days, data );
-        self.analyzeData(self.completionData);
-         // Show the report after the analysis data has been finished
-        self.showReport = true;
+        self.completionData = Object.keys(self.completion).map(key => {return self.completion[key].average})
+        self.analyzeData(self.completion);
+        self.showReport = true
         }
+        self.showChart = true
       })
       .catch(function(err) {
         console.log(err);
         self.completionWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
       })
+      // Remove the is-loading class
+      this.loading = false
     },
     analyzeData(data) {
       // Loop through the object that holds the completion data for each day

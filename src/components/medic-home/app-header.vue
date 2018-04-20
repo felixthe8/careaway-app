@@ -20,7 +20,6 @@ export default {
       // Call to user plugin to logout user
       this.$logout();
       axios.get(this.$store.getters.logoutURL).then(response => {
-        console.log(response);
         this.$router.push('/');
       });
     },
