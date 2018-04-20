@@ -152,11 +152,17 @@ export const store = new Vuex.Store({
     getTreatmentMeterURL: (state) => {
       return state.getTreatmentMeterURL;
     },
+    updateTreatmentMeterURL: (state) => {
+      return state.updateTreatmentMeterURL;
+    },
     getSingleTreatmentMeterURL:(state) =>{
       return state.getSingleTreatmentMeterURL;
     },
     getTreatmentChecklistURL: (state) => {
       return state.getTreatmentChecklistURL;
+    },
+    updateTreatmentChecklistURL: (state) => {
+      return state.updateTreatmentChecklistURL;
     },
     getSingleTreatmentChecklistURL:(state) =>{
       return state.getSingleTreatmentChecklistURL;
