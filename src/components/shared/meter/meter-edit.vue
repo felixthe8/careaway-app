@@ -63,7 +63,7 @@ export default {
         }
       }
 
-      document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
+      document.getElementsByClassName("meter-edit-modal")[0].classList.remove("is-active");
       this.updateMeter();
     },
     updateMeter: function() {
@@ -77,7 +77,7 @@ export default {
         due_date: this.due_date
       }
 
-      axios.put(this.$store.getters.updateMeterURL+user, {'treatment' : meter, user}).then(function(response) {
+      axios.put(this.$store.getters.updateTreatmentMeterURL+user, {'treatment' : meter, user}).then(function(response) {
         if(response.data.success) {
           console.log("Modify appointment success.");
           this.$store.dispatch('editAppointment', appointments);

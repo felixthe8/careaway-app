@@ -67,13 +67,13 @@ export const store = new Vuex.Store({
 
     // Treatment Meter URLs
     createMeterURL: 'http://localhost:8080/createTreatmentMeter?username=',
-    updateMeterURL: 'http://localhost:8080/updateTreatmentMeter?username=',
+    updateTreatmentMeterURL: 'http://localhost:8080/updateTreatmentMeter?username=',
     getTreatmentMeterURL: 'http://localhost:8080/getTreatmentMeter',
     getSingleTreatmentMeterURL: 'http://localhost:8080/getSingleTreatmentMeter',
 
     // Treatment Checklist URLs
     createChecklistURL: 'http://localhost:8080/createTreatmentChecklist?username=',
-    updateChecklistURL: 'http://localhost:8080/updateTreatmentChecklist?username=',
+    updateTreatmentChecklistURL: 'http://localhost:8080/updateTreatmentChecklist?username=',
     getTreatmentChecklistURL: 'http://localhost:8080/getTreatmentChecklist',
     getSingleTreatmentChecklistURL: 'http://localhost:8080/getSingleTreatmentChecklist',
 
