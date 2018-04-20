@@ -96,8 +96,12 @@ import axios from 'axios'
                   self.$store.dispatch('alternatePassword');
                   self.$store.dispatch('alternateLogin');
                 },3000);
-                 
-              } else {
+              }
+              else if (response.data.BadPassword){
+                  self.inputWarning = 'You have Chosen a Bad Password';
+                  self.showWarning = true;
+              } 
+              else {
                  // if the user name is not found, warn user.
                   self.inputWarning = 'The Username is invalid.';
                   self.showWarning = true;
