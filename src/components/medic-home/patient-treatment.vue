@@ -164,7 +164,9 @@ export default {
     toggleTransferInput() {
       this.showTransferInput = !this.showTransferInput;
       this.showTransferButtons = !this.showTransferButtons;
-      this.transferInProgress = this.$store.getters.getCurrentPatient.transfer.inProgress;
+      let transferInfo = this.$store.getters.getCurrentPatient.transfer;
+      this.transferInProgress = transferInfo.inProgress;
+      this.newMP = transferInfo.newMp;
     }
   }
 
