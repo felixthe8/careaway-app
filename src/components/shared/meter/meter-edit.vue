@@ -6,23 +6,22 @@
       <div class="modal-content meter-modal--form">
         <h1 class="meter-edit-modal__title">Edit Meter</h1>
         <div class="field">
-          <label>Question: {{meter.question}}</label>
-          <input class="input" name="meter" type="text" id="meter-question" required>
+          <label>Question:</label>
+          <input class="input" name="meter" type="text" id="meter-question" :value="meter.question">
         </div>
         <div class="field">
           <p>Set Scale:</p>
           <label>From:</label>
-          <input type="number" min="0" max="10" required>
+          <input type="number" min="0" max="10" :value="meter.scale[0]">
           <label>To:</label>
-          <input type="number" min="10" max="100" required>
+          <input type="number" min="10" max="100" :value="meter.scale[1]">
         </div>
         <div class="field">
-          <label>Date Assigned: {{meter.due_date}}</label>
-          <input class="input meter-modal--input" name="date" type="text" id="meter-date">
+          <label>Date Assigned:</label>
+          <input class="input meter-modal--input" name="date" type="text" id="meter-date" :value="meter.due_date">
         </div>
         <button id="meter" class="meter-modal--create green-button" @click="update">Update Meter</button>
       </div>
-
 
       <button class='modal-close is-large' aria-label='close' @click='close'></button>
 
