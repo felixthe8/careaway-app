@@ -13,6 +13,10 @@
       :calendar="calendar"
       :checklist="this.$store.getters.currentChecklist"/>
 
+    <edit
+      :calendar="calendar"
+      :checklist="this.$store.getters.currentChecklist"/>
+
   </div>
 
 </template>
@@ -21,13 +25,14 @@
 
 import create from "./checklist/checklist-create";
 import status from "./checklist/checklist-status";
+import edit from "./checklist/checklist-edit";
 
 export default {
   name: "checklist",
 
   props: ["calendar"],
 
-  components: { create, status },
+  components: { create, status, edit },
 
   methods: {
     dragStart: function(event) {

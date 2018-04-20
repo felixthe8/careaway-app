@@ -26,7 +26,8 @@ export default {
 
   methods: {
     edit: function() {
-
+      document.getElementsByClassName("checklist-status-modal")[0].classList.remove("is-active");
+      document.getElementsByClassName("checklist-edit-modal")[0].classList.add("is-active");
     },
     deleteChecklist: function() {
       for(var i=0; i < this.calendar.length; i++) {
