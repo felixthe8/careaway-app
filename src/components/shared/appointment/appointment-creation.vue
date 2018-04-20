@@ -90,14 +90,13 @@ export default {
   },
   methods: {
     create() {
-      if(!this.$store.getters.isTutorial){
       this.removeAllErrors();
       if(this.check()) {
-        // Getting the initator's first and last name.
-        axios.get(this.$store.getters.getUserURL + this.$store.getters.authenticatedUsername)
+        if(!this.$store.getters.isTutorial){
+          // Getting the initator's first and last name.
+          axios.get(this.$store.getters.getUserURL + this.$store.getters.authenticatedUsername)
           .then(result => {
             const name = `${result.data.user.firstName} ${result.data.user.lastName}`;
-
             // Construct appointment object and send to server.
             const appointment = this.constructAppointment(name);
             axios.post(this.$store.getters.createAppointmentURL, appointment)
@@ -115,10 +114,10 @@ export default {
                 }
               });
           });
+        }
       } else {
         console.log("Error, invalid inputs.");
       }
-    }
     },
     check() {
       if(!this.appointee || !this.date || !this.startHour || !this.endHour) {

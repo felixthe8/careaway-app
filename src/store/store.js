@@ -317,7 +317,7 @@ export const store = new Vuex.Store({
       return state.currentPatient;
     },
     isTutorial: (state) => {
-      return state.isTutorial
+      return state.isTutorial;
     },
     mpTutorialOnly: (state) => {
       return state.mpTutorialOnly;
@@ -326,46 +326,46 @@ export const store = new Vuex.Store({
       return state.patientTutorialOnly;
     },
     setDiagnosisTutorialModal: (state) => {
-      return state.setDiagnosisTutorial.modal
+      return state.setDiagnosisTutorial.modal;
     },
     setDiagnosisTutorialAutocomplete: (state) => {
-      return state.setDiagnosisTutorial.modalAutocomplete
+      return state.setDiagnosisTutorial.modalAutocomplete;
     },
     setDiagnosisTutorialAutocompleteDemo: (state) => {
-      return state.setDiagnosisTutorial.autocompleteDemo
+      return state.setDiagnosisTutorial.autocompleteDemo;
     },
     setDiagnosisTutorialSuccess: (state) => {
-      return state.setDiagnosisTutorial.success
+      return state.setDiagnosisTutorial.success;
     },
     meterCreationTutorialWidget: (state) => {
-      return state.meterCreationTutorial.widgetBox
+      return state.meterCreationTutorial.widgetBox;
     },
     meterCreationTutorialDragDemo: (state) => {
-      return state.meterCreationTutorial.dragDemo
+      return state.meterCreationTutorial.dragDemo;
     },
     meterCreationTutorialCreateDemo: (state) => {
-      return state.meterCreationTutorial.createDemo
+      return state.meterCreationTutorial.createDemo;
     },
     meterInteractionTutorialWidget: (state) => {
-      return state.meterInteractionTutorial.widgetBox
+      return state.meterInteractionTutorial.widgetBox;
     },
     meterInteractionTutorialInteract: (state) => {
-      return state.meterInteractionTutorial.widgetInteract
+      return state.meterInteractionTutorial.widgetInteract;
     },
     checklistCreationTutorialWidget: (state) => {
-      return state.checklistCreationTutorial.widgetBox
+      return state.checklistCreationTutorial.widgetBox;
     },
     checklistCreationTutorialDragDemo: (state) => {
-      return state.checklistCreationTutorial.dragDemo
+      return state.checklistCreationTutorial.dragDemo;
     },
     checklistCreationTutorialCreateDemo: (state) => {
-      return state.checklistCreationTutorial.createDemo
+      return state.checklistCreationTutorial.createDemo;
     },
     checklistInteractionTutorialWidget: (state) => {
-      return state.checklistInteractionTutorial.widgetBox
+      return state.checklistInteractionTutorial.widgetBox;
     },
     checklistInteractionTutorialInteract: (state) => {
-      return state.checklistInteractionTutorial.widgetInteract
+      return state.checklistInteractionTutorial.widgetInteract;
     }
 
 

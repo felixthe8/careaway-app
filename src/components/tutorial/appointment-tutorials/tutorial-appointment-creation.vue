@@ -30,6 +30,7 @@
     },
     data(){
         return{
+            tryButton:"Try Appointment Creation",
             appointeeType: "Medical Professional",
             appointee:[{firstName: "John", lastName: "Doe"}],
             isMed: true

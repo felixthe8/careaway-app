@@ -122,21 +122,22 @@ export default {
       this.removeAllErrors();
       if(this.check()) {
         const appointments = this.constructAppointments();
-
-        axios.put(this.$store.getters.modifyAppointmentURL, appointments)
-        .then(response => {
-          if(response.data.success) {
-            console.log("Modify appointment success.");
-            this.$store.dispatch('editAppointment', appointments);
-            this.$emit("storeAppointment", appointments.newAppointment);
-            this.errors.msg = false;
-            this.cancel();
-          } else {
-            console.log("Modify appointment fail.");
-            this.errorMsg = response.data.reason;
-            this.errors.msg = true;
-          }
-        });
+        if(!this.$store.getters.isTutorial){
+          axios.put(this.$store.getters.modifyAppointmentURL, appointments)
+          .then(response => {
+            if(response.data.success) {
+              console.log("Modify appointment success.");
+              this.$store.dispatch('editAppointment', appointments);
+              this.$emit("storeAppointment", appointments.newAppointment);
+              this.errors.msg = false;
+              this.cancel();
+            } else {
+              console.log("Modify appointment fail.");
+              this.errorMsg = response.data.reason;
+              this.errors.msg = true;
+            }
+          });
+        }
       } else {
         console.log("Error, invalid inputs.");
       }
