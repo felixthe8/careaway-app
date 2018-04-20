@@ -65,16 +65,21 @@ export const store = new Vuex.Store({
     modifyAppointmentURL: 'http://localhost:8080/updateAppointment',
     deleteAppt: 'http://localhost:8080/deleteAppt',
 
-    // Widget URLs
+    // Treatment Meter URLs
     createMeterURL: 'http://localhost:8080/createTreatmentMeter?username=',
-    createChecklistURL: 'http://localhost:8080/createTreatmentChecklist?username=',
-    deleteTreatment: 'http://localhost:8080/deleteTreatment?username=',
-    getTreatment: 'http://localhost:8080/getTreatment?username=',
-
+    updateMeterURL: 'http://localhost:8080/updateTreatmentMeter?username=',
     getTreatmentMeterURL: 'http://localhost:8080/getTreatmentMeter',
     getSingleTreatmentMeterURL: 'http://localhost:8080/getSingleTreatmentMeter',
+
+    // Treatment Checklist URLs
+    createChecklistURL: 'http://localhost:8080/createTreatmentChecklist?username=',
+    updateChecklistURL: 'http://localhost:8080/updateTreatmentChecklist?username=',
     getTreatmentChecklistURL: 'http://localhost:8080/getTreatmentChecklist',
     getSingleTreatmentChecklistURL: 'http://localhost:8080/getSingleTreatmentChecklist',
+
+    // Treatment URLs
+    deleteTreatment: 'http://localhost:8080/deleteTreatment?username=',
+    getTreatment: 'http://localhost:8080/getTreatment?username=',
 
     // Login Data
     validUsername: '',

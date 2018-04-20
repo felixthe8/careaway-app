@@ -66,8 +66,6 @@ export default {
       document.getElementsByClassName("meter-modal")[0].classList.remove("is-active");
       // post new meter to database
       this.saveMeter();
-      // add new meter to Vuex
-      this.$store.dispatch("addMeter", this.$data);
     },
     saveMeter: function() {
       // get current user
@@ -82,12 +80,13 @@ export default {
 
       axios.post(this.$store.getters.createMeterURL+user, {'treatment' : meter, user}).then(function(response) {
         if(response.data.success) {
-          console.log("Successfully Created Meter");
+          // add new meter to Vuex
+          this.$store.dispatch("addMeter", this.$data);
         } else {
-          console.log("Failed to Create Meter");
+          alert("Failed to Create Meter");
         }
       }).catch(function(err) {
-        console.log(err);
+          throw err;
       });
     },
     close: function() {
@@ -113,4 +112,5 @@ export default {
     font-size: 2em;
   }
 }
+
 </style>

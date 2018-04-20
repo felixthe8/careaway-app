@@ -39,30 +39,29 @@ export default {
       document.getElementsByClassName("checklist-status-modal")[0].classList.remove("is-active");
       // post delete to database
       this.postDelete();
-      // remove checklist from vuex
-      this.$store.dispatch("deleteChecklist", this.checklist);
     },
     postDelete: function() {
       // get current patient username for post
       let user = this.$store.getters.getCurrentPatient.userName;
       // define checklist to ensure proper format
       const checklist = {
-          label: this.checklist.label,
-          question: this.checklist.question,
-          list: this.checklist.list,
-          due_date: this.checklist.due_date,
+        label: this.checklist.label,
+        question: this.checklist.question,
+        list: this.checklist.list,
+        due_date: this.checklist.due_date,
       }
 
       axios.post(this.$store.getters.deleteTreatment+user, {'treatment' : checklist, user}).then(
       function(response)
       {
         if(response.status === 200){
-          console.log("Successfully deleted checklist");
+          // remove checklist from vuex
+          this.$store.dispatch("deleteChecklist", this.checklist);
         } else {
-            console.log("Failed to Create checklist");
+          alert("Failed to Create checklist");
         }
       }).catch(function(err){
-        console.log(err);
+        throw err;
       });
     },
     close: function() {

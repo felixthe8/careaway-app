@@ -89,8 +89,6 @@ export default {
       document.getElementsByClassName("checklist-modal")[0].classList.remove("is-active");
       // post new meter to database
       this.saveChecklist();
-      // add new checklist to vuex
-      this.$store.dispatch("addChecklist", this.$data);
     },
     saveChecklist: function() {
       // get current user
@@ -104,12 +102,13 @@ export default {
 
       axios.post(this.$store.getters.createChecklistURL+user, {'treatment' : checklist, user}).then(function(response) {
         if(response.data.success) {
-          console.log("Successfully Created Checklist");
+          // add new checklist to vuex
+          this.$store.dispatch("addChecklist", this.$data);
         } else {
-          console.log("Failed to Create Checklist");
+          alert("Failed to Create Checklist");
         }
       }).catch(function(err) {
-        console.log(err);
+        throw err;
       });
     },
     close: function() {

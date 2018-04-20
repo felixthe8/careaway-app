@@ -1,28 +1,32 @@
 <template>
 
-  <div class="meter-modal">
-    <div class="meter-modal--form">
-      <div class="row">
-        <h1>Edit Meter</h1>
+    <div class="modal meter-edit-modal">
+
+      <div class="modal-background"></div>
+      <div class="modal-content meter-modal--form">
+        <h1 class="meter-edit-modal__title">Edit Meter</h1>
+        <div class="field">
+          <label class="label">Question:</label>
+          <input class="input" name="meter" type="text" id="meter-question" required>
+        </div>
+        <div class="field">
+          <p>Set Scale:</p>
+          <label>From:</label>
+          <input type="number" min="0" max="10" required>
+          <label>To:</label>
+          <input type="number" min="10" max="100" required>
+        </div>
+        <div class="field">
+          <label>Date Requested:</label>
+          <input class="meter-modal--input" name="date" type="text" id="meter-date">
+        </div>
+        <button id="meter" class="meter-modal--create green-button" @click="create">Create Event</button>
       </div>
-      <div class="row">
-        <label>Question:</label>
-        <input class="meter-modal--input" name="meter" type="text" id="meter-question">
-      </div>
-      <div class="row">
-        <p>Set Scale:</p>
-        <label>From:</label>
-        <input type="number">
-        <label>To:</label>
-        <input type="number">
-      </div>
-      <div class="row">
-        <label>Date Requested:</label>
-        <input class="meter-modal--input" name="date" type="text" id="meter-date">
-      </div>
-      <button id="meter" class="meter-modal--create green-button" @click="update">Update Meter</button>
+
+
+      <button class='modal-close is-large' aria-label='close' @click='close'></button>
+
     </div>
-  </div>
 
 </template>
 
@@ -44,6 +48,10 @@ export default {
   },
 
   methods: {
+    close: function() {
+      // close meter if exited
+      document.getElementsByClassName("meter-edit-modal")[0].classList.remove("is-active");
+    },
     update: function() {
       this.question = document.getElementById("meter-question").value;
       this.due_date = document.getElementById("meter-date").value;
@@ -60,23 +68,31 @@ export default {
       this.updateMeter();
     },
     updateMeter: function() {
-      axios.put(this.$store.getters.modifyAppointmentURL, appointments)
-        .then(response => {
-          if(response.data.success) {
-            console.log("Modify appointment success.");
-            this.$store.dispatch('editAppointment', appointments);
-            this.$emit("storeAppointment", appointments.newAppointment);
-            this.errors.msg = false;
-            this.cancel();
-          } else {
-            console.log("Modify appointment fail.");
-            this.errorMsg = response.data.reason;
-            this.errors.msg = true;
-          }
-        });
-      } else {
-        console.log("Error, invalid inputs.");
+      // get current user
+      let user = this.$store.getters.getCurrentPatient.userName;
+
+      const meter = {
+        label: this.label,
+        question: this.question,
+        scale: this.scale,
+        due_date: this.due_date
       }
+
+      axios.put(this.$store.getters.updateMeterURL+user, {'treatment' : meter, user}).then(function(response) {
+        if(response.data.success) {
+          console.log("Modify appointment success.");
+          this.$store.dispatch('editAppointment', appointments);
+          this.$emit("storeAppointment", appointments.newAppointment);
+          this.errors.msg = false;
+          this.cancel();
+        } else {
+          console.log("Modify appointment fail.");
+          this.errorMsg = response.data.reason;
+          this.errors.msg = true;
+        }
+      }).catch(function(err) {
+          throw err;
+      });
     }
   }
 }
@@ -86,26 +102,16 @@ export default {
 <style lang="scss">
 @import "../../../assets/sass/settings.scss";
 
-.meter-modal {
-  position: absolute;
-  background: rgba(0,0,0,0.8);
-  display: none;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-
+.meter-edit-modal {
   &--form {
-    background: $green-light;
-    padding: 1rem;
+    background: $white;
+    padding: 2rem;
     text-align: left;
+  }
+
+  &__title {
+    font-size: 2em;
   }
 }
 
-.show-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 </style>
