@@ -76,7 +76,6 @@
 <script>
 
 import moment from 'moment';
-
 export default {
   name: 'app',
 
@@ -149,19 +148,12 @@ export default {
       return new Date(current.add(shift, 'days'));
     },
     getEvents: function() {
-      let patientName = this.$store.getters.getCurrentPatient.userName;
       // updates events on calendar
       let appointments = this.$store.getters.appointments;
-      let meters = this.$store.getters.meters;
-      let checklists = this.$store.getters.checklists;
       for(var i=0; i < this.calendar.length; i++) {
         // get current events based on calendar date
-        let appointmentMatch = appointments.find(appointment  => appointment.date === this.calendar[i].date && appointment.appointee === patientName);
+        let appointmentMatch = appointments.find(appointment  => (moment(appointment.date).isSame(moment(this.calendar[i].date))) && (appointment.appointee === patientName || appointment.initiator === patientName));
         if(appointmentMatch) { this.calendar[i].appointment = appointmentMatch; }
-        let meterMatch = meters.find(meter  => meter.due_date === this.calendar[i].date);
-        if(meterMatch) { this.calendar[i].meter = meterMatch; }
-        let checklistMatch = checklists.find(checklist  => checklist.due_date === this.calendar[i].date);
-        if(checklistMatch) { this.calendar[i].checklist = checklistMatch; }
       }
     },
     /* End Calendar Helper Functions */
@@ -215,6 +207,25 @@ export default {
         document.getElementsByClassName("checklist-modal")[0].classList.add("show-modal");
         this.$store.dispatch("toggleChecklist");
       }
+    }
+  },
+  created() {
+    
+    let patientName = this.$store.getters.authenticatedUsername;
+    
+    // updates events on calendar
+    let appointments = this.$store.getters.appointments;
+    
+    let meters = this.$store.getters.meters;
+    let checklists = this.$store.getters.checklists;
+    for(var i=0; i < this.calendar.length; i++) {
+      // get current events based on calendar date
+      let appointmentMatch = appointments.find(appointment  => (moment(appointment.date).isSame(moment(this.calendar[i].date))) && (appointment.appointee === patientName || appointment.initiator === patientName));
+      if(appointmentMatch) { this.calendar[i].appointment = appointmentMatch; }
+      let meterMatch = meters.find(meter  => meter.due_date === this.calendar[i].date);
+      if(meterMatch) { this.calendar[i].meter = meterMatch; }
+      let checklistMatch = checklists.find(checklist  => checklist.due_date === this.calendar[i].date);
+      if(checklistMatch) { this.calendar[i].checklist = checklistMatch; }
     }
   },
 
