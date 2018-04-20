@@ -6,7 +6,7 @@
       <div class="modal-content meter-modal--form">
         <h1 class="meter-edit-modal__title">Edit Meter</h1>
         <div class="field">
-          <label class="label">Question:</label>
+          <label>Question: {{meter.question}}</label>
           <input class="input" name="meter" type="text" id="meter-question" required>
         </div>
         <div class="field">
@@ -17,10 +17,10 @@
           <input type="number" min="10" max="100" required>
         </div>
         <div class="field">
-          <label>Date Requested:</label>
-          <input class="meter-modal--input" name="date" type="text" id="meter-date">
+          <label>Date Assigned: {{meter.due_date}}</label>
+          <input class="input meter-modal--input" name="date" type="text" id="meter-date">
         </div>
-        <button id="meter" class="meter-modal--create green-button" @click="create">Create Event</button>
+        <button id="meter" class="meter-modal--create green-button" @click="update">Update Meter</button>
       </div>
 
 
@@ -36,7 +36,7 @@ import moment from "moment";
 
 export default {
 
-  props: ["calendar"],
+  props: ["calendar", "meter"],
 
   data() {
     return {
