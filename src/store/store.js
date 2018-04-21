@@ -6,6 +6,8 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
   state: {
 
+    /* State Variables */
+
     // The user's selected security questions during registration
     questionSelected1:0,
     questionSelected2:0,
@@ -29,12 +31,21 @@ export const store = new Vuex.Store({
     // Appointment boolean values.
     showAppointmentCreation: false,
     showAppointmentMod: false,
-    editableAppointment: "",
 
-    // URLS
+    /* End State Variables */
+
+    /* URL Variables */
+
+    // Breach URLs
     checkBreachURL: 'http://localhost:8080/isBreached',
     breachURL: 'http://localhost:8080/breach',
+
+    // Login URLs
     loginURL: 'http://localhost:8080/login',
+    LoginInfoURL: 'http://localhost:8080/getLoginInfo?token=',
+    logoutURL: 'http://localhost:8080/logout',
+
+    // Registration URLs
     registerURL: 'http://localhost:8080/register',
     resetCredURL: 'http://localhost:8080/reset-creds',
     getSecurityQURL:'http://localhost:8080/security-questions?username=',
@@ -42,21 +53,18 @@ export const store = new Vuex.Store({
     validateUsernameURL: 'http://localhost:8080/validate-username',
     ssoRegisterPatientURL: 'http://localhost:8080/ssoRegisterPatient',
     ssoRegisterMedicalURL: 'http://localhost:8080/ssoRegisterMed',
-    LoginInfoURL: 'http://localhost:8080/getLoginInfo?token=',
     returnCodeURL : 'http://localhost:8080/returnCode?username=',
+
+    // User Info URLs
+    userInfoURL: 'http://localhost:8080/get-user?username=',
     patientBreakdownURL: 'http://localhost:8080/getDiagnoses?medicalcode=',
-    getSingleDiagnosisURL: 'http://localhost:8080/getSingleDiagnosis',
-    getTreatmentchecklistURL: 'http://localhost:8080/getTreatmentchecklist',
-    getSingleTreatmentchecklistURL: 'http://localhost:8080/getSingleTreatmentchecklist',
     getPatientUserNamesURL: 'http://localhost:8080/getPatientUserNames',
-    getPatientTreatmentURL: 'http://localhost:8080/getPatientTreatment?username=',
-    updatePatientTreatmentURL: 'http://localhost:8080/updatePatientTreatment',
+    patientInfoURL: 'http://localhost:8080/get-patients?code=',
+
+    // Diagnosis URLs
+    getSingleDiagnosisURL: 'http://localhost:8080/getSingleDiagnosis',
     getDiagnosisListURL: 'http://localhost:8080/getDiagnosisList',
     saveDiagnosisURL : 'http://localhost:8080/getDiagnosisList',
-
-    patientInfoURL: 'http://localhost:8080/get-patients?code=',
-    userInfoURL: 'http://localhost:8080/get-user?username=',
-    logoutURL: 'http://localhost:8080/logout',
 
     // Appointment URLs
     appointmentURL: 'http://localhost:8080/getAppt?username=',
@@ -64,6 +72,12 @@ export const store = new Vuex.Store({
     createAppointmentURL: 'http://localhost:8080/createAppointment',
     modifyAppointmentURL: 'http://localhost:8080/updateAppointment',
     deleteAppt: 'http://localhost:8080/deleteAppt',
+
+    // Treatment URLs
+    getTreatment: 'http://localhost:8080/getTreatment?username=',
+    getPatientTreatmentURL: 'http://localhost:8080/getPatientTreatment?username=',
+    updatePatientTreatmentURL: 'http://localhost:8080/updatePatientTreatment',
+    deleteTreatment: 'http://localhost:8080/deleteTreatment?username=',
 
     // Treatment Meter URLs
     createMeterURL: 'http://localhost:8080/createTreatmentMeter?username=',
@@ -77,9 +91,14 @@ export const store = new Vuex.Store({
     getTreatmentChecklistURL: 'http://localhost:8080/getTreatmentChecklist',
     getSingleTreatmentChecklistURL: 'http://localhost:8080/getSingleTreatmentChecklist',
 
-    // Treatment URLs
-    deleteTreatment: 'http://localhost:8080/deleteTreatment?username=',
-    getTreatment: 'http://localhost:8080/getTreatment?username=',
+    // Mail URLs
+    createMailURL: 'http://localhost:8080/createMail?username=',
+    getMailURL: 'http://localhost:8080/getMail?username=',
+    deleteMailURL: 'http://localhost:8080/deleteMail?username=',
+
+    /* End URL Variables */
+
+    /* Data Tracking Variables */
 
     // Login Data
     validUsername: '',
@@ -104,6 +123,11 @@ export const store = new Vuex.Store({
     checklists: [],
     currentChecklist: {},
     currentAppointment: {},
+    editableAppointment: "",
+
+
+    /* End Data Tracking Variables */
+
   },
 
   getters: {
@@ -292,6 +316,15 @@ export const store = new Vuex.Store({
     },
     getCurrentPatient:(state) => {
       return state.currentPatient;
+    },
+    createMailURL:(state) => {
+      return state.createMailURL;
+    },
+    getMailURL:(state) => {
+      return state.getMailURL;
+    },
+    deleteMailURL:(state) => {
+      return state.deleteMailURL;
     }
   },
   mutations: {

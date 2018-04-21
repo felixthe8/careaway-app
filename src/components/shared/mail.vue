@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "mail",
 
@@ -32,8 +34,30 @@ export default {
     toggleMail: function() {
       this.open = !this.open;
     },
-    create: function() {
+    create: function(event) {
+      // get form input for meter
+      this.message = document.getElementById("message").value;
+      console.log(this.message);
+      // close modal on create
+      this.toggleMail();
+      // post new message to database
+      this.saveMail();
+    },
+    saveMail: function() {
+      // get current patient & mp
+      let patient = this.$store.getters.getCurrentPatient.userName;
+      let mp = this.$store.getters.authenticatedUsername;
 
+      axios.post(this.$store.getters.createMailURL+patient, {'message' : this.message, patient, mp}).then(function(response) {
+        if(response.data.success) {
+          // add new meter to Vuex
+          this.$store.dispatch("addMessage", this.message);
+        } else {
+          alert("Failed to Send Message");
+        }
+      }).catch(function(err) {
+          throw err;
+      });
     }
   }
 
