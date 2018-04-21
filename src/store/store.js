@@ -124,6 +124,7 @@ export const store = new Vuex.Store({
     currentChecklist: {},
     currentAppointment: {},
     editableAppointment: "",
+    mail: []
 
 
     /* End Data Tracking Variables */
@@ -421,9 +422,6 @@ export const store = new Vuex.Store({
     currentMeter: (state, payload) => {
       state.currentMeter = payload;
     },
-    addChecklist: (state, payload) => {
-      state.checklists.push(payload);
-    },
     currentChecklist: (state, payload) => {
       state.currentChecklist = payload;
     },
@@ -474,6 +472,10 @@ export const store = new Vuex.Store({
     },
     setCurrentPatient: (state, payload) => {
       state.currentPatient = payload;
+    },
+    // mail
+    addMail: (state, payload) => {
+      state.mail.push(payload);
     }
   },
 
@@ -576,6 +578,9 @@ export const store = new Vuex.Store({
     },
     setCurrentPatient: (context, payload) => {
       context.commit('setCurrentPatient', payload);
+    },
+    addMail: (context, payload) => {
+      context.commit('addMail', payload);
     }
   }
 });
