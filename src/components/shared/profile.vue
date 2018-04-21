@@ -40,6 +40,15 @@ export default {
     }
     // Call function to kick-start the inactivity timer
     resetTimer();
+  },
+  beforeDestroy() {
+    // Functions to run when the user leaves the component (ie. logs out, navigates away from application)
+    document.onmousemove = null;
+    document.onkeypress = null;
+    document.onclick = null;
+    this.$logout();
+    // Route back to homepage
+    this.$router.push('/');
   }
   
 }
