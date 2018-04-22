@@ -192,6 +192,7 @@ import axios from'axios';
       position: absolute;
       width: 100%;
       z-index: 1;
+      background-color: whitesmoke;
   }
   .condition{
       list-style: none;

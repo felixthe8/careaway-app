@@ -6,7 +6,7 @@
       <appointment :calendar="calendar" :isMed="isMed" />
 
       <h1>{{patient}}</h1>
-      <h1>{{diagnosis}}</h1>
+      <h1>{{currentDiagnosis}}</h1>
 
       <diagnosis/>
 
@@ -41,7 +41,13 @@ export default {
     meterWidget,
     checklistWidget,
     calendar,
-    diagnosis,
+    diagnosis
+  },
+
+  computed: {
+    currentDiagnosis() {
+      return this.$store.getters.getCurrentPatient.diagnosis
+    }
   },
 
   data() {
@@ -51,7 +57,6 @@ export default {
       meter: false,
       checklist: false,
       patient: "",
-      diagnosis: "",
       user: ""
     }
   },
@@ -63,7 +68,6 @@ export default {
     // set meter
     this.calendar = this.$renderCalendar();
     this.patient = this.$store.getters.getCurrentPatient.fullName;
-    this.diagnosis = this.$store.getters.getCurrentPatient.diagnosis;
     this.user = patientName;
 
     // update calendar
