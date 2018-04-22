@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Medical Calendar</h1>
+    <h1 class = "title">Medical Calendar</h1>
     <div class = "instructions">
       <p>
         The medical professional calendar can display both days of the month or the days of the weeks,
