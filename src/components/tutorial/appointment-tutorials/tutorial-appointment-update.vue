@@ -30,7 +30,7 @@
       <img :src="showAppointmentUpdate"/>
     </div>
     <br>
-    Click the button below to try out the Checklist Widget.
+    Click the button below to try out the appointment modification.
     <br>
     <a class="button is-link is-rounded try" @click ="displayAppointment">{{tryButton}}</a>
     <appointmentStatus :appointment="appointment" v-if="showAppointment"/>

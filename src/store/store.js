@@ -148,6 +148,10 @@ export const store = new Vuex.Store({
     },
     appointmentDeletion:{
       deletion: "https://dl.dropbox.com/s/14e7w7u8iszzt3c/AppointmentStatus.PNG"
+    },
+    appointmentStatus:{
+      requestor: "https://dl.dropbox.com/s/oiuxfm461gupiwl/AppointmentStatus.PNG",
+      requestee: "https://dl.dropbox.com/s/6oyzwzfyd70al2a/RequesteeAppointmentStatus.PNG"
     }
   },
 
@@ -412,7 +416,14 @@ export const store = new Vuex.Store({
     },
     appointmentDeletionTutorial: (state) =>{
       return state.appointmentDeletion.deletion;
+    },
+    appointmentStatusRequestor: (state) => {
+      return state.appointmentStatus.requestor;
+    },
+    appointmentStatusRequestee:(state)=>{
+      return state.appointmentStatus.requestee;
     }
+    
   },
   mutations: {
     calendarState: (state) => {
