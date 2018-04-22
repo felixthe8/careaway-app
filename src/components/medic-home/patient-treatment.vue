@@ -147,7 +147,7 @@ export default {
     },
     cancelTransfer() {
       // Request to backend to remove transfer request.
-      axios.post(`${this.$store.getters.removeTransferURL}${this.patientUsername}`).then(result => {
+      axios.post(this.$store.getters.removeTransferURL, {patient: this.patientUsername}).then(result => {
         if(result.data.success) {
           // If delete successful
           this.$store.dispatch('updatePatientTransfer', result.data.transfer);

@@ -102,7 +102,7 @@ export const store = new Vuex.Store({
 
     // Transfer URLs
     makeTransferURL: 'http://localhost:8080/mpTransfer',
-    removeTransferURL: 'http://localhost:8080/removeTransfer?patient='
+    removeTransferURL: 'http://localhost:8080/removeTransfer'
   },
 
   getters: {
