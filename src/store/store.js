@@ -140,6 +140,12 @@ export const store = new Vuex.Store({
       patientChooseMP: "https://dl.dropbox.com/s/lcax36tt8rsinxg/PatientAppointmentChoosePatient.PNG",
       mpAppointmentGif: "https://dl.dropbox.com/s/px3twb7usg1d7kj/MPAppointment.gif",
       patientAppointmentGif:"https://dl.dropbox.com/s/i5es9phbid9scmy/PatientAppointment.gif"
+    },
+
+    appointmentUpdate:{
+      appointmentEditStatus: "https://dl.dropbox.com/s/mw36uyaydjp8zdx/AppointmentStatus.PNG",
+      appointmentCalendar: "https://dl.dropbox.com/s/z886104nef4om5z/AppointmentUpdateCalendar.PNG",
+      appointmentUpdate: "https://dl.dropbox.com/s/qb8rj0ykun5zfdf/UpdateAppointment.gif"
     }
   
   },
@@ -393,6 +399,15 @@ export const store = new Vuex.Store({
     },
     patientAppointmentGif: (state) => {
       return state.appointmentCreation.patientAppointmentGif;
+    },
+    appointmentEditStatusTutorial: (state) => {
+      return state.appointmentUpdate.appointmentEditStatus;
+    },
+    appointmentUpdateCalendarTutorial: (state) => {
+      return state.appointmentUpdate.appointmentCalendar;
+    },
+    appointmentUpdateTutorial: (state) => {
+      return state.appointmentUpdate.appointmentUpdate;
     }
   },
   mutations: {
