@@ -32,6 +32,14 @@ const router = new Router ({
     {  path : '/profile',
        name: 'Profile',
        component: profile,
+       beforeEnter: (to, from , next) => {
+        if(store.getters.authStatus == null || store.getters.authStatus.length == 0) {
+          next({path: '/'});
+        }
+        else {
+          next()
+        }
+       },
        children: [
           // Medical Professional Homepage (:jwt is stating it's expecting a query)
           {  path: '/MedicHome/:jwt',
