@@ -141,13 +141,14 @@ export const store = new Vuex.Store({
       mpAppointmentGif: "https://dl.dropbox.com/s/px3twb7usg1d7kj/MPAppointment.gif",
       patientAppointmentGif:"https://dl.dropbox.com/s/i5es9phbid9scmy/PatientAppointment.gif"
     },
-
+    appointmentCalendar: "https://dl.dropbox.com/s/z886104nef4om5z/AppointmentUpdateCalendar.PNG",
     appointmentUpdate:{
       appointmentEditStatus: "https://dl.dropbox.com/s/mw36uyaydjp8zdx/AppointmentStatus.PNG",
-      appointmentCalendar: "https://dl.dropbox.com/s/z886104nef4om5z/AppointmentUpdateCalendar.PNG",
-      appointmentUpdate: "https://dl.dropbox.com/s/qb8rj0ykun5zfdf/UpdateAppointment.gif"
+      appointmentUpdate: "https://dl.dropbox.com/s/1bflxfhx60swhya/appointmentUpdate.gif"
+    },
+    appointmentDeletion:{
+      deletion: "https://dl.dropbox.com/s/14e7w7u8iszzt3c/AppointmentStatus.PNG"
     }
-  
   },
 
   getters: {
@@ -404,10 +405,13 @@ export const store = new Vuex.Store({
       return state.appointmentUpdate.appointmentEditStatus;
     },
     appointmentUpdateCalendarTutorial: (state) => {
-      return state.appointmentUpdate.appointmentCalendar;
+      return state.appointmentCalendar;
     },
     appointmentUpdateTutorial: (state) => {
       return state.appointmentUpdate.appointmentUpdate;
+    },
+    appointmentDeletionTutorial: (state) =>{
+      return state.appointmentDeletion.deletion;
     }
   },
   mutations: {
