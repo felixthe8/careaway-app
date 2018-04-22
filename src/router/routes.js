@@ -28,6 +28,10 @@ import appointmentUpdateTutorial from '../components/tutorial/appointment-tutori
 import appointmentDeletionTutorial from '../components/tutorial/appointment-tutorials/tutorial-appointment-deletion.vue';
 import appointmentStatusTutorial from '../components/tutorial/appointment-tutorials/tutorial-appointment-status.vue';
 
+// Calendar Tutorials
+import medicalCalendar from '../components/tutorial/calendar-tutorials/medical-calendar.vue';
+import patientCalendar from '../components/tutorial/calendar-tutorials/patient-calendar.vue';
+
 import cookies from 'browser-cookies';
 Vue.use(Router);
 Vue.use(store);
@@ -278,6 +282,20 @@ const router = new Router ({
           component: interactionChecklistWidget,
           meta: {
             title: "Checklist Interaction Tutorial"
+          }
+        },
+        {
+          path: '/Tutorial/MedicalCalendar',
+          component: medicalCalendar,
+          meta: {
+            title: "Medical Calendar Tutorial"
+          }
+        },
+        {
+          path: '/Tutorial/PatientCalendar',
+          component: patientCalendar,
+          meta: {
+            title: "Patient Calendar Tutorial"
           }
         }
       ]

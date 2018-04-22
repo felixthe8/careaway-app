@@ -7,6 +7,14 @@
       <li><a @click = "routeTutorialWelcome">Welcome to CareAway</a></li>
     </ul>
     <p class="menu-label">
+      Calendar
+    </p>
+    <ul class="menu-list">
+      <li><a @click="routeMedicalCalendar">Medical Calendar</a></li>
+      <li><a @click="routePatientCalendar">Patient Calendar</a></li>
+
+    </ul>
+    <p class="menu-label">
       Appointment Scheduling
     </p>
     <ul class="menu-list">
@@ -72,6 +80,12 @@ export default {
     },
     routeAppointmentDeletionTutorial() {
       this.$router.push('/Tutorial/AppointmentDeletion');
+    },
+    routeMedicalCalendar(){
+      this.$router.push('/Tutorial/MedicalCalendar');
+    },
+    routePatientCalendar(){
+      this.$router.push('/Tutorial/PatientCalendar');
     }
   }
 }
