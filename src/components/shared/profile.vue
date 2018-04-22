@@ -29,9 +29,9 @@ export default {
     var self = this;
     var time;
 
-    document.onmousemove = debounce (resetTimer, 500);
-    document.onkeypress = debounce (resetTimer, 500);
-    document.onclick = debounce (resetTimer, 500);
+    document.onmousemove = debounce (resetTimer, 250);
+    document.onkeypress = debounce (resetTimer, 250);
+    document.onclick = debounce (resetTimer, 250);
     
     function resetTimer() {
       clearTimeout(time);
