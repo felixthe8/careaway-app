@@ -1,18 +1,26 @@
 <template>
   <div>
-    Uh oh spaghettiooooooo
-    <div v-for="feedback in feedbackList">
-      <div class="field">
-        <div class="control">
-          <label class="checkbox checkbox-text">
-            <input type="checkbox" v-model="feedback.seen" @click="saveFeedback(feedback)">
-            {{ feedback.feedback }}
-          </label>
+    <div class="top-bar">
+      <button class="button is-primary spacing" @click = "openModal">Open Breach Notification</button>
+      <button class="button is-primary spacing" @click = "closeAdmin">Log out</button>
+    </div>
+
+    <p class="title-text">Feedback collected from Careaway's medical professionals</p>
+    <div class="columns">
+      <div class="column is-half is-offset-one-quarter brighter-white">
+        <div v-for="feedback in feedbackList">
+          <div class="field">
+            <div class="control">
+              <label class="checkbox checkbox-text">
+                <input type="checkbox" v-model="feedback.seen" @click="saveFeedback(feedback)">
+                {{ feedback.feedback }}
+              </label>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <button class="button is-primary" @click = "openModal">Open Breach Notification</button>
-    <button class="button is-primary" @click = "closeAdmin">Log out</button>
+    
     <div class="modal" v-bind:class="{ 'is-active': modalIsOpen }">
       <div class="modal-background"></div>
       <div class="modal-content">
@@ -147,9 +155,29 @@ export default {
 <style lang="scss">
   @import "../../assets/sass/settings.scss";
 
+  .top-bar {
+    padding: 24px;
+    text-align: end;
+  }
+
+  .title-text {
+    text-align:center;
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 36px;
+  }
+
+  .spacing {
+    margin-left: 12px;
+  }
+
   .modal-content {
     overflow: hidden;
     max-height: none;
+  }
+
+  .brighter-white {
+    background-color: #eeeeee;
   }
 
   .form {
