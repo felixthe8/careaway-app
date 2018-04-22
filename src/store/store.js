@@ -131,6 +131,15 @@ export const store = new Vuex.Store({
     checklistInteractionTutorial: {
       widgetBox: 'https://dl.dropboxusercontent.com/s/i5itox2elq58e4k/checklist-widget-patient.png',
       widgetInteract: 'https://dl.dropboxusercontent.com/s/wwpwkeyblo3synh/checklist-interaction.gif'
+    },
+
+    appointmentCreation: {
+      mpAppointment: 'https://dl.dropbox.com/s/wmda4opt88z97fe/MPAppointmentCreation.PNG',
+      patientAppointment: 'https://dl.dropbox.com/s/ngsy6wdjxsgacsf/PatientAppointmentCreation%20.PNG',
+      mpChoosePatient: "https://dl.dropbox.com/s/zcnernbe2sj0cxo/MPAppointmentChoosePatient.PNG",
+      patientChooseMP: "https://dl.dropbox.com/s/lcax36tt8rsinxg/PatientAppointmentChoosePatient.PNG",
+      mpAppointmentGif: "https://dl.dropbox.com/s/px3twb7usg1d7kj/MPAppointment.gif",
+      patientAppointmentGif:"https://dl.dropbox.com/s/i5es9phbid9scmy/PatientAppointment.gif"
     }
   
   },
@@ -366,9 +375,25 @@ export const store = new Vuex.Store({
     },
     checklistInteractionTutorialInteract: (state) => {
       return state.checklistInteractionTutorial.widgetInteract;
+    },
+    mpAppointmentCreation: (state) => {
+      return state.appointmentCreation.mpAppointment;
+    },
+    patientAppointmentCreation: (state) => {
+      return state.appointmentCreation.patientAppointment;
+    },
+    mpAppointmentChoosePatient: (state) => {
+      return state.appointmentCreation.mpChoosePatient;
+    },
+    patientChooseMP: (state) => {
+      return state.appointmentCreation.patientChooseMP;
+    },
+    mpAppointmentGif: (state) => {
+      return state.appointmentCreation.mpAppointmentGif;
+    },
+    patientAppointmentGif: (state) => {
+      return state.appointmentCreation.patientAppointmentGif;
     }
-
-
   },
   mutations: {
     calendarState: (state) => {

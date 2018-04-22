@@ -1,16 +1,69 @@
 <template>
   <div>
-        Had denoting properly jointure you occasion directly raillery. In said to of poor full be post face snug. Introduced imprudence see say unpleasing devonshire acceptance son. Exeter longer wisdom gay nor design age. Am weather to entered norland no in showing service. Nor repeated speaking shy appetite. Excited it hastily an pasture it observe. Snug hand how dare here too. 
-    Man request adapted spirits set pressed. Up to denoting subjects sensible feelings it indulged directly. We dwelling elegance do shutters appetite yourself diverted. Our next drew much you with rank. Tore many held age hold rose than our. She literature sentiments any contrasted. Set aware joy sense young now tears china shy. 
-    Attended no do thoughts me on dissuade scarcely. Own are pretty spring suffer old denote his. By proposal speedily mr striking am. But attention sex questions applauded how happiness. To travelling occasional at oh sympathize prosperous. His merit end means widow songs linen known. Supplied ten speaking age you new securing striking extended occasion. Sang put paid away joy into six her. 
-    Greatly hearted has who believe. Drift allow green son walls years for blush. Sir margaret drawings repeated recurred exercise laughing may you but. Do repeated whatever to welcomed absolute no. Fat surprise although outlived and informed shy dissuade property. Musical by me through he drawing savings an. No we stand avoid decay heard mr. Common so wicket appear to sudden worthy on. Shade of offer ye whole stood hoped. 
-    By spite about do of do allow blush. Additions in conveying or collected objection in. Suffer few desire wonder her object hardly nearer. Abroad no chatty others my silent an. Fat way appear denote who wholly narrow gay settle. Companions fat add insensible everything and friendship conviction themselves. Theirs months ten had add narrow own. 
-    Received shutters expenses ye he pleasant. Drift as blind above at up. No up simple county stairs do should praise as. Drawings sir gay together landlord had law smallest. Formerly welcomed attended declared met say unlocked. Jennings outlived no dwelling denoting in peculiar as he believed. Behaviour excellent middleton be as it curiosity departure ourselves. 
-    Ten the hastened steepest feelings pleasant few surprise property. An brother he do colonel against minutes uncivil. Can how elinor warmly mrs basket marked. Led raising expense yet demesne weather musical. Me mr what park next busy ever. Elinor her his secure far twenty eat object. Late any far saw size want man. Which way you wrong add shall one. As guest right of he scale these. Horses nearer oh elinor of denote. 
-    In on announcing if of comparison pianoforte projection. Maids hoped gay yet bed asked blind dried point. On abroad danger likely regret twenty edward do. Too horrible consider followed may differed age. An rest if more five mr of. Age just her rank met down way. Attended required so in cheerful an. Domestic replying she resolved him for did. Rather in lasted no within no. 
-    There worse by an of miles civil. Manner before lively wholly am mr indeed expect. Among every merry his yet has her. You mistress get dashwood children off. Met whose marry under the merit. In it do continual consulted no listening. Devonshire sir sex motionless travelling six themselves. So colonel as greatly shewing herself observe ashamed. Demands minutes regular ye to detract is. 
-    So by colonel hearted ferrars. Draw from upon here gone add one. He in sportsman household otherwise it perceived instantly. Is inquiry no he several excited am. Called though excuse length ye needed it he having. Whatever throwing we on resolved entrance together graceful. Mrs assured add private married removed believe did she. 
-    Click the button below to try out the Appointment Creation.
+    <h1 class = "title"> Creating a New Appointment </h1>
+    <div class = "instructions">
+      <p>
+        This feature allows for patients to request an in person appointment with their medical professional, 
+        and vice versa. 
+      </p>
+
+      <p>
+        This feature is avaiable upon logging into the user's account, and is located differently for patients and medical professionals.
+        Locations for appointment creation is shown below:
+      </p>
+      <br>
+      <div class="columns">
+        <div class="column is-half">
+          <b>Medical Professional Appointment Creation</b>
+          <br>
+          <img :src="showMPAppointmentImg" alt="Medical Professional Appointment Creation"/>
+        </div>
+        <div class="column is-half">
+          <b>Patient Appointment Creation</b>
+          <br>
+          <img :src="showPatientAppointmentImg" alt="Patient Appointment Creation"/>
+        </div>
+      </div>
+      <p>
+        After clicking on the corresponding button to create a button, a window will appear to create a new appointment (as shown below).<br>
+        <i>*For Medical Professionals they will need to choose a patient they wish to schudule an appointment with</i><br>
+        <i>*For Patients they are already assigned their medical professional as their appointee</i><br>
+      </p>
+      <br>
+      <div class="columns">
+        <div class="column is-half">
+          <b>Medical Professional Patient Selection View</b>
+          <br>
+          <img :src="showMPPatientSelection" alt="Medical Professional Patient Selection"/>
+        </div>
+        <div class="column is-half">
+          <b>Patient Appointment View</b>
+          <br>
+          <img :src="showPatientMPSelection" alt="Patient Appointment"/>
+        </div>
+      </div>
+      <br>
+      <p>
+        Proceeding into the appointment creation, the user will then select a date that is either the current date or any date beyond the current date.
+        If the user selects a date that is before the current date, they will receive a error and will be prompted to select another date.
+        After selecting a date the user will select a time for the appointment (which are pre-set to 30 minute intervals).<br>
+        <i>*Note: If selecting a time interval on the current date, it must be after the current time selected or else you will be prompted with an error.</i>
+      </p>
+      <div class="columns">
+        <div class="column is-half">
+          <b>Medical Professional Appointment View</b>
+          <br>
+          <img :src="showMPAppointmentGif" alt="Medical Professional Patient Selection"/>
+        </div>
+        <div class="column is-half">
+          <b>Patient Appointment View</b>
+          <br>
+          <img :src="showPatientAppointmentGif" alt="Patient Appointment"/>
+        </div>
+      </div>
+    </div>
+  <br>
+   Click the button below to try out the Appointment Creation.
   <br>
   <a class="button is-link is-rounded try" @click ="displayAppointmentCreation">{{tryButton}}</a>
   <appointmentCreation
@@ -40,6 +93,24 @@
       showAppointmentCreation() {
         return this.$store.getters.showAppointmentCreation;
       },
+      showMPAppointmentImg(){
+        return this.$store.getters.mpAppointmentCreation;
+      },
+      showPatientAppointmentImg(){
+        return this.$store.getters.patientAppointmentCreation;
+      },
+      showMPPatientSelection(){
+        return this.$store.getters.mpAppointmentChoosePatient;
+      },
+      showPatientMPSelection(){
+        return this.$store.getters.patientChooseMP;
+      },
+      showMPAppointmentGif(){
+        return this.$store.getters.mpAppointmentGif;
+      },
+      showPatientAppointmentGif(){
+        return this.$store.getters.patientAppointmentGif;
+      }
     },
     methods:{
       displayAppointmentCreation() {
