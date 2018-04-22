@@ -24,8 +24,8 @@ export default {
   },
   methods: {
     sendFeedbackCall() {
-      var feedbackObj = {feedback: this.feedbackText};
-      axios.post(this.$store.getters.sendFeedbackURL, feedbackObj)
+      var feedbackObj = {feedbackMessage: this.feedbackText};
+      axios.post(this.$store.getters.feedbackURL, feedbackObj)
         .then(response => {
           if(response.data.success) {
             this.errorMessage = '';
