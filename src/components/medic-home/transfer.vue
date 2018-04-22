@@ -4,9 +4,8 @@
     <h5>Which Medical Professional would you like to transfer Patient Name to?</h5>
     <input v-model="mpCode" placeholder="MP Code" type="text">
     </input>
-    <button class="button" @click="submit">Submit
-    </button>
-    <button class="button" @click="cancel">Cancel</button>
+    <a class="button is-primary is-rounded" @click="submit">Submit </a>
+    <a class="button is-primary is-rounded" @click="cancel">Cancel</a>
   </div>
 </template>
 <script>
@@ -68,5 +67,13 @@ export default {
 @import "../../assets/sass/settings.scss";
 .error {
   color: red;
+}
+.transfer {
+  padding: 5%;
+}
+.button {
+  color: black;
+  background-color: $green;
+  margin: 1% 0;
 }
 </style>

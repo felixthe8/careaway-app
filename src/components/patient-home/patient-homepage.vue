@@ -5,7 +5,10 @@
     <navbar class = "nav-bar" v-on:toggleTransfer="toggleTransfer"/>
 
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
-    <transfer v-if="showTransfer" v-on:close="toggleTransfer"/>
+    <div id="transfer">
+      <transfer v-if="showTransfer" :currentMed="medName" v-on:close="toggleTransfer"/>
+    </div>
+    
     <div class="patient-calendar" v-if="isLoaded">
       <calendar :calendar="calendar" class="column"/>
     </div>
@@ -56,6 +59,7 @@ export default {
         appointment: {}, // Currently stores only one appointment object, will need to change to store array
         appointeeType: "",
         appointee: [],
+        medName: '',
         isMed: false,
         calendar: [0],
         isLoaded: true,
@@ -130,6 +134,7 @@ export default {
       axios.get(this.$store.getters.getPatientApptURL + this.$store.getters.authenticatedUsername)
         .then(result => {
           this.appointee = result.data.mp;
+          this.medName = this.appointee[0].firstName + " " + this.appointee[0].lastName;
         });
       // Set appointee type to medical professional.
       this.appointeeType = "Medical Professional";
@@ -227,11 +232,8 @@ export default {
       float: right;
     }
   }
-
-  .patient-calendar {
-    width: auto;
-    height: 85vh;
-    display: grid;
-  }
+#transfer {
+  margin: 0 auto;
+}
 
 </style>

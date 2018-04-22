@@ -1,9 +1,17 @@
 <template>
-  <div v-if="transfering">
-    <h1>TRANSFER REQUEST</h1>
-    <p>{{currentMed}} would like to transfer you to {{newMed}}.</p>
-    <button @click="accept"> Accept </button>
-    <button @click="deny"> Decline </button>
+  <div id="transfer" v-if="transfering">
+    <div class="modal is-active">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="card-content">
+          <h1 class="content">TRANSFER REQUEST</h1>
+          <p class="content">{{currentMed}} would like to transfer you to {{newMed}}.</p>
+          <button class="button is-primary is-rounded" @click="accept"> Accept </button>
+          <button class="button is-primary is-rounded" @click="deny"> Decline </button>
+        </div>
+      </div>
+      <button class='modal-close is-large' id="close" aria-label='close' @click='close'></button>
+    </div>
   </div>
 </template>
 <script>
@@ -61,11 +69,27 @@ export default {
       this.transfering = this.transfer.inProgress;
       this.newMed = this.transfer.newMp;
       console.log(this.transfer);
+    }, 
+    close() {
+      this.$emit('close');
     }
   }
-
 }
 </script>
-<style>
-
+<style scoped lang="scss">
+  @import '../../assets/sass/settings.scss';
+  .card-content {
+    background: white;
+    border: 1px black solid;
+    text-align: center;
+  }
+  .content {
+    padding: 0.5% 0;
+  }
+  #close {
+    background-color: black;
+  }
+  .button {
+    background-color: $blue;
+  }
 </style>

@@ -1,5 +1,4 @@
 <template>
-
   <div class="columns medic-calendar">
     <div class="menu column is-one-fifth">
 
@@ -19,9 +18,9 @@
         <transfer v-if="showTransferInput" :patient="patient" :username="patientUsername" v-on:close="toggleTransferInput"></transfer>
         <div v-if="showTransferButtons">
           <p v-if="transferInProgress">Awaiting patient acceptance on transfer to {{newMP}}</p>
-          <button class="button is-rounded is-link" v-if="!transferInProgress" @click="createTransfer">Transfer Patient</button>
-          <button class="button" v-if="transferInProgress" @click="updateTransfer">Change Medical Professional</button>
-          <button class="button" v-if="transferInProgress" @click="cancelTransfer">Cancel Transfer</button>
+          <a class="button is-primary is-rounded" v-if="!transferInProgress" @click="createTransfer">Transfer Patient</a>
+          <a class="button is-primary is-rounded" v-if="transferInProgress" @click="updateTransfer">Change Medical Professional</a>
+          <a class="button is-primary is-rounded" v-if="transferInProgress" @click="cancelTransfer">Cancel Transfer</a>
         </div>
         
       </div>
@@ -34,7 +33,6 @@
 </template>
 
 <script>
-// TODO: get if patient has a transfer in progress, check patient-selector and what's return from getPatientNames()
 import appointment from '../shared/appointment.vue';
 import meterWidget from '../shared/meter.vue';
 import checklistWidget from '../shared/checklist.vue';
@@ -149,11 +147,12 @@ export default {
     },
     cancelTransfer() {
       // Request to backend to remove transfer request.
-      axios.get(`${this.$store.getters.removeTransferURL}${this.patientUsername}`).then(result => {
+      axios.post(`${this.$store.getters.removeTransferURL}${this.patientUsername}`).then(result => {
         if(result.data.success) {
           // If delete successful
           this.$store.dispatch('updatePatientTransfer', result.data.transfer);
           this.transferInProgress = this.$store.getters.getCurrentPatient.transfer.inProgress;
+          console.log(this.transferInProgress);
         } else {
           // TODO: Handle error here.
           console.log("Error" );
@@ -173,7 +172,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @import "../../assets/sass/settings.scss";
 
 .medic-calendar {
@@ -192,6 +191,11 @@ export default {
   #patientLabel{
     float: right;
   }
+}
+.button {
+  margin: 1%;
+  color: black;
+  background-color: $green;
 }
 
 </style>
