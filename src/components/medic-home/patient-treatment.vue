@@ -5,8 +5,10 @@
 
       <appointment :calendar="calendar" :isMed="isMed" />
 
-      <h1>{{patient}}</h1>
-      <h1>{{currentDiagnosis}}</h1>
+      <div id = "currentPatient">
+        <h1>{{patient}}</h1>
+        <h1>{{currentDiagnosis}}</h1>
+      </div>
 
       <diagnosis/>
 
@@ -29,7 +31,6 @@ import meterWidget from '../shared/meter.vue';
 import checklistWidget from '../shared/checklist.vue';
 import calendar from '../shared/calendar.vue';
 import diagnosis from './set-diagnosis.vue';
-import patientSelector from './patient-selector.vue';
 import moment from 'moment';
 import axios from 'axios';
 
@@ -133,8 +134,9 @@ export default {
     }
   }
 
-  #patientLabel{
-    float: right;
+  #currentPatient{
+    float: left;
+    margin-left: 1rem;
   }
 }
 
