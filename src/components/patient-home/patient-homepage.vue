@@ -39,7 +39,6 @@ import modify from '../shared/appointment/appointment-modification';
 import calendar from '../shared/calendar';
 import meterWidget from './meter';
 import checklistWidget from './checklist';
-import debounce from 'debounce';
 
 export default {
     name: 'patientHome',
@@ -172,16 +171,6 @@ export default {
         })
       },
     },
-    // beforeDestroy will run right before the user leaves the component.
-    beforeDestroy() {
-      document.onmousemove = null;
-      document.onkeypress = null;
-      document.onclick = null;
-      this.$store.dispatch('deauthenticatedUsername', '');
-      this.$store.dispatch('signOut','');
-      this.$router.push('/');
-    }
-
 }
 </script>
 

@@ -25,7 +25,6 @@
 <script>
 import axios from 'axios';
 import timeout from '../shared/timeout';
-import debounce from 'debounce';
 export default {
     name: 'breach',
      data() {
@@ -50,12 +49,7 @@ export default {
       },
         //closes admin page
       closeAdmin() {
-        document.onmousemove = null;
-        document.onkeypress = null;
-        document.onclick = null;
         this.$store.dispatch('saveUsername', '');
-        // Call to user plugin to logout user
-        this.$logout();
         this.$router.push('/');
       },
       getUserName(){

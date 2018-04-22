@@ -17,7 +17,6 @@
 
 import navbar from './app-header';
 import axios from 'axios';
-import debounce from 'debounce';
 axios.defaults.withCredentials = true;
 axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
 export default {
@@ -88,15 +87,6 @@ export default {
     created() {
       this.getCode();
     },
-    // beforeDestroy will run when the user leaves the component.
-    beforeDestroy() {
-      document.onmousemove = null;
-      document.onkeypress = null;
-      document.onclick = null;
-      this.$store.dispatch('deauthenticatedUsername', '');
-      this.$store.dispatch('signOut', '');
-      this.$router.push('/');
-    }
 }
 
 </script>
