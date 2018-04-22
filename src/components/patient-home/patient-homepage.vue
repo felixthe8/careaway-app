@@ -2,10 +2,10 @@
 
   <div>
 
-    <navbar class = "nav-bar"/>
+    <navbar class = "nav-bar" v-on:toggleTransfer="toggleTransfer"/>
 
     <timeout v-if ="showWarning" @close = "showWarning = false"/>
-
+    <transfer v-if="showTransfer" v-on:close="toggleTransfer"/>
     <div class="patient-calendar" v-if="isLoaded">
       <calendar :calendar="calendar" class="column"/>
     </div>
@@ -33,6 +33,7 @@ import meterWidget from './meter';
 import checklistWidget from './checklist';
 import debounce from 'debounce';
 import appointment from '../shared/appointment.vue';
+import transfer from './transfer';
 
 export default {
     name: 'patientHome',
@@ -45,7 +46,8 @@ export default {
       modify,
       meterWidget,
       checklistWidget,
-      appointment
+      appointment,
+      transfer
     },
 
     data() {
@@ -56,7 +58,8 @@ export default {
         appointee: [],
         isMed: false,
         calendar: [0],
-        isLoaded: true
+        isLoaded: true,
+        showTransfer: false,
       }
     },
 
@@ -131,6 +134,8 @@ export default {
       // Set appointee type to medical professional.
       this.appointeeType = "Medical Professional";
       this.isMed = false;
+
+
     },
     mounted () {
       // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
@@ -187,6 +192,10 @@ export default {
           console.log(err);
         })
       },
+      toggleTransfer() {
+        console.log("Toggling transfer")
+        this.showTransfer = !this.showTransfer;
+      }
     },
     // beforeDestroy will run right before the user leaves the component.
     beforeDestroy() {
