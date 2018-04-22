@@ -152,6 +152,14 @@ export const store = new Vuex.Store({
     appointmentStatus:{
       requestor: "https://dl.dropbox.com/s/oiuxfm461gupiwl/AppointmentStatus.PNG",
       requestee: "https://dl.dropbox.com/s/6oyzwzfyd70al2a/RequesteeAppointmentStatus.PNG"
+    },
+
+    calendarViews:{
+      month: "https://dl.dropbox.com/s/p37tcu86cnmnb91/MonthView.PNG",
+      week: "https://dl.dropbox.com/s/rpsje0w69cmsz01/WeekView.PNG",
+      medicalAppointmentView: "https://dl.dropbox.com/s/8f98uew6t4l8z1p/MedicalAppointmentView.PNG",
+      selectPatient: "https://dl.dropbox.com/s/n48ks3ttezh2n3n/select%20patient.PNG",
+      patientView: "https://dl.dropbox.com/s/74gpjfuvhz5v9rl/MedicalPatientView.PNG"
     }
   },
 
@@ -422,8 +430,22 @@ export const store = new Vuex.Store({
     },
     appointmentStatusRequestee:(state)=>{
       return state.appointmentStatus.requestee;
+    },
+    calendarMonthView: (state) => {
+      return state.calendarViews.month;
+    },
+    calendarWeekView: (state) => {
+      return state.calendarViews.week;
+    },
+    medicalAppointmentView: (state) =>{
+      return state.calendarViews.medicalAppointmentView;
+    },
+    selectPatient: (state) =>{
+      return state.calendarViews.selectPatient;
+    },
+    patientView: (state) =>{
+      return state.calendarViews.patientView;
     }
-    
   },
   mutations: {
     calendarState: (state) => {
