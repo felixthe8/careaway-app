@@ -37,6 +37,7 @@
 </template>
 
 <script>
+  import moment from 'moment';
   import axios from 'axios';
   export default {
     name: 'appointment-status',
@@ -79,6 +80,7 @@
     methods: {
       // This transform the date format to a human readable state
       getTime(time){
+        console.log(time);
         time = new Date(time);
         return `${time.getHours() === 0 ? '1' : time.getHours() > 12 ? time.getHours() - 12 : time.getHours()
                 }:${time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()
@@ -120,6 +122,7 @@
       editAppointment(){
         // Close this modal and open the modification appointment modal
         this.$store.dispatch("storeAppointment", this.appointment);
+        console.log(this.appointment);
         this.$store.dispatch("alternateAppointmentModification");
       },
       // This deletes the appointment vue from both appointee and initiator appointment list
@@ -152,7 +155,7 @@
             console.log(this.appointment.date);
             // get element by date attribute
             for(var i=0; i < this.calendar.length; i++) {
-              if(this.calendar[i].date === this.appointment.date) {
+              if(moment(this.calendar[i].date).isSame(moment(this.appointment.date))) {
                 this.calendar[i].appointment = {};
               }
           } 

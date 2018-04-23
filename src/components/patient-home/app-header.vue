@@ -3,6 +3,7 @@
     <img class="nav-bar__logo" @click = "goHome" src="../../assets/images/careaway-logo.png">
     <a class="nav-bar__button button is-link is-rounded" @click="logOut"> <i class="fas fa-sign-out-alt"></i> {{button}} </a>
     <a class="nav-bar__button button is-link is-rounded" @click="toggleCreate"> <i class="fas fa-sign-out-alt"></i> Create Appointment </a>
+    <a class="nav-bar__button button is-link is-rounded" @click="toggleTransfer"> <i class="fas fa-sign-out-alt"></i> View Transfer </a>
   </nav>
 </template>
 
@@ -33,6 +34,9 @@ export default {
     },
     toggleCreate() {
       this.$store.dispatch('alternateAppointmentCreation')
+    },
+    toggleTransfer() {
+      this.$emit('toggleTransfer');
     }
   }
 }

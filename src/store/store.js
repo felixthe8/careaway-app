@@ -88,7 +88,6 @@ export const store = new Vuex.Store({
 
     // Treatment Plan Data
     currentPatient: {},
-    appointments: [],
     meters: [],
     currentMeter: {
         "label": "",
@@ -99,6 +98,11 @@ export const store = new Vuex.Store({
     checklists: [],
     currentChecklist: {},
     currentAppointment: {},
+    appointments: [],
+
+    // Transfer URLs
+    makeTransferURL: 'http://localhost:8080/mpTransfer',
+    removeTransferURL: 'http://localhost:8080/removeTransfer'
   },
 
   getters: {
@@ -281,6 +285,12 @@ export const store = new Vuex.Store({
     },
     getCurrentPatient:(state) => {
       return state.currentPatient;
+    },
+    makeTransferURL: (state) => {
+      return state.makeTransferURL;
+    },
+    removeTransferURL: (state) => {
+      return state.removeTransferURL;
     }
   },
   mutations: {
@@ -430,6 +440,9 @@ export const store = new Vuex.Store({
     },
     setCurrentPatient: (state, payload) => {
       state.currentPatient = payload;
+    },
+    updatePatientTransfer: (state, payload) => {
+      state.currentPatient.transfer = payload;
     }
   },
 
@@ -532,6 +545,10 @@ export const store = new Vuex.Store({
     },
     setCurrentPatient: (context, payload) => {
       context.commit('setCurrentPatient', payload);
+    },
+    updatePatientTransfer: (context, payload) => {
+      // Used whenever a transfer request alters a patient's info in the server.
+      context.commit('updatePatientTransfer', payload);
     }
   }
 });
