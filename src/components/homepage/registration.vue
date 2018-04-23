@@ -237,6 +237,7 @@
           axios.post(this.$store.getters.registerURL, newPatient).then((
             function(response){
               if(response.data.BadPassword){
+                // If bad password is detected show warning and link
                 self.warning = 'You have chose a bad password, Please check this link to make a new password';
                 self.showWarning = true;
                 self.badPassword = response.data.BadPassword;
@@ -288,12 +289,13 @@
             securityA3: this.securityA3,
             patient: this.patientForm
           }
-          // Sends data to the proxy server on this route
+          // Sends data to the proxy server on this route\
           axios.post(this.$store.getters.registerURL,newMedicalProfessional).then((
             function(response){
               //This allows the user to sign in as a medical professional;
               console.log(response.data)
               if(response.data.BadPassword){
+                // If Bad Password Detected show warning with Link
                 self.warning = 'You have chose a bad password, Please check this link to make a new password';
                 self.showWarning = true;
                 self.badPassword = response.data.BadPassword;

@@ -112,9 +112,9 @@
                 self.$store.dispatch('alternatePassword');
                 self.$store.dispatch('alternateQuestions');
               } else {
-                 // if the user name is not found, warn user.
-                  self.inputWarning = 'The Answers are invalid.';
-                  self.showWarning = true;
+                 // if the user name is not found, warn user. don't warn user Security Risk
+                 // self.inputWarning = 'The Answers are invalid.';
+                 // self.showWarning = true;
               }
             })
             .catch(function(err) {

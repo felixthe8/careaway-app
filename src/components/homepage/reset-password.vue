@@ -98,6 +98,7 @@ import axios from 'axios'
                 },3000);
               }
               else if (response.data.BadPassword){
+                // If bad password detected show warning
                   self.inputWarning = 'You have Chosen a Bad Password';
                   self.showWarning = true;
               } 

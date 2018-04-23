@@ -77,10 +77,10 @@ import axios from 'axios'
                 self.$store.dispatch('alternateReset');
                 self.$store.dispatch('alternateQuestions');
               } else {
-                 // if the user name is not found, warn user.
-                  self.inputWarning = 'The Username is invalid.';
-                  self.showWarning = true;
-                  console.log(response);
+                 // if the user name is not found, warn user. Do not wwarn user Security Risk
+                  //self.inputWarning = 'The Username is invalid.';
+                 // self.showWarning = true;
+                 // console.log(response);
               }
             })
             .catch(function(err) {
