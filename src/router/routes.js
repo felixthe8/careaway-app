@@ -6,7 +6,8 @@ import homepage from '../components/homepage/homepage.vue';
 import profile from '../components/shared/profile.vue';
 import medicHome from '../components/medic-home/medic-homepage.vue';
 import medicAppointments from '../components/medic-home/medic-appointments.vue';
-import patientTreatment from '../components/medic-home/patient-treatment.vue'
+import patientTreatment from '../components/medic-home/patient-treatment.vue';
+import medicSendFeedback from '../components/medic-home/send-feedback.vue';
 import medicDataAnalysis from '../components/medic-home/data-analysis.vue';
 import medicSingleDataAnalysis from '../components/medic-home/single-analysis.vue';
 import patientHome from '../components/patient-home/patient-homepage.vue';
@@ -113,6 +114,14 @@ const router = new Router ({
                meta: {
                  title: "CareAway Medical Reports"
                }
+            },
+            {
+              path: '/MedicHome/Feedback',
+              component: medicSendFeedback,
+              name: 'sendFeedback',
+              meta: {
+                title: "Send Feedback to Careaway!"
+              }
             },
          ]
         }, // End Medical Professional routes

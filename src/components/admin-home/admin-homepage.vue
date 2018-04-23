@@ -1,24 +1,47 @@
 <template>
-  <div class="modal is-active">
-    <div class="modal-background"></div>
+  <div>
+    <div class="top-bar">
+      <button class="button is-primary spacing" @click = "openModal">Open Breach Notification</button>
+      <button class="button is-primary spacing" @click = "closeAdmin">Log out</button>
+    </div>
+
+    <p class="title-text">Feedback collected from Careaway's medical professionals</p>
+    <div class="columns">
+      <div class="column is-half is-offset-one-quarter brighter-white">
+        <div v-for="feedback in feedbackList">
+          <div class="field">
+            <div class="control">
+              <label class="checkbox checkbox-text">
+                <input type="checkbox" v-model="feedback.seen" @click="saveFeedback(feedback)">
+                {{ feedback.feedback }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal" v-bind:class="{ 'is-active': modalIsOpen }">
+      <div class="modal-background"></div>
       <div class="modal-content">
         <div class = "box">
           <div class="columns is-centered">
             <article class="card is-rounded">
               <div class="card-content">
                 <img src = "../../assets/images/careaway-full1.png">
-                 <p class = "warning" v-show="showWarning">{{inputWarning}}</p>
-                 <h2 id= "systemAdmingWarning"> Breach Detected: Please Push Button</h2>
+                <p class = "warning" v-show="showWarning">{{inputWarning}}</p>
+                <h2 id= "systemAdmingWarning"> Breach Detected: Please Push Button</h2>
                   <p class="control">
                       <input class="input" type="password" id = "password" :class="validPassword" @keyup="validPassword = checkEmptyInput(getPassword())" placeholder="Password">
                   </p> 
-                 <button class="button is-primary is-medium is-fullwidth is-rounded" @click = "breachNotification()">Breach Notification</button>
+                <button class="button is-primary is-medium is-fullwidth is-rounded" @click = "breachNotification()">Breach Notification</button>
               </div>
             </article>
           </div>
         </div>
       </div>
-       <button class="modal-close is-large" aria-label="close" @click="closeAdmin"></button>
+      <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
+    </div>
   </div>
 </template>
 
@@ -32,11 +55,23 @@ export default {
         //warning 
         showWarning: false,
         inputWarning: '',
+        modalIsOpen: false,
+
         password: '',
         validPassword: '',
         validConfirmedPassword: '',
         confirmMessage: '',
+        feedbackList: []
       }
+    },
+    beforeCreate() {
+      axios.get(this.$store.getters.feedbackURL)
+        .then(response => {
+
+          if(response.data.result) {
+            this.feedbackList = response.data.result;
+          }
+        });
     },
     methods:{
       checkEmptyInput(data){
@@ -54,6 +89,23 @@ export default {
       },
       getUserName(){
         return this.$store.state.username;
+      },
+      openModal() {
+        this.modalIsOpen = true;
+      },
+      closeModal() {
+        this.modalIsOpen = false;
+      },
+      saveFeedback(feed) {
+        feed.seen = !feed.seen;
+        axios.put(this.$store.getters.feedbackURL, feed)
+          // runs after the request has been answered
+          .then(function(response) {
+            console.log('success');
+            })
+            .catch(function(err) {
+              console.log(err);
+            });
       },
       //shuts down and notifies user
       breachNotification(){
@@ -75,9 +127,29 @@ export default {
 <style lang="scss">
   @import "../../assets/sass/settings.scss";
 
+  .top-bar {
+    padding: 24px;
+    text-align: end;
+  }
+
+  .title-text {
+    text-align:center;
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 36px;
+  }
+
+  .spacing {
+    margin-left: 12px;
+  }
+
   .modal-content {
     overflow: hidden;
     max-height: none;
+  }
+
+  .brighter-white {
+    background-color: #eeeeee;
   }
 
   .form {
