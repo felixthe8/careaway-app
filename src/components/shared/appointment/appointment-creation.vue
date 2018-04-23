@@ -92,11 +92,11 @@ export default {
     create() {
       this.removeAllErrors();
       if(this.check()) {
-        // Getting the initator's first and last name.
-        axios.get(this.$store.getters.getUserURL + this.$store.getters.authenticatedUsername)
+        if(!this.$store.getters.isTutorial){
+          // Getting the initator's first and last name.
+          axios.get(this.$store.getters.getUserURL + this.$store.getters.authenticatedUsername)
           .then(result => {
             const name = `${result.data.user.firstName} ${result.data.user.lastName}`;
-
             // Construct appointment object and send to server.
             const appointment = this.constructAppointment(name);
 
@@ -117,6 +117,7 @@ export default {
                 }
               });
           });
+        }
       } else {
         console.log("Error, invalid inputs.");
       }
@@ -253,6 +254,11 @@ export default {
     showErrorMessage(msg) {
       this.errors.msg = true;
       this.errorMsg = msg;
+    }
+  },
+  computed:{
+    isTutorial() {
+      return this.$store.getters.isTutorial;
     }
   }
 }

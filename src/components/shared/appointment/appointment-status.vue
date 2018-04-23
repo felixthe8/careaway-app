@@ -21,7 +21,7 @@
                 </div>
                 <div v-if='isInitiator && !isRejected'>
                   <a id='appointment-button' class='button is-rounded' @click="editAppointment()"> Edit </a>
-                  <a id='appointment-button' class='button is-rounded' @click="deleteAppointment()"> Delete </a>
+                  <a id='appointment-button' class='button is-rounded' :disabled = "isTutorial" @click="deleteAppointment()"> Delete </a>
                 </div>
                 <div v-if='isInitiator && isRejected'>
                   <a id='appointment-button' class='button is-rounded' @click="deleteAppointment()"> Okay </a>
@@ -76,6 +76,10 @@
           return true;
         }
       },
+      //Checks if the modal is part of tutorials
+      isTutorial(){
+        return this.$store.getters.isTutorial;
+      }
     },
     methods: {
       // This transform the date format to a human readable state
@@ -99,24 +103,24 @@
         // Set the new status of the appointment
         newAppointment.status=  status;
         // Send the request to the backend
-        axios.put(this.$store.getters.modifyAppointmentURL,{'newAppointment' : newAppointment, 'originalAppointment': this.appointment}).then(
-          function(response)
-          {
-            // Check if the status of the response is successful
-            if(response.status === 200){
-              console.log("Success");
-              // Edit the appointment in the array in the VueX
-              self.showWarning = false;
-            } else {
-              // Display an error message if the connection went wrong
-              console.log(response.data.response);
+        if(!this.$store.getters.isTutorial){
+          axios.put(this.$store.getters.modifyAppointmentURL,{'newAppointment' : newAppointment, 'originalAppointment': this.appointment}).then(
+            function(response)
+            {
+              // Check if the status of the response is successful
+              if(response.status === 200){
+                // Edit the appointment in the array in the VueX
+                self.showWarning = false;
+              } else {
+                // Display an error message if the connection went wrong
+                console.log(response.data.response);
+                self.showWarning = true;
+              }
+            }).catch(function(err){
+              console.log("There was an error handling the request");
               self.showWarning = true;
-            }
-          }).catch(function(err){
-            console.log("There was an error handling the request");
-            self.showWarning = true;
-          })
-          
+            });
+        }  
       },
       // Opens the appointment-modification vue
       editAppointment(){
@@ -137,20 +141,52 @@
               // Check if the status of the response is successful
               if(response.status === 200){
                 console.log("Success");
-                // Closes this vue
-                self.$store.commit("alternateAppointment");
-                // Deletes the appointment from the appointment array in the VueX
-                self.$store.dispatch('deleteAppointment', self.appointment);
+                // Edit the appointment in the array in the VueX
                 self.showWarning = false;
               } else {
+                // Display an error message if the connection went wrong
                 console.log(response.data.response);
                 self.showWarning = true;
               }
             }).catch(function(err){
-              // Display an error message if the connection went wrong
               console.log("There was an error handling the request");
               self.showWarning = true;
-            });
+            })
+        }
+      },
+      // Opens the appointment-modification vue
+      editAppointment(){
+        // Close this modal and open the modification appointment modal
+        this.$store.dispatch("storeAppointment", this.appointment);
+        this.$store.dispatch("alternateAppointmentModification");
+      },
+      // This deletes the appointment vue from both appointee and initiator appointment list
+      deleteAppointment(){
+        if(!this.$store.getters.isTutorial){
+          var today = new Date(Date.now());
+          var appointmentDate = new Date(this.appointment.date)
+          if(today.getDate() !== appointmentDate.getDate()+1){
+            var self = this;
+            axios.post(this.$store.getters.deleteAppt,{'appointment' : this.appointment}).then(
+              function(response)
+              {
+                // Check if the status of the response is successful
+                if(response.status === 200){
+                  console.log("Success");
+                  // Closes this vue
+                  self.$store.commit("alternateAppointment");
+                  // Deletes the appointment from the appointment array in the VueX
+                  self.$store.dispatch('deleteAppointment', self.appointment);
+                  self.showWarning = false;
+                } else {
+                  console.log(response.data.response);
+                  self.showWarning = true;
+                }
+              }).catch(function(err){
+                // Display an error message if the connection went wrong
+                console.log("There was an error handling the request");
+                self.showWarning = true;
+              });
 
             console.log(this.appointment.date);
             // get element by date attribute
@@ -164,6 +200,7 @@
             this.showWarning = true;
             this.warning = "You can't cancel right now";
           }
+        }
       }
     }
   }

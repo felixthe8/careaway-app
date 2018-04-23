@@ -1,5 +1,7 @@
 import moment from 'moment';
 import Chart from 'chart.js';
+import * as chromatism from 'chromatism';
+import pieceLabel from 'chart.piecelabel.js';
 
 const Report = {};
 

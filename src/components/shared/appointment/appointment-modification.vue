@@ -128,7 +128,7 @@ export default {
       if(this.check()) {
         // Constructs the appointment objects.
         const appointments = this.constructAppointments();
-
+        if(!this.$store.getters.isTutorial){
         // Put request to server
         axios.put(this.$store.getters.modifyAppointmentURL, appointments)
         .then(response => {
@@ -152,6 +152,7 @@ export default {
             this.errors.msg = true;
           }
         });
+        }
       } else {
         console.log("Error, invalid inputs.");
       }
