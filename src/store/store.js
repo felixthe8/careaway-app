@@ -52,8 +52,8 @@ export const store = new Vuex.Store({
     getPatientTreatmentURL: 'http://localhost:8080/getPatientTreatment?username=',
     updatePatientTreatmentURL: 'http://localhost:8080/updatePatientTreatment',
     getDiagnosisListURL: 'http://localhost:8080/getDiagnosisList',
-    saveDiagnosisURL : 'http://localhost:8080/getDiagnosisList',
-
+    saveDiagnosisURL : 'http://localhost:8080/saveDiagnosis',
+    
     patientInfoURL: 'http://localhost:8080/get-patients?code=',
     userInfoURL: 'http://localhost:8080/get-user?username=',
     logoutURL: 'http://localhost:8080/logout',

@@ -86,6 +86,9 @@ export default {
           self.wellnessWarning = 'Sorry, you need to add patients and have a full week of treatments before you can view this report'
         } else {
           for (var meter of response.data) {
+            if(meter.patient_input === null || meter.patient_input === undefined) {
+              continue;
+            }
             // Write the sum of the meter widget data
             self.wellness[meter.due_date].value += (parseFloat(meter.patient_input) / parseFloat(meter.scale[1]) ) * 100
             self.wellness[meter.due_date].counter++;

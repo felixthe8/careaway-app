@@ -4,8 +4,10 @@
 
       <appointment :calendar="calendar" :isMed="isMed" />
 
-      <h1>{{patient}}</h1>
-      <h1>{{diagnosis}}</h1>
+      <div id = "currentPatient">
+        <h1>{{patient}}</h1>
+        <h1>{{currentDiagnosis}}</h1>
+      </div>
 
       <diagnosis/>
 
@@ -38,7 +40,6 @@ import meterWidget from '../shared/meter.vue';
 import checklistWidget from '../shared/checklist.vue';
 import calendar from '../shared/calendar.vue';
 import diagnosis from './set-diagnosis.vue';
-import patientSelector from './patient-selector.vue';
 import moment from 'moment';
 import axios from 'axios';
 import transfer from './transfer';
@@ -52,7 +53,12 @@ export default {
     calendar,
     diagnosis,
     transfer,
-    
+  },
+
+  computed: {
+    currentDiagnosis() {
+      return this.$store.getters.getCurrentPatient.diagnosis
+    }
   },
 
   data() {
@@ -80,7 +86,6 @@ export default {
     // set meter
     this.calendar = this.$renderCalendar();
     this.patient = this.$store.getters.getCurrentPatient.fullName;
-    this.diagnosis = this.$store.getters.getCurrentPatient.diagnosis;
     this.user = patientName;
     
     let transferInfo = this.$store.getters.getCurrentPatient.transfer;
@@ -188,8 +193,9 @@ export default {
     }
   }
 
-  #patientLabel{
-    float: right;
+  #currentPatient{
+    float: left;
+    margin-left: 1rem;
   }
 }
 .button {
