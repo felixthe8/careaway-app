@@ -37,7 +37,6 @@ export default {
     create: function(event) {
       // get form input for meter
       this.message = document.getElementById("message").value;
-      console.log(this.message);
       // close modal on create
       this.toggleMail();
       // post new message to database
@@ -54,7 +53,7 @@ export default {
       axios.post(this.$store.getters.createMailURL+patient, {'message' : this.message, patient, mp}).then(function(response) {
         if(response.data.success) {
           // add new meter to Vuex
-          self.$store.dispatch("addMessage", this.message);
+          self.$store.dispatch("addMail", self.message);
         } else {
           alert("Failed to Send Message");
         }
