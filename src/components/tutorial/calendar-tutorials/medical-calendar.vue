@@ -3,9 +3,9 @@
     <h1 class = "title">Medical Calendar</h1>
     <div class = "instructions">
       <p>
-        The medical professional calendar can display both days of the month or the days of the weeks,
-        by selecting either the <b>Month</b> tab or the <b>Week</b> tab, and the medical professional
-        can navigate through different months using the arrows next to the name of the month. Below is 
+        The medical professional calendar can display both days of the month and the days of the week.
+        through the selection of the <b>Month</b> tab and the <b>Week</b> tab. The medical professional
+        can navigate through the months/days using the arrows at the top of the calendar. Below is 
         an example of each calendar view:
       </p>
       <div class="columns">
@@ -21,9 +21,9 @@
         </div>
       </div>
       <p>
-        For a medical professional, they have different information displayed onto the calendar depending
-        on what page they are currently on. If the medical professional is on their home page on their account
-        then they will see a list of all appointments of all their patients altogether on the calendar as shown 
+        As medical professional, you have different information displayed on the calendar depending
+        on what page you are currently on. If you are on your home page on your account
+        then you will see a list of all appointments of all your patients altogether on the calendar as shown 
         below:
       </p>
       <br>
@@ -31,13 +31,13 @@
       <br>
       <img :src="showMedicalProfessionalView"/>
       <p>
-        When the medical professional selects a patient then a new calendar will be displayed where both the 
-        patient specific appointments and treatment plans will be displayed<br>
+        When you select a patient, a new calendar will be displayed where both the 
+        patient's specific appointments and treatment plans will be displayed.<br>
         Below is where to select a patient:
       </p>
       <img :src="showSelectPatient"/>
       <p>
-        After selecting a patient, the medical professional can now view all the treatment plans and appointments with
+        After selecting a patient, you can now view all the treatment plans and appointments with
         that specific patient and can click on the treatment/appointments to view them
       </p>
       <img :src="showPatientCalendar"/>
@@ -48,6 +48,7 @@
 export default {
   name: "medical-calendar",
   computed:{
+    // These are links to Calendar Images for tutorials
     showMonthView() {
       return this.$store.getters.calendarMonthView;
     },

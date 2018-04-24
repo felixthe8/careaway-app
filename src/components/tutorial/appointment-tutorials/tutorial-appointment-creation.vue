@@ -8,7 +8,7 @@
       </p>
 
       <p>
-        This feature is avaiable upon logging into the user's account, and is located differently for patients and medical professionals.
+        After logging in, this feature is avaiable to you on your homepage and is located differently for patients and medical professionals.
         Locations for appointment creation is shown below:
       </p>
       <br>
@@ -26,8 +26,8 @@
       </div>
       <p>
         After clicking on the corresponding button to create a button, a window will appear to create a new appointment (as shown below).<br>
-        <i>*For Medical Professionals they will need to choose a patient they wish to schudule an appointment with</i><br>
-        <i>*For Patients they are already assigned their medical professional as their appointee</i><br>
+        <i>* Medical Professionals will need to choose a patient they wish to schudule an appointment with</i><br>
+        <i>* Patients are already assigned their medical professional as their appointee</i><br>
       </p>
       <br>
       <div class="columns">
@@ -44,9 +44,9 @@
       </div>
       <br>
       <p>
-        Proceeding into the appointment creation, the user will then select a date that is either the current date or any date beyond the current date.
-        If the user selects a date that is before the current date, they will receive a error and will be prompted to select another date.
-        After selecting a date the user will select a time for the appointment (which are pre-set to 30 minute intervals).<br>
+        Proceeding into the appointment creation, you will then select a date that is either the current date or any date beyond the current date.
+        If you select a date that is before the current date, you will receive a error and will be prompted to select another date.
+        After selecting a date you will select a time for the appointment (which are pre-set to 30 minute intervals).<br>
         <i>*Note: If selecting a time interval on the current date, it must be after the current time selected or else you will be prompted with an error.</i>
       </p>
       <div class="columns">
@@ -84,12 +84,14 @@
     data(){
         return{
             tryButton:"Try Appointment Creation",
+            // Dummy Data for the tutorials for appointment creation
             appointeeType: "Medical Professional",
             appointee:[{firstName: "John", lastName: "Doe"}],
             isMed: true
         }
     },
     computed:{
+      // These are links to Appointment Images for tutorials
       showAppointmentCreation() {
         return this.$store.getters.showAppointmentCreation;
       },
@@ -113,6 +115,7 @@
       }
     },
     methods:{
+      // The condition to display the Appointment Creation modal
       displayAppointmentCreation() {
         this.$store.dispatch('alternateAppointmentCreation');
       },

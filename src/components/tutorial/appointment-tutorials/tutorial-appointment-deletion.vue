@@ -8,11 +8,11 @@
       </p>
       <img :src="showAppointmentCalendar"/>
       <p>
-        First the User selects the appointment they want to delete from the calendar
+        First, you select the appointment you want to delete from the calendar.
       </p>
       <img :src="showAppointmentDeletion"/>
       <p>
-        Then they press the delete button on the appointment status window that pops up and teh appointment will be deleted.
+        Then, you press the delete button on the appointment status window that pops up and teh appointment will be deleted.
       </p>
     </div>
   </div>
@@ -21,6 +21,7 @@
 <script>
     export default {
         name:"tutorial-appointment-deletion",
+         // These are links to Calendar Images for tutorials
         computed:{
           showAppointmentCalendar() {
             return this.$store.getters.appointmentUpdateCalendarTutorial;
