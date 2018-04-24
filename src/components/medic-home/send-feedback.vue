@@ -27,23 +27,24 @@ export default {
     }
   },
   methods: {
+    // When the "Send" button is pressed, make an API call to send the message to the backend
     sendFeedbackCall() {
+      // Create json object to send back
       var feedbackObj = {feedbackMessage: this.feedbackText};
+      // POST call
       axios.post(this.$store.getters.feedbackURL, feedbackObj)
         .then(response => {
           if(response.data.success) {
+            // Clear error message and feedback text in textbox
             this.errorMessage = '';
             this.sendSuccessful = true;
             this.feedbackText = '';
           } else {
+            // Set error message to what the response was
             this.errorMessage = response.data.error;
           }
         });
     }
-  },
-  created(){
-      //this.$store.dispatch("singlePatientWellness",null);
-      //this.$store.dispatch("singlePatientCompletion",null);
   }
 }
 </script>
