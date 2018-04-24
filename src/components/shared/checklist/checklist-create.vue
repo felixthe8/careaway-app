@@ -91,6 +91,9 @@ export default {
       this.saveChecklist();
     },
     saveChecklist: function() {
+      // define this for in post request
+      let self = this;
+
       // get current user
       let user = this.$store.getters.getCurrentPatient.userName;
 
@@ -103,7 +106,7 @@ export default {
       axios.post(this.$store.getters.createChecklistURL+user, {'treatment' : checklist, user}).then(function(response) {
         if(response.data.success) {
           // add new checklist to vuex
-          this.$store.dispatch("addChecklist", this.$data);
+          self.$store.dispatch("addChecklist", this.$data);
         } else {
           alert("Failed to Create Checklist");
         }

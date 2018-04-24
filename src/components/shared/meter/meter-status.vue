@@ -50,6 +50,9 @@ export default {
       this.postDelete();
     },
     postDelete: function() {
+      // define this for in post request
+      let self = this;
+
       // get current patient username for post
       let user = this.$store.getters.getCurrentPatient.userName;
       // define meter to ensure proper format
@@ -65,7 +68,7 @@ export default {
       {
         if(response.status === 200){
           // remove meter from vuex
-          this.$store.dispatch("deleteMeter", this.meter);
+          self.$store.dispatch("deleteMeter", this.meter);
         } else {
           alert("Failed to Create Meter");
         }

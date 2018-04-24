@@ -67,6 +67,9 @@ export default {
       this.updateMeter();
     },
     updateMeter: function() {
+      // define this for in post request
+      let self = this;
+      
       // get current user
       let user = this.$store.getters.getCurrentPatient.userName;
 

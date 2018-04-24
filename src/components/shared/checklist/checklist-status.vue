@@ -42,6 +42,9 @@ export default {
       this.postDelete();
     },
     postDelete: function() {
+      // define this for in post request
+      let self = this;
+
       // get current patient username for post
       let user = this.$store.getters.getCurrentPatient.userName;
       // define checklist to ensure proper format
@@ -57,7 +60,7 @@ export default {
       {
         if(response.status === 200){
           // remove checklist from vuex
-          this.$store.dispatch("deleteChecklist", this.checklist);
+          self.$store.dispatch("deleteChecklist", this.checklist);
         } else {
           alert("Failed to Create checklist");
         }

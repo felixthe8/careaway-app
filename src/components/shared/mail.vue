@@ -44,6 +44,9 @@ export default {
       this.saveMail();
     },
     saveMail: function() {
+      // define this for in post request
+      let self = this;
+
       // get current patient & mp
       let patient = this.$store.getters.getCurrentPatient.userName;
       let mp = this.$store.getters.authenticatedUsername;
@@ -51,7 +54,7 @@ export default {
       axios.post(this.$store.getters.createMailURL+patient, {'message' : this.message, patient, mp}).then(function(response) {
         if(response.data.success) {
           // add new meter to Vuex
-          this.$store.dispatch("addMessage", this.message);
+          self.$store.dispatch("addMessage", this.message);
         } else {
           alert("Failed to Send Message");
         }
