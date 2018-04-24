@@ -106,7 +106,7 @@ export default {
       axios.post(this.$store.getters.createChecklistURL+user, {'treatment' : checklist, user}).then(function(response) {
         if(response.data.success) {
           // add new checklist to vuex
-          self.$store.dispatch("addChecklist", this.$data);
+          self.$store.dispatch("addChecklist", self.$data);
         } else {
           alert("Failed to Create Checklist");
         }

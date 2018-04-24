@@ -60,7 +60,7 @@ export default {
       {
         if(response.status === 200){
           // remove checklist from vuex
-          self.$store.dispatch("deleteChecklist", this.checklist);
+          self.$store.dispatch("deleteChecklist", self.checklist);
         } else {
           alert("Failed to Create checklist");
         }

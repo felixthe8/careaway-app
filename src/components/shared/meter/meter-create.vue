@@ -83,7 +83,7 @@ export default {
       axios.post(this.$store.getters.createMeterURL+user, {'treatment' : meter, user}).then(function(response) {
         if(response.data.success) {
           // add new meter to Vuex
-          this.$store.dispatch("addMeter", this.$data);
+          slef.$store.dispatch("addMeter", self.$data);
         } else {
           alert("Failed to Create Meter");
         }

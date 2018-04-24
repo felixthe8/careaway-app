@@ -68,7 +68,7 @@ export default {
       {
         if(response.status === 200){
           // remove meter from vuex
-          self.$store.dispatch("deleteMeter", this.meter);
+          self.$store.dispatch("deleteMeter", self.meter);
         } else {
           alert("Failed to Create Meter");
         }
