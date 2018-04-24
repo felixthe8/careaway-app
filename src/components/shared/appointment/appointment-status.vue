@@ -84,7 +84,6 @@
     methods: {
       // This transform the date format to a human readable state
       getTime(time){
-        console.log(time);
         time = new Date(time);
         return `${time.getHours() === 0 ? '1' : time.getHours() > 12 ? time.getHours() - 12 : time.getHours()
                 }:${time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()
@@ -113,7 +112,6 @@
                 self.showWarning = false;
               } else {
                 // Display an error message if the connection went wrong
-                console.log(response.data.response);
                 self.showWarning = true;
               }
             }).catch(function(err){
@@ -126,7 +124,6 @@
       editAppointment(){
         // Close this modal and open the modification appointment modal
         this.$store.dispatch("storeAppointment", this.appointment);
-        console.log(this.appointment);
         this.$store.dispatch("alternateAppointmentModification");
       },
       // This deletes the appointment vue from both appointee and initiator appointment list
@@ -140,12 +137,10 @@
             {
               // Check if the status of the response is successful
               if(response.status === 200){
-                console.log("Success");
                 // Edit the appointment in the array in the VueX
                 self.showWarning = false;
               } else {
                 // Display an error message if the connection went wrong
-                console.log(response.data.response);
                 self.showWarning = true;
               }
             }).catch(function(err){
@@ -172,14 +167,12 @@
               {
                 // Check if the status of the response is successful
                 if(response.status === 200){
-                  console.log("Success");
                   // Closes this vue
                   self.$store.commit("alternateAppointment");
                   // Deletes the appointment from the appointment array in the VueX
                   self.$store.dispatch('deleteAppointment', self.appointment);
                   self.showWarning = false;
                 } else {
-                  console.log(response.data.response);
                   self.showWarning = true;
                 }
               }).catch(function(err){
@@ -188,7 +181,6 @@
                 self.showWarning = true;
               });
 
-            console.log(this.appointment.date);
             // get element by date attribute
             for(var i=0; i < this.calendar.length; i++) {
               if(moment(this.calendar[i].date).isSame(moment(this.appointment.date))) {

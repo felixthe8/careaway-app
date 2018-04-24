@@ -41,7 +41,7 @@
             </timeChangers>
         </div>
         <a class="button is-primary is-medium is-fullwidth is-rounded" @click="create"> {{button}} </a>
-        <a class="button is-primary is-medium is-fullwidth is-rounded" @click="cancel"> Cancel </a>
+        <a class="button is-primary is-medium is-fullwidth is-rounded" @click="closeThis"> Cancel </a>
       </div>
     </div>
     <button class='modal-close is-large' aria-label='close' @click='closeThis'></button>
@@ -68,7 +68,7 @@ export default {
       endMinute: '',
       endPM: true,
       endTime: this.appointment.endTime,
-      appointee: this.appointment.appointee,
+      appointee: this.appointment.appointeeName,
       button: 'Save Appointment',
       errorMsg: "",
       errors: {
@@ -134,15 +134,13 @@ export default {
         .then(response => {
           // Successful appointment modification
           if(response.data.success) {
-            console.log("Modify appointment success.");
-
             // Stores the editted appointment in front end.
             this.$store.dispatch('editAppointment', appointments);
             this.$emit("storeAppointment", appointments.newAppointment);
 
             // Removes all errors.
             this.errors.msg = false;
-            this.cancel();
+            this.closeThis();
           } else {
             // Modified appointment fail.
             console.log("Modify appointment fail.");
@@ -228,7 +226,6 @@ export default {
       this.errors.date = true;
 
       this.showErrorMessage("Error, invalid date. Please select a date in the future.");
-      console.log(this.errors.date);
       return false;
     },
     checkDuration(start, formats) {
@@ -267,13 +264,6 @@ export default {
     closeThis() {
       // Closes modify appointment.
       this.$store.dispatch("alternateAppointmentMod");
-    },
-    cancel() {
-      // Close modify appointment.
-      this.closeThis();
-      // Reopens appointment-status.
-    
-      this.$store.commit("alternateAppointment");
     },
     changeStartHour(hour) {
       // Toggles the hour portion of the starting time.
