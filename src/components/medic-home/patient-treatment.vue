@@ -1,16 +1,11 @@
 <template>
   <div class="columns medic-calendar">
     <div class="menu column is-one-fifth">
-      <div class = "patient-info">
-        <h1>{{this.$store.getters.getCurrentPatient.fullName}}</h1>
-        <h1>{{this.$store.getters.getCurrentPatient.diagnosis}}</h1>
-      </div>
-      <appointment :calendar="calendar" :isMed="isMed" />
-
       <div id = "currentPatient">
         <h1>{{patient}}</h1>
         <h1>{{currentDiagnosis}}</h1>
       </div>
+      <appointment :calendar="calendar" :isMed="isMed" />
 
       <diagnosis/>
 
@@ -29,8 +24,6 @@
         </div>
         
       </div>
-
-      <diagnosis/>
 
     </div>
 
