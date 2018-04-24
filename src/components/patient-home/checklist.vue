@@ -2,7 +2,6 @@
   <div class="modal checklist-status-modal">
     <div class="modal-background"></div>
     <div class="modal-content box white-background">
-        <!-- Any other Bulma elements you want -->
         <div class="question-text">Checklist</div>
         <br/>
         <div v-for="question in (mutatingWidget.list || [])">
@@ -10,7 +9,7 @@
             <div class="control">
               <label class="checkbox checkbox-text">
                 <input type="checkbox" v-model="question.check">
-                {{ question.check ? question.question+" yes" : question.question }}
+                {{ question.question }}
               </label>
             </div>
           </div>

@@ -65,10 +65,11 @@ export default {
       }
     },
     beforeCreate() {
+      // GET request to get all feedbacks
       axios.get(this.$store.getters.feedbackURL)
         .then(response => {
-
           if(response.data.result) {
+            // Set feedback list to response
             this.feedbackList = response.data.result;
           }
         });
@@ -82,7 +83,7 @@ export default {
       getPassword() {
         return document.getElementById('password').value;
       },
-        //closes admin page
+      //closes admin page
       closeAdmin() {
         this.$store.dispatch('saveUsername', '');
         this.$router.push('/');
@@ -90,18 +91,21 @@ export default {
       getUserName(){
         return this.$store.state.username;
       },
+      // Methods to open and close the modal
       openModal() {
         this.modalIsOpen = true;
       },
       closeModal() {
         this.modalIsOpen = false;
       },
+      // Save data for feedback
       saveFeedback(feed) {
+        // Update the seen property
         feed.seen = !feed.seen;
+        // PUT request to send updated feedback to backend
         axios.put(this.$store.getters.feedbackURL, feed)
-          // runs after the request has been answered
           .then(function(response) {
-            console.log('success');
+
             })
             .catch(function(err) {
               console.log(err);
