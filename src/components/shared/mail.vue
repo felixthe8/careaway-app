@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       count: 0,
-      mail: "",
+      mail: "no new messages",
       message: null,
       open: false,
     }
