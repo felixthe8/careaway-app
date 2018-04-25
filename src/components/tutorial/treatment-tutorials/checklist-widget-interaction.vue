@@ -68,9 +68,12 @@ export default {
     },
   },
   computed: {
+    // Return a statement showing that the feature is only available to patients.
     showPatientOnly() {
       return this.$store.getters.patientTutorialOnly
     },
+
+    // Return the image files associated with the checklist widget interaction
     checklistWidget() {
       return this.$store.getters.checklistInteractionTutorialWidget
     },

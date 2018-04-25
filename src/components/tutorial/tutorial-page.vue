@@ -26,10 +26,11 @@ export default {
   name: 'tutorial',
   components: {navbar, tutorialMenu},
   mounted() {
-    // Toggle the isTutorial flag when the user enters the tutorials page
+    // Toggle the isTutorial flag when the user enters the Tutorial page
     this.$store.dispatch('alternateTutorials')
   },
   beforeDestroy() {
+    // Toggle the isTutorial flag when the user leaves the Tutorial page
     this.$store.dispatch('alternateTutorials')
   }
 }

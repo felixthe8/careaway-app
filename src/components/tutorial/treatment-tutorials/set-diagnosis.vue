@@ -60,9 +60,12 @@ export default {
       }
   },
   computed: {
+    // Return a statement showing that the feature is only available to medical professionals.
     showMedicalOnly(){
       return this.$store.getters.mpTutorialOnly
     },
+
+    // Return the image files for setting diagnosis
     modal() {
       return this.$store.getters.setDiagnosisTutorialModal
     },

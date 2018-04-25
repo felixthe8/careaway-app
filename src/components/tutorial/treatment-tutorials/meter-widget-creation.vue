@@ -59,14 +59,17 @@ export default {
   },
   methods: {
     displayWidget() {
-       // Toggle between True or False
+       // Toggle between showing and hiding the widget
       this.showDemo = this.$toggleTutorialWidget(this.showDemo)
     }
   },
   computed: {
+    // Return a statement showing that the feature is only available to patients.
     showMedicalOnly(){
       return this.$store.getters.mpTutorialOnly
     },
+
+    // Returns the image files for meter widget creation
     widgetBox() {
       return this.$store.getters.meterCreationTutorialWidget
     },

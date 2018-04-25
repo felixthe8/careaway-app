@@ -51,6 +51,7 @@
 export default {
   name: 'tutorialMenu',
   methods: {
+    // Methods to call the routes for the CareAway Tutorial pages. 
     routeTutorialWelcome(){
       this.$router.push('/Tutorial');
     },

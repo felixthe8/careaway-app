@@ -70,9 +70,12 @@ export default {
     }
   },
   computed: {
+    // Return a statement showing that the feature is only available to medical professionals. 
     showMedicalOnly(){
        return this.$store.getters.mpTutorialOnly
     },
+    
+    // Return the image files for the checklist widget creation tutorial
     widgetBox() {
       return this.$store.getters.checklistCreationTutorialWidget
     },
