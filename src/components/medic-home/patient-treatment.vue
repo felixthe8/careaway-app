@@ -115,7 +115,7 @@ export default {
 
     // get current messages
     axios.get(this.$store.getters.getMailURL+patientName).then(result => {
-      let mail = result;
+      let mail = result.data.mail;
       this.$store.dispatch("addMail", mail);
     }).catch(error => {
       throw error;

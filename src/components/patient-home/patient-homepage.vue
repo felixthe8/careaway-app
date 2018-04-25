@@ -104,7 +104,6 @@ export default {
 
       // get Widgets for VueX
       axios.get(this.$store.getters.getTreatment+this.$store.getters.authenticatedUsername).then(result => {
-          console.log(result.data);
         var treatments = result.data.treatments;
         for(var i=0; i < treatments.length; i++) {
           // get patient meters and add to store
@@ -138,7 +137,7 @@ export default {
       let mp = this.$store.getters.authenticatedUsername;
       // get current messages
       axios.get(this.$store.getters.getMailURL+mp).then(result => {
-        let mail = result;
+        let mail = result.data.mail;
         this.$store.dispatch("addMail", mail);
       }).catch(error => {
         throw error;

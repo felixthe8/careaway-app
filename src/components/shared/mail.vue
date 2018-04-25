@@ -2,12 +2,12 @@
 
   <div class="mail">
       <button class="mail__button" @click="toggleMail">
-          <div class="mail__button--counter" v-if="count > 0">{{count}}</div>
+          <div class="mail__button--counter" v-if="count> 0">{{count}}</div>
           <i class="fas fa-envelope"></i>
       </button>
 
       <div class="mail__menu" :class="{ 'show-mail': open }">
-        <div class="mail__menu--current-message">{{mail}}</div>
+        <div class="mail__menu--current-message" v-for="message in mail">{{message.message}}</div>
         <hr class="line">
         <input class="input" name="message" type="text" id="message">
         <button id="meter" class="mail__menu--create green-button" @click="create">Send</button>
@@ -22,8 +22,6 @@ import axios from "axios";
 export default {
   name: "mail",
 
-  prop: "user",
-
   data() {
     return {
       count: 0,
@@ -34,10 +32,8 @@ export default {
   },
 
   created: function() {
-    console.log("created");
-    let mail = this.$store.getters.getMail;
-    console.log(mail);
-    // this.count = this.mail.length;
+    this.mail = this.$store.getters.getMail[0];
+    this.count = this.mail[0].length;
   },
 
   methods: {
