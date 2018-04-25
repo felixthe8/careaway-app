@@ -7,7 +7,7 @@
       </button>
 
       <div class="mail__menu" :class="{ 'show-mail': open }">
-        <div class="mail__menu--current-message">{{message}}</div>
+        <div class="mail__menu--current-message">{{mail}}</div>
         <hr class="line">
         <input class="input" name="message" type="text" id="message">
         <button id="meter" class="mail__menu--create green-button" @click="create">Send</button>
@@ -22,12 +22,22 @@ import axios from "axios";
 export default {
   name: "mail",
 
+  prop: "user",
+
   data() {
     return {
       count: 0,
-      message: "no messages",
+      mail: "no new messages",
+      message: null,
       open: false,
     }
+  },
+
+  created: function() {
+    console.log("created");
+    let mail = this.$store.getters.getMail;
+    console.log(mail);
+    // this.count = this.mail.length;
   },
 
   methods: {
@@ -39,21 +49,35 @@ export default {
       this.message = document.getElementById("message").value;
       // close modal on create
       this.toggleMail();
-      // post new message to database
-      this.saveMail();
+      // get current receiver
+
+      // define variable for post
+      let sender = this.$store.getters.authenticatedUsername;
+      let status = this.$store.authStatus;
+      if(status === "medical-professional") {
+        // receiver is the medical professional's patient
+        let receiver = this.$store.getters.getCurrentPatient.userName;
+        // post new message to database
+        this.saveMail(sender, receiver);
+      } else {
+        self = this;
+        // get medical professional's username based on current patient
+        axios.get(this.$store.getters.getMedicalProfessional+sender).then(result => {
+          // receiver is the medical professional ~ result.data
+          self.saveMail(sender, result.data);
+        }).catch(error => {
+          throw error;
+        });
+      }
     },
-    saveMail: function() {
-      // define this for in post request
-      let self = this;
-
-      // get current patient & mp
-      let patient = this.$store.getters.getCurrentPatient.userName;
-      let mp = this.$store.getters.authenticatedUsername;
-
-      axios.post(this.$store.getters.createMailURL+patient, {'message' : this.message, patient, mp}).then(function(response) {
+    saveMail(sender, receiver) {
+      axios.post(this.$store.getters.createMailURL+receiver, {
+        'sender' : sender,
+        'receiver' : receiver,
+        'message' : this.message
+      }).then(function(response) {
         if(response.data.success) {
-          // add new meter to Vuex
-          self.$store.dispatch("addMail", self.message);
+          // success
         } else {
           alert("Failed to Send Message");
         }
@@ -62,7 +86,6 @@ export default {
       });
     }
   }
-
 }
 </script>
 

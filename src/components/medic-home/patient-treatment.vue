@@ -110,7 +110,15 @@ export default {
         }
       }
     }).catch(error => {
-      console.log(error);
+      throw error;
+    });
+
+    // get current messages
+    axios.get(this.$store.getters.getMailURL+patientName).then(result => {
+      let mail = result;
+      this.$store.dispatch("addMail", mail);
+    }).catch(error => {
+      throw error;
     });
 
   }

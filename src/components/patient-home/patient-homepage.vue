@@ -134,6 +134,16 @@ export default {
         console.log(error);
       });
 
+      // get medical professional's username
+      let mp = this.$store.getters.authenticatedUsername;
+      // get current messages
+      axios.get(this.$store.getters.getMailURL+mp).then(result => {
+        let mail = result;
+        this.$store.dispatch("addMail", mail);
+      }).catch(error => {
+        throw error;
+      });
+
     },
     beforeMount(){
       // This is a patient, so get their medical professional's name, and their information.

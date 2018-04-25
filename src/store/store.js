@@ -60,6 +60,7 @@ export const store = new Vuex.Store({
     patientBreakdownURL: 'http://localhost:8080/getDiagnoses?medicalcode=',
     getPatientUserNamesURL: 'http://localhost:8080/getPatientUserNames',
     patientInfoURL: 'http://localhost:8080/get-patients?code=',
+    getMedicalProfessional: 'http://localhost:8080/getMedicalProfessional?username=',
 
     // Diagnosis URLs
     getSingleDiagnosisURL: 'http://localhost:8080/getSingleDiagnosis',
@@ -170,6 +171,9 @@ export const store = new Vuex.Store({
     },
     returnCodeURL: (state) => {
       return state.returnCodeURL;
+    },
+    getMedicalProfessional: (state) => {
+      return state.getMedicalProfessional;
     },
     patientBreakdownURL: (state) => {
       return state.patientBreakdownURL;
@@ -323,6 +327,9 @@ export const store = new Vuex.Store({
     },
     getMailURL:(state) => {
       return state.getMailURL;
+    },
+    getMail:(state) => {
+      return state.mail;
     },
     deleteMailURL:(state) => {
       return state.deleteMailURL;
