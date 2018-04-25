@@ -125,7 +125,7 @@ export const store = new Vuex.Store({
     currentChecklist: {},
     currentAppointment: {},
     editableAppointment: "",
-    mail: []
+    mail: "no new messages"
 
 
     /* End Data Tracking Variables */
@@ -482,7 +482,7 @@ export const store = new Vuex.Store({
     },
     // mail
     addMail: (state, payload) => {
-      state.mail.push(payload);
+      state.mail = payload;
     }
   },
 

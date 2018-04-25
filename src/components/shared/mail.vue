@@ -25,15 +25,19 @@ export default {
   data() {
     return {
       count: 0,
-      mail: "no new messages",
+      mail: "",
       message: null,
       open: false,
     }
   },
 
   created: function() {
-    // this.mail = this.$store.getters.getMail[0];
-    // this.count = this.mail.length;
+    let mail = this.$store.getters.getMail;
+    this.mail = mail;
+    console.log(mail);
+    if(this.mail != "no new messages") {
+        this.count = this.mail.length;
+    }
   },
 
   methods: {
