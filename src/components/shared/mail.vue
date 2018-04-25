@@ -33,7 +33,7 @@ export default {
 
   created: function() {
     this.mail = this.$store.getters.getMail[0];
-    this.count = this.mail[0].length;
+    this.count = this.mail.length;
   },
 
   methods: {
