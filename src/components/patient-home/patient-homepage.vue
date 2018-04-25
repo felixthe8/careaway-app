@@ -85,6 +85,17 @@ export default {
           }
         }
       }
+
+      // get medical professional's username
+      let user = this.$store.getters.authenticatedUsername;
+      // get current messages
+      axios.get(this.$store.getters.getMailURL+user).then(result => {
+        let mail = result.data.mail;
+        this.$store.dispatch("addMail", mail);
+      }).catch(error => {
+        throw error;
+      });
+
     },
 
     beforeCreate() {
@@ -132,17 +143,6 @@ export default {
       }).catch(error => {
         console.log(error);
       });
-
-      // get medical professional's username
-      let mp = this.$store.getters.authenticatedUsername;
-      // get current messages
-      axios.get(this.$store.getters.getMailURL+mp).then(result => {
-        let mail = result.data.mail;
-        this.$store.dispatch("addMail", mail);
-      }).catch(error => {
-        throw error;
-      });
-
     },
     beforeMount(){
       // This is a patient, so get their medical professional's name, and their information.

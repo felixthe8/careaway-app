@@ -113,8 +113,10 @@ export default {
       throw error;
     });
 
+    // get current user
+    let user = this.$store.getters.authenticatedUsername;
     // get current messages
-    axios.get(this.$store.getters.getMailURL+patientName).then(result => {
+    axios.get(this.$store.getters.getMailURL+user).then(result => {
       let mail = result.data.mail;
       this.$store.dispatch("addMail", mail);
     }).catch(error => {

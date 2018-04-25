@@ -32,8 +32,8 @@ export default {
   },
 
   created: function() {
-    this.mail = this.$store.getters.getMail[0];
-    this.count = this.mail.length;
+    // this.mail = this.$store.getters.getMail[0];
+    // this.count = this.mail.length;
   },
 
   methods: {
@@ -49,7 +49,7 @@ export default {
 
       // define variable for post
       let sender = this.$store.getters.authenticatedUsername;
-      let status = this.$store.authStatus;
+      let status = this.$store.getters.authStatus;
       if(status === "medical-professional") {
         // receiver is the medical professional's patient
         let receiver = this.$store.getters.getCurrentPatient.userName;
