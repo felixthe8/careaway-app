@@ -32,12 +32,19 @@ export default {
   },
 
   created: function() {
-    let mail = this.$store.getters.getMail;
-    this.mail = mail;
-    console.log(mail);
-    if(this.mail != "no new messages") {
-        this.count = this.mail.length;
-    }
+    // get medical professional's username
+    let user = this.$store.getters.authenticatedUsername;
+    let self = this;
+    // get current messages
+    axios.get(this.$store.getters.getMailURL+user).then(result => {
+      let mail = result.data.mail;
+      self.mail = mail;
+      if(self.mail != "no new messages") {
+        self.count = self.mail.length;
+      }
+    }).catch(error => {
+      throw error;
+    });
   },
 
   methods: {
