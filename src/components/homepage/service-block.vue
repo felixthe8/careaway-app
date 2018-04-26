@@ -39,7 +39,7 @@ import service from './service.vue';
           },
           {
             "description": "Data Report Generation",
-            "icon": "fas fa-chart-bar"
+            "icon": "fas fa-chart-pie"
           }
         ]
       }
