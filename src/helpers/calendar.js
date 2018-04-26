@@ -2,7 +2,7 @@
 const Calendar = {}
 
 Calendar.install = function (Vue, options) {
-
+    // TODO: add new prototype methods global constants
   // Instance Method
   Vue.prototype.$renderCalendar = function (initial, state) {
       let moment = require("moment");
@@ -26,11 +26,15 @@ Calendar.install = function (Vue, options) {
       else {
         SIZE = 5;
         // get week start ~ first day of calendar month + days to monday
-        let start = new Date(today.getFullYear(), today.getMonth, initial.getDate());
+        start = new Date(today.getFullYear(), today.getMonth(), initial.getDate());
+        console.log("set week start");
       }
+      console.log(start);
 
       // set start to current monday
       start = new Date(start.getFullYear(), start.getMonth(), start.getDate() + (start.getDay() == 0?-6:1) - start.getDay());
+      console.log("set to monday");
+      console.log(start);
 
       // careaway calendar month
       let calendar = [];
@@ -58,6 +62,7 @@ Calendar.install = function (Vue, options) {
           "meter": {},
           "checklist": {}
         }
+        // TODO: change object to null
 
         // update count & set next after first itr
         count++;
