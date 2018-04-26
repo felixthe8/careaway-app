@@ -7,8 +7,10 @@
 
 
 <script>
+// This component creates the font awesome icon. It takes in the icon class.
 export default {
     name: 'service',
+    // The parent component passes the class name through a prop
     props: ['icon']
   
 }
