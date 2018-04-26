@@ -195,11 +195,12 @@ export default {
     transform: scale(0) translateY(500px);
     opacity: 0;
     transition: all ease 1s;
+    max-height: 400px;
+    overflow: scroll;
 
     &--current-message {
       text-align: left;
       color: gray;
-      max-height: 600px;
 
       &:hover {
         .message-delete {

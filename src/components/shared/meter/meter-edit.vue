@@ -81,7 +81,6 @@ export default {
       }
 
       axios.put(this.$store.getters.updateTreatmentMeterURL+user, {'treatment' : meter, user}).then(function(response) {
-          console.log(response);
         if(response.data.success) {
           alert("Meter Edited!");
         } else {

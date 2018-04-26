@@ -32,9 +32,11 @@ export default {
 
   data() {
     return {
-      label: "checklist",
-      list: [],
-      due_date: {},
+      edit: {
+        label: "checklist",
+        list: [],
+        due_date: {},
+      },
       user: this.$store.getters.getCurrentPatient.userName
     }
   },
@@ -45,12 +47,13 @@ export default {
       document.getElementsByClassName("checklist-edit-modal")[0].classList.remove("is-active");
     },
     update: function() {
-      this.list = document.getElementById("checklist-edit-question").value;
-      
+      this.edit.list = document.getElementById("checklist-edit-question").value;
+      this.edit.due_date = this.checklist.due_date;
+
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
-        if(this.calendar[i].date === this.due_date) {
-          this.calendar[i].checklist = this;
+        if(this.calendar[i].date === this.edit.due_date) {
+          this.calendar[i].checklist = this.edit;
           this.calendar[i].checklist.created = true;
         }
       }
@@ -64,9 +67,9 @@ export default {
 
       const checklist = {
         label: "checklist",
-        list: this.list,
+        list: this.edit.list,
         due_date: this.checklist.due_date,
-        user: this.$store.getters.getCurrentPatient.userName
+        user: this.user
       }
 
       axios.put(this.$store.getters.updateTreatmentChecklistURL+user, {'treatment' : checklist, user}).then(function(response) {
