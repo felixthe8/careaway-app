@@ -12,12 +12,12 @@ User.install = function(Vue, options) {
       // Clears the authenticated role
       this.$store.dispatch('signOut', '');
 
-      Swal({
+      setTimeout (Swal({
         title: "Logged out", 
-        text: "You have been logged out of the system and are being redirected to the CareAway Homepage", 
+        text: "You have been logged out of the system and will be redirected to the CareAway Homepage", 
         type: "success" 
-      })
-    }
+      }) , 500)
+    } 
 
     Vue.prototype.$login = function(accountType, userName) {
       // Sets the authenticated user role
