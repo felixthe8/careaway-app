@@ -52,12 +52,13 @@ export default {
       document.getElementsByClassName("meter-edit-modal")[0].classList.remove("is-active");
     },
     update: function() {
-      this.question = document.getElementById("meter-question").value;
-      this.due_date = document.getElementById("meter-date").value;
+      this.question = document.getElementById("meter-edit-question").value;
+      this.due_date = this.meter.due_date;
 
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
         if(this.calendar[i].date === this.due_date) {
+            console.log("match");
           this.calendar[i].meter = this;
           this.calendar[i].meter.created = true;
         }
@@ -72,7 +73,6 @@ export default {
       this.question = document.getElementById("meter-edit-question").value;
       // get current user
       let user = this.$store.getters.getCurrentPatient.userName;
-      console.log(this.question);
       const meter = {
         label: this.label,
         question: this.question,

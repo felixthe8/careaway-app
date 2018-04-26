@@ -55,6 +55,7 @@ export default {
   methods: {
     create: function(event) {
       // get form input for meter
+      // TODO: use v-bind
       this.question = document.getElementById("meter-question").value;
       this.due_date = document.getElementById("meter-date").value;
 

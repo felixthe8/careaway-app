@@ -2,7 +2,7 @@
 const Calendar = {}
 
 Calendar.install = function (Vue, options) {
-
+    // TODO: add new prototype methods global constants
   // Instance Method
   Vue.prototype.$renderCalendar = function (initial, state) {
       let moment = require("moment");
@@ -26,7 +26,7 @@ Calendar.install = function (Vue, options) {
       else {
         SIZE = 5;
         // get week start ~ first day of calendar month + days to monday
-        let start = new Date(today.getFullYear(), today.getMonth, initial.getDate());
+        start = new Date(today.getFullYear(), today.getMonth(), initial.getDate());
       }
 
       // set start to current monday
@@ -58,6 +58,7 @@ Calendar.install = function (Vue, options) {
           "meter": {},
           "checklist": {}
         }
+        // TODO: change object to null
 
         // update count & set next after first itr
         count++;

@@ -9,7 +9,7 @@
           <h1 v-if="!this.$store.getters.calendarState">{{months[calendar[12].month]}}</h1>
         </div>
         <div class="item calendar__menu--label current-week">
-          <h1 v-if="this.$store.getters.calendarState">Week of {{months[calendar[4].month]}} {{getCurrent.monday}}</h1>
+          <h1 v-if="this.$store.getters.calendarState">Week of {{months[calendar[0].month]}} {{calendar[0].day}}</h1>
         </div>
         <div class="item"><div class="calendar__menu--arrow-right" @click="next"></div></div>
 
@@ -95,7 +95,9 @@ export default {
       let state = this.$store.getters.calendarState;
       // default to current month
       let next = this.getWeek(this.calendar[0].object, 7);
-      if(!state) { next = this.getMonth(this.calendar[12].object, 1); }
+      if(!state) {
+        next = this.getMonth(this.calendar[12].object, 1);
+      }
       this.calendar = this.$renderCalendar(next, state);
       this.getEvents();
     },
@@ -112,7 +114,7 @@ export default {
     /* Tab Click Handlers */
     weekly: function(event) {
       this.$store.dispatch("calendarState");
-      this.calendar = this.$renderCalendar(this.calendar[0].object, true);
+      this.calendar = this.$renderCalendar(new Date(), true);
       this.getEvents();
 
       // get day elements from html add week height
@@ -149,11 +151,18 @@ export default {
     },
     getEvents: function() {
       // updates events on calendar
+      let patientName = this.$store.getters.authenticatedUsername;
       let appointments = this.$store.getters.appointments;
+      let meters = this.$store.getters.meters;
+      let checklists = this.$store.getters.checklists;
       for(var i=0; i < this.calendar.length; i++) {
         // get current events based on calendar date
-        let appointmentMatch = appointments.find(appointment  => (moment(appointment.date).isSame(moment(this.calendar[i].date))) && (appointment.appointee === patientName || appointment.initiator === patientName));
+        let appointmentMatch = appointments.find(appointment  => appointment.date === this.calendar[i].date && appointment.appointee === patientName);
         if(appointmentMatch) { this.calendar[i].appointment = appointmentMatch; }
+        let meterMatch = meters.find(meter  => meter.due_date === this.calendar[i].date);
+        if(meterMatch) { this.calendar[i].meter = meterMatch; }
+        let checklistMatch = checklists.find(checklist  => checklist.due_date === this.calendar[i].date);
+        if(checklistMatch) { this.calendar[i].checklist = checklistMatch; }
       }
     },
     /* End Calendar Helper Functions */
@@ -210,12 +219,12 @@ export default {
     }
   },
   created() {
-    
+
     let patientName = this.$store.getters.authenticatedUsername;
-    
+
     // updates events on calendar
     let appointments = this.$store.getters.appointments;
-    
+
     let meters = this.$store.getters.meters;
     let checklists = this.$store.getters.checklists;
     for(var i=0; i < this.calendar.length; i++) {
