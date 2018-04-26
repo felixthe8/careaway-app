@@ -24,6 +24,10 @@ export default {
 
   data() {
     return {
+      user: this.$store.getters.authenticatedUsername,
+      status: this.$store.getters.authStatus,
+      patient: this.$store.getters.getCurrentPatient.userName,
+      sender: this.$store.getters.authenticatedUsername,
       count: 0,
       mail: "no new messages",
       message: null,
@@ -32,14 +36,23 @@ export default {
   },
 
   created: function() {
-    // get medical professional's username
-    let user = this.$store.getters.authenticatedUsername;
     let self = this;
     // get current messages
-    axios.get(this.$store.getters.getMailURL+user).then(result => {
+    axios.get(this.$store.getters.getMailURL+this.user).then(result => {
       let mail = result.data.mail;
+      let patientMail = [];
+      if(this.status === "medical-professional") {
+        // get patient specific mail
+        Array.from(mail).forEach((message, index)=> {
+          if(message.sender === this.patient) {
+            patientMail.push(message);
+          }
+        });
+        mail = patientMail;
+      }
       self.mail = mail;
-      if(self.mail != "no new messages") {
+      // show message count
+      if(self.mail != "no new messages" && self.mail.length > 0) {
         self.count = self.mail.length;
       }
     }).catch(error => {
@@ -56,22 +69,19 @@ export default {
       this.message = document.getElementById("message").value;
       // close modal on create
       this.toggleMail();
-      // get current receiver
 
-      // define variable for post
-      let sender = this.$store.getters.authenticatedUsername;
-      let status = this.$store.getters.authStatus;
-      if(status === "medical-professional") {
+      if(this.status === "medical-professional") {
         // receiver is the medical professional's patient
-        let receiver = this.$store.getters.getCurrentPatient.userName;
+        let receiver = this.patient;
+        console.log(receiver);
         // post new message to database
-        this.saveMail(sender, receiver);
+        this.saveMail(this.sender, receiver);
       } else {
         self = this;
         // get medical professional's username based on current patient
-        axios.get(this.$store.getters.getMedicalProfessional+sender).then(result => {
+        axios.get(this.$store.getters.getMedicalProfessional+this.sender).then(result => {
           // receiver is the medical professional ~ result.data
-          self.saveMail(sender, result.data);
+          self.saveMail(this.sender, result.data);
         }).catch(error => {
           throw error;
         });
@@ -79,7 +89,7 @@ export default {
     },
     saveMail(sender, receiver) {
       axios.post(this.$store.getters.createMailURL+receiver, {
-        'sender' : sender,
+        'sender' : this.sender,
         'receiver' : receiver,
         'message' : this.message
       }).then(function(response) {
