@@ -151,6 +151,7 @@ export default {
     },
     getEvents: function() {
       // updates events on calendar
+      let patientName = this.$store.getters.authenticatedUsername;
       let appointments = this.$store.getters.appointments;
       for(var i=0; i < this.calendar.length; i++) {
         // get current events based on calendar date
