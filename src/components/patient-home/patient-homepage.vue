@@ -14,8 +14,11 @@
 
     <meter-widget :widget="this.$store.getters.currentMeter" v-on:close="close" v-on:save="save" />
     <checklist-widget :widget="this.$store.getters.currentChecklist" v-on:close="close" v-on:save="save" />
-    <appointment :calendar="calendar" :isMed="isMed" />
-
+    <create
+      :appointeeType="appointeeType"
+      :appointee="appointee"
+      :isMed="isMed"
+      v-if = "showAppointmentCreation"/>
     <router-view></router-view>
 
   </div>
