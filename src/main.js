@@ -7,9 +7,12 @@ import router from './router/routes'
 import Calendar from './helpers/calendar';
 import User from './helpers/user';
 import Report from './helpers/data-analysis';
+import Tutorial from './helpers/tutorial'
+
 Vue.use(Calendar)
 Vue.use(User);
 Vue.use(Report);
+Vue.use(Tutorial);
 
 // Require the main Sass manifest file
 require('./assets/sass/main.scss');

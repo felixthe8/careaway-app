@@ -86,7 +86,8 @@ export default {
   }
 
   #patientLabel{
-    float: right;
+    float: left;
+    margin-left: 1rem;
   }
 }
 

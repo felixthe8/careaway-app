@@ -82,27 +82,30 @@ export default {
   },
   beforeMount() {
     const length = this.appointee.length;
+    // Checks to see if there is at least one person this person can schedule an appointment with.
     if(this.appointee.length > 0) {
       this.selectedAppointee = this.appointee[0].username;
       this.medAppointee = this.appointee[0];
     }
-
   },
   methods: {
     create() {
       this.removeAllErrors();
       if(this.check()) {
-        // Getting the initator's first and last name.
-        axios.get(this.$store.getters.getUserURL + this.$store.getters.authenticatedUsername)
+        if(!this.$store.getters.isTutorial){
+          // Getting the initator's first and last name.
+          axios.get(this.$store.getters.getUserURL + this.$store.getters.authenticatedUsername)
           .then(result => {
             const name = `${result.data.user.firstName} ${result.data.user.lastName}`;
-
             // Construct appointment object and send to server.
             const appointment = this.constructAppointment(name);
+
+            // Sends post request to server.
             axios.post(this.$store.getters.createAppointmentURL, appointment)
               .then(response => {
                 if(response.data.success) {
                   console.log("Create appointment success.");
+                  // Calls add appointment and this adds the appointment to the front-end store.
                   this.$emit('addAppointment', appointment.appointment);
                   this.errors.msg = false;
                   this.closeThis();
@@ -114,6 +117,7 @@ export default {
                 }
               });
           });
+        }
       } else {
         console.log("Error, invalid inputs.");
       }
@@ -250,6 +254,11 @@ export default {
     showErrorMessage(msg) {
       this.errors.msg = true;
       this.errorMsg = msg;
+    }
+  },
+  computed:{
+    isTutorial() {
+      return this.$store.getters.isTutorial;
     }
   }
 }

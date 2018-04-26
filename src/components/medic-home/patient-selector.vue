@@ -47,6 +47,7 @@ export default {
         // find current patient
         let patient = this.patientList.filter(patient => patient.userName === this.selected);
         this.$store.dispatch("setCurrentPatient", patient[0]);
+        
 
         // Emit a signal. This signal will be handled on receipt by the parent component
         this.$emit('selected');

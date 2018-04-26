@@ -2,29 +2,19 @@
 
   <div>
 
-    <navbar class = "nav-bar"/>
+    <navbar class = "nav-bar" v-on:toggleTransfer="toggleTransfer"/>
 
-    <timeout v-if ="showWarning" @close = "showWarning = false"/>
-
+    <div id="transfer">
+      <transfer v-if="showTransfer" :currentMed="medName" v-on:close="toggleTransfer"/>
+    </div>
+    
     <div class="patient-calendar" v-if="isLoaded">
       <calendar :calendar="calendar" class="column"/>
     </div>
 
     <meter-widget :widget="this.$store.getters.currentMeter" v-on:close="close" v-on:save="save" />
     <checklist-widget :widget="this.$store.getters.currentChecklist" v-on:close="close" v-on:save="save" />
-
-    <appointment-status :appointment="getAppointment()" v-if="this.$store.getters.showAppointment" ></appointment-status>
-
-    <create
-      :appointeeType="appointeeType"
-      :appointee="appointee"
-      :isMed="isMed"
-      v-if = "showAppointmentCreation" />
-
-    <modify
-      :requestee="appointeeType"
-      :appointment="this.$store.getters.currentAppointment"
-      v-if = "showAppointmentMod" />
+    <appointment :calendar="calendar" :isMed="isMed" />
 
     <router-view></router-view>
 
@@ -35,8 +25,8 @@
 </template>
 
 <script>
+import moment from 'moment';
 import navbar from './app-header';
-import timeout from '../shared/timeout';
 import axios from 'axios';
 import appointmentStatus from '../shared/appointment/appointment-status';
 import create from '../shared/appointment/appointment-creation';
@@ -46,30 +36,34 @@ import meterWidget from './meter';
 import checklistWidget from './checklist';
 import mail from '../shared/mail';
 import debounce from 'debounce';
+import appointment from '../shared/appointment.vue';
+import transfer from './transfer';
 
 export default {
     name: 'patientHome',
     components: {
       navbar,
       calendar,
-      timeout,
       appointmentStatus,
       create,
       modify,
       meterWidget,
       checklistWidget,
+      appointment,
+      transfer,
       mail
     },
 
     data() {
       return {
-        showWarning: false,
         appointment: {}, // Currently stores only one appointment object, will need to change to store array
         appointeeType: "",
         appointee: [],
-        isMed: true,
+        medName: '',
+        isMed: false,
         calendar: [0],
-        isLoaded: true
+        isLoaded: true,
+        showTransfer: false,
       }
     },
 
@@ -79,7 +73,7 @@ export default {
       let appointments = this.$store.getters.appointments;
       for(var i=0; i < appointments.length; i++) {
         for(var j=0; j < this.calendar.length; j++) {
-          if(appointments[i].date === this.calendar[j].date) {
+          if(moment(appointments[i].date).isSame(moment(this.calendar[j].date))) {
             this.calendar[j].appointment = appointments[i];
             appointments[i].created = true;
           }
@@ -139,27 +133,13 @@ export default {
       axios.get(this.$store.getters.getPatientApptURL + this.$store.getters.authenticatedUsername)
         .then(result => {
           this.appointee = result.data.mp;
+          this.medName = this.appointee[0].firstName + " " + this.appointee[0].lastName;
         });
       // Set appointee type to medical professional.
       this.appointeeType = "Medical Professional";
       this.isMed = false;
-    },
-    mounted () {
-      // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
-      var self = this;
-      var time;
-      document.onmousemove = debounce(resetTimer, 500);
-      document.onkeypress = debounce(resetTimer, 500);
-      document.onclick = debounce(resetTimer, 500);
 
-      function resetTimer() {
-        // Remove the timer ID instance created by setTimeout
-       clearTimeout(time);
-      // After 15 minutes of inacitivity, the session timeout warning will display
-       time = setTimeout(self.displaySessionwarning, 15*60*1000);
-     }
-      // Call the resetTimer function to kick-start the inactivity timer.
-      resetTimer();
+
     },
     computed: {
       showAppointmentCreation() {
@@ -175,9 +155,6 @@ export default {
       },
       toggleCreate(){
         this.$store.dispatch("alternateAppointment");
-      },
-      displaySessionwarning() {
-        this.showWarning = true;
       },
       close() {
         //this.active = '';
@@ -199,17 +176,11 @@ export default {
           console.log(err);
         })
       },
+      toggleTransfer() {
+        console.log("Toggling transfer")
+        this.showTransfer = !this.showTransfer;
+      }
     },
-    // beforeDestroy will run right before the user leaves the component.
-    beforeDestroy() {
-      document.onmousemove = null;
-      document.onkeypress = null;
-      document.onclick = null;
-      this.$store.dispatch('deauthenticatedUsername', '');
-      this.$store.dispatch('signOut','');
-      this.$router.push('/');
-    }
-
 }
 </script>
 
@@ -230,11 +201,8 @@ export default {
       float: right;
     }
   }
-
-  .patient-calendar {
-    width: auto;
-    height: 85vh;
-    display: grid;
-  }
+#transfer {
+  margin: 0 auto;
+}
 
 </style>

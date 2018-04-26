@@ -10,10 +10,10 @@
                   <h2 id = "form-title"> Please Sign In to Continue</h2>
                     <p id = "warning" v-show="showWarning">{{inputWarning}}</p>
                     <p class="control">
-                      <input class="input" type="name" v-model="username" :class="validUsername" @keyup="validUsername = checkEmpty(username)" placeholder="Username">
+                      <input class="input" type="name" v-model="username" :class="validUsername" @keyup="validUsername = checkEmpty(username)" placeholder="Username" @keyup.enter="userSignIn">
                     </p> 
                     <p class="control">
-                      <input class="input" type="password" id = "password" :class="validPassword" @keyup="validPassword = checkEmpty(getPassword())" placeholder="Password">
+                      <input class="input" type="password" id = "password" :class="validPassword" @keyup="validPassword = checkEmpty(getPassword())" placeholder="Password" @keyup.enter="userSignIn">
                     </p> 
                     <p class="control">
                       <button class="button is-primary is-medium is-fullwidth is-rounded" @click = "userSignIn()">

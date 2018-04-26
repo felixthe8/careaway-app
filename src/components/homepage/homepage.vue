@@ -5,6 +5,7 @@
     <nav class="navbar">
       <div class="button signin" @click ="displayLogin">Sign In</div>
       <div class="button register" @click="displayRegistration">Register</div>
+      <div class = "button" @click="routeToTutorial"> Tutorials</div>
     </nav>
     <registration-menu v-if="showRegistration" ></registration-menu>
     <login v-if="showLogin"> </login>
@@ -66,6 +67,9 @@
       // Calls the store to display the login
       displayLogin() {
         this.$store.dispatch('alternateLogin');
+      },
+      routeToTutorial() {
+        this.$router.push('/Tutorial');
       },
       //checks for a breach
       checkBreach(){

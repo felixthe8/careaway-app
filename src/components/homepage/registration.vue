@@ -1,7 +1,9 @@
 <template>
   <div class='registration' :class='detectNewForm'>
       <img id='logos' src='../../assets/images/careaway-full1.png'>
-        <div class = 'warning' v-show='showWarning'> {{warning}} </div>
+        <div class = 'warning' v-show='showWarning'> {{warning}} 
+        <a href = 'https://pages.nist.gov/800-63-3/sp800-63b.html' v-show="badPassword"> Password Guide </a>
+        </div>
         <input placeholder = 'Username' class='input is-small' type='text'  @keyup='usernameInput=usernameValid(username)' v-bind:class='[usernameInput]' v-model='username'>
         <tooltip :requirements='usernameRequirements'></tooltip>
         <input placeholder='Password' class='input is-small' type='password'  @keyup='passwordInput=passwordValid(getPassword())' v-bind:class='[passwordInput]' id='password'>
@@ -71,6 +73,7 @@
         // The warning message upon displaying if something went wrong with input fields or submitting the data
         showWarning: false,
         warning: '',
+        badPassword: false,
         // These are the input requirements as specified for our business rules to display for the tool tips
         nameRequirements:'1 - 30 characters [A-Z or a - z and any special characters] ',
         usernameRequirements:`Has to be 8 - 120 characters [A - Z or a - z and any special characters] and No spaces`,
@@ -233,13 +236,20 @@
           // Sends data to the proxy server on this route
           axios.post(this.$store.getters.registerURL, newPatient).then((
             function(response){
-              self.$store.dispatch('authenticatedUsername', newPatient.username);
-              //This allows the user to be signed in as a patient
-              self.$store.dispatch('signIn', 'patient');
-              //This navigates the user to the patient account page
-              cookies.set('user', response.data.cookie);
-              self.$router.push('/PatientHome');
-              self.closeRegistration();
+              if(response.data.BadPassword){
+                // If bad password is detected show warning and link
+                self.warning = 'You have chose a bad password, Please check this link to make a new password';
+                self.showWarning = true;
+                self.badPassword = response.data.BadPassword;
+              }else{
+                self.$store.dispatch('authenticatedUsername', newPatient.username);
+                //This allows the user to be signed in as a patient
+                self.$store.dispatch('signIn', 'patient');
+                //This navigates the user to the patient account page
+                cookies.set('user', response.data.cookie);
+                self.$router.push('/PatientHome');
+                self.closeRegistration();
+              }
             }
           )).catch(function(err){
             // Display an error message on the registration modal that an error has occurred upon sending the data
@@ -279,16 +289,25 @@
             securityA3: this.securityA3,
             patient: this.patientForm
           }
-          // Sends data to the proxy server on this route
+          // Sends data to the proxy server on this route\
           axios.post(this.$store.getters.registerURL,newMedicalProfessional).then((
             function(response){
-              //This allows the user to sign in as a medical professional
-              self.$store.dispatch('authenticatedUsername', newMedicalProfessional.username);
-              self.$store.dispatch('signIn', 'medical-professional');
-              cookies.set('user', response.data.cookie);
-              //This reroutes the user to the medical professional account page
-              self.$router.push('/MedicHome');
-              self.closeRegistration();
+              //This allows the user to sign in as a medical professional;
+              console.log(response.data)
+              if(response.data.BadPassword){
+                // If Bad Password Detected show warning with Link
+                self.warning = 'You have chose a bad password, Please check this link to make a new password';
+                self.showWarning = true;
+                self.badPassword = response.data.BadPassword;
+              }
+              else{
+                self.$store.dispatch('authenticatedUsername', newMedicalProfessional.username);
+                self.$store.dispatch('signIn', 'medical-professional');
+                cookies.set('user', response.data.cookie);
+                //This reroutes the user to the medical professional account page
+                self.$router.push('/MedicHome');
+                self.closeRegistration();
+              }
             }
           )).catch(function(err){
             // Display an error message on the registration modal that an error has occurred upon sending the data

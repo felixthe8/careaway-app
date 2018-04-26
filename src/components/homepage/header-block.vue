@@ -19,7 +19,9 @@
     name: 'header-block',
     data() {
       return {
-        text: 'An online platform optimal communication between Medical Professionals and their clients.'
+        text: `The perfect application for medical professionals and their patients to interact. 
+                We provide the tools for patient oversight, appointment scheduling, data analysis,
+                 and so much more ! `
       }
     }
   }

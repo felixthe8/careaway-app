@@ -65,7 +65,8 @@ export const store = new Vuex.Store({
     // Diagnosis URLs
     getSingleDiagnosisURL: 'http://localhost:8080/getSingleDiagnosis',
     getDiagnosisListURL: 'http://localhost:8080/getDiagnosisList',
-    saveDiagnosisURL : 'http://localhost:8080/getDiagnosisList',
+    saveDiagnosisURL : 'http://localhost:8080/saveDiagnosis',
+    feedbackURL : 'http://localhost:8080/feedback',
 
     // Appointment URLs
     appointmentURL: 'http://localhost:8080/getAppt?username=',
@@ -113,7 +114,6 @@ export const store = new Vuex.Store({
 
     // Treatment Plan Data
     currentPatient: {},
-    appointments: [],
     meters: [],
     currentMeter: {
         "label": "",
@@ -124,10 +124,77 @@ export const store = new Vuex.Store({
     checklists: [],
     currentChecklist: {},
     currentAppointment: {},
-    editableAppointment: ""
+    editableAppointment: "",
 
     /* End Data Tracking Variables */
 
+    appointments: [],
+
+    // Transfer URLs
+    makeTransferURL: 'http://localhost:8080/mpTransfer',
+    removeTransferURL: 'http://localhost:8080/removeTransfer',
+
+    isTutorial: false,
+    mpTutorialOnly: 'NOTE: This feature is only available under the Medical Professional Account',
+    patientTutorialOnly: 'NOTE: This feature is only available under the Patient Account',
+
+    setDiagnosisTutorial:{
+      modal: 'https://dl.dropboxusercontent.com/s/088vxz3pyep06dp/set-diagnosis-modal.png',
+      modalAutocomplete : 'https://dl.dropboxusercontent.com/s/xfo1y1fgb3h2rh5/set-diagnosis-autocomplete.png',
+      autocompleteDemo: 'https://dl.dropboxusercontent.com/s/bmm9ysxb76kroqp/autocomplete-demo.gif',
+      success : 'https://dl.dropboxusercontent.com/s/amu317pvb4aq1dn/set-diagnosis-success.gif'
+    },
+
+    meterCreationTutorial: {
+      widgetBox: 'https://dl.dropboxusercontent.com/s/sekkifl00u4n6ug/meter-widget.png',
+      dragDemo: 'https://dl.dropboxusercontent.com/s/0yzoyplso9tr2cz/meter-drag-demo.gif',
+      createDemo: 'https://dl.dropbox.com/s/ge2o85jdn3ak2ac/meter-input-demo.gif'
+    },
+
+    meterInteractionTutorial: {
+      widgetBox: 'https://dl.dropboxusercontent.com/s/3611lyia0qbqj68/meter-widget-patient.png',
+      widgetInteract: 'https://dl.dropboxusercontent.com/s/6bh6hrqu8xfl8z2/meter-widget-interact.gif'
+    },
+
+    checklistCreationTutorial: {
+      widgetBox: 'https://dl.dropboxusercontent.com/s/vq18bzj3n4f40b2/checklist-widget.png',
+      dragDemo: 'https://dl.dropboxusercontent.com/s/wy0p34ntcopdhhf/checklist-drag-demo.gif',
+      createDemo: 'https://dl.dropboxusercontent.com/s/uen001a3kbmn6cz/checklist-input-demo.gif'
+    },
+
+    checklistInteractionTutorial: {
+      widgetBox: 'https://dl.dropboxusercontent.com/s/i5itox2elq58e4k/checklist-widget-patient.png',
+      widgetInteract: 'https://dl.dropboxusercontent.com/s/wwpwkeyblo3synh/checklist-interaction.gif'
+    },
+
+    appointmentCreation: {
+      mpAppointment: 'https://dl.dropbox.com/s/wmda4opt88z97fe/MPAppointmentCreation.PNG',
+      patientAppointment: 'https://dl.dropbox.com/s/ngsy6wdjxsgacsf/PatientAppointmentCreation%20.PNG',
+      mpChoosePatient: "https://dl.dropbox.com/s/zcnernbe2sj0cxo/MPAppointmentChoosePatient.PNG",
+      patientChooseMP: "https://dl.dropbox.com/s/lcax36tt8rsinxg/PatientAppointmentChoosePatient.PNG",
+      mpAppointmentGif: "https://dl.dropbox.com/s/px3twb7usg1d7kj/MPAppointment.gif",
+      patientAppointmentGif:"https://dl.dropbox.com/s/i5es9phbid9scmy/PatientAppointment.gif"
+    },
+    appointmentCalendar: "https://dl.dropbox.com/s/z886104nef4om5z/AppointmentUpdateCalendar.PNG",
+    appointmentUpdate:{
+      appointmentEditStatus: "https://dl.dropbox.com/s/mw36uyaydjp8zdx/AppointmentStatus.PNG",
+      appointmentUpdate: "https://dl.dropbox.com/s/1bflxfhx60swhya/appointmentUpdate.gif"
+    },
+    appointmentDeletion:{
+      deletion: "https://dl.dropbox.com/s/14e7w7u8iszzt3c/AppointmentStatus.PNG"
+    },
+    appointmentStatus:{
+      requestor: "https://dl.dropbox.com/s/oiuxfm461gupiwl/AppointmentStatus.PNG",
+      requestee: "https://dl.dropbox.com/s/6oyzwzfyd70al2a/RequesteeAppointmentStatus.PNG"
+    },
+
+    calendarViews:{
+      month: "https://dl.dropbox.com/s/p37tcu86cnmnb91/MonthView.PNG",
+      week: "https://dl.dropbox.com/s/rpsje0w69cmsz01/WeekView.PNG",
+      medicalAppointmentView: "https://dl.dropbox.com/s/8f98uew6t4l8z1p/MedicalAppointmentView.PNG",
+      selectPatient: "https://dl.dropbox.com/s/n48ks3ttezh2n3n/select%20patient.PNG",
+      patientView: "https://dl.dropbox.com/s/74gpjfuvhz5v9rl/MedicalPatientView.PNG"
+    }
   },
 
   getters: {
@@ -296,6 +363,9 @@ export const store = new Vuex.Store({
     saveDiagnosisURL : (state) => {
       return state.saveDiagnosisURL;
     },
+    feedbackURL : (state) => {
+      return state.feedbackURL;
+    },
     appointments: (state) => {
       return state.appointments;
     },
@@ -319,6 +389,114 @@ export const store = new Vuex.Store({
     },
     getCurrentPatient:(state) => {
       return state.currentPatient;
+    },
+    makeTransferURL: (state) => {
+      return state.makeTransferURL;
+    },
+    removeTransferURL: (state) => {
+      return state.removeTransferURL;
+    },
+    isTutorial: (state) => {
+      return state.isTutorial;
+    },
+    mpTutorialOnly: (state) => {
+      return state.mpTutorialOnly;
+    },
+    patientTutorialOnly: (state) => {
+      return state.patientTutorialOnly;
+    },
+    setDiagnosisTutorialModal: (state) => {
+      return state.setDiagnosisTutorial.modal;
+    },
+    setDiagnosisTutorialAutocomplete: (state) => {
+      return state.setDiagnosisTutorial.modalAutocomplete;
+    },
+    setDiagnosisTutorialAutocompleteDemo: (state) => {
+      return state.setDiagnosisTutorial.autocompleteDemo;
+    },
+    setDiagnosisTutorialSuccess: (state) => {
+      return state.setDiagnosisTutorial.success;
+    },
+    meterCreationTutorialWidget: (state) => {
+      return state.meterCreationTutorial.widgetBox;
+    },
+    meterCreationTutorialDragDemo: (state) => {
+      return state.meterCreationTutorial.dragDemo;
+    },
+    meterCreationTutorialCreateDemo: (state) => {
+      return state.meterCreationTutorial.createDemo;
+    },
+    meterInteractionTutorialWidget: (state) => {
+      return state.meterInteractionTutorial.widgetBox;
+    },
+    meterInteractionTutorialInteract: (state) => {
+      return state.meterInteractionTutorial.widgetInteract;
+    },
+    checklistCreationTutorialWidget: (state) => {
+      return state.checklistCreationTutorial.widgetBox;
+    },
+    checklistCreationTutorialDragDemo: (state) => {
+      return state.checklistCreationTutorial.dragDemo;
+    },
+    checklistCreationTutorialCreateDemo: (state) => {
+      return state.checklistCreationTutorial.createDemo;
+    },
+    checklistInteractionTutorialWidget: (state) => {
+      return state.checklistInteractionTutorial.widgetBox;
+    },
+    checklistInteractionTutorialInteract: (state) => {
+      return state.checklistInteractionTutorial.widgetInteract;
+    },
+    mpAppointmentCreation: (state) => {
+      return state.appointmentCreation.mpAppointment;
+    },
+    patientAppointmentCreation: (state) => {
+      return state.appointmentCreation.patientAppointment;
+    },
+    mpAppointmentChoosePatient: (state) => {
+      return state.appointmentCreation.mpChoosePatient;
+    },
+    patientChooseMP: (state) => {
+      return state.appointmentCreation.patientChooseMP;
+    },
+    mpAppointmentGif: (state) => {
+      return state.appointmentCreation.mpAppointmentGif;
+    },
+    patientAppointmentGif: (state) => {
+      return state.appointmentCreation.patientAppointmentGif;
+    },
+    appointmentEditStatusTutorial: (state) => {
+      return state.appointmentUpdate.appointmentEditStatus;
+    },
+    appointmentUpdateCalendarTutorial: (state) => {
+      return state.appointmentCalendar;
+    },
+    appointmentUpdateTutorial: (state) => {
+      return state.appointmentUpdate.appointmentUpdate;
+    },
+    appointmentDeletionTutorial: (state) =>{
+      return state.appointmentDeletion.deletion;
+    },
+    appointmentStatusRequestor: (state) => {
+      return state.appointmentStatus.requestor;
+    },
+    appointmentStatusRequestee:(state)=>{
+      return state.appointmentStatus.requestee;
+    },
+    calendarMonthView: (state) => {
+      return state.calendarViews.month;
+    },
+    calendarWeekView: (state) => {
+      return state.calendarViews.week;
+    },
+    medicalAppointmentView: (state) =>{
+      return state.calendarViews.medicalAppointmentView;
+    },
+    selectPatient: (state) =>{
+      return state.calendarViews.selectPatient;
+    },
+    patientView: (state) =>{
+      return state.calendarViews.patientView;
     },
     createMailURL:(state) => {
       return state.createMailURL;
@@ -474,6 +652,12 @@ export const store = new Vuex.Store({
     },
     setCurrentPatient: (state, payload) => {
       state.currentPatient = payload;
+    },
+    updatePatientTransfer: (state, payload) => {
+      state.currentPatient.transfer = payload;
+    },
+    isTutorial: (state) => {
+      state.isTutorial = !state.isTutorial;
     }
   },
 
@@ -576,6 +760,13 @@ export const store = new Vuex.Store({
     },
     setCurrentPatient: (context, payload) => {
       context.commit('setCurrentPatient', payload);
+    },
+    updatePatientTransfer: (context, payload) => {
+      // Used whenever a transfer request alters a patient's info in the server.
+      context.commit('updatePatientTransfer', payload);
+    },
+    alternateTutorials: (context) => {
+      context.commit('isTutorial');
     }
   }
 });

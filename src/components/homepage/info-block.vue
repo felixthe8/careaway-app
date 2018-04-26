@@ -12,7 +12,7 @@
 
     data() {
       return {
-        description: 'An online platform optimal communication between Medical Professionals and their clients.'
+        description: 'An online medical treatment platform that provides optimal communication between medical professionals and their patients.'
       }
     }
   }

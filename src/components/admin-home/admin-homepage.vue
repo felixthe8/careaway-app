@@ -1,69 +1,80 @@
 <template>
-  <div class="modal is-active">
-    <div class="modal-background"></div>
+  <div>
+    <div class="top-bar">
+      <button class="button is-primary spacing" @click = "openModal">Open Breach Notification</button>
+      <button class="button is-primary spacing" @click = "closeAdmin">Log out</button>
+    </div>
+
+    <p class="title-text">Feedback collected from Careaway's medical professionals</p>
+    <div class="columns">
+      <div class="column is-half is-offset-one-quarter brighter-white">
+        <div v-for="feedback in feedbackList">
+          <div class="field">
+            <div class="control">
+              <label class="checkbox checkbox-text">
+                <input type="checkbox" v-model="feedback.seen" @click="saveFeedback(feedback)">
+                {{ feedback.feedback }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal" v-bind:class="{ 'is-active': modalIsOpen }">
+      <div class="modal-background"></div>
       <div class="modal-content">
         <div class = "box">
           <div class="columns is-centered">
             <article class="card is-rounded">
               <div class="card-content">
                 <img src = "../../assets/images/careaway-full1.png">
-                 <p class = "warning" v-show="showWarning">{{inputWarning}}</p>
-                 <h2 id= "systemAdmingWarning"> Breach Detected: Please Push Button</h2>
+                <p class = "warning" v-show="showWarning">{{inputWarning}}</p>
+                <h2 id= "systemAdmingWarning"> Breach Detected: Please Push Button</h2>
                   <p class="control">
                       <input class="input" type="password" id = "password" :class="validPassword" @keyup="validPassword = checkEmptyInput(getPassword())" placeholder="Password">
                   </p> 
-                 <button class="button is-primary is-medium is-fullwidth is-rounded" @click = "breachNotification()">Breach Notification</button>
+                <button class="button is-primary is-medium is-fullwidth is-rounded" @click = "breachNotification()">Breach Notification</button>
               </div>
             </article>
           </div>
         </div>
       </div>
-       <button class="modal-close is-large" aria-label="close" @click="closeAdmin"></button>
-       <timeout v-if ="showTime" @close = "showTime = false"/>
+      <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import timeout from '../shared/timeout';
-import debounce from 'debounce';
 export default {
     name: 'breach',
-    components: {timeout},
      data() {
       return {
         //warning 
         showWarning: false,
         inputWarning: '',
-        showTime: false,
+        modalIsOpen: false,
 
         password: '',
         validPassword: '',
         validConfirmedPassword: '',
         confirmMessage: '',
+        feedbackList: []
       }
     },
-
-    mounted () { 
-      // A 15 minute session inactivity timer will run to keep track of if the user is interacting with the page or not.
-      var self = this;
-      var time;
-      document.onmousemove = debounce(resetTimer, 500);
-      document.onkeypress = debounce(resetTimer, 500);
-      document.onclick = debounce(resetTimer, 500);
-        
-      function resetTimer() {
-       clearTimeout(time);
-       // After 15 minutes of inacitivity, the session timeout warning will display
-       time = setTimeout(self.displaySessionwarning, 15*60*1000);
-     }
-    // Call the resetTimer function to kick-start the inactivity timer. 
-    resetTimer();
+    beforeCreate() {
+      // GET request to get all feedbacks
+      axios.get(this.$store.getters.feedbackURL)
+        .then(response => {
+          if(response.data.result) {
+            // Set feedback list to response
+            this.feedbackList = response.data.result;
+          }
+        });
     },
     methods:{
-      displaySessionwarning() {
-        this.showTime = true;
-      },
       checkEmptyInput(data){
         if(data.length == 0 || data == '') {
           return 'is-danger';
@@ -72,21 +83,36 @@ export default {
       getPassword() {
         return document.getElementById('password').value;
       },
-        //closes admin page
+      //closes admin page
       closeAdmin() {
-        document.onmousemove = null;
-        document.onkeypress = null;
-        document.onclick = null;
         this.$store.dispatch('saveUsername', '');
-        // Call to user plugin to logout user
-        this.$logout();
         this.$router.push('/');
       },
       getUserName(){
         return this.$store.state.username;
       },
+      // Methods to open and close the modal
+      openModal() {
+        this.modalIsOpen = true;
+      },
+      closeModal() {
+        this.modalIsOpen = false;
+      },
+      // Save data for feedback
+      saveFeedback(feed) {
+        // Update the seen property
+        feed.seen = !feed.seen;
+        // PUT request to send updated feedback to backend
+        axios.put(this.$store.getters.feedbackURL, feed)
+          .then(function(response) {
+
+            })
+            .catch(function(err) {
+              console.log(err);
+            });
+      },
       //shuts down and notifies user
-    breachNotification(){
+      breachNotification(){
         axios.post(this.$store.getters.breachURL, {username: this.getUserName(), password: this.getPassword()})
           // runs after the request has been answered
           .then(function(response) {
@@ -105,9 +131,29 @@ export default {
 <style lang="scss">
   @import "../../assets/sass/settings.scss";
 
+  .top-bar {
+    padding: 24px;
+    text-align: end;
+  }
+
+  .title-text {
+    text-align:center;
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 36px;
+  }
+
+  .spacing {
+    margin-left: 12px;
+  }
+
   .modal-content {
     overflow: hidden;
     max-height: none;
+  }
+
+  .brighter-white {
+    background-color: #eeeeee;
   }
 
   .form {
