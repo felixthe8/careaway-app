@@ -9,7 +9,7 @@
       <div class="mail__menu" :class="{ 'show-mail': open }">
         <div class="mail__menu--current-message" v-for="message in mail">
             <div class="mail__menu--current-message--date">{{date.toString()}}</div>
-            {{message.message}}<button class="message-delete" @click="remove"><i class="fas fa-times"></i></button>
+            {{message.message}}<button class="message-delete" @click="remove(message.message)"><i class="fas fa-times"></i></button>
         </div>
         <hr class="line">
         <input class="input" name="message" type="text" id="message">
@@ -27,9 +27,9 @@ export default {
 
   data() {
     return {
-      user: this.$store.getters.authenticatedUsername,
+      sender: this.$store.getters.authenticatedUsername,
       status: this.$store.getters.authStatus,
-      patient: this.$store.getters.getCurrentPatient.userName,
+      patient: "",
       sender: this.$store.getters.authenticatedUsername,
       count: 0,
       mail: "no new messages",
@@ -41,18 +41,30 @@ export default {
   created: function() {
     let self = this;
     // get current messages
-    axios.get(this.$store.getters.getMailURL+this.user).then(result => {
+    axios.get(this.$store.getters.getMailURL+this.sender).then(result => {
       let mail = result.data.mail;
       let patientMail = [];
-      if(this.status === "medical-professional") {
+
+      if(self.status === "medical-professional") {
+        // set receiver to patient
+        self.receiver = this.$store.getters.getCurrentPatient.userName;
         // get patient specific mail
         Array.from(mail).forEach((message, index)=> {
-          if(message.sender === this.patient) {
+          if(message.sender === self.receiver) {
             patientMail.push(message);
           }
         });
         mail = patientMail;
+      } else {
+        // get medical professional's username based on current patient
+        axios.get(this.$store.getters.getMedicalProfessional+self.sender).then(result => {
+        // receiver is the medical professional ~ result.data
+        self.receiver = result.data;
+        }).catch(error => {
+          throw error;
+        });
       }
+
       self.mail = mail;
       // show message count
       if(self.mail != "no new messages" && self.mail.length > 0) {
@@ -74,11 +86,8 @@ export default {
       this.toggleMail();
 
       if(this.status === "medical-professional") {
-        // receiver is the medical professional's patient
-        let receiver = this.patient;
-        console.log(receiver);
         // post new message to database
-        this.saveMail(this.sender, receiver);
+        this.saveMail(this.sender, this.receiver);
       } else {
         self = this;
         // get medical professional's username based on current patient
@@ -92,7 +101,7 @@ export default {
     },
     saveMail(sender, receiver) {
       axios.post(this.$store.getters.createMailURL+receiver, {
-        'sender' : this.sender,
+        'sender' : sender,
         'receiver' : receiver,
         'message' : this.message
       }).then(function(response) {
@@ -105,9 +114,37 @@ export default {
           throw err;
       });
     },
-    remove: function() {
-        console.log("remove");
-    }
+    remove: function(message) {
+      // initialize message to delete
+      let mail_to_delete = message;
+      // find message to delete
+      Array.from(this.mail).forEach((mail, index)=> {
+        if(mail.message === message) {
+          mail_to_delete = mail;
+        }
+      });
+      console.log(this.receiver);
+      this.postDelete(this.sender, this.receiver, mail_to_delete);
+    },
+    postDelete(sender, receiver, message) {
+      // define this for in post request
+      let self = this;
+      axios.post(this.$store.getters.deleteMailURL+receiver, {
+          'sender' : sender,
+          'receiver': receiver,
+          'message': message
+      }).then(
+      function(response)
+      {
+        if(response.status === 200){
+          alert("Message Deleted");
+        } else {
+          alert("Failed to Delete");
+        }
+      }).catch(function(err){
+        throw err;
+      });
+    },
   },
 
   computed: {
