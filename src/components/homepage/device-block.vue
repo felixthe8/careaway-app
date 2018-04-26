@@ -33,17 +33,17 @@
         sections: [
           {
             device: require('../../assets/images/laptop.svg'),
-            description: 'Informational views available for easy use on Desktop devices.',
+            description: `All the tools to manage your patients are just a click away. Register and find out what you're missing !` ,
             default: false
           },
           {
             device: require('../../assets/images/phone.svg'),
-            description: 'Mobile Support Coming Soon',
+            description: `CareAway for Mobile is coming soon. Stay tuned for the announcment !`,
             default: true
           },
           {
             device: require('../../assets/images/responsive.svg'),
-            description: 'Responsive easy to use design for all your devices',
+            description: `Ready for use on your desktop, laptop, and tablet. CareAway for Mobile is right around the corner !`,
             default: false
           }
         ]
