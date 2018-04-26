@@ -7,11 +7,11 @@
         <h1 class="checklist-edit-modal__title">Edit Checklist</h1>
         <div class="field" v-for="item in checklist.list">
           <label>Question:</label>
-          <input class="input" name="checklist" type="text" id="checklist-question" :value="item.question">
+          <input class="input" name="checklist" type="text" id="checklist-edit-question" :value="item.question">
         </div>
         <div class="field">
           <label>Date Assigned:</label>
-          <input class="input checklist-modal--input" name="date" type="text" id="checklist-date" :value="checklist.due_date">
+          <input class="input checklist-modal--input" name="date" type="text" id="checklist-date" :value="checklist.due_date" readonly>
         </div>
         <button id="checklist" class="checklist-edit-modal--create green-button" @click="update">Update Checklist</button>
       </div>
@@ -45,9 +45,8 @@ export default {
       document.getElementsByClassName("checklist-edit-modal")[0].classList.remove("is-active");
     },
     update: function() {
-      this.question = document.getElementById("checklist-question").value;
-      this.due_date = document.getElementById("checklist-date").value;
-
+      this.list = document.getElementById("checklist-edit-question").value;
+      
       // get element by date attribute
       for(var i=0; i < this.calendar.length; i++) {
         if(this.calendar[i].date === this.due_date) {
@@ -65,16 +64,16 @@ export default {
 
       const checklist = {
         label: "checklist",
-        list: [],
-        due_date: {},
+        list: this.list,
+        due_date: this.checklist.due_date,
         user: this.$store.getters.getCurrentPatient.userName
       }
 
       axios.put(this.$store.getters.updateTreatmentChecklistURL+user, {'treatment' : checklist, user}).then(function(response) {
         if(response.data.success) {
-          alert("Meter Edited!");
+          alert("Checklist Edited!");
         } else {
-          alert("Meter Failed to Update")
+          alert("Checklist Failed to Update")
         }
       }).catch(function(err) {
           throw err;

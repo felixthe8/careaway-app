@@ -7,7 +7,7 @@
         <h1 class="meter-edit-modal__title">Edit Meter</h1>
         <div class="field">
           <label>Question:</label>
-          <input class="input" name="meter" type="text" id="meter-question" :value="meter.question">
+          <input class="input" name="meter" type="text" id="meter-edit-question" :value="meter.question">
         </div>
         <div class="field">
           <p>Set Scale:</p>
@@ -18,7 +18,7 @@
         </div>
         <div class="field">
           <label>Date Assigned:</label>
-          <input class="input meter-modal--input" name="date" type="text" id="meter-date" :value="meter.due_date">
+          <input class="input meter-modal--input" name="date" type="text" id="meter-date" :value="meter.due_date" readonly>
         </div>
         <button id="meter" class="meter-modal--create green-button" @click="update">Update Meter</button>
       </div>
@@ -69,10 +69,10 @@ export default {
     updateMeter: function() {
       // define this for in post request
       let self = this;
-
+      this.question = document.getElementById("meter-edit-question").value;
       // get current user
       let user = this.$store.getters.getCurrentPatient.userName;
-
+      console.log(this.question);
       const meter = {
         label: this.label,
         question: this.question,
