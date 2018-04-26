@@ -4,7 +4,6 @@
 
     <navbar class = "nav-bar" v-on:toggleTransfer="toggleTransfer"/>
 
-    <timeout v-if ="showWarning" @close = "showWarning = false"/>
     <div id="transfer">
       <transfer v-if="showTransfer" :currentMed="medName" v-on:close="toggleTransfer"/>
     </div>
