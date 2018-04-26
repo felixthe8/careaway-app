@@ -69,7 +69,7 @@ export default {
     updateMeter: function() {
       // define this for in post request
       let self = this;
-      
+
       // get current user
       let user = this.$store.getters.getCurrentPatient.userName;
 
@@ -81,16 +81,11 @@ export default {
       }
 
       axios.put(this.$store.getters.updateTreatmentMeterURL+user, {'treatment' : meter, user}).then(function(response) {
+          console.log(response);
         if(response.data.success) {
-          console.log("Modify appointment success.");
-          this.$store.dispatch('editAppointment', appointments);
-          this.$emit("storeAppointment", appointments.newAppointment);
-          this.errors.msg = false;
-          this.cancel();
+          alert("Meter Edited!");
         } else {
-          console.log("Modify appointment fail.");
-          this.errorMsg = response.data.reason;
-          this.errors.msg = true;
+          alert("Meter Failed to Update")
         }
       }).catch(function(err) {
           throw err;
