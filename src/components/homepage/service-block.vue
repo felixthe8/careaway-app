@@ -35,7 +35,7 @@ import service from './service.vue';
           },
           {
             "description": "Easy Doctor Communication",
-            "icon": "fas fa-comment-alt"
+            "icon": "fas fa-comments"
           },
           {
             "description": "Data Report Generation",
