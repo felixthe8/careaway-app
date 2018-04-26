@@ -73,7 +73,7 @@ export default {
         this.saveMeter();
         // add new meter to Vuex
         this.$store.dispatch("addMeter", this.$data);
-      
+
 
       // close modal on create
       document.getElementsByClassName("meter-modal")[0].classList.remove("is-active");
@@ -96,7 +96,7 @@ export default {
       axios.post(this.$store.getters.createMeterURL+user, {'treatment' : meter, user}).then(function(response) {
         if(response.data.success) {
           // add new meter to Vuex
-          slef.$store.dispatch("addMeter", self.$data);
+          self.$store.dispatch("addMeter", self.$data);
         } else {
           alert("Failed to Create Meter");
         }
