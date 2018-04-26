@@ -2,7 +2,7 @@
   <section class="section service-block">
     <div class="columns">
       <div class="column" v-for="service in services">
-        <img class="service-block__icon" :src="service.icon">
+        <service :icon="service.icon"/>
         <p class="service-block__description">{{service.description}}</p>
       </div>
     </div>
@@ -10,34 +10,36 @@
 </template>
 
 <script>
+import service from './service.vue';
   export default {
     name: 'header-block',
+    components: {service},
     data() {
       return {
         services: [
           {
             "description": "Appointment Scheduling",
-            "icon": "http://placehold.it/50x50"
+            "icon": "fas fa-calendar-alt"
           },
           {
             "description": "Appointment Requests",
-            "icon": "http://placehold.it/50x50"
+            "icon": "fas fa-phone"
           },
           {
             "description": "Treatment Plan Creation Tools",
-            "icon": "http://placehold.it/50x50"
+            "icon": "fas fa-user-md"
           },
           {
             "description": "Treatment Plan Interaction",
-            "icon": "http://placehold.it/50x50"
+            "icon": "fas fa-universal-access"
           },
           {
             "description": "Easy Doctor Communication",
-            "icon": "http://placehold.it/50x50"
+            "icon": "fas fa-comment-alt"
           },
           {
             "description": "Data Report Generation",
-            "icon": "http://placehold.it/50x50"
+            "icon": "fas fa-chart-bar"
           }
         ]
       }
