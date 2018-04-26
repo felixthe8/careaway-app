@@ -8,7 +8,7 @@
     You can write down those thoughts in the text box below, send it, and the Careaway team will take your message into consideration when making updates to Careaway.
     <br/><br/>
     <textarea v-model="feedbackText" class="textarea" placeholder="Enter text"></textarea>
-    {{errorMessage}}
+    <div class="error-text">{{errorMessage}}</div>
     <br/>
     <a class="button is-primary" @click="sendFeedbackCall">Send</a>
   </div>
@@ -29,6 +29,10 @@ export default {
   methods: {
     // When the "Send" button is pressed, make an API call to send the message to the backend
     sendFeedbackCall() {
+      if (this.feedbackText.length === 0) {
+        this.errorMessage = 'Please enter some text in the textbox before sending.';
+        return;
+      }
       // Create json object to send back
       var feedbackObj = {feedbackMessage: this.feedbackText};
       // POST call
@@ -63,6 +67,10 @@ export default {
   margin-bottom: 24px;
   font-weight: bold;
   font-size: 24px;
+}
+
+.error-text {
+  color: #f00;
 }
 
 </style>
