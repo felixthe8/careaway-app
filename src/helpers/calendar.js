@@ -27,14 +27,10 @@ Calendar.install = function (Vue, options) {
         SIZE = 5;
         // get week start ~ first day of calendar month + days to monday
         start = new Date(today.getFullYear(), today.getMonth(), initial.getDate());
-        console.log("set week start");
       }
-      console.log(start);
 
       // set start to current monday
       start = new Date(start.getFullYear(), start.getMonth(), start.getDate() + (start.getDay() == 0?-6:1) - start.getDay());
-      console.log("set to monday");
-      console.log(start);
 
       // careaway calendar month
       let calendar = [];
