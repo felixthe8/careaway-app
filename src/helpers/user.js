@@ -1,5 +1,6 @@
 // import the Vuex store
 import store from '../store/store';
+import Swal from 'sweetalert2';
 // User state mangagement plugin for the CareAway Treatment Planner
 const User = {};
 User.install = function(Vue, options) {
@@ -10,6 +11,12 @@ User.install = function(Vue, options) {
       this.$store.dispatch('medicalCode', '');
       // Clears the authenticated role
       this.$store.dispatch('signOut', '');
+
+      Swal({
+        title: "Logged out", 
+        text: "You have been logged out of the system and are being redirected to the CareAway Homepage", 
+        type: "success" 
+      })
     }
 
     Vue.prototype.$login = function(accountType, userName) {
