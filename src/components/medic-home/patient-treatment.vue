@@ -28,6 +28,9 @@
     </div>
 
     <calendar :calendar="calendar" class="column is-four-fifths"/>
+
+    <mail/>
+
   </div>
 
 </template>
@@ -38,6 +41,8 @@ import meterWidget from '../shared/meter.vue';
 import checklistWidget from '../shared/checklist.vue';
 import calendar from '../shared/calendar.vue';
 import diagnosis from './set-diagnosis.vue';
+import patientSelector from './patient-selector.vue';
+import mail from '../shared/mail';
 import moment from 'moment';
 import axios from 'axios';
 import transfer from './transfer';
@@ -50,6 +55,7 @@ export default {
     calendar,
     diagnosis,
     transfer,
+    mail
   },
 
   computed: {
@@ -128,7 +134,7 @@ export default {
         }
       }
     }).catch(error => {
-      console.log(error);
+      throw error;
     });
 
   },

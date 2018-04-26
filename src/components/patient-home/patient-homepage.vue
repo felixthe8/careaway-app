@@ -21,6 +21,8 @@
       v-if = "showAppointmentCreation"/>
     <router-view></router-view>
 
+    <mail/>
+
   </div>
 
 </template>
@@ -35,6 +37,7 @@ import modify from '../shared/appointment/appointment-modification';
 import calendar from '../shared/calendar';
 import meterWidget from './meter';
 import checklistWidget from './checklist';
+import mail from '../shared/mail';
 import debounce from 'debounce';
 import appointment from '../shared/appointment.vue';
 import transfer from './transfer';
@@ -50,7 +53,8 @@ export default {
       meterWidget,
       checklistWidget,
       appointment,
-      transfer
+      transfer,
+      mail
     },
 
     data() {
@@ -78,6 +82,7 @@ export default {
           }
         }
       }
+
     },
 
     beforeCreate() {
@@ -97,7 +102,6 @@ export default {
 
       // get Widgets for VueX
       axios.get(this.$store.getters.getTreatment+this.$store.getters.authenticatedUsername).then(result => {
-          console.log(result.data);
         var treatments = result.data.treatments;
         for(var i=0; i < treatments.length; i++) {
           // get patient meters and add to store
@@ -126,7 +130,6 @@ export default {
       }).catch(error => {
         console.log(error);
       });
-
     },
     beforeMount(){
       // This is a patient, so get their medical professional's name, and their information.

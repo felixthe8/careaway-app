@@ -34,7 +34,8 @@ export default {
 
   methods: {
     edit: function() {
-
+      document.getElementsByClassName("meter-status-modal")[0].classList.remove("is-active");
+      document.getElementsByClassName("meter-edit-modal")[0].classList.add("is-active");
     },
     deleteMeter: function() {
       for(var i=0; i < this.calendar.length; i++) {
@@ -47,10 +48,11 @@ export default {
       document.getElementsByClassName("meter-status-modal")[0].classList.remove("is-active");
       // post delete to database
       this.postDelete();
-      // remove meter from vuex
-      this.$store.dispatch("deleteMeter", this.meter);
     },
     postDelete: function() {
+      // define this for in post request
+      let self = this;
+
       // get current patient username for post
       let user = this.$store.getters.getCurrentPatient.userName;
       // define meter to ensure proper format
@@ -65,12 +67,13 @@ export default {
       function(response)
       {
         if(response.status === 200){
-          console.log("Successfully deleted Meter");
+          // remove meter from vuex
+          self.$store.dispatch("deleteMeter", self.meter);
         } else {
-            console.log("Failed to Create Meter");
+          alert("Failed to Create Meter");
         }
       }).catch(function(err){
-        console.log(err);
+        throw err;
       });
     },
     close: function() {
@@ -88,7 +91,7 @@ export default {
   &__title {
     font-size: 2em;
   }
-  
+
   &--form {
     background: $white;
     padding: 2rem;

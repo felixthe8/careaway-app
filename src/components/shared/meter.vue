@@ -13,6 +13,10 @@
       :calendar="calendar"
       :meter="this.$store.getters.currentMeter"/>
 
+    <edit
+      :calendar="calendar"
+      :meter="this.$store.getters.currentMeter"/>
+
   </div>
 
 </template>
@@ -20,13 +24,14 @@
 <script>
 import create from "./meter/meter-create";
 import status from "./meter/meter-status";
+import edit from "./meter/meter-edit";
 
 export default {
   name: "meter",
 
   props: ["calendar"],
 
-  components: { create, status },
+  components: { create, status, edit },
 
   methods: {
     dragStart: function(event) {

@@ -54,35 +54,26 @@ export default {
 
   methods: {
     create: function(event) {
-        // get form input for meter
-        this.question = document.getElementById("meter-question").value;
-        this.due_date = document.getElementById("meter-date").value;
+      // get form input for meter
+      this.question = document.getElementById("meter-question").value;
+      this.due_date = document.getElementById("meter-date").value;
 
-        // get element by date attribute
-        for(var i=0; i < this.calendar.length; i++) {
-          if(this.calendar[i].date === this.due_date) {
-            // show meter on calendar
-            this.calendar[i].meter = this;
-            this.calendar[i].meter.created = true;
-          }
+      // get element by date attribute
+      for(var i=0; i < this.calendar.length; i++) {
+        if(this.calendar[i].date === this.due_date) {
+          // show meter on calendar
+          this.calendar[i].meter = this;
+          this.calendar[i].meter.created = true;
         }
-
-        // close modal on create
-        document.getElementsByClassName("meter-modal")[0].classList.remove("show-modal");
-        // post new meter to database
-        this.saveMeter();
-        // add new meter to Vuex
-        this.$store.dispatch("addMeter", this.$data);
-      
-
+      }
       // close modal on create
       document.getElementsByClassName("meter-modal")[0].classList.remove("is-active");
       // post new meter to database
       this.saveMeter();
-      // add new meter to Vuex
-      this.$store.dispatch("addMeter", this.$data);
     },
     saveMeter: function() {
+      // define this for in post request
+      let self = this;
       // get current user
       let user = this.$store.getters.getCurrentPatient.userName;
 
@@ -95,12 +86,13 @@ export default {
 
       axios.post(this.$store.getters.createMeterURL+user, {'treatment' : meter, user}).then(function(response) {
         if(response.data.success) {
-          console.log("Successfully Created Meter");
+          // add new meter to Vuex
+          self.$store.dispatch("addMeter", self.$data);
         } else {
-          console.log("Failed to Create Meter");
+          alert("Failed to Create Meter");
         }
       }).catch(function(err) {
-        console.log(err);
+          throw err;
       });
     },
     close: function() {

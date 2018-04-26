@@ -94,10 +94,11 @@ export default {
       document.getElementsByClassName("checklist-modal")[0].classList.remove("is-active");
       // post new meter to database
       this.saveChecklist();
-      // add new checklist to vuex
-      this.$store.dispatch("addChecklist", this.$data);
     },
     saveChecklist: function() {
+      // define this for in post request
+      let self = this;
+
       // get current user
       let user = this.$store.getters.getCurrentPatient.userName;
 
@@ -109,12 +110,13 @@ export default {
 
       axios.post(this.$store.getters.createChecklistURL+user, {'treatment' : checklist, user}).then(function(response) {
         if(response.data.success) {
-          console.log("Successfully Created Checklist");
+          // add new checklist to vuex
+          self.$store.dispatch("addChecklist", self.$data);
         } else {
-          console.log("Failed to Create Checklist");
+          alert("Failed to Create Checklist");
         }
       }).catch(function(err) {
-        console.log(err);
+        throw err;
       });
     },
     close: function() {
