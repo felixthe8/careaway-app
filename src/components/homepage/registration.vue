@@ -1,33 +1,43 @@
-<template>
-  <div class='registration' :class='detectNewForm'>
-      <img id='logos' src='../../assets/images/careaway-full1.png'>
-        <div class = 'warning' v-show='showWarning'> {{warning}} 
-        <a href = 'https://pages.nist.gov/800-63-3/sp800-63b.html' v-show="badPassword"> Password Guide </a>
-        </div>
-        <input placeholder = 'Username' class='input is-small' type='text'  @keyup='usernameInput=usernameValid(username)' v-bind:class='[usernameInput]' v-model='username'>
-        <tooltip :requirements='usernameRequirements'></tooltip>
-        <input placeholder='Password' class='input is-small' type='password'  @keyup='passwordInput=passwordValid(getPassword())' v-bind:class='[passwordInput]' id='password'>
-        <tooltip :requirements='passwordRequirements'></tooltip>
-        <input placeholder='First Name' class='input is-small' type='text' @keyup='firstNameInput=nameValid(firstName)' v-bind:class='[firstNameInput]' v-model='firstName'>
-        <tooltip :requirements='nameRequirements'></tooltip>
-        <input placeholder='Last Name' class='input is-small' type='text' @keyup='lastNameInput=nameValid(lastName)' v-bind:class='[lastNameInput]' v-model='lastName'>
-        <tooltip :requirements='nameRequirements'></tooltip>
-        <security-questions :class='getValue' :questions='1'></security-questions>
-        <input placeholder = 'Answer'  class='input is-small' type='text'  @keyup='answer1Input=isEmpty(securityA1)' v-bind:class='[answer1Input]' v-model='securityA1'>
-        <tooltip :requirements='answerRequirements'></tooltip>
-        <security-questions :class='getValue' :questions='2'></security-questions>
-        <input placeholder = 'Answer'  class='input is-small' type='text'  @keyup='answer2Input=isEmpty(securityA2)' v-bind:class='[answer2Input]' v-model='securityA2'>
-        <tooltip :requirements='answerRequirements'></tooltip>
-        <security-questions :class='getValue' :questions='3'></security-questions>
-        <input placeholder = 'Answer' class='input is-small' type='text'  @keyup='answer3Input=isEmpty(securityA3)' v-bind:class='[answer3Input]' v-model='securityA3'>
-        <tooltip :requirements='answerRequirements'></tooltip>
-        <div v-if='patientForm'>
-          <input placeholder='Medical Professional Code' class='input is-small' type='text'  @keyup='medicalProfessionalCodeInput=isEmpty()' v-bind:class='[medicalProfessionalCodeInput]' v-model='medicalProfessionalCode'>
-          <tooltip :requirements='medicalProfessionalRequirements'></tooltip>  
-          <input type='checkbox' v-model='termsAgreement'><label class='verification'>{{termsAndAgreement}} <a target='_blank' href='https://www.hhs.gov/hipaa/index.html'>Health Insurance Portability and Accountability Act</a></label><br>
-          <input type='checkbox' v-model='above18'><label class='verification'>{{over18Message}}</label>
-        </div>
-        <a id = 'submit-button' class='button form__button is-rounded is-fullwidth' @click='registerUser()'>Submit</a>
+"<template>
+  <div class="registration" :class="detectNewForm">
+    <div class="warning" v-show="showWarning"> {{warning}}
+      <a href="https://pages.nist.gov/800-63-3/sp800-63b.html" v-show="badPassword">Password Guide</a>
+    </div>
+
+    <input placeholder="Username" class="input is-small" type="text"  @keyup="usernameInput=usernameValid(username)" v-bind:class="[usernameInput]" v-model="username">
+    <tooltip :requirements="usernameRequirements"></tooltip>
+
+    <input placeholder="Password" class="input is-small" type="password"  @keyup="passwordInput=passwordValid(getPassword())" v-bind:class="[passwordInput]" id="password">
+    <tooltip :requirements="passwordRequirements"></tooltip>
+
+    <input placeholder="First Name" class="input is-small" type="text" @keyup="firstNameInput=nameValid(firstName)" v-bind:class="[firstNameInput]" v-model="firstName">
+    <tooltip :requirements="nameRequirements"></tooltip>
+
+    <input placeholder="Last Name" class="input is-small" type="text" @keyup="lastNameInput=nameValid(lastName)" v-bind:class="[lastNameInput]" v-model="lastName">
+    <tooltip :requirements="nameRequirements"></tooltip>
+
+    <security-questions :class="getValue" :questions="1"></security-questions>
+    <input placeholder = "Answer"  class="input is-small" type="text"  @keyup="answer1Input=isEmpty(securityA1)" v-bind:class="[answer1Input]" v-model="securityA1">
+    <tooltip :requirements="answerRequirements"></tooltip>
+
+    <security-questions :class="getValue" :questions="2"></security-questions>
+    <input placeholder = "Answer"  class="input is-small" type="text"  @keyup="answer2Input=isEmpty(securityA2)" v-bind:class="[answer2Input]" v-model="securityA2">
+    <tooltip :requirements="answerRequirements"></tooltip>
+
+    <security-questions :class="getValue" :questions="3"></security-questions>
+    <input placeholder = "Answer" class="input is-small" type="text"  @keyup="answer3Input=isEmpty(securityA3)" v-bind:class="[answer3Input]" v-model="securityA3">
+    <tooltip :requirements="answerRequirements"></tooltip>
+
+    <div v-if="patientForm">
+      <input placeholder="Medical Professional Code" class="input is-small" type="text"  @keyup="medicalProfessionalCodeInput=isEmpty()" v-bind:class="[medicalProfessionalCodeInput]" v-model="medicalProfessionalCode">
+      <tooltip :requirements="medicalProfessionalRequirements"></tooltip>
+      <input type="checkbox" v-model="termsAgreement">
+        <label class="verification">{{termsAndAgreement}}
+          <a target="_blank" href="https://www.hhs.gov/hipaa/index.html">Health Insurance Portability and Accountability Act</a>
+        </label><br>
+      <input type="checkbox" v-model="above18"><label class="verification">{{over18Message}}</label>
+    </div>
+    <a id = "submit-button" class="button form__button is-rounded is-fullwidth" @click="registerUser()">Submit</a>
   </div>
 </template>
 
@@ -38,7 +48,7 @@
   import cookies from 'browser-cookies';
   export default {
     name: 'registration',
-    // The patientForm holds a true or false value 
+    // The patientForm holds a true or false value
     // This determines to display the patient form or the medical professional form
     props: ['patientForm'],
     components: {
@@ -125,7 +135,7 @@
     methods: {
       // Checks if the name inputs are valid based on requirements
       nameValid(data){
-        if((data.length == 0) || 
+        if((data.length == 0) ||
            (data.length > 30) ||
            (!isNaN(data))){
           return 'is-danger'
@@ -135,8 +145,8 @@
       },
       // Checks if the username inputs are valid based on requirements
       usernameValid(data){
-        if((data.length < 8) || 
-           (data.length > 120) || 
+        if((data.length < 8) ||
+           (data.length > 120) ||
            (data.includes(' '))){
           return 'is-danger';
         }
@@ -146,8 +156,8 @@
       },
       // Checks if the password inputs are valid based on requirements
       passwordValid(data){
-        if((data.length < 8) || 
-           (data.length > 120) || 
+        if((data.length < 8) ||
+           (data.length > 120) ||
            (data.includes(' '))){
           return 'is-danger';
         } else {
@@ -167,7 +177,7 @@
           return 'is-success'
         }
       },
-      // Checks if all security questions were selected 
+      // Checks if all security questions were selected
       checkSecurityQuestions(){
         if(this.securityQ1 == 0 || this.securityQ2 == 0 ||this.securityQ3 == 0){
           return false;
@@ -201,12 +211,12 @@
       // The method to check if all inputs are all valid before user can submit registration info
       registerUser(){
         // Checks if all input fields for a patient are valid
-        if( this.$regCheck([this.firstNameInput, 
-                          this.lastNameInput, 
-                          this.usernameInput, 
-                          this.passwordInput, 
-                          this.answer1Input, 
-                          this.answer2Input, 
+        if( this.$regCheck([this.firstNameInput,
+                          this.lastNameInput,
+                          this.usernameInput,
+                          this.passwordInput,
+                          this.answer1Input,
+                          this.answer2Input,
                           this.answer3Input,
                           this.medicalProfessionalCodeInput]),
           this.checkSecurityQuestions() &&
@@ -214,7 +224,7 @@
           this.patientForm)
         {
           // Clear any warnings
-          this.warning = '' 
+          this.warning = ''
           this.showWarning = false;
           // This refers to the registration vue to use the methods called in the axios request
           var self = this;
@@ -259,12 +269,12 @@
           });
         }
         // Checks if all input fields for a medicalprofessional are valid
-        else if(this.$regCheck([this.firstNameInput, 
-                          this.lastNameInput, 
-                          this.usernameInput, 
-                          this.passwordInput, 
-                          this.answer1Input, 
-                          this.answer2Input, 
+        else if(this.$regCheck([this.firstNameInput,
+                          this.lastNameInput,
+                          this.usernameInput,
+                          this.passwordInput,
+                          this.answer1Input,
+                          this.answer2Input,
                           this.answer3Input]),
           this.checkSecurityQuestions() &&
           this.patientForm == false
@@ -318,7 +328,7 @@
         } else {
           // Display an error message on the registration modal that input fields are still incorrect
           this.warning = 'One or more input fields are invalid'
-          this.showWarning = true;      
+          this.showWarning = true;
         }
       }
     }
@@ -330,18 +340,21 @@
   @import '../../assets/sass/settings.scss';
 
   .registration{
-    padding: 35px 10px 10px 10px;
+    padding: 3rem 0 1rem;
   }
+
   .warning{
     color: red;
     font-size: 12px;
   }
+
   #logos{
     width: 30%;
     margin-left: auto;
     margin-right: auto;
     display: block;
   }
+
   .input{
     margin: 2px 0px 2px 0px;
     @media #{$tablet} {
@@ -349,15 +362,18 @@
       width: 95%;
     }
   }
+
   #submit-button{
     background-color: #00C4A7;
     color: white;
     font-family: sans-serif;
   }
+
   .verification{
     padding: 5px;
     font-size: 9px;
   }
+
   .form {
     &__title {
       display: inline;
