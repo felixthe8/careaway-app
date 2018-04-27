@@ -1,8 +1,7 @@
 <template>
   <div id="sheet" class="modal is-active">
     <div id="sheet-background" class="modal-background"></div>
-    <div id="sheet-content" class="modal-content">
-      <article class="card round-corners">
+      <article class="card round-corners menu-wrapper">
 
         <div class="card-content menu"  v-if="this.$store.state.ssoRegistration">
           <sso-registration></sso-registration>
@@ -21,7 +20,7 @@
         </div>
 
       </article>
-    </div>
+
     <button class="modal-close" @click="closeRegistration"></button>
   </div>
 </template>
@@ -88,12 +87,15 @@
     }
   }
 
+  .menu-wrapper {
+    max-width: 90%;
+  }
+
   .menu {
     padding: .5rem 1rem;
 
     @media #{$tablet} {
       padding: 0rem 1rem;
-      min-height: 500px;
     }
 
     &__switcher {
@@ -115,6 +117,7 @@
         border-top-right-radius: 10px;
         border-top-left-radius: 10px;
         padding: 10px;
+        cursor: pointer;
 
         &.active {
           color: $purple-dark;

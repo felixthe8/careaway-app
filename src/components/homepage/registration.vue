@@ -4,40 +4,53 @@
       <a href="https://pages.nist.gov/800-63-3/sp800-63b.html" v-show="badPassword">Password Guide</a>
     </div>
 
-    <input placeholder="Username" class="input is-small" type="text"  @keyup="usernameInput=usernameValid(username)" v-bind:class="[usernameInput]" v-model="username">
-    <tooltip :requirements="usernameRequirements"></tooltip>
-
-    <input placeholder="Password" class="input is-small" type="password"  @keyup="passwordInput=passwordValid(getPassword())" v-bind:class="[passwordInput]" id="password">
-    <tooltip :requirements="passwordRequirements"></tooltip>
-
-    <input placeholder="First Name" class="input is-small" type="text" @keyup="firstNameInput=nameValid(firstName)" v-bind:class="[firstNameInput]" v-model="firstName">
-    <tooltip :requirements="nameRequirements"></tooltip>
-
-    <input placeholder="Last Name" class="input is-small" type="text" @keyup="lastNameInput=nameValid(lastName)" v-bind:class="[lastNameInput]" v-model="lastName">
-    <tooltip :requirements="nameRequirements"></tooltip>
-
-    <security-questions :class="getValue" :questions="1"></security-questions>
-    <input placeholder = "Answer"  class="input is-small" type="text"  @keyup="answer1Input=isEmpty(securityA1)" v-bind:class="[answer1Input]" v-model="securityA1">
-    <tooltip :requirements="answerRequirements"></tooltip>
-
-    <security-questions :class="getValue" :questions="2"></security-questions>
-    <input placeholder = "Answer"  class="input is-small" type="text"  @keyup="answer2Input=isEmpty(securityA2)" v-bind:class="[answer2Input]" v-model="securityA2">
-    <tooltip :requirements="answerRequirements"></tooltip>
-
-    <security-questions :class="getValue" :questions="3"></security-questions>
-    <input placeholder = "Answer" class="input is-small" type="text"  @keyup="answer3Input=isEmpty(securityA3)" v-bind:class="[answer3Input]" v-model="securityA3">
-    <tooltip :requirements="answerRequirements"></tooltip>
+    <div class="field">
+      <input placeholder="Username" class="input is-small" type="text"  @keyup="usernameInput=usernameValid(username)" v-bind:class="[usernameInput]" v-model="username">
+      <tooltip :requirements="usernameRequirements"></tooltip>
+    </div>
+    <div class="field">
+      <input placeholder="Password" class="input is-small" type="password"  @keyup="passwordInput=passwordValid(getPassword())" v-bind:class="[passwordInput]" id="password">
+      <tooltip :requirements="passwordRequirements"></tooltip>
+    </div>
+    <div class="field">
+      <input placeholder="First Name" class="input is-small" type="text" @keyup="firstNameInput=nameValid(firstName)" v-bind:class="[firstNameInput]" v-model="firstName">
+      <tooltip :requirements="nameRequirements"></tooltip>
+    </div>
+    <div class="field">
+      <input placeholder="Last Name" class="input is-small" type="text" @keyup="lastNameInput=nameValid(lastName)" v-bind:class="[lastNameInput]" v-model="lastName">
+      <tooltip :requirements="nameRequirements"></tooltip>
+    </div>
+    <div class="security">
+      <security-questions class="dropdown" :class="getValue" :questions="1"></security-questions>
+      <input placeholder = "Answer"  class="input is-small" type="text"  @keyup="answer1Input=isEmpty(securityA1)"  v-bind:class="[answer1Input]" v-model="securityA1">
+      <tooltip :requirements="answerRequirements"></tooltip>
+    </div>
+    <div class="security">
+      <security-questions class="dropdown" :class="getValue" :questions="2"></security-questions>
+      <input placeholder = "Answer"  class="input is-small" type="text"  @keyup="answer2Input=isEmpty(securityA2)" v-bind:class="[answer2Input]" v-model="securityA2">
+      <tooltip :requirements="answerRequirements"></tooltip>
+    </div>
+    <div class="security">
+      <security-questions class="dropdown" :class="getValue" :questions="3"></security-questions>
+      <input placeholder = "Answer" class="input is-small" type="text"  @keyup="answer3Input=isEmpty(securityA3)" v-bind:class="[answer3Input]" v-model="securityA3">
+      <tooltip :requirements="answerRequirements"></tooltip>
+    </div>
 
     <div v-if="patientForm">
-      <input placeholder="Medical Professional Code" class="input is-small" type="text"  @keyup="medicalProfessionalCodeInput=isEmpty()" v-bind:class="[medicalProfessionalCodeInput]" v-model="medicalProfessionalCode">
-      <tooltip :requirements="medicalProfessionalRequirements"></tooltip>
+      <div class="mp-code">
+        <input placeholder="Medical Professional Code" class="input is-small" type="text"  @keyup="medicalProfessionalCodeInput=isEmpty()" v-bind:class="[medicalProfessionalCodeInput]" v-model="medicalProfessionalCode">
+        <tooltip :requirements="medicalProfessionalRequirements"></tooltip>
+      </div>
+
       <input type="checkbox" v-model="termsAgreement">
         <label class="verification">{{termsAndAgreement}}
           <a target="_blank" href="https://www.hhs.gov/hipaa/index.html">Health Insurance Portability and Accountability Act</a>
         </label><br>
       <input type="checkbox" v-model="above18"><label class="verification">{{over18Message}}</label>
     </div>
-    <a id = "submit-button" class="button form__button is-rounded is-fullwidth" @click="registerUser()">Submit</a>
+
+    <button id="submit-button" class="button form__button" @click="registerUser()">Submit</button>
+
   </div>
 </template>
 
@@ -339,47 +352,45 @@
 <style lang='scss' scoped>
   @import '../../assets/sass/settings.scss';
 
-  .registration{
-    padding: 3rem 0 1rem;
-  }
-
-  .warning{
-    color: red;
-    font-size: 12px;
-  }
-
-  #logos{
-    width: 30%;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-  }
-
-  .input{
-    margin: 2px 0px 2px 0px;
-    @media #{$tablet} {
-      display:inline-block;
-      width: 95%;
-    }
-  }
-
-  #submit-button{
-    background-color: #00C4A7;
-    color: white;
-    font-family: sans-serif;
-  }
-
-  .verification{
-    padding: 5px;
-    font-size: 9px;
-  }
-
   .form {
     &__title {
       display: inline;
       font-size: 1.5em;
       padding-bottom: 1rem;
     }
+
+    &__button {
+      border: 2px solid $green;
+      color: $purple-dark;
+      font-family: sans-serif;
+      border-radius: 10px;
+      margin: 10px 0;
+    }
+  }
+
+  .registration {
+    padding: 3rem 0 1rem;
+  }
+
+  .warning {
+    color: red;
+    font-size: 12px;
+  }
+
+  .input {
+    @media #{$tablet} {
+      display: inline-block;
+      width: 95%;
+    }
+  }
+
+  .verification {
+    padding: 5px;
+    font-size: 9px;
+  }
+
+  .mp-code {
+    padding-top: 1rem;
   }
 
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class='tooltip'>
-    <img class='tooltip-question' src='../../assets/images/question.png'>
+    <i class="fas fa-question-circle tooltip-question"></i>
     <span class='tooltip-text'> {{requirements}} </span>
   </div>
 </template>
@@ -17,14 +17,18 @@
 
 <style lang='scss'>
   @import '../../assets/sass/settings.scss';
-  .tooltip{
+  .tooltip {
     display: none;
+
     @media #{$tablet} {
       display: inline;
-      &-question{
-        padding: 2px;
+
+      &-question {
+        padding: 10px 0;
         width: 4%;
+        color: $purple-dark;
       }
+
       &-text{
         float: right;
         visibility: hidden;
