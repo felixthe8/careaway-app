@@ -2,32 +2,28 @@
   <div class="modal is-active">
     <div class="modal-background"></div>
       <div class="modal-content">
-        <div class = "box">
-          <div class="columns is-centered">
-            <article class="card is-rounded">
-              <div class="card-content">
-                <img src = "../../assets/images/careaway-full1.png">
-                  <h2 class="form__title"> Enter a New Password</h2>
-                    <p class = "warning" v-show="showWarning">{{inputWarning}}</p>
-                    <p class="control">
-                      <input class="input" type="password" id = "password" :class="validPassword" @keyup="validPassword = checkEmptyInput(GetPassword())" placeholder="Password">
-                    </p> <br>
-                    <p class="control">
-                      <input class="input" type="Password" id = "confirmPassword" :class="validConfirmedPassword" @keyup="validConfirmedPassword = checkEmptyInput(GetConfirmedPassword())" placeholder="Confirm Password">
-                    </p> <br>
-                    <p class="control">
-                      <button class="button is-primary is-medium is-fullwidth is-rounded" @click = "validateInputOnSubmit()">
-                        Submit <i class="fas fa-long-arrow-alt-right"></i>
-                      </button>
-                    </p>
-                    <p>{{confirmMessage}} </p>
-              </div>
-            </article>
+        <article class="card round-corners">
+          <div class="card-content">
+            <img src = "../../assets/images/careaway-logo.png">
+            <h2 class="form__title">Enter a New Password</h2>
+            <p class = "warning" v-show="showWarning">{{inputWarning}}</p>
+            <p class="control">
+              <input class="input" type="password" id="password" :class="validPassword" @keyup="validPassword = checkEmptyInput(GetPassword())" placeholder="Password">
+            </p> <br>
+            <p class="control">
+              <input class="input" type="Password" id="confirmPassword" :class="validConfirmedPassword" @keyup="validConfirmedPassword = checkEmptyInput(GetConfirmedPassword())" placeholder="Confirm Password">
+            </p> <br>
+            <p class="control">
+              <button class="button filled is-fullwidth" @click = "validateInputOnSubmit()">
+                Submit <i class="fas fa-long-arrow-alt-right"></i>
+              </button>
+            </p>
+            <p>{{confirmMessage}} </p>
           </div>
-        </div>
+        </article>
       </div>
       <button class="modal-close is-large" aria-label="close" @click="closePassword"></button>
-  </div> 
+  </div>
 </template>
 <script>
 import axios from 'axios'
@@ -47,11 +43,11 @@ import axios from 'axios'
     },
 
     methods: {
-      // method to check if username and password fields are empty. 
+      // method to check if username and password fields are empty.
       checkEmptyInput(data){
         if(data.length == 0 || data == '') {
           return 'is-danger';
-        } 
+        }
       },
       //method to get password from dom
       GetPassword() {
@@ -74,11 +70,11 @@ import axios from 'axios'
           this.inputWarning = "Passwords must match";
           this.showWarning = true;
         } else {
-          var passwordReset = 
+          var passwordReset =
           {
             username: this.getUserName(),
             password: this.GetPassword()
-            
+
           }
             this.showWarning = false;
             this.inputWarning = '';
@@ -86,7 +82,7 @@ import axios from 'axios'
             //need to post and confirm
             axios.put(this.$store.getters.resetCredURL, passwordReset)
           // runs after the request has been answered
-         
+
           .then(function(response) {
           // if the response exists, then do something.   IMPORTANT: This is just a console.log() because routes has not been defined
               if(response.data.success) {
@@ -101,7 +97,7 @@ import axios from 'axios'
                 // If bad password detected show warning
                   self.inputWarning = 'You have Chosen a Bad Password';
                   self.showWarning = true;
-              } 
+              }
               else {
                  // if the user name is not found, warn user.
                   self.inputWarning = 'The Username is invalid.';
@@ -111,12 +107,12 @@ import axios from 'axios'
             })
             .catch(function(err) {
               console.log(err);
-              // prompt the user if there was an error in handling their login request 
+              // prompt the user if there was an error in handling their login request
               self.inputWarning = 'Your password could not be reset at this time. Try again.';
               self.showWarning = true;
             });
             //closes this reset passsword vue to go to login vue
-           
+
         }
       },
 
@@ -127,7 +123,7 @@ import axios from 'axios'
       getUserName(){
         return this.$store.state.username;
       },
-    
+
     }
 
   }
@@ -143,15 +139,18 @@ import axios from 'axios'
 
   .form {
     &__title {
-      font-size: 1.5em;
+      font-size: 2em;
+      color: $green;
+      text-align: center;
+      font-weight: bold;
       padding-bottom: 1rem;
     }
-  } 
+  }
 
   img {
-    width: 40%;
+    width: 40px;
   }
-    
+
   button i {
     margin-left: 2%;
   }
@@ -163,6 +162,5 @@ import axios from 'axios'
   .warning {
     color: #FF3860;
   }
-  
-</style>
 
+</style>

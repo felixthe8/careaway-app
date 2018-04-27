@@ -1,7 +1,7 @@
 <template>
   <div id='securityQuestions' :class='getSelectedSet'>
     <select v-model='selectedQuestion' @keydown='getValueSelected' @blur='getValueSelected'>
-      <option hidden value=''> Please select a security question</option>           
+      <option hidden value=''> Please select a security question</option>
       <option v-for='question in selectedSet' v-bind:key ='question.key' v-bind:value='question.value'>
         {{question.text}}
       </option>
@@ -12,7 +12,7 @@
 <script>
   export default {
     name: 'security-questions',
-    // Get the value of which subset to display and which question variable the vue is saving to 
+    // Get the value of which subset to display and which question variable the vue is saving to
     props:['questions'],
     data () {
       return {
@@ -69,4 +69,3 @@
     padding-bottom: 5px;
   }
 </style>
-

@@ -2,41 +2,39 @@
   <div class="modal is-active">
     <div class="modal-background"></div>
       <div class="modal-content">
-        <div class = "box">
-          <div class="columns is-centered">
-            <article class="card is-rounded">
-              <div class="card-content">
-                <img src = "../../assets/images/careaway-full1.png">
-                  <h2 class="form__title"> Recall Security Questions?</h2>
-                    <p class = "warning" v-show="showWarning">{{inputWarning}}</p>
-                    <p class="control">
-                          <p>{{question1}}<p>
-                          Answer: <input class="input" type="text"  @keyup="validAnswer1 = checkEmptyInput(answer1)" v-model="answer1"><br>
-                          <p>{{question2}}<p>
-                          Answer: <input class="input" type="text"  @keyup="validAnswer2 = checkEmptyInput(answer2)" v-model="answer2"><br>
-                          <p>{{question3}}<p>
-                          Answer: <input class="input" type="text"  @keyup="validAnswer3 = checkEmptyInput(answer3)" v-model="answer3"><br>
-                    </p> <br>
-                    <p class="control">
-                      <button class="button is-primary is-medium is-fullwidth is-rounded" @click = "validateInputOnSubmit()">
-                        Submit <i class="fas fa-long-arrow-alt-right"></i>
-                      </button>
-                    </p>
-              </div>
-            </article>
+
+        <article class="card round-corners">
+          <div class="card-content">
+            <img src = "../../assets/images/careaway-logo.png">
+              <h2 class="form__title"> Recall Security Questions?</h2>
+                <p class = "warning" v-show="showWarning">{{inputWarning}}</p>
+                <div class="control">
+                  <p>{{question1}}</p>
+                  <input class="input" type="text"  @keyup="validAnswer1 = checkEmptyInput(answer1)" v-model="answer1"><br>
+                  <p>{{question2}}</p>
+                  <input class="input" type="text"  @keyup="validAnswer2 = checkEmptyInput(answer2)" v-model="answer2"><br>
+                  <p>{{question3}}</p>
+                  <input class="input" type="text"  @keyup="validAnswer3 = checkEmptyInput(answer3)" v-model="answer3"><br>
+                </div> <br>
+                <div class="control">
+                  <button class="button filled is-fullwidth" @click = "validateInputOnSubmit()">
+                    Submit <i class="fas fa-long-arrow-alt-right"></i>
+                  </button>
+                </div>
           </div>
-        </div>
+        </article>
+
       </div>
 
       <button class="modal-close is-large" aria-label="close" @click="closeQuestionsss"></button>
-  </div> 
+  </div>
 </template>
 <script>
  import axios from 'axios'
   export default {
     name: 'resetQuestion',
     data() {
-      return { 
+      return {
         // user inputs on the login form
         answer1: '',
         answer2: '',
@@ -51,7 +49,7 @@
         showWarning: false,
         inputWarning: '',
         Questions : new Map(),
-      
+
       }
     },
     created() {
@@ -76,7 +74,7 @@
       checkEmptyInput(data){
         if(data.length == 0 || data == '') {
           return 'is-danger'
-        } 
+        }
       },
 
       // this method will run if the user clicks "Submit"
@@ -94,7 +92,7 @@
         } else {
           this.showWarning = false;
           this.inputWarning = '';
-          var questionCheck = 
+          var questionCheck =
           {
             username: this.getUserName(),
             securityA1: this.answer1,
@@ -119,11 +117,11 @@
             })
             .catch(function(err) {
               console.log(err);
-              // prompt the user if there was an error in handling their login request 
+              // prompt the user if there was an error in handling their login request
               self.inputWarning = 'Your input could not be handled at this time. Try again.';
               self.showWarning = true;
             });
-            
+
         }
       },
 
@@ -136,9 +134,9 @@
       },
       // method that gets questions from server
       fetchData() {
-        
+
         var self = this;
-        
+
           //need to change url ot valid server url
            axios.get(this.$store.getters.getSecurityQURL+this.getUserName()).then(response => {
                 this.question1 = this.Questions.get(parseInt(response.data.result[0]));
@@ -148,7 +146,7 @@
           .catch(function(err) {
             console.log(err);
             //catches network errors
-              // prompt the user if there was an error in handling their login request 
+              // prompt the user if there was an error in handling their login request
             self.inputWarning = 'Your input could not be handled at this time. Try again.';
             self.showWarning = true;
           });
@@ -168,15 +166,17 @@
 
   .form {
     &__title {
-      font-size: 1.5em;
+      text-align: center;
+      font-weight: bold;
+      font-size: 2em;
       padding-bottom: 1rem;
     }
-  } 
+  }
 
   img {
-    width: 40%;
+    width: 40px;
   }
-    
+
   button i {
     margin-left: 2%;
   }
@@ -188,6 +188,5 @@
   .warning {
     color: #FF3860;
   }
-  
-</style>
 
+</style>
