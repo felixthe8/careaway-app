@@ -4,6 +4,7 @@
     <header-block></header-block>
 
     <nav class="navbar" :class="{'navbar__full' : scrolled}" v-on:scroll="handleScroll">
+      <img class="navbar__full--logo" :class="{'show-logo' : scrolled}" src="../../assets/images/careaway-logo.png">
       <div class="navbar__buttons">
         <button class="button navbar__button" @click="displayRegistration">Register</button>
         <button class="button navbar__button" @click ="displayLogin">Sign In</button>
@@ -143,6 +144,16 @@
     &__full {
       background: #fff;
       box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
+
+      &--logo {
+          width: 65px;
+          position: absolute;
+          left: 0;
+          top: 20%;
+          padding: 0 1rem;
+          opacity: 0;
+          transition: all ease-in-out .5s;
+      }
     }
 
     &__buttons {
@@ -180,6 +191,10 @@
   .breachWarning{
     color:#FF3860;
     font-size: 3.0em;
+  }
+
+  .show-logo {
+      opacity: 1;
   }
 
 </style>

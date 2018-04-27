@@ -25,6 +25,7 @@
 .info-block {
   width: 100%;
   height: auto;
+  background: $white;
 
   &__webpage {
     display: block;
