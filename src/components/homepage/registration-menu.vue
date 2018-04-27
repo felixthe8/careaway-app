@@ -109,15 +109,19 @@
       }
 
       &--button {
-        width: 100%;
-        display: block;
         color: $purple-dark;
-        background-color: $green-light;
+        background-color: $green;
         text-align: center;
         border-top-right-radius: 10px;
         border-top-left-radius: 10px;
-        padding: 10px;
         cursor: pointer;
+        font-weight: bold;
+        color: $white;
+        padding: 8px 0;
+
+        @media #{$tablet} {
+          padding: 10px;
+        }
 
         &.active {
           color: $purple-dark;

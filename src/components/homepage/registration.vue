@@ -360,9 +360,9 @@
     }
 
     &__button {
-      border: 2px solid $green;
-      color: $purple-dark;
-      font-family: sans-serif;
+      width: 100%;
+      background: $green;
+      color: white;
       border-radius: 10px;
       margin: 10px 0;
     }
