@@ -2,11 +2,15 @@
   <div>
      <p class = "breachWarning" v-show="showWarning">{{inputWarning}}</p>
     <header-block></header-block>
-    <nav class="navbar">
-      <button class="button navbar__button" @click="displayRegistration">Register</button>
-      <button class="button navbar__button" @click ="displayLogin">Sign In</button>
-      <button class="button navbar__demo" @click="routeToTutorial">Demo</button>
+
+    <nav class="navbar" :class="{'navbar__full' : scrolled}" v-on:scroll="handleScroll">
+      <div class="navbar__buttons">
+        <button class="button navbar__button" @click="displayRegistration">Register</button>
+        <button class="button navbar__button" @click ="displayLogin">Sign In</button>
+        <button class="button navbar__demo" @click="routeToTutorial">Demo</button>
+      </div>
     </nav>
+
     <registration-menu v-if="showRegistration" ></registration-menu>
     <login v-if="showLogin"> </login>
     <reset-username v-if="showReset"></reset-username>
@@ -51,15 +55,25 @@
         msg: 'Careaway Home',
         inputWarning:'',
         showWarning: false,
-
+        scrolled: false
       }
     },
     created() {
       //checks for Breach
       this.checkBreach();
 
+      // scroll event listener
+      window.addEventListener('scroll', this.handleScroll);
+    },
+    destroyed () {
+      window.removeEventListener('scroll', this.handleScroll);
     },
     methods:{
+      // Changes nav bar on scroll
+      handleScroll: function() {
+        this.scrolled = window.scrollY > 0;
+        console.log(this.scrolled);
+      },
       // Calls the store to display the registration
       displayRegistration(){
         this.$store.commit('alternateRegistration');
@@ -119,15 +133,27 @@
 
   @import "../../assets/sass/settings.scss";
   .navbar {
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     background: none;
+    width:100%;
+    transition: all ease-in-out .5s;
+    z-index: 10;
+
+    &__full {
+      background: #fff;
+      box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
+    }
+
+    &__buttons {
+      position: absolute;
+      right: 0;
+    }
 
     &__button {
       padding: 0;
       margin: 5px .5rem;
-
 
       &:hover {
         color: $purple-light;

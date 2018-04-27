@@ -60,6 +60,7 @@
 .device-block {
   width: 100%;
   height: auto;
+  background: $green-light;
 
   &__device {
       width: 300px;
