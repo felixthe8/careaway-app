@@ -3,16 +3,16 @@
      <p class = "breachWarning" v-show="showWarning">{{inputWarning}}</p>
     <header-block></header-block>
     <nav class="navbar">
-      <div class="button signin" @click ="displayLogin">Sign In</div>
-      <div class="button register" @click="displayRegistration">Register</div>
-      <div class = "button" @click="routeToTutorial"> Tutorials</div>
+      <button class="button navbar__button" @click="displayRegistration">Register</button>
+      <button class="button navbar__button" @click ="displayLogin">Sign In</button>
+      <button class="button navbar__demo" @click="routeToTutorial">Demo</button>
     </nav>
     <registration-menu v-if="showRegistration" ></registration-menu>
     <login v-if="showLogin"> </login>
-    <reset-username v-if = "showReset"></reset-username>
-    <reset-questions v-if = "showQuestions"></reset-questions>
-    <reset-password v-if = "showPassword"></reset-password>
-  
+    <reset-username v-if="showReset"></reset-username>
+    <reset-questions v-if="showQuestions"></reset-questions>
+    <reset-password v-if="showPassword"></reset-password>
+
     <info-block></info-block>
     <service-block></service-block>
     <device-block></device-block>
@@ -87,7 +87,7 @@
           .catch(function(err) {
             console.log(err);
             //catches network errors
-            
+
               self.showWarning = true;
               self.inputWarning = `can't contact Breach server`;
           });
@@ -110,7 +110,7 @@
         return this.$store.getters.showPassword;
       }
     }
-    
+
   }
 
 </script>
@@ -123,7 +123,29 @@
     top: 0;
     right: 0;
     background: none;
+
+    &__button {
+      padding: 0;
+      margin: 5px .5rem;
+
+
+      &:hover {
+        color: $purple-light;
+      }
+    }
+
+    &__demo {
+      padding: 0 .75rem;
+      margin: 5px .5rem;
+      background-color: $purple-dark !important;
+      color: $white;
+
+      &:hover {
+        color: $purple-light;
+      }
+    }
   }
+
   footer {
       background: $purple-dark;
       text-align: center;
