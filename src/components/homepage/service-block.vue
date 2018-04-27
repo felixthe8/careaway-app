@@ -1,7 +1,7 @@
 <template>
   <section class="section service-block">
-    <div class="columns">
-      <div class="column" v-for="service in services">
+    <div class="columns is-multiline">
+      <div class="column is-one-third" v-for="service in services">
         <service :icon="service.icon"/>
         <p class="service-block__description">{{service.description}}</p>
       </div>

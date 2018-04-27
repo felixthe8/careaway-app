@@ -19,9 +19,7 @@
     name: 'header-block',
     data() {
       return {
-        text: `The perfect application for medical professionals and their patients to interact.
-                We provide the tools for patient oversight, appointment scheduling, data analysis,
-                 and so much more!`
+        text: `Your new go to tool for effective communication - for patients and medical professionals in any field.`
       }
     }
   }
