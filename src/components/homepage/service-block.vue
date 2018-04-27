@@ -62,6 +62,14 @@ import service from './service.vue';
     padding: 30px;
     font-size: 12px;
     margin-bottom: 10px;
+    transition: all ease-in-out .5s;
+
+    &:hover {
+      transform: rotateY(180deg);
+      background: $white;
+      color: $green-dark;
+      transition: all ease-in-out .5s;
+    }
   }
 
   &__description {
