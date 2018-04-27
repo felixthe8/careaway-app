@@ -72,7 +72,6 @@
       // Changes nav bar on scroll
       handleScroll: function() {
         this.scrolled = window.scrollY > 0;
-        console.log(this.scrolled);
       },
       // Calls the store to display the registration
       displayRegistration(){
