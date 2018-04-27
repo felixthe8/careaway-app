@@ -2,7 +2,7 @@
   <section class="section service-block">
     <div class="columns is-multiline">
       <div class="column is-one-third" v-for="service in services">
-        <service :icon="service.icon"/>
+        <service class="service-block__icon" :icon="service.icon"/>
         <p class="service-block__description">{{service.description}}</p>
       </div>
     </div>
@@ -50,14 +50,25 @@ import service from './service.vue';
 
 <style lang="scss">
 @import "../../assets/sass/settings.scss";
+
 .service-block {
-  background: $green;
+  background: $green-dark;
   text-align: center;
+
   &__icon {
-    border-radius: 50%;
+    border-radius: 10%;
+    border: 2px solid $white;
+    color: $white;
+    padding: 30px;
+    font-size: 12px;
+    margin-bottom: 10px;
   }
+
   &__description {
     color: $white;
+    font-weight: bold;
   }
+
 }
+
 </style>
