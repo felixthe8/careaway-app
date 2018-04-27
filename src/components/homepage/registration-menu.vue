@@ -129,8 +129,4 @@
     }
   }
 
-  .round-corners {
-    border-radius: 10px;
-  }
-
 </style>

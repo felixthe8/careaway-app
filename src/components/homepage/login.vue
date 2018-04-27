@@ -1,33 +1,29 @@
 <template>
   <div class="modal is-active">
     <div class="modal-background"></div>
-      <div class="modal-content">
-        <div class = "box">
-          <div class="columns is-centered">
-            <article class="card is-rounded">
-              <div class="card-content">
-                <img id = "header-image" src = "../../assets/images/careaway-full1.png"><br>
-                  <h2 id = "form-title"> Please Sign In to Continue</h2>
-                    <p id = "warning" v-show="showWarning">{{inputWarning}}</p>
-                    <p class="control">
-                      <input class="input" type="name" v-model="username" :class="validUsername" @keyup="validUsername = checkEmpty(username)" placeholder="Username" @keyup.enter="userSignIn">
-                    </p> 
-                    <p class="control">
-                      <input class="input" type="password" id = "password" :class="validPassword" @keyup="validPassword = checkEmpty(getPassword())" placeholder="Password" @keyup.enter="userSignIn">
-                    </p> 
-                    <p class="control">
-                      <button class="button is-primary is-medium is-fullwidth is-rounded" @click = "userSignIn()">
-                        Sign In <i class="fas fa-sign-in-alt" id = "sign-in-icon"></i>
-                      </button>
-                    </p>
-                   <div id = "reset" class="button signin" @click = "displayReset">Forgot your Password?</div>
-              </div>
-            </article>
+      <div class="modal-content round-corners">
+        <article class="card is-centered round-corners">
+          <div class="card-content">
+            <img id="header-image" src = "../../assets/images/careaway-logo.png">
+            <h2 id="form-title">Welcome Back!</h2>
+            <div id="warning" v-show="showWarning">{{inputWarning}}</div>
+            <div class="field control">
+              <input class="input" type="name" v-model="username" :class="validUsername" @keyup="validUsername = checkEmpty(username)" placeholder="Username" @keyup.enter="userSignIn">
+            </div>
+            <div class="field control">
+              <input class="input" type="password" id="password" :class="validPassword" @keyup="validPassword = checkEmpty(getPassword())" placeholder="Password" @keyup.enter="userSignIn">
+            </div>
+            <div class="control">
+              <button class="button sign-in__button" @click = "userSignIn()">
+                Sign In <i class="fas fa-sign-in-alt" id="sign-in-icon"></i>
+              </button>
+            </div>
+            <button id="reset" class="button signin" @click = "displayReset">Forgot your Password?</button>
           </div>
-        </div>
+        </article>
       </div>
       <button class="modal-close is-large" aria-label="close" @click="closeLogin"></button>
-  </div> 
+  </div>
 </template>
 
 <script>
@@ -45,7 +41,7 @@ axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
       return {
         // User input on the login form
         username: '',
-        // Data values to notify the user of an invalid input on login 
+        // Data values to notify the user of an invalid input on login
         validUsername: '',
         validPassword: '',
         showWarning: false,
@@ -64,11 +60,11 @@ axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
       routeAdminHome() {
         this.$router.push('AdminHome');
       },
-      // Method to check if a field is empty. 
+      // Method to check if a field is empty.
       checkEmpty(data){
         if(data == '') {
           return 'is-danger'
-        } 
+        }
       },
       // Method to return the value that the user provided for the password
       getPassword() {
@@ -85,16 +81,16 @@ axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
         } else {
             // Represent the 'this' of the outside function scope
             var self = this;
-            // Create an object to hold the data that we want to send for the request to verify user at login. 
+            // Create an object to hold the data that we want to send for the request to verify user at login.
             const newContact = {
               username: this.username,
               password: this.getPassword()
             }
-            // Send a POST request to the following route   
+            // Send a POST request to the following route
             axios.post(this.$store.getters.loginURL, newContact)
             // Runs after the request has been answered
             .then(function(response) {
-              // If the response is successful, that means an account exists. 
+              // If the response is successful, that means an account exists.
               if(response.data.success) {
                 cookies.set('user', response.data.cookie);
                 self.$login(response.data.accountType, self.username);
@@ -126,7 +122,7 @@ axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
               }
             })
             .catch(function(err) {
-              // Prompt the user if there was an error in handling their login request 
+              // Prompt the user if there was an error in handling their login request
               self.inputWarning = 'Your input could not be handled at this time. Try again.';
               self.showWarning = true;
             });
@@ -152,34 +148,44 @@ axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
 
 <style lang = "scss">
   @import "../../assets/sass/settings.scss";
-  .modal-content {
-    overflow: hidden;
-    max-height: none;
-  }
+
   #form-title {
-      font-size: 1.5em;
+      font-size: 2em;
+      font-weight: bold;
+      color: $green;
       padding-bottom: 1rem;
-  } 
-  .input{
-    margin: 5px 0px 5px 0px;
+      text-align: center;
   }
+
   #header-image {
-    width: 40%;
+    width: 40px;
   }
+
   #sign-in-icon {
-    margin-left: 2%;
+    margin-left: 8px;
+    font-size: 12px;
   }
- #reset {
+
+  .sign-in {
+    width: 70%;
+
+    &__button {
+      background: $green;
+      width: 100%;
+      color: #fff;
+    }
+  }
+
+  #reset {
     color: $purple;
+
+    &:hover {
+      color: $purple-light;
+    }
   }
-  #reset:hover {
-    color: $purple-light;
-  }
+
   #warning {
     color: #FF3860;
   }
+
 </style>
-
-
-
-

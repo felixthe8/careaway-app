@@ -69,6 +69,10 @@ input {
   }
 }
 
+.round-corners {
+  border-radius: 10px;
+}
+
 /* Media Queries */
 $largeMobile: "screen and (min-width: 375px)";
 $smallTablet: "screen and (min-width: 500px)";
