@@ -47,7 +47,7 @@ export default {
         // find current patient
         let patient = this.patientList.filter(patient => patient.userName === this.selected);
         this.$store.dispatch("setCurrentPatient", patient[0]);
-        
+
 
         // Emit a signal. This signal will be handled on receipt by the parent component
         this.$emit('selected');
@@ -60,15 +60,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  #patientText{
-    text-align: right;
+@import "../../assets/sass/settings.scss";
+
+  #patientText {
+    font-size: 1em;
+    margin: 0 0 .5rem;
+    color: $purple-dark;
   }
   .selectPatient{
     width: 150px;
-    padding: 5px 5px 5px 5px;
     font-size: 16px;
-    height: 34px;
-    float: right;
   }
 
 </style>

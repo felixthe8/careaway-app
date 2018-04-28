@@ -4,11 +4,11 @@
     <div class="column is-one-fifth">
 
       <div class="menu">
-        <appointment :calendar="calendar" :isMed="isMed" />
-
         <div id="patientLabel">
           <patientSelector @selected="routeIndividualTreatment"/>
         </div>
+
+        <appointment :calendar="calendar" :isMed="isMed" />
       </div>
 
     </div>
@@ -81,6 +81,8 @@ export default {
 
   .menu {
     padding-left: 1rem;
+    display: flex;
+    flex-direction: column;
 
     &__widgets {
       background: $green-light;

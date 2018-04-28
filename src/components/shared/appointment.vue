@@ -128,9 +128,7 @@ export default {
 @import "../../assets/sass/settings.scss";
 
 .appointment {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin: .5rem 0;
 
   &__button {
     padding: 5px 0;
@@ -141,7 +139,6 @@ export default {
   &__label {
     margin-left: 1rem;
   }
-
 
   &__menu {
     opacity: 0;
