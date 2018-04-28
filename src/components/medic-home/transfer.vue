@@ -4,12 +4,14 @@
     <h5>Which Medical Professional would you like to transfer Patient Name to?</h5>
     <input v-model="mpCode" placeholder="MP Code" type="text">
     </input>
-    <a class="button is-primary is-rounded" @click="submit">Submit </a>
-    <a class="button is-primary is-rounded" @click="cancel">Cancel</a>
+    <button class="button is-primary" @click="submit">Submit </button>
+    <button class="button is-primary" @click="cancel">Cancel</button>
   </div>
 </template>
+
 <script>
 import axios from 'axios';
+
 export default {
   props: ["patient", "username"],
   data() {
@@ -19,7 +21,7 @@ export default {
         status: false,
         msg: ''
       }
-    }  
+    }
   },
   methods: {
     submit() {
@@ -56,7 +58,7 @@ export default {
         return false;
       }
       return true;
-    }, 
+    },
     cancel() {
       this.$emit("close");
     }
@@ -65,6 +67,7 @@ export default {
 </script>
 <style scoped lang="scss">
 @import "../../assets/sass/settings.scss";
+
 .error {
   color: red;
 }
@@ -72,8 +75,12 @@ export default {
   padding: 5%;
 }
 .button {
-  color: black;
+  color: $white;
   background-color: $green;
   margin: 1% 0;
+
+  &:hover {
+    background-color: $green-dark;
+  }
 }
 </style>

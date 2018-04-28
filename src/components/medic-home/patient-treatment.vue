@@ -19,9 +19,9 @@
         <transfer v-if="showTransferInput" :patient="patient" :username="patientUsername" v-on:close="toggleTransferInput"></transfer>
         <div v-if="showTransferButtons">
           <p v-if="transferInProgress">Awaiting patient acceptance on transfer to {{newMP}}</p>
-          <a class="button is-primary is-rounded" v-if="!transferInProgress" @click="createTransfer">Transfer Patient</a>
-          <a class="button is-primary is-rounded" v-if="transferInProgress" @click="updateTransfer">Change Medical Professional</a>
-          <a class="button is-primary is-rounded" v-if="transferInProgress" @click="cancelTransfer">Cancel Transfer</a>
+          <button class="button is-primary" v-if="!transferInProgress" @click="createTransfer">Transfer Patient</button>
+          <button class="button is-primary" v-if="transferInProgress" @click="updateTransfer">Change Medical Professional</button>
+          <button class="button is-primary" v-if="transferInProgress" @click="cancelTransfer">Cancel Transfer</button>
         </div>
 
       </div>
@@ -203,10 +203,15 @@ export default {
     margin-left: 1rem;
   }
 }
+
 .button {
   margin: 1%;
-  color: black;
+  color: $white;
   background-color: $green;
+
+  &:hover {
+    background-color: $green-dark;
+  }
 }
 
 </style>
