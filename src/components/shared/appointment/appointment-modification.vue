@@ -3,7 +3,7 @@
     <div class="modal-background"></div>
     <div class="modal-content">
       <div class="card-content round-corners">
-        <h2> Edit Appointment </h2>
+        <h2>Edit Appointment</h2>
         <p v-if="errors.msg" :style="{ color: 'red'}">
           {{errorMsg}}
         </p>
@@ -40,8 +40,8 @@
               :pm="endPM">
             </timeChangers>
         </div>
-        <a class="button is-primary is-medium is-fullwidth is-rounded" @click="create"> {{button}} </a>
-        <a class="button is-primary is-medium is-fullwidth is-rounded" @click="closeThis"> Cancel </a>
+        <button class="button is-primary is-medium is-fullwidth" @click="create">{{button}}</button>
+        <button class="button is-primary is-medium is-fullwidth" @click="closeThis">Cancel</button>
       </div>
     </div>
     <button class='modal-close is-large' aria-label='close' @click='closeThis'></button>
@@ -335,8 +335,9 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
- @import "../../../assets/sass/settings.scss";
+<style lang="scss" scoped>
+
+@import "../../../assets/sass/settings.scss";
 
  h2 {
    font-size: 2em;
@@ -345,8 +346,13 @@ export default {
    text-align: center;
  }
 
+.modal-content {
+    // background: $white;
+}
+
  .card-content {
-   background-color: $white;
+   background: $white;
+   // margin: 0 auto;
  }
 
  #time {
@@ -354,7 +360,7 @@ export default {
       display: flex;
       flex-direction: row;
    }
-   margin: 3% 0;
+   margin: 1rem 0;
  }
 
  .form-input {
@@ -365,48 +371,56 @@ export default {
       flex-direction: row;
    }
  }
-  ul {
-    margin-bottom: 0;
-  }
+
   .timeBox {
     width: 100%;
-    background: white;
-    border: 1px grey solid;
+    background: $white;
+    border: 1px $purple-dark solid;
     border-radius: 8px;
     margin: 0 3%;
     display: flex;
     flex-direction: row;
+    text-align: center;
+
     @media#{$tablet} {
       width: 20%
     }
   }
+
   #date-input {
     margin: 0 3%;
     padding: 0.2%;
     font-size: 15px;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
   }
+
   p {
     font-size: 15px;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
   }
+
   input {
     border-radius: 8px;
-    border: 1px grey solid;
+    text-align: center;
+    border: 1px $purple-dark solid;
   }
+
   #date-input:focus {
     outline: none;
   }
+
   .button {
-   background-color: #00d1b2;
+   background-color: $green;
    color: $white;
    margin: 2% 0;
+
+   &:hover {
+     background-color: $green-dark;
+   }
   }
-  .button:hover {
-    background-color: #00c4a7;
-    color: $white;
-  }
+
   .error {
     border: 1px red solid;
   }
+
 </style>

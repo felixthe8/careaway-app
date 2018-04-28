@@ -2,31 +2,30 @@
   <div class='modal is-active'>
     <div class='modal-background'></div>
       <div class='modal-content'>
-          <!-- <div id='appointment-card' class='card'> -->
-            <div class='card-content round-corners'>
-              <h2 id='form-title'>Current Appointment</h2>
-              <p class="card-content__label">Date: {{appointment.date}}</p>
-              <p class="card-content__label">Start Time: {{getTime(appointment.startTime)}}</p>
-              <p class="card-content__label">End Time: {{getTime(appointment.endTime)}}</p>
-              <p class="card-content__label">Requested by: {{appointment.initiatorName}}</p>
-              <p class="card-content__label">Scheduled with: {{appointment.appointeeName}}</p>
-              <p class="card-content__label" v-if='getStatus'>Status: {{appointment.status}}</p>
-              <div id='appointment-status'>
-                <div v-if='!getStatus '>
-                  <button id='appointment-button' class='button is-fullwidth' @click="sendResponse('Accepted')">Accept</button>
-                  <button id='appointment-button' class='button is-fullwidth' @click="sendResponse('Declined')">Decline</button>
-                </div>
-                <div v-if='isInitiator && !isRejected'>
-                  <button id='appointment-button' class='button is-fullwidth' @click="editAppointment()">Edit</button>
-                  <button id='appointment-button' class='button is-fullwidth' :disabled="isTutorial" @click="deleteAppointment()">Delete</button>
-                </div>
-                <div v-if='isInitiator && isRejected'>
-                  <a id='appointment-button' class='button is-rounded' @click="deleteAppointment()"> Okay </a>
-                </div>
-                <div class = 'appointment-warning' v-show='showWarning'> {{warning}} </div>
-              </div>
+        <div class='card-content round-corners'>
+          <h2 id='form-title'>Current Appointment</h2>
+          <p class="card-content__label">Date: {{appointment.date}}</p>
+          <p class="card-content__label">Start Time: {{getTime(appointment.startTime)}}</p>
+          <p class="card-content__label">End Time: {{getTime(appointment.endTime)}}</p>
+          <p class="card-content__label">Requested by: {{appointment.initiatorName}}</p>
+          <p class="card-content__label">Scheduled with: {{appointment.appointeeName}}</p>
+          <p class="card-content__label" v-if='getStatus'>Status: {{appointment.status}}</p>
+
+          <div id='appointment-status'>
+            <div v-if='!getStatus '>
+              <button id='appointment-button' class='button is-fullwidth' @click="sendResponse('Accepted')">Accept</button>
+              <button id='appointment-button' class='button is-fullwidth' @click="sendResponse('Declined')">Decline</button>
             </div>
-          <!-- </div> -->
+            <div v-if='isInitiator && !isRejected'>
+              <button id='appointment-button' class='button is-fullwidth' @click="editAppointment()">Edit</button>
+              <button id='appointment-button' class='button is-fullwidth' :disabled="isTutorial" @click="deleteAppointment()">Delete</button>
+            </div>
+            <div v-if='isInitiator && isRejected'>
+              <button id='appointment-button' class='button' @click="deleteAppointment()">Okay</button>
+            </div>
+            <div class='appointment-warning' v-show='showWarning'>{{warning}}</div>
+          </div>
+        </div>
       </div>
     <button class='modal-close is-large' aria-label='close' @click='closeAppointment'></button>
   </div>
