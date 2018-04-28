@@ -1,11 +1,14 @@
 <template>
 
   <div class="columns medic-calendar">
-    <div class="menu column is-one-fifth">
-      <appointment :calendar="calendar" :isMed="isMed" />
+    <div class="column is-one-fifth">
 
-      <div id="patientLabel">
-        <patientSelector @selected="routeIndividualTreatment"/>
+      <div class="menu">
+        <appointment :calendar="calendar" :isMed="isMed" />
+
+        <div id="patientLabel">
+          <patientSelector @selected="routeIndividualTreatment"/>
+        </div>
       </div>
 
     </div>
@@ -77,6 +80,8 @@ export default {
   height: 85vh;
 
   .menu {
+    padding-left: 1rem;
+
     &__widgets {
       background: $green-light;
       margin: 10px;

@@ -13,6 +13,7 @@
         <meterWidget :calendar="calendar"/>
         <checklistWidget :calendar="calendar"/>
       </div>
+
       <div class="menu">
 
         <transfer v-if="showTransferInput" :patient="patient" :username="patientUsername" v-on:close="toggleTransferInput"></transfer>
@@ -188,6 +189,7 @@ export default {
   height: 85vh;
 
   .menu {
+
     &__widgets {
       background: $green-light;
       margin: 10px;

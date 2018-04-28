@@ -97,12 +97,6 @@ export default {
   padding-top: 100px;
 }
 
-#code-display {
-  margin-left: 15%;
-  padding-top: 1rem;
-  color: $purple;
-  font-size: 1.25em;
-}
 #diagnosis-container{
   margin-left: 25%;
 }
