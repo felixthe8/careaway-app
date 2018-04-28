@@ -7,12 +7,20 @@
       <button class="nav-bar__right--button button is-link" @click="viewReport">
         View Reports<i class="fas fa-chart-line"></i>
       </button>
-      <button class="nav-bar__right--button button is-link" @click="viewSendFeedback">
-        {{sendFeedbackText}}<i class="fas fa-comment"></i>
-      </button>
-      <button class="nav-bar__right--button button is-link" @click="logOut">
-        {{button}}<i class="fas fa-sign-out-alt"></i>
-      </button>
+      <div class="nav-bar__right--show-menu"><i class="fas fa-bars"></i>
+      <ul class="nav-bar__right__submenu">
+        <li>
+          <button class="button nav-bar__right__submenu--button  is-link" @click="viewSendFeedback">
+            {{sendFeedbackText}}
+          </button>
+        </li>
+        <li>
+          <button class="button nav-bar__right__submenu--button is-link" @click="logOut">
+            {{button}}<i class="fas fa-sign-out-alt"></i>
+          </button>
+        </li>
+      </ul>
+      </div>
     </div>
   </nav>
 </template>
@@ -24,7 +32,7 @@ export default {
   data() {
     return {
       button: 'Logout',
-      sendFeedbackText: 'Send feedback',
+      sendFeedbackText: 'Questions / Concerns',
       medicalcode: this.$store.getters.medicalCode
     }
   },
@@ -51,6 +59,8 @@ export default {
 
 <style lang="scss" scoped>
 
+@import "../../assets/sass/settings.scss";
+
 .nav-bar {
   width: 100%;
   padding: 1rem;
@@ -64,7 +74,6 @@ export default {
   &__right {
     display: flex;
     position: absolute;
-    width: 55%;
     height: 100%;
     top: 0;
     align-items: center;
@@ -72,12 +81,12 @@ export default {
 
     &--medical-code {
       padding: 0 .5rem;
-      color: #2A243A;
+      color: $purple-dark;
     }
 
     &--button {
       margin-left: .5rem;
-      background-color: #92CC92;
+      background-color: $green;
       border-radius: 10px;
 
       i {
@@ -88,6 +97,45 @@ export default {
         background-color: #568956;
       }
     }
+
+    &--show-menu {
+      font-size: 1.5em;
+      color: $purple-dark;
+      padding: 0 1rem;
+
+      &:hover {
+        .nav-bar__right__submenu {
+          transform: translateY(100%) translateX(0);
+        }
+      }
+    }
+
+    &__submenu {
+      background: $purple-dark;
+      text-align: center;
+      transform: translateY(100%) translateX(100%);
+      transition: all ease 1s;
+      position: absolute;
+      border-bottom-left-radius: 10px;
+      display: block;
+      padding: 0 1rem;
+      bottom: 0;
+      right: 0;
+
+      &--button {
+        color: #fff;
+
+        &:hover {
+          color: $purple-light;
+          background: none;
+        }
+
+        i {
+          padding: 0 5px;
+        }
+      }
+    }
+
   }
 
   &__logo {
