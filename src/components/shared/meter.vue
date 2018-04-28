@@ -54,6 +54,17 @@ export default {
   &__button {
     padding: 5px 20px;
     cursor: move;
+    background: $white;
+    color: $green-dark;
+    font-weight: bold;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+    transition: all ease .5s;
+    width: 80%;
+
+    &:hover {
+      background: $green !important;
+      color: $white;
+    }
   }
 
   &__label {
