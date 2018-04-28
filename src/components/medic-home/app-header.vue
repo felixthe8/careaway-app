@@ -4,14 +4,14 @@
 
     <div class="nav-bar__right">
       <p class="nav-bar__right--medical-code">MC:&nbsp;{{medicalcode}} </p>
-      <button class="nav-bar__right--button button is-link" @click="logOut">
-        {{button}}<i class="fas fa-sign-out-alt"></i>
-      </button>
       <button class="nav-bar__right--button button is-link" @click="viewReport">
         View Reports<i class="fas fa-chart-line"></i>
       </button>
       <button class="nav-bar__right--button button is-link" @click="viewSendFeedback">
         {{sendFeedbackText}}<i class="fas fa-comment"></i>
+      </button>
+      <button class="nav-bar__right--button button is-link" @click="logOut">
+        {{button}}<i class="fas fa-sign-out-alt"></i>
       </button>
     </div>
   </nav>
