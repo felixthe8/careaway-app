@@ -3,7 +3,7 @@
     <div class="modal checklist-edit-modal">
 
       <div class="modal-background"></div>
-      <div class="modal-content checklist-edit-modal--form">
+      <div class="modal-content checklist-edit-modal--form round-corners">
         <h1 class="checklist-edit-modal__title">Edit Checklist</h1>
         <div class="field" v-for="item in checklist.list">
           <label>Question:</label>
@@ -13,7 +13,7 @@
           <label>Date Assigned:</label>
           <input class="input checklist-modal--input" name="date" type="text" id="checklist-date" :value="checklist.due_date" readonly>
         </div>
-        <button id="checklist" class="checklist-edit-modal--create green-button" @click="update">Update Checklist</button>
+        <button id="checklist" class="checklist-edit-modal--create button is-fullwidth" @click="update">Update Checklist</button>
       </div>
 
       <button class='modal-close is-large' aria-label='close' @click='close'></button>
@@ -99,6 +99,17 @@ export default {
 
   &__title {
     font-size: 2em;
+    font-weight: bold;
+    color: $green;
+    text-align: center;
+  }
+
+  &--create {
+    background: $green !important;
+
+    &:hover {
+      background: $green-dark !important;
+    }
   }
 }
 

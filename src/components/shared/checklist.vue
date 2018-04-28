@@ -53,15 +53,21 @@ export default {
 
   &__button {
     padding: 5px 20px;
+    background: $white;
+    color: $green-dark;
+    font-weight: bold;
     cursor: move;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+    transition: all ease .5s;
+
+    &:hover {
+      background: $green !important;
+      color: $white;
+    }
   }
 
   &__label {
     margin-left: 1rem;
-  }
-
-  &__button {
-
   }
 }
 
