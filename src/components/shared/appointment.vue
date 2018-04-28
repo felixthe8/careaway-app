@@ -132,8 +132,9 @@ export default {
 
   &__button {
     padding: 5px 0;
-    font-size: 16px;
+    font-size: 1em;
     cursor: pointer;
+    color: $green;
   }
 
   &__label {
