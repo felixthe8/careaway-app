@@ -128,6 +128,9 @@ export default {
 @import "../../assets/sass/settings.scss";
 
 .appointment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &__button {
     padding: 5px 0;

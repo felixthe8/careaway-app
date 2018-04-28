@@ -108,9 +108,10 @@ export default {
       font-size: 1.5em;
       color: $purple-dark;
       padding: 0 1rem;
+      transition: all ease .5s;
 
       &:hover {
-        color: $purple-light;
+        color: $green;
       }
     }
 
