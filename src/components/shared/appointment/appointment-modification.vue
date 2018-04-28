@@ -2,7 +2,7 @@
   <div class="modal is-active">
     <div class="modal-background"></div>
     <div class="modal-content">
-      <div class="card-content">
+      <div class="card-content round-corners">
         <h2> Edit Appointment </h2>
         <p v-if="errors.msg" :style="{ color: 'red'}">
           {{errorMsg}}
@@ -197,13 +197,13 @@ export default {
       // Create moment object from date time format.
       const start = moment(startStr, formats);
 
-      if(!start.isValid()) { 
+      if(!start.isValid()) {
         // If the date is an invalid format, show error messages.
         this.errors.date = true;
         this.showErrorMessage("Error, invalid date. Preferrable formats: YYYY-MM-DD or MM/DD/YYYY");
         return false;
       } else if(start.day() === 0 || start.day() === 6) {
-        // The day the appointment is scheduled is a Sunday (0) or Saturday (6). 
+        // The day the appointment is scheduled is a Sunday (0) or Saturday (6).
         this.errors.date = true;
         this.showErrorMessage("Error, this date is not a weekday, please choose a different date.");
         return false;
@@ -337,22 +337,18 @@ export default {
 
 <style scoped lang="scss">
  @import "../../../assets/sass/settings.scss";
+
  h2 {
-  font-size: 2em;
-  font-weight: bolder;
-  border-style: groove;
-  border-width: 5px;
-  @media #{$tablet}{
-    font-size: 1.5em;
-  }
+   font-size: 2em;
+   font-weight: bold;
+   color: $green;
+   text-align: center;
  }
- .modal-content {
-  border: 1px black solid;
-  padding: 2%;
-  width: 60%;
-  margin: 0 auto;
-  background-color: $white;
+
+ .card-content {
+   background-color: $white;
  }
+
  #time {
    @media #{$tablet} {
       display: flex;
@@ -360,6 +356,7 @@ export default {
    }
    margin: 3% 0;
  }
+
  .form-input {
    display: flex;
    flex-direction: column;

@@ -2,26 +2,23 @@
   <div class='modal is-active'>
     <div class='modal-background'></div>
       <div class='modal-content'>
-        <div id='appointment-box' class = 'box'>
-          <div id='appointment-card' class = 'card'>
-            <div class = 'card-content'>
-              <h2 id = 'form-title'> Appointments</h2>
-              Date: {{appointment.date}}<br>
-              Start Time: {{getTime(appointment.startTime)}}<br>
-              End Time: {{getTime(appointment.endTime)}}<br>
-              Requested by: {{appointment.initiatorName}}<br>
-              Scheduled with: {{appointment.appointeeName}}<br>
+          <!-- <div id='appointment-card' class='card'> -->
+            <div class='card-content round-corners'>
+              <h2 id='form-title'>Current Appointment</h2>
+              <p class="card-content__label">Date: {{appointment.date}}</p>
+              <p class="card-content__label">Start Time: {{getTime(appointment.startTime)}}</p>
+              <p class="card-content__label">End Time: {{getTime(appointment.endTime)}}</p>
+              <p class="card-content__label">Requested by: {{appointment.initiatorName}}</p>
+              <p class="card-content__label">Scheduled with: {{appointment.appointeeName}}</p>
+              <p class="card-content__label" v-if='getStatus'>Status: {{appointment.status}}</p>
               <div id='appointment-status'>
-                <div v-if='getStatus'>
-                  Status: {{appointment.status}}<br>
-                </div>
                 <div v-if='!getStatus '>
-                  <a id='appointment-button' class='button is-rounded' @click="sendResponse('Accepted')"> Accept </a>
-                  <a id='appointment-button' class='button is-rounded' @click="sendResponse('Declined')"> Decline </a>
+                  <button id='appointment-button' class='button is-fullwidth' @click="sendResponse('Accepted')">Accept</button>
+                  <button id='appointment-button' class='button is-fullwidth' @click="sendResponse('Declined')">Decline</button>
                 </div>
                 <div v-if='isInitiator && !isRejected'>
-                  <a id='appointment-button' class='button is-rounded' @click="editAppointment()"> Edit </a>
-                  <a id='appointment-button' class='button is-rounded' :disabled = "isTutorial" @click="deleteAppointment()"> Delete </a>
+                  <button id='appointment-button' class='button is-fullwidth' @click="editAppointment()">Edit</button>
+                  <button id='appointment-button' class='button is-fullwidth' :disabled="isTutorial" @click="deleteAppointment()">Delete</button>
                 </div>
                 <div v-if='isInitiator && isRejected'>
                   <a id='appointment-button' class='button is-rounded' @click="deleteAppointment()"> Okay </a>
@@ -29,8 +26,7 @@
                 <div class = 'appointment-warning' v-show='showWarning'> {{warning}} </div>
               </div>
             </div>
-          </div>
-        </div>
+          <!-- </div> -->
       </div>
     <button class='modal-close is-large' aria-label='close' @click='closeAppointment'></button>
   </div>
@@ -118,7 +114,7 @@
               console.log("There was an error handling the request");
               self.showWarning = true;
             });
-        }  
+        }
       },
       // Opens the appointment-modification vue
       editAppointment(){
@@ -186,7 +182,7 @@
               if(moment(this.calendar[i].date).isSame(moment(this.appointment.date))) {
                 this.calendar[i].appointment = {};
               }
-          } 
+          }
         } else {
             console.log("You can't cancel right now");
             this.showWarning = true;
@@ -201,55 +197,50 @@
 
 <style scoped lang='scss'>
 @import '../../../assets/sass/settings.scss';
-  #appointment
-  {
-    &-box
-    {
-      background: $blue;
-      margin: auto;
-      width: 75%;
-    }
-    &-warning{
-      color: red;
-    }
-    &-card{
-      background: $blue-light;
-      color: $purple;
-    }
-    &-status
-    {
-      padding: 15px 10px 10px 10px;
-    }
-    &-button{
-      width: 100%;
-      margin: 5px 10px 0px 10px;
-      background: $purple-dark;
-      color: $white;
-    }
-    &-button:hover{
-      background: $purple;
-    }
 
+#appointment {
+  &-warning {
+    color: red;
   }
-  .modal-content {
-    overflow: hidden;
-    max-height: none;
-    text-align: center;
+
+  &-card {
+    background: $white;
+    color: $purple-dark;
+    text-align: left;
+    margin-left: 2rem;
   }
-  #form-title {
-    font-size: 2em;
-    margin-bottom: .5em;
-    font-weight: bolder;
-    border-style: groove;
-    border-width: 5px;
-    @media #{$tablet}{
-      font-size: 1.5em;
-    }
+
+  &-status {
+    padding: 15px 10px 10px 10px;
   }
-  .input{
-    margin: 5px 0px 5px 0px;
+
+  &-button {
+    margin: 1rem 0;
+    background: $green;
+    color: $white;
   }
-  .hidden{
-    display: none;
+
+  &-button:hover{
+    background: $green-dark;
   }
+
+}
+
+.card-content {
+  background: $white;
+
+  &__label {
+    margin-left: 1rem;
+  }
+}
+
+#form-title {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.hidden{
+  display: none;
+}
+
 </style>
