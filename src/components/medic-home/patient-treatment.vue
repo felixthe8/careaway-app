@@ -1,7 +1,7 @@
 <template>
   <div class="columns medic-calendar">
     <div class="menu column is-one-fifth">
-      <div id = "currentPatient">
+      <div id="currentPatient">
         <h1>{{patient}}</h1>
         <h1>{{currentDiagnosis}}</h1>
       </div>
@@ -14,7 +14,7 @@
         <checklistWidget :calendar="calendar"/>
       </div>
       <div class="menu">
-        
+
         <transfer v-if="showTransferInput" :patient="patient" :username="patientUsername" v-on:close="toggleTransferInput"></transfer>
         <div v-if="showTransferButtons">
           <p v-if="transferInProgress">Awaiting patient acceptance on transfer to {{newMP}}</p>
@@ -22,7 +22,7 @@
           <a class="button is-primary is-rounded" v-if="transferInProgress" @click="updateTransfer">Change Medical Professional</a>
           <a class="button is-primary is-rounded" v-if="transferInProgress" @click="cancelTransfer">Cancel Transfer</a>
         </div>
-        
+
       </div>
 
     </div>
@@ -90,7 +90,7 @@ export default {
     this.calendar = this.$renderCalendar();
     this.patient = this.$store.getters.getCurrentPatient.fullName;
     this.user = patientName;
-    
+
     let transferInfo = this.$store.getters.getCurrentPatient.transfer;
     // Set transfer info
     this.transferInProgress = transferInfo.inProgress;

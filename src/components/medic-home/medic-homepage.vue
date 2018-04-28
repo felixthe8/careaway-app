@@ -2,9 +2,8 @@
 
   <div>
 
-    <navbar class = "nav-bar"/>
+    <navbar class="nav-bar"/>
 
-    <p class = "subtitle" id = "code-display">CareAway Medical Code: {{medicalcode}} </p>
     <div v-if="isLoaded">
       <router-view class="wrapper"></router-view>
     </div>
@@ -24,7 +23,6 @@ export default {
     components: {navbar},
     data() {
       return {
-        medicalcode: this.$store.getters.medicalCode,
         appointment: {}, // Currently stores only one appointment object, will need to change to store array
         appointeeType: "",
         appointee: [],
@@ -96,7 +94,7 @@ export default {
 @import '../../assets/sass/settings.scss';
 
 .wrapper {
-  margin-top: 75px;
+  padding-top: 100px;
 }
 
 #code-display {
