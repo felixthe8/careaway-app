@@ -7,20 +7,22 @@
       <button class="nav-bar__right--button button is-link" @click="viewReport">
         View Reports<i class="fas fa-chart-line"></i>
       </button>
-      <div class="nav-bar__right--show-menu"><i class="fas fa-bars"></i>
-      <ul class="nav-bar__right__submenu">
-        <li>
-          <button class="button nav-bar__right__submenu--button  is-link" @click="viewSendFeedback">
-            {{sendFeedbackText}}
-          </button>
-        </li>
-        <li>
-          <button class="button nav-bar__right__submenu--button is-link" @click="logOut">
-            {{button}}<i class="fas fa-sign-out-alt"></i>
-          </button>
-        </li>
-      </ul>
+
+      <div class="nav-bar__right--show-menu" @click="toggleMenu"><i class="fas fa-bars"></i>
+        <ul class="nav-bar__right__submenu" :class="{'show-sub' : toggle}">
+          <li>
+            <button class="button nav-bar__right__submenu--button  is-link" @click="viewSendFeedback">
+              {{sendFeedbackText}}
+            </button>
+          </li>
+          <li>
+            <button class="button nav-bar__right__submenu--button is-link" @click="logOut">
+              {{button}}<i class="fas fa-sign-out-alt"></i>
+            </button>
+          </li>
+        </ul>
       </div>
+
     </div>
   </nav>
 </template>
@@ -33,7 +35,8 @@ export default {
     return {
       button: 'Logout',
       sendFeedbackText: 'Questions / Concerns',
-      medicalcode: this.$store.getters.medicalCode
+      medicalcode: this.$store.getters.medicalCode,
+      toggle: false
     }
   },
   methods: {
@@ -52,6 +55,9 @@ export default {
     },
     goHome(){
       this.$router.push('/MedicHome');
+    },
+    toggleMenu() {
+      this.toggle = !this.toggle;
     }
   }
 }
@@ -104,16 +110,14 @@ export default {
       padding: 0 1rem;
 
       &:hover {
-        .nav-bar__right__submenu {
-          transform: translateY(100%) translateX(0);
-        }
+        color: $purple-light;
       }
     }
 
     &__submenu {
       background: $purple-dark;
       text-align: center;
-      transform: translateY(100%) translateX(100%);
+      transform: translateY(100%) translateX(105%);
       transition: all ease 1s;
       position: absolute;
       border-bottom-left-radius: 10px;
@@ -146,6 +150,10 @@ export default {
   &:hover {
     cursor: pointer;
   }
+}
+
+.show-sub {
+  transform: translateY(100%) translateX(0);
 }
 
 </style>
