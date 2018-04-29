@@ -83,8 +83,22 @@ export default {
   data() {
     return {
       months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      week: ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"]
+      week: ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"],
+      user: "",
+      appointments: null,
+      meters: null,
+      checklists: null
     }
+  },
+
+  created: function() {
+    // Get current user from store
+    this.user = this.$store.getters.authenticatedUsername;
+    // Get current appointments from store
+    this.appointments = this.$store.getters.appointments;
+    // Get current widgets from store
+    this.meters = this.$store.getters.meters;
+    this.checklists = this.$store.getters.checklists;
   },
 
   methods: {
@@ -98,7 +112,7 @@ export default {
         next = this.getMonth(this.calendar[12].object, 1);
       }
       this.calendar = this.$renderCalendar(next, state);
-      this.getEvents();
+      this.getEvents(this.user, this.appointments, this.meters, this.checklists);
     },
     previous: function(event) {
       let state = this.$store.getters.calendarState;
@@ -106,7 +120,7 @@ export default {
       let previous = this.getWeek(this.calendar[0].object, -7);
       if(!state) { previous = this.getMonth(this.calendar[12].object, -1); }
       this.calendar = this.$renderCalendar(previous, this.$store.getters.calendarState);
-      this.getEvents();
+      this.getEvents(this.user, this.appointments, this.meters, this.checklists);
     },
     /* End Previous Button Click Handlers */
 
@@ -114,7 +128,7 @@ export default {
     weekly: function(event) {
       this.$store.dispatch("calendarState");
       this.calendar = this.$renderCalendar(new Date(), true);
-      this.getEvents();
+      this.getEvents(this.user, this.appointments, this.meters, this.checklists);
 
       // get day elements from html add week height
       let days = document.getElementsByClassName("monthly")[0].children;
@@ -127,7 +141,7 @@ export default {
     monthly: function(event) {
         this.$store.dispatch("calendarState");
         this.calendar = this.$renderCalendar();
-        this.getEvents();
+        this.getEvents(this.user, this.appointments, this.meters, this.checklists);
 
         // get day elements from html remove week height
         let days = document.getElementsByClassName("monthly")[0].children;
@@ -148,21 +162,36 @@ export default {
       current = moment(current);
       return new Date(current.add(shift, 'days'));
     },
-    getEvents: function() {
-      // updates events on calendar
-      let patientName = this.$store.getters.authenticatedUsername;
-      let appointments = this.$store.getters.appointments;
-      let meters = this.$store.getters.meters;
-      let checklists = this.$store.getters.checklists;
-      for(var i=0; i < this.calendar.length; i++) {
-        // get current events based on calendar date
-        let appointmentMatch = appointments.find(appointment  => appointment.date === this.calendar[i].date && appointment.appointee === patientName);
-        if(appointmentMatch) { this.calendar[i].appointment = appointmentMatch; }
-        let meterMatch = meters.find(meter  => meter.due_date === this.calendar[i].date);
-        if(meterMatch) { this.calendar[i].meter = meterMatch; }
-        let checklistMatch = checklists.find(checklist  => checklist.due_date === this.calendar[i].date);
-        if(checklistMatch) { this.calendar[i].checklist = checklistMatch; }
-      }
+    getEvents: function(user, appointments, meters, checklists) {
+        // load current events on the calendar
+        for(var i=0; i < this.calendar.length; i++) {
+          // get current appointments based on calendar date
+          // --> find appointments where the current date iteration
+          //     matches appointment in vue store
+          let appointmentMatch = appointments.find(appointment  => (moment(appointment.date).isSame(moment(this.calendar[i].date))) && (appointment.appointee === user || appointment.initiator === user));
+          // if there is a match update the calendar
+          if(appointmentMatch) {
+              this.calendar[i].appointment = appointmentMatch;
+          }
+
+          // get current meters based on calendar date
+          // --> find meters where the current date iteration
+          //     matches meter in vue store
+          let meterMatch = meters.find(meter  => meter.due_date === this.calendar[i].date);
+          // if there is a match update the calendar
+          if(meterMatch) {
+              this.calendar[i].meter = meterMatch;
+          }
+
+          // get current checklists based on calendar date
+          // --> find checklists where the current date iteration
+          //     matches checklist in vue store
+          let checklistMatch = checklists.find(checklist  => checklist.due_date === this.calendar[i].date);
+          // if there is a match update the calendar
+          if(checklistMatch) {
+              this.calendar[i].checklist = checklistMatch;
+          }
+        }
     },
     /* End Calendar Helper Functions */
 
@@ -192,8 +221,6 @@ export default {
     /* Widget Drag Drop Event Handlers */
     dragOver: function(event) {
       event.preventDefault();
-
-      // TODO: define hover state to indicate drop area
     },
     drop: function(event) {
       event.preventDefault();
@@ -215,25 +242,6 @@ export default {
         document.getElementsByClassName("checklist-modal")[0].classList.add("is-active");
         this.$store.dispatch("toggleChecklist");
       }
-    }
-  },
-  created() {
-
-    let patientName = this.$store.getters.authenticatedUsername;
-
-    // updates events on calendar
-    let appointments = this.$store.getters.appointments;
-
-    let meters = this.$store.getters.meters;
-    let checklists = this.$store.getters.checklists;
-    for(var i=0; i < this.calendar.length; i++) {
-      // get current events based on calendar date
-      let appointmentMatch = appointments.find(appointment  => (moment(appointment.date).isSame(moment(this.calendar[i].date))) && (appointment.appointee === patientName || appointment.initiator === patientName));
-      if(appointmentMatch) { this.calendar[i].appointment = appointmentMatch; }
-      let meterMatch = meters.find(meter  => meter.due_date === this.calendar[i].date);
-      if(meterMatch) { this.calendar[i].meter = meterMatch; }
-      let checklistMatch = checklists.find(checklist  => checklist.due_date === this.calendar[i].date);
-      if(checklistMatch) { this.calendar[i].checklist = checklistMatch; }
     }
   },
 
@@ -297,6 +305,7 @@ export default {
     &--button {
       display: none;
       color: $white;
+      cursor: pointer;
 
       @media #{$tablet} {
         display: block;
@@ -321,6 +330,7 @@ export default {
       border-bottom: 5px solid transparent;
       border-right: 8px solid $purple-dark;
       margin: 8px 0;
+      cursor: pointer;
 
       &:hover {
         border-right: 8px solid $purple;
@@ -334,6 +344,7 @@ export default {
       border-bottom: 5px solid transparent;
       border-left: 8px solid $purple-dark;
       margin: 8px 0;
+      cursor: pointer;
 
       &:hover {
         border-left: 8px solid $purple;
@@ -378,6 +389,7 @@ export default {
     &--button {
       background: $green-light !important;
       font-size: 8px;
+      cursor: pointer;
     }
 
     &__blocked {
