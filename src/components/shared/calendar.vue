@@ -13,8 +13,13 @@
         </div>
         <div class="item"><div class="calendar__menu--arrow-right" @click="next"></div></div>
 
-        <button class="item calendar__menu--button" @click="monthly"><h1 class="text">Month</h1></button>
-        <button class="item calendar__menu--button active" @click="weekly"><h1 class="text">Week</h1></button>
+        <button class="item calendar__menu--button"
+          @click="displayMonthly"><h1 class="text">Month</h1>
+        </button>
+
+        <button class="item calendar__menu--button active"
+          @click="displayWeekly"><h1 class="text">Week</h1>
+        </button>
       </div>
 
       <div class="columns is-multiline monthly">
@@ -87,7 +92,8 @@ export default {
       user: "",
       appointments: null,
       meters: null,
-      checklists: null
+      checklists: null,
+      weekView: false
     }
   },
 
@@ -125,31 +131,38 @@ export default {
     /* End Previous Button Click Handlers */
 
     /* Tab Click Handlers */
-    weekly: function(event) {
-      this.$store.dispatch("calendarState");
-      this.calendar = this.$renderCalendar(new Date(), true);
-      this.getEvents(this.user, this.appointments, this.meters, this.checklists);
+    displayWeekly: function(event) {
+      if(!this.weekView) {
+        this.weekView = true;
+        this.$store.dispatch("calendarState");
+        this.calendar = this.$renderCalendar(new Date(), true);
+        this.getEvents(this.user, this.appointments, this.meters, this.checklists);
 
-      // get day elements from html add week height
-      let days = document.getElementsByClassName("monthly")[0].children;
-      Array.from(days).forEach((item)=> { item.classList.add("week-height"); });
+        // get day elements from html add week height
+        let days = document.getElementsByClassName("monthly")[0].children;
+        Array.from(days).forEach((item)=> { item.classList.add("week-height"); });
 
-      // add/remove active class to tabs
-      document.getElementsByClassName("calendar__menu--button")[0].classList.add("active");
-      document.getElementsByClassName("calendar__menu--button")[1].classList.remove("active");
+        // add/remove active class to tabs
+        document.getElementsByClassName("calendar__menu--button")[0].classList.add("active");
+        document.getElementsByClassName("calendar__menu--button")[1].classList.remove("active");
+      }
     },
-    monthly: function(event) {
+    displayMonthly: function(event) {
+      if(this.weekView) {
+        this.weekView = false;
         this.$store.dispatch("calendarState");
         this.calendar = this.$renderCalendar();
         this.getEvents(this.user, this.appointments, this.meters, this.checklists);
 
-        // get day elements from html remove week height
-        let days = document.getElementsByClassName("monthly")[0].children;
-        Array.from(days).forEach((item)=> { item.classList.remove("week-height"); });
+        // Get day elements from html remove week height
+        let days = document.getElementsByClassName("monthly")[0];
+        // Add class to every cell
+        Array.from(days.children).forEach((item)=> { item.classList.remove("week-height"); });
 
         // add/remove active class to tabs
         document.getElementsByClassName("calendar__menu--button")[1].classList.add("active");
         document.getElementsByClassName("calendar__menu--button")[0].classList.remove("active");
+      }
     },
     /* End Tab Click Handlers */
 
@@ -410,6 +423,10 @@ export default {
     }
 
   }
+}
+
+.monthly {
+  transition: all ease 1s;
 }
 
 .active {
