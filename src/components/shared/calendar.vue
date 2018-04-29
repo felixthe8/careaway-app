@@ -30,8 +30,7 @@
           :date="calendar[index].date"
           :class="{
             'no-right' : (index+1)%5 === 0,
-            'no-bottom': (index > 19),
-            'no-bottom__mobile': calendar[index].date === getCurrent.friday,
+            'no-bottom': (index > 19)
           }">
 
           <div class="calendar__day--date"
@@ -319,8 +318,15 @@ export default {
 
   &__menu {
     position: absolute;
-    top: -5.3%;
-    right: 10px;
+    top: -2%;
+    width: 100%;
+    justify-content: center;
+
+    @media #{$tablet} {
+      width: auto;
+      top: -4.9%;
+      right: 10px;
+    }
 
     .item {
       padding: 5px;
@@ -410,8 +416,11 @@ export default {
     }
 
     &--label {
-      margin-top: -20%;
       color: $purple-dark;
+
+      @media #{$tablet} {
+        margin-top: -20%;
+      }
     }
 
     &--button {

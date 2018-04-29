@@ -2,7 +2,7 @@
   <div>
     <p class ="subtitle is-5" id = "patientText">Select a Patient </p>
     <select class = "selectPatient" v-model="selected" @change="choosePatient" name="Patients">
-      <option value ="0" selected disabled >Choose Patient</option>
+      <option value="0" selected disabled >Choose Patient</option>
       <option  v-for="patient in patientList" :value="patient.userName">
         Name - {{ patient.fullName }}   ({{patient.diagnosis}})
       </option>
@@ -67,9 +67,11 @@ export default {
     margin: 0 0 .5rem;
     color: $purple-dark;
   }
+
   .selectPatient{
     width: 150px;
     font-size: 16px;
+    border: 1px solid $purple-dark;
   }
 
 </style>
