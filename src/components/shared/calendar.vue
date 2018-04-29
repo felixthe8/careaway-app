@@ -201,22 +201,25 @@ export default {
               this.calendar[i].appointment = appointmentMatch;
           }
 
-          // get current meters based on calendar date
-          // --> find meters where the current date iteration
-          //     matches meter in vue store
-          let meterMatch = meters.find(meter  => meter.due_date === this.calendar[i].date);
-          // if there is a match update the calendar
-          if(meterMatch) {
+          // if on patient treatment view
+          if(this.$store.getters.patientSelected) {
+            // get current meters based on calendar date
+            // --> find meters where the current date iteration
+            //     matches meter in vue store
+            let meterMatch = meters.find(meter  => meter.due_date === this.calendar[i].date);
+            // if there is a match update the calendar
+            if(meterMatch) {
               this.calendar[i].meter = meterMatch;
-          }
+            }
 
-          // get current checklists based on calendar date
-          // --> find checklists where the current date iteration
-          //     matches checklist in vue store
-          let checklistMatch = checklists.find(checklist  => checklist.due_date === this.calendar[i].date);
-          // if there is a match update the calendar
-          if(checklistMatch) {
+            // get current checklists based on calendar date
+            // --> find checklists where the current date iteration
+            //     matches checklist in vue store
+            let checklistMatch = checklists.find(checklist  => checklist.due_date === this.calendar[i].date);
+            // if there is a match update the calendar
+            if(checklistMatch) {
               this.calendar[i].checklist = checklistMatch;
+            }
           }
         }
     },

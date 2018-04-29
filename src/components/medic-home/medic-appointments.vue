@@ -49,6 +49,7 @@ export default {
   created: function() {
     this.calendar = this.$renderCalendar();
 
+    // show all current appointments
     let appointments = this.$store.getters.appointments;
     for(var i=0; i < appointments.length; i++) {
       for(var j=0; j < this.calendar.length; j++) {
@@ -58,6 +59,9 @@ export default {
         }
       }
     }
+
+    // flag patient selected set to false
+    this.$store.dispatch("patientSelected", false);
   },
 
   data() {

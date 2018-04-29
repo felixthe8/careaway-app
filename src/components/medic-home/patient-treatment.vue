@@ -138,6 +138,9 @@ export default {
       throw error;
     });
 
+    // flag patient selected set to true
+    this.$store.dispatch("patientSelected", true);
+
   },
   methods: {
     createTransfer() {
