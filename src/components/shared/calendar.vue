@@ -93,7 +93,7 @@ export default {
       appointments: null,
       meters: null,
       checklists: null,
-      weekView: false
+      weekView: false,
     }
   },
 
@@ -107,7 +107,22 @@ export default {
     this.checklists = this.$store.getters.checklists;
   },
 
+  mounted: function() {
+    this.$nextTick(function() {
+      window.addEventListener('resize', this.getWindowWidth);
+      //Init
+      this.getWindowWidth();
+    });
+  },
+
   methods: {
+    getWindowWidth(event) {
+      // get change in window size
+      let windowWidth = document.documentElement.clientWidth;
+      if(windowWidth < 760) {
+        this.displayWeekly();
+      }
+    },
 
     /* Next Previous Button Click Handlers */
     next: function(event) {
@@ -372,7 +387,7 @@ export default {
     width: 100%;
     height: 100px;
 
-    @media #{$smallTablet} {
+    @media #{$tablet} {
       border-right: 2px solid $green;
       border-bottom: 0;
       height: 500px;
@@ -435,7 +450,13 @@ export default {
 }
 
 .week-height {
-  height: 500px;
+  height: 200px;
+  width: 100%;
+
+  @media #{$tablet} {
+    height: 500px;
+    width: auto;
+  }
 }
 
 </style>
