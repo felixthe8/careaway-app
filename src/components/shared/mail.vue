@@ -123,7 +123,6 @@ export default {
           mail_to_delete = mail;
         }
       });
-      console.log(this.receiver);
       this.postDelete(this.sender, this.receiver, mail_to_delete);
     },
     postDelete(sender, receiver, message) {
