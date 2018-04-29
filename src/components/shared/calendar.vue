@@ -13,8 +13,8 @@
         </div>
         <div class="item"><div class="calendar__menu--arrow-right" @click="next"></div></div>
 
-        <div class="item calendar__menu--button" @click="monthly"><h1 class="text">Month</h1></div>
-        <div class="item calendar__menu--button active" @click="weekly"><h1 class="text">Week</h1></div>
+        <button class="item calendar__menu--button" @click="monthly"><h1 class="text">Month</h1></button>
+        <button class="item calendar__menu--button active" @click="weekly"><h1 class="text">Week</h1></button>
       </div>
 
       <div class="columns is-multiline monthly">
@@ -27,7 +27,6 @@
             'no-right' : (index+1)%5 === 0,
             'no-bottom': (index > 19),
             'no-bottom__mobile': calendar[index].date === getCurrent.friday,
-            /* 'calendar__day__blocked': calendar[index].month != calendar[12].month */
           }">
 
           <div class="calendar__day--date"
@@ -297,6 +296,7 @@ export default {
 
     &--button {
       display: none;
+      color: $white;
 
       @media #{$tablet} {
         display: block;
@@ -402,6 +402,7 @@ export default {
 
 .active {
   background-color: $white;
+  color: $purple-dark;
 }
 
 .week-height {

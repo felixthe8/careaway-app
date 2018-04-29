@@ -13,7 +13,7 @@
 
     </div>
 
-    <calendar :calendar="calendar" class="column is-four-fifths"/>
+    <calendar :calendar.sync="calendar" class="column is-four-fifths"/>
   </div>
 
 </template>
