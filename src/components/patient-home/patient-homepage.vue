@@ -7,7 +7,7 @@
     <div id="transfer">
       <transfer v-if="showTransfer" :currentMed="medName" v-on:close="toggleTransfer"/>
     </div>
-    
+
     <div class="patient-calendar" v-if="isLoaded">
       <calendar :calendar="calendar" class="column"/>
     </div>
@@ -70,34 +70,23 @@ export default {
       }
     },
 
-    created: function() {
-      this.calendar = this.$renderCalendar();
-
-      let appointments = this.$store.getters.appointments;
-      for(var i=0; i < appointments.length; i++) {
-        for(var j=0; j < this.calendar.length; j++) {
-          if(moment(appointments[i].date).isSame(moment(this.calendar[j].date))) {
-            this.calendar[j].appointment = appointments[i];
-            appointments[i].created = true;
-          }
-        }
-      }
-
-    },
-
     beforeCreate() {
       var self = this;
 
       // get Appointments for VueX
-      axios.get(this.$store.getters.getAppointmentURL+this.$store.getters.authenticatedUsername).then(result => {
+      axios.get(this.$store.getters.getAppointmentURL + this.$store.getters.authenticatedUsername).then(result => {
         var appointments = result.data.appointments;
-        self.isLoaded = true;
-        for(var i=0; i < appointments.length; i++) {
-          self.$store.dispatch('addAppointment', appointments[i]);
+        if(appointments) {
+          for(var i=0; i < appointments.length; i++) {
+            self.$store.dispatch('addAppointment',appointments[i]);
+          }
+          self.showAppointments();
           self.isLoaded = true;
+        } else {
+          alert("No appointments.");
         }
       }).catch(error => {
-        console.log(error);
+        throw error;
       });
 
       // get Widgets for VueX
@@ -128,9 +117,19 @@ export default {
           }
         }
       }).catch(error => {
-        console.log(error);
+        throw error;
       });
+
     },
+
+    created: function() {
+      this.calendar = this.$renderCalendar();
+
+      // flag patient selected set to true
+      this.$store.dispatch("patientSelected", true);
+
+    },
+
     beforeMount(){
       // This is a patient, so get their medical professional's name, and their information.
       axios.get(this.$store.getters.getPatientApptURL + this.$store.getters.authenticatedUsername)
@@ -141,8 +140,6 @@ export default {
       // Set appointee type to medical professional.
       this.appointeeType = "Medical Professional";
       this.isMed = false;
-
-
     },
     computed: {
       showAppointmentCreation() {
@@ -153,6 +150,19 @@ export default {
       }
     },
     methods: {
+      showAppointments: function() {
+        let appointments = this.$store.getters.appointments;
+        let patientName = this.$store.getters.authenticatedUsername;
+        for(var i=0; i < appointments.length; i++) {
+          for(var j=0; j < this.calendar.length; j++) {
+            if(appointments[i].date === this.calendar[j].date
+              && appointments[i].appointee === patientName) {
+              this.calendar[j].appointment = appointments[i];
+              appointments[i].created = true;
+            }
+          }
+        }
+      },
       getAppointment(){
         return this.$store.getters.appointments[0];
       },
@@ -180,13 +190,11 @@ export default {
         })
       },
       toggleTransfer() {
-        console.log("Toggling transfer")
         this.showTransfer = !this.showTransfer;
       }
     },
 }
 </script>
-
 
 <style lang="scss">
 @import '../../assets/sass/settings.scss';
@@ -195,15 +203,20 @@ export default {
   width: 100%;
   padding: 1rem;
 
-    &__logo {
-      width: 25px;
-      height: 25px;
-    }
-
-    &__button {
-      float: right;
-    }
+  &__logo {
+    width: 25px;
+    height: 25px;
   }
+
+  &__button {
+    float: right;
+  }
+}
+
+.patient-calendar {
+  padding-top: 100px;
+}
+
 #transfer {
   margin: 0 auto;
 }
