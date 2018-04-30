@@ -19,7 +19,7 @@
     name: 'header-block',
     data() {
       return {
-        text: `Your new go to tool for effective communication - for patients and medical professionals in any field.`
+        text: `Your go to tool for effective communication - for patients and medical professionals in any field.`
       }
     }
   }
