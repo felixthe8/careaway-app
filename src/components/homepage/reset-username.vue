@@ -2,28 +2,24 @@
   <div class="modal is-active">
     <div class="modal-background"></div>
       <div class="modal-content">
-        <div class = "box">
-          <div class="columns is-centered">
-            <article class="card is-rounded">
-              <div class="card-content">
-                <img src = "../../assets/images/careaway-full1.png">
-                  <h2 class="form__title"> Forgot your Password?</h2>
-                    <p class = "warning" v-show="showWarning">{{inputWarning}}</p>
-                    <p class="control">
-                      <input class="input" type="name" v-model="username" :class="validUsername" @keyup="validUsername = checkEmptyInput(username)" placeholder="Enter Your Username">
-                    </p> <br>
-                    <p class="control">
-                      <button class="button is-primary is-medium is-fullwidth is-rounded" @click = "validateInputOnSubmit()">
-                        Submit <i class="fas fa-long-arrow-alt-right"></i>
-                      </button>
-                    </p>
-              </div>
-            </article>
+        <article class="card round-corners">
+          <div class="card-content">
+            <img src = "../../assets/images/careaway-logo.png">
+            <h2 class="form__title"> Forgot your Password?</h2>
+            <p class = "warning" v-show="showWarning">{{inputWarning}}</p>
+            <p class="control">
+              <input class="input" type="name" v-model="username" :class="validUsername" @keyup="validUsername = checkEmptyInput(username)" placeholder="Enter Your Username">
+            </p> <br>
+            <p class="control">
+              <button class="button filled is-fullwidth" @click = "validateInputOnSubmit()">
+                Submit <i class="fas fa-long-arrow-alt-right"></i>
+              </button>
+            </p>
           </div>
-        </div>
+        </article>
       </div>
       <button class="modal-close is-large" aria-label="close" @click="closeReset"></button>
-  </div> 
+  </div>
 </template>
 <script>
 import axios from 'axios'
@@ -41,13 +37,13 @@ import axios from 'axios'
     },
 
     methods: {
-      // method to check if username and password fields are empty. 
+      // method to check if username and password fields are empty.
       checkEmptyInput(data){
         if(data.length == 0 || data == '') {
           return 'is-danger'
-        } 
+        }
       },
-      
+
 
       // this method will run if the user clicks "Submit"
       validateInputOnSubmit() {
@@ -85,18 +81,18 @@ import axios from 'axios'
             })
             .catch(function(err) {
               console.log(err);
-              // prompt the user if there was an error in handling their login request 
+              // prompt the user if there was an error in handling their login request
               self.inputWarning = 'Your input could not be handled at this time. Try again.';
               self.showWarning = true;
             });
-           
+
         }
       },
       // method that runs when the user clicks 'close'
       closeReset() {
         this.$store.dispatch('alternateReset');
       },
-    
+
     }
 
   }
@@ -112,15 +108,18 @@ import axios from 'axios'
 
   .form {
     &__title {
-      font-size: 1.5em;
+      font-size: 2em;
+      color: $green;
+      font-weight: bold;
       padding-bottom: 1rem;
+      text-align: center;
     }
-  } 
+  }
 
   img {
-    width: 40%;
+    width: 40px;
   }
-    
+
   button i {
     margin-left: 2%;
   }
@@ -132,6 +131,5 @@ import axios from 'axios'
   .warning {
     color: #FF3860;
   }
-  
-</style>
 
+</style>

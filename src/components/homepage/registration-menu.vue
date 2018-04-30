@@ -1,28 +1,29 @@
 <template>
-  <div id='sheet' class='modal is-active'>
-    <div id='sheet-background' class='modal-background'></div>
-      <div id='sheet-content' class='modal-content'>
-        <div id='sheet-box' class='box'>
-          <div class='columns is-centered'>
-          <article class='card is-rounded'>
-              <div class='card-content'  v-if='this.$store.state.ssoRegistration'>
-                <sso-registration></sso-registration>
-              </div>
-              <div class='card-content' v-if='!this.$store.state.ssoRegistration'>
-                <ul id='sheet-switcher' class='form-switcher'>  
-                  <li @click='switchToPatientForm'><div class = 'patient' :class='patientForm'>Register as a Patient</div></li>
-                  <li @click='switchToMedicalForm'><div :class = 'medicalProfessionalForm'>Register as a Medical Professional</div></li>
-                </ul> 
-                <registration  :patient-form='showPatientForm' ></registration>        
-              </div>
-            </article>
-            </div>
+  <div id="sheet" class="modal is-active">
+    <div id="sheet-background" class="modal-background"></div>
+      <article class="card round-corners menu-wrapper">
+
+        <div class="card-content menu"  v-if="this.$store.state.ssoRegistration">
+          <sso-registration></sso-registration>
         </div>
-      </div>
-      <button class='modal-close' @click='closeRegistration'></button>
+
+        <div class="card-content menu" v-if="!this.$store.state.ssoRegistration">
+          <ul id="sheet-switcher" class="form-switcher">
+            <li @click="switchToPatientForm" class="menu__switcher">
+              <div class="menu__switcher--button patient" :class="patientForm">Patient</div>
+            </li>
+            <li @click="switchToMedicalForm" class="menu__switcher">
+              <div class="menu__switcher--button" :class="medicalProfessionalForm">Medical Professional</div>
+            </li>
+          </ul>
+          <registration  :patient-form="showPatientForm"></registration>
+        </div>
+
+      </article>
+
+    <button class="modal-close" @click="closeRegistration"></button>
   </div>
 </template>
-
 
 <script>
   import registration from './registration.vue';
@@ -48,7 +49,7 @@
     methods: {
       switchToPatientForm(){
         // Tells the registration form it's a patient form
-        this.showPatientForm = true; 
+        this.showPatientForm = true;
         // Set patient form to active
         this.medicalProfessionalForm= '';
         this.patientForm= 'active';
@@ -77,50 +78,59 @@
 
 <style lang='scss'>
   @import '../../assets/sass/settings.scss';
-  
+
   .patient{
     padding-bottom: 30px;
+
     @media #{$smallTablet} {
       padding-bottom: 0px;
     }
   }
-  ul.form-switcher {
-    margin: 0;
-    padding: 0;
-  }
-  ul.form-switcher li {
-    list-style: none;
-    display: inline-block;
-    width: 50%;
-    float: left;
-    margin: 0;
-  }
-  ul.form-switcher li div {
-    width: 100%;
-    display: block;
-    line-height: 30px;
-    color: #666666;
-    background-color: #dddddd;
-    text-align: center;
-    
-  }
-  ul.form-switcher li div.active {
-    color: #000000;
-    background-color: #f6f6f6;
-  }
-  #sheet{
-    &-content{
-      overflow: auto;
-      max-height: 500px;
-      border-radius: 10px;
 
-      @media #{$smallTablet} {
-        overflow: hidden;
-        max-height: none;  
+  .menu-wrapper {
+    max-width: 90%;
+  }
+
+  .menu {
+    padding: .5rem 1rem;
+
+    @media #{$tablet} {
+      padding: 0rem 1rem;
+    }
+
+    &__switcher {
+      list-style: none;
+      display: inline-block;
+      width: 50%;
+      float: left;
+
+      @media #{$tablet} {
+        margin: 1rem 0;
+      }
+
+      &--button {
+        color: $purple-dark;
+        background-color: $green;
+        text-align: center;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+        cursor: pointer;
+        font-weight: bold;
+        color: $white;
+        padding: 8px 0;
+
+        @media #{$tablet} {
+          padding: 10px;
+        }
+
+        &.active {
+          color: $purple-dark;
+          background-color: #fff;
+          border-top-right-radius: 10px;
+          border-top-left-radius: 10px;
+        }
       }
     }
-    &-box{
-      padding: 0%;
-    }
   }
+
 </style>

@@ -1,5 +1,5 @@
 <template>
-  
+
   <div class = "aggregate-graphs">
     <div id = "patientLabel">
       <patientSelector @selected = "routeIndividualReport"/>
@@ -37,7 +37,7 @@ export default {
 
 <style lang="scss" scoped>
   .aggregate-graphs {
-      padding: 2% 3% 2% 3%;
+      padding: 10% 3% 2% 3%;
   }
   #patientLabel{
     float: right;

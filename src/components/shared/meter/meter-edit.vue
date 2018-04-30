@@ -3,7 +3,7 @@
     <div class="modal meter-edit-modal">
 
       <div class="modal-background"></div>
-      <div class="modal-content meter-modal--form">
+      <div class="modal-content meter-modal--form round-corners">
         <h1 class="meter-edit-modal__title">Edit Meter</h1>
         <div class="field">
           <label>Question:</label>
@@ -20,7 +20,7 @@
           <label>Date Assigned:</label>
           <input class="input meter-modal--input" name="date" type="text" id="meter-date" :value="meter.due_date" readonly>
         </div>
-        <button id="meter" class="meter-modal--create green-button" @click="update">Update Meter</button>
+        <button id="meter" class="meter-edit-modal--create button is-fullwidth" @click="update">Update Meter</button>
       </div>
 
       <button class='modal-close is-large' aria-label='close' @click='close'></button>
@@ -107,6 +107,24 @@ export default {
 
   &__title {
     font-size: 2em;
+    color: $green;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  &--create {
+    margin: 1rem 0;
+    background: $green !important;
+    color: $white;
+
+    &:hover {
+      background: $green-dark !important;
+      color: $white;
+    }
+  }
+
+  input {
+    border: 1px solid $purple-dark;
   }
 }
 

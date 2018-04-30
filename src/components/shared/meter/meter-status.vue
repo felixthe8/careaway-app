@@ -3,7 +3,7 @@
   <div class="modal meter-status-modal">
 
     <div class="modal-background"></div>
-    <div class="modal-content meter-status-modal--form">
+    <div class="modal-content meter-status-modal--form round-corners">
       <h1 class="meter-status-modal__title">Current Meter</h1>
       <div class="field">
         <label>Question: {{meter.question}}</label>
@@ -14,8 +14,8 @@
       <div class="field">
         <label>Date Assigned: {{meter.due_date}}</label>
       </div>
-      <button id="meter-edit" class="meter-modal--create green-button" @click="edit">Edit Meter</button>
-      <button id="meter-delete" class="meter-modal--create green-button" @click="deleteMeter">Delete Meter</button>
+      <button id="meter-edit" class="meter-status-modal--create button is-fullwidth" @click="edit">Edit Meter</button>
+      <button id="meter-delete" class="meter-status-modal--create button is-fullwidth" @click="deleteMeter">Delete Meter</button>
     </div>
 
     <button class='modal-close is-large' aria-label='close' @click='close'></button>
@@ -90,12 +90,26 @@ export default {
 .meter-status-modal {
   &__title {
     font-size: 2em;
+    text-align: center;
+    font-weight: bold;
+    color: $green;
   }
 
   &--form {
     background: $white;
     padding: 2rem;
     text-align: left;
+  }
+
+  &--create {
+    margin: 1rem 0;
+    background: $green !important;
+    color: $white;
+
+    &:hover {
+      background: $green-dark !important;
+      color: $white;
+    }
   }
 }
 

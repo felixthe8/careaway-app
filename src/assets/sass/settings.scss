@@ -34,7 +34,7 @@ img {
 button {
   color: $purple-dark;
   border: none;
-  background: $white;
+  background: none;
 
   &:focus {
     outline: none;
@@ -42,7 +42,6 @@ button {
 }
 
 input {
-  border: 2px solid $green;
   border-radius: 5px;
 }
 
@@ -68,6 +67,16 @@ input {
   &:hover {
     background: $green-light;
   }
+}
+
+.filled {
+  background: $green;
+  width: 100%;
+  color: #fff;
+}
+
+.round-corners {
+  border-radius: 10px;
 }
 
 /* Media Queries */

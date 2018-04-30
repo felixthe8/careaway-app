@@ -3,11 +3,12 @@
   <div class="modal checklist-status-modal">
 
     <div class="modal-background"></div>
-    <div class="modal-content checklist-status-modal--form">
+    <div class="modal-content checklist-status-modal--form round-corners">
+      <h1 class="checklist-edit-modal__title">Current Checklist</h1>
       <p class="label" v-for="item, index in checklist.list">Task {{index+1}}: {{item.question}}</p>
       <p>Date Assigned: {{checklist.due_date}}</p>
-      <button id="checklist-edit" class="button checklist-modal--create green-button" @click="edit">Edit checklist</button>
-      <button id="checklist-delete" class="button checklist-modal--create green-button" @click="deleteChecklist">Delete checklist</button>
+      <button id="checklist-edit" class="checklist-status-modal--create button is-fullwidth" @click="edit">Edit checklist</button>
+      <button id="checklist-delete" class="checklist-status-modal--create button is-fullwidth" @click="deleteChecklist">Delete checklist</button>
     </div>
 
     <button class='modal-close is-large' aria-label='close' @click='close'></button>
@@ -84,6 +85,15 @@ export default {
     background: $white;
     padding: 1rem;
     text-align: left;
+  }
+
+  &--create {
+    background: $green !important;
+    margin: 1rem 0;
+
+    &:hover {
+      background: $green-dark !important;
+    }
   }
 }
 

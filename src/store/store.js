@@ -27,6 +27,7 @@ export const store = new Vuex.Store({
     showAppointment: false,
     showMeter: false,
     showChecklist: false,
+    patientSelected: false,
 
     // Appointment boolean values.
     showAppointmentCreation: false,
@@ -327,6 +328,9 @@ export const store = new Vuex.Store({
     showChecklist: (state) => {
       return state.showChecklist;
     },
+    patientSelected: (state) => {
+      return state.patientSelected;
+    },
     deleteAppt: (state) => {
       return state.deleteAppt;
     },
@@ -536,6 +540,9 @@ export const store = new Vuex.Store({
     toggleChecklist: (state) => {
       state.showChecklist = !state.showChecklist;
     },
+    patientSelected: (state, value) => {
+      state.patientSelected = value;
+    },
     alternateReset: (state) => {
       state.showReset = !state.showReset;
     },
@@ -682,6 +689,9 @@ export const store = new Vuex.Store({
     },
     saveUsername:(context,payload) =>{
       context.commit('saveUsername',payload);
+    },
+    patientSelected: (context, payload) => {
+      context.commit('patientSelected', payload);
     },
     alternateSSORegistration:(context) =>{
       context.commit('alternateSSORegistration');

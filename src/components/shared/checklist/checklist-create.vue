@@ -3,7 +3,7 @@
   <div class="modal checklist-modal">
 
     <div class="modal-background"></div>
-    <div class="modal-content checklist-modal--form">
+    <div class="modal-content checklist-modal--form round-corners">
       <h1 class="checklist-modal__title">Create Checklist</h1>
       <div class="field" id="prompt-wrapper">
         <label class="label">Checklist Prompt</label>
@@ -139,6 +139,7 @@ export default {
     text-align: center;
     font-size: 2em;
     font-weight: bold;
+    color: $green;
   }
 
   &--form {

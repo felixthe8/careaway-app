@@ -2,7 +2,9 @@
 
   <div class="appointment">
     <label class="appointment__label">Appointment</label>
-    <button class="appointment__button green-button" @click="openCreateAppointment">+</button>
+    <button class="appointment__button" @click="openCreateAppointment">
+      <i class="fas fa-plus-circle"></i>
+    </button>
 
     <create
       :appointeeType="appointeeType"
@@ -50,7 +52,7 @@ export default {
   },
 
   methods: {
-    addAppointment(appointment) { 
+    addAppointment(appointment) {
       // Adds an appointment to the store.
       this.$store.dispatch("addAppointment", appointment);
       this.appointment = appointment;
@@ -126,23 +128,24 @@ export default {
 @import "../../assets/sass/settings.scss";
 
 .appointment {
+  margin: .5rem 0;
 
   &__button {
-    margin: 10px;
+    padding: 5px 0;
+    font-size: 1em;
+    cursor: pointer;
+    color: $green;
   }
 
   &__label {
     margin-left: 1rem;
   }
 
-
   &__menu {
     opacity: 0;
     background: $green-light;
     margin-left: 1rem;
     padding: 1rem;
-
-
   }
 
 }

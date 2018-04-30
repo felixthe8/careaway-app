@@ -13,8 +13,13 @@
         </div>
         <div class="item"><div class="calendar__menu--arrow-right" @click="next"></div></div>
 
-        <div class="item calendar__menu--button" @click="monthly"><h1 class="text">Month</h1></div>
-        <div class="item calendar__menu--button active" @click="weekly"><h1 class="text">Week</h1></div>
+        <button class="item calendar__menu--button"
+          @click="displayMonthly"><h1 class="text">Month</h1>
+        </button>
+
+        <button class="item calendar__menu--button active"
+          @click="displayWeekly"><h1 class="text">Week</h1>
+        </button>
       </div>
 
       <div class="columns is-multiline monthly">
@@ -25,9 +30,7 @@
           :date="calendar[index].date"
           :class="{
             'no-right' : (index+1)%5 === 0,
-            'no-bottom': (index > 19),
-            'no-bottom__mobile': calendar[index].date === getCurrent.friday,
-            /* 'calendar__day__blocked': calendar[index].month != calendar[12].month */
+            'no-bottom': (index > 19)
           }">
 
           <div class="calendar__day--date"
@@ -84,11 +87,41 @@ export default {
   data() {
     return {
       months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      week: ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"]
+      week: ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"],
+      user: "",
+      appointments: null,
+      meters: null,
+      checklists: null,
+      weekView: false,
     }
   },
 
+  created: function() {
+    // Get current user from store
+    this.user = this.$store.getters.authenticatedUsername;
+    // Get current appointments from store
+    this.appointments = this.$store.getters.appointments;
+    // Get current widgets from store
+    this.meters = this.$store.getters.meters;
+    this.checklists = this.$store.getters.checklists;
+  },
+
+  mounted: function() {
+    this.$nextTick(function() {
+      window.addEventListener('resize', this.getWindowWidth);
+      //Init
+      this.getWindowWidth();
+    });
+  },
+
   methods: {
+    getWindowWidth(event) {
+      // get change in window size
+      let windowWidth = document.documentElement.clientWidth;
+      if(windowWidth < 760) {
+        this.displayWeekly();
+      }
+    },
 
     /* Next Previous Button Click Handlers */
     next: function(event) {
@@ -99,7 +132,7 @@ export default {
         next = this.getMonth(this.calendar[12].object, 1);
       }
       this.calendar = this.$renderCalendar(next, state);
-      this.getEvents();
+      this.getEvents(this.user, this.appointments, this.meters, this.checklists);
     },
     previous: function(event) {
       let state = this.$store.getters.calendarState;
@@ -107,36 +140,43 @@ export default {
       let previous = this.getWeek(this.calendar[0].object, -7);
       if(!state) { previous = this.getMonth(this.calendar[12].object, -1); }
       this.calendar = this.$renderCalendar(previous, this.$store.getters.calendarState);
-      this.getEvents();
+      this.getEvents(this.user, this.appointments, this.meters, this.checklists);
     },
     /* End Previous Button Click Handlers */
 
     /* Tab Click Handlers */
-    weekly: function(event) {
-      this.$store.dispatch("calendarState");
-      this.calendar = this.$renderCalendar(new Date(), true);
-      this.getEvents();
+    displayWeekly: function(event) {
+      if(!this.weekView) {
+        this.weekView = true;
+        this.$store.dispatch("calendarState");
+        this.calendar = this.$renderCalendar(new Date(), true);
+        this.getEvents(this.user, this.appointments, this.meters, this.checklists);
 
-      // get day elements from html add week height
-      let days = document.getElementsByClassName("monthly")[0].children;
-      Array.from(days).forEach((item)=> { item.classList.add("week-height"); });
+        // get day elements from html add week height
+        let days = document.getElementsByClassName("monthly")[0].children;
+        Array.from(days).forEach((item)=> { item.classList.add("week-height"); });
 
-      // add/remove active class to tabs
-      document.getElementsByClassName("calendar__menu--button")[0].classList.add("active");
-      document.getElementsByClassName("calendar__menu--button")[1].classList.remove("active");
+        // add/remove active class to tabs
+        document.getElementsByClassName("calendar__menu--button")[0].classList.add("active");
+        document.getElementsByClassName("calendar__menu--button")[1].classList.remove("active");
+      }
     },
-    monthly: function(event) {
+    displayMonthly: function(event) {
+      if(this.weekView) {
+        this.weekView = false;
         this.$store.dispatch("calendarState");
         this.calendar = this.$renderCalendar();
-        this.getEvents();
+        this.getEvents(this.user, this.appointments, this.meters, this.checklists);
 
-        // get day elements from html remove week height
-        let days = document.getElementsByClassName("monthly")[0].children;
-        Array.from(days).forEach((item)=> { item.classList.remove("week-height"); });
+        // Get day elements from html remove week height
+        let days = document.getElementsByClassName("monthly")[0];
+        // Add class to every cell
+        Array.from(days.children).forEach((item)=> { item.classList.remove("week-height"); });
 
         // add/remove active class to tabs
         document.getElementsByClassName("calendar__menu--button")[1].classList.add("active");
         document.getElementsByClassName("calendar__menu--button")[0].classList.remove("active");
+      }
     },
     /* End Tab Click Handlers */
 
@@ -149,21 +189,39 @@ export default {
       current = moment(current);
       return new Date(current.add(shift, 'days'));
     },
-    getEvents: function() {
-      // updates events on calendar
-      let patientName = this.$store.getters.authenticatedUsername;
-      let appointments = this.$store.getters.appointments;
-      let meters = this.$store.getters.meters;
-      let checklists = this.$store.getters.checklists;
-      for(var i=0; i < this.calendar.length; i++) {
-        // get current events based on calendar date
-        let appointmentMatch = appointments.find(appointment  => appointment.date === this.calendar[i].date && appointment.appointee === patientName);
-        if(appointmentMatch) { this.calendar[i].appointment = appointmentMatch; }
-        let meterMatch = meters.find(meter  => meter.due_date === this.calendar[i].date);
-        if(meterMatch) { this.calendar[i].meter = meterMatch; }
-        let checklistMatch = checklists.find(checklist  => checklist.due_date === this.calendar[i].date);
-        if(checklistMatch) { this.calendar[i].checklist = checklistMatch; }
-      }
+    getEvents: function(user, appointments, meters, checklists) {
+        // load current events on the calendar
+        for(var i=0; i < this.calendar.length; i++) {
+          // get current appointments based on calendar date
+          // --> find appointments where the current date iteration
+          //     matches appointment in vue store
+          let appointmentMatch = appointments.find(appointment  => (moment(appointment.date).isSame(moment(this.calendar[i].date))) && (appointment.appointee === user || appointment.initiator === user));
+          // if there is a match update the calendar
+          if(appointmentMatch) {
+              this.calendar[i].appointment = appointmentMatch;
+          }
+
+          // if on patient treatment view
+          if(this.$store.getters.patientSelected) {
+            // get current meters based on calendar date
+            // --> find meters where the current date iteration
+            //     matches meter in vue store
+            let meterMatch = meters.find(meter  => meter.due_date === this.calendar[i].date);
+            // if there is a match update the calendar
+            if(meterMatch) {
+              this.calendar[i].meter = meterMatch;
+            }
+
+            // get current checklists based on calendar date
+            // --> find checklists where the current date iteration
+            //     matches checklist in vue store
+            let checklistMatch = checklists.find(checklist  => checklist.due_date === this.calendar[i].date);
+            // if there is a match update the calendar
+            if(checklistMatch) {
+              this.calendar[i].checklist = checklistMatch;
+            }
+          }
+        }
     },
     /* End Calendar Helper Functions */
 
@@ -193,8 +251,6 @@ export default {
     /* Widget Drag Drop Event Handlers */
     dragOver: function(event) {
       event.preventDefault();
-
-      // TODO: define hover state to indicate drop area
     },
     drop: function(event) {
       event.preventDefault();
@@ -216,25 +272,6 @@ export default {
         document.getElementsByClassName("checklist-modal")[0].classList.add("is-active");
         this.$store.dispatch("toggleChecklist");
       }
-    }
-  },
-  created() {
-
-    let patientName = this.$store.getters.authenticatedUsername;
-
-    // updates events on calendar
-    let appointments = this.$store.getters.appointments;
-
-    let meters = this.$store.getters.meters;
-    let checklists = this.$store.getters.checklists;
-    for(var i=0; i < this.calendar.length; i++) {
-      // get current events based on calendar date
-      let appointmentMatch = appointments.find(appointment  => (moment(appointment.date).isSame(moment(this.calendar[i].date))) && (appointment.appointee === patientName || appointment.initiator === patientName));
-      if(appointmentMatch) { this.calendar[i].appointment = appointmentMatch; }
-      let meterMatch = meters.find(meter  => meter.due_date === this.calendar[i].date);
-      if(meterMatch) { this.calendar[i].meter = meterMatch; }
-      let checklistMatch = checklists.find(checklist  => checklist.due_date === this.calendar[i].date);
-      if(checklistMatch) { this.calendar[i].checklist = checklistMatch; }
     }
   },
 
@@ -284,8 +321,15 @@ export default {
 
   &__menu {
     position: absolute;
-    top: -5.3%;
-    right: 10px;
+    top: -2%;
+    width: 100%;
+    justify-content: center;
+
+    @media #{$tablet} {
+      width: auto;
+      top: -4.9%;
+      right: 10px;
+    }
 
     .item {
       padding: 5px;
@@ -297,6 +341,8 @@ export default {
 
     &--button {
       display: none;
+      color: $white;
+      cursor: pointer;
 
       @media #{$tablet} {
         display: block;
@@ -321,6 +367,7 @@ export default {
       border-bottom: 5px solid transparent;
       border-right: 8px solid $purple-dark;
       margin: 8px 0;
+      cursor: pointer;
 
       &:hover {
         border-right: 8px solid $purple;
@@ -334,6 +381,7 @@ export default {
       border-bottom: 5px solid transparent;
       border-left: 8px solid $purple-dark;
       margin: 8px 0;
+      cursor: pointer;
 
       &:hover {
         border-left: 8px solid $purple;
@@ -348,7 +396,7 @@ export default {
     width: 100%;
     height: 100px;
 
-    @media #{$smallTablet} {
+    @media #{$tablet} {
       border-right: 2px solid $green;
       border-bottom: 0;
       height: 500px;
@@ -371,13 +419,17 @@ export default {
     }
 
     &--label {
-      margin-top: -20%;
       color: $purple-dark;
+
+      @media #{$tablet} {
+        margin-top: -20%;
+      }
     }
 
     &--button {
       background: $green-light !important;
       font-size: 8px;
+      cursor: pointer;
     }
 
     &__blocked {
@@ -400,12 +452,23 @@ export default {
   }
 }
 
+.monthly {
+  transition: all ease 1s;
+}
+
 .active {
   background-color: $white;
+  color: $purple-dark;
 }
 
 .week-height {
-  height: 500px;
+  height: 200px;
+  width: 100%;
+
+  @media #{$tablet} {
+    height: 500px;
+    width: auto;
+  }
 }
 
 </style>

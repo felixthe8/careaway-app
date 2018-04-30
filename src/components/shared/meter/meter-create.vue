@@ -3,7 +3,7 @@
   <div class="modal meter-modal">
 
     <div class="modal-background"></div>
-    <div class="modal-content meter-modal--form">
+    <div class="modal-content meter-modal--form round-corners">
       <h1 class="meter-modal__title">Generate Meter</h1>
       <div class="field">
         <label class="label">Question:</label>
@@ -20,7 +20,7 @@
         <label>Date Requested:</label>
         <input class="meter-modal--input" name="date" type="text" id="meter-date">
       </div>
-      <button id="meter" class="meter-modal--create green-button" @click="create" :disabled = "isTutorial">Create Event</button>
+      <button id="meter" class="meter-modal--create button is-fullwidth" @click="create" :disabled = "isTutorial">Create Event</button>
     </div>
 
 
@@ -120,6 +120,23 @@ export default {
 
   &__title {
     font-size: 2em;
+    color: $green;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  input {
+    border: 1px solid $purple-dark;
+  }
+
+  &--create {
+    background: $green !important;
+    color: $white;
+
+    &:hover {
+      background: $green-dark !important;
+      color: $white;
+    }
   }
 }
 

@@ -12,7 +12,7 @@
 
     data() {
       return {
-        description: 'An online medical treatment platform that provides optimal communication between medical professionals and their patients.'
+        description: 'Careaway is a medical treatment platform that provides optimal communication between medical professionals and their patients.'
       }
     }
   }
@@ -25,6 +25,7 @@
 .info-block {
   width: 100%;
   height: auto;
+  background: $white;
 
   &__webpage {
     display: block;

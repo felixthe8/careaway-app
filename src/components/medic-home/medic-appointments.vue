@@ -1,16 +1,19 @@
 <template>
 
   <div class="columns medic-calendar">
-    <div class="menu column is-one-fifth">
-      <appointment :calendar="calendar" :isMed="isMed" />
+    <div class="column is-one-fifth">
 
-      <div id="patientLabel">
-        <patientSelector @selected="routeIndividualTreatment"/>
+      <div class="menu">
+        <div id="patientLabel">
+          <patientSelector @selected="routeIndividualTreatment"/>
+        </div>
+
+        <appointment :calendar="calendar" :isMed="isMed" />
       </div>
 
     </div>
 
-    <calendar :calendar="calendar" class="column is-four-fifths"/>
+    <calendar :calendar.sync="calendar" class="column is-four-fifths"/>
   </div>
 
 </template>
@@ -46,6 +49,7 @@ export default {
   created: function() {
     this.calendar = this.$renderCalendar();
 
+    // show all current appointments
     let appointments = this.$store.getters.appointments;
     for(var i=0; i < appointments.length; i++) {
       for(var j=0; j < this.calendar.length; j++) {
@@ -55,6 +59,9 @@ export default {
         }
       }
     }
+
+    // flag patient selected set to false
+    this.$store.dispatch("patientSelected", false);
   },
 
   data() {
@@ -77,6 +84,10 @@ export default {
   height: 85vh;
 
   .menu {
+    padding-left: 1rem;
+    display: flex;
+    flex-direction: column;
+
     &__widgets {
       background: $green-light;
       margin: 10px;
