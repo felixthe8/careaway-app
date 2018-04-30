@@ -94,11 +94,12 @@
   display: flex;
   flex-direction: column-reverse;
   padding: 1rem;
+  width: 100%;
 
   @media #{$tablet} {
     display: flex;
     flex-direction: row;
-    padding-bottom: auto;
+    padding-bottom: 0;
   }
 }
 

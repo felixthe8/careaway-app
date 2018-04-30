@@ -170,7 +170,7 @@ axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
     width: 70%;
 
     &__button {
-      background: $green;
+      background: $green !important;
       width: 100%;
       color: #fff;
     }
