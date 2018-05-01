@@ -16,7 +16,7 @@
 
 
 <style lang='scss'>
-  @import '../../assets/sass/settings.scss';
+  
   .tooltip {
     display: none;
 
