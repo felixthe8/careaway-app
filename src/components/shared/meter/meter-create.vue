@@ -20,7 +20,7 @@
         <label>Date Requested:</label>
         <input class="meter-modal--input" name="date" type="text" id="meter-date">
       </div>
-      <button id="meter" class="meter-modal--create button is-fullwidth" @click="create" :disabled = "isTutorial">Create Event</button>
+      <button id="meter" class="button button-default is-fullwidth" @click="create" :disabled = "isTutorial">Create Event</button>
     </div>
 
 
@@ -128,15 +128,6 @@ export default {
     border: 1px solid $purple-dark;
   }
 
-  &--create {
-    background: $green !important;
-    color: $white;
-
-    &:hover {
-      background: $green-dark !important;
-      color: $white;
-    }
-  }
 }
 
 </style>

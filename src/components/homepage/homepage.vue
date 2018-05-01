@@ -174,7 +174,7 @@
       padding: 0 .75rem;
       margin: 5px .5rem;
       background-color: $purple-dark !important;
-      color: $white;
+      color: $white !important;
 
       &:hover {
         color: $purple-light;

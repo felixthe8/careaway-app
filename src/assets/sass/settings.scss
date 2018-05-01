@@ -54,6 +54,20 @@ input {
 .button {
   background: none;
   border: none;
+  color: $purple-dark;
+}
+
+.button-default {
+  background: $green;
+  color: $white;
+
+  i {
+    padding-left: 5px;
+  }
+
+  &:hover {
+    background: $green-dark;
+  }
 }
 
 .row {
