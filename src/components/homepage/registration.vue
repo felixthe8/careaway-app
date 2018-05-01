@@ -264,7 +264,13 @@
                 self.warning = 'You have chose a bad password, Please check this link to make a new password';
                 self.showWarning = true;
                 self.badPassword = response.data.BadPassword;
-              }else{
+              }
+              else if(response.data.error){
+                self.warning = response.data.error;
+                self.showWarning = true;
+                self.medicalProfessionalCodeInput= 'is-danger';
+              }
+              else{
                 self.$store.dispatch('authenticatedUsername', newPatient.username);
                 //This allows the user to be signed in as a patient
                 self.$store.dispatch('signIn', 'patient');
