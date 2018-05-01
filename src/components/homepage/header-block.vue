@@ -27,7 +27,6 @@
 
 
 <style lang="scss">
-@import "../../assets/sass/settings.scss";
 
 .full {
   background: $blue-light;

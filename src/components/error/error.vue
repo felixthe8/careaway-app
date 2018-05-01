@@ -30,7 +30,6 @@
 
 
 <style lang = "scss" scoped>
-@import '../../assets/sass/settings.scss';
   #logo {
       width: 40%;
       padding-top: 4%;
