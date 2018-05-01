@@ -6,10 +6,10 @@
       <div class="columns is-mobile calendar__menu">
         <div class="item"><div class="calendar__menu--arrow-left" @click="previous"></div></div>
         <div class="item calendar__menu--label current-month">
-          <h1 v-if="!this.$store.getters.calendarState">{{months[calendar[12].month]}}</h1>
+          <h1 v-if="!this.$store.getters.calendarState">{{months[currentCalendar[12].month]}}</h1>
         </div>
         <div class="item calendar__menu--label current-week">
-          <h1 v-if="this.$store.getters.calendarState">Week of {{months[calendar[0].month]}} {{calendar[0].day}}</h1>
+          <h1 v-if="this.$store.getters.calendarState">Week of {{months[currentCalendar[0].month]}} {{currentCalendar[0].day}}</h1>
         </div>
         <div class="item"><div class="calendar__menu--arrow-right" @click="next"></div></div>
 
@@ -26,8 +26,8 @@
         <div class="column is-one-fifth calendar__day"
           @dragover="dragOver"
           @drop="drop"
-          v-for="day, index in calendar.length"
-          :date="calendar[index].date"
+          v-for="day, index in currentCalendar.length"
+          :date="currentCalendar[index].date"
           :class="{
             'no-right' : (index+1)%5 === 0,
             'no-bottom': (index > 19)
@@ -35,35 +35,35 @@
 
           <div class="calendar__day--date"
             :class="{
-                'today' : getCurrent.date === calendar[index].day
-          }">{{calendar[index].day}}</div>
+                'today' : getCurrent.date === currentCalendar[index].day
+          }">{{currentCalendar[index].day}}</div>
 
-          <div class="calendar__day--label" v-if="index < 5">{{calendar[index].name}}</div>
+          <div class="calendar__day--label" v-if="index < 5">{{currentCalendar[index].name}}</div>
 
           <div class="calendar__day--appointment"
-            v-if="calendar[index].appointment.created">
+            v-if="currentCalendar[index].appointment.created">
               <button class="button calendar__day--button"
-                @click="toggleAppointment(calendar[index].appointment.date)"
-                :id="calendar[index].appointment.date">
-                {{calendar[index].appointment.date}}
+                @click="toggleAppointment(currentCalendar[index].appointment.date)"
+                :id=" currentCalendar[index].appointment.date">
+                {{currentCalendar[index].appointment.date}}
               </button>
           </div>
 
           <div class="calendar__day--meter"
-            v-if="calendar[index].meter.due_date">
+            v-if="currentCalendar[index].meter.due_date">
             <button class="button calendar__day--button"
-              :date="calendar[index].meter.due_date"
-              @click="toggleMeter(calendar[index].meter.due_date)">
-                {{calendar[index].meter.label}}
+              :date="currentCalendar[index].meter.due_date"
+              @click="toggleMeter(currentCalendar[index].meter.due_date)">
+                {{currentCalendar[index].meter.label}}
             </button>
           </div>
 
           <div class="calendar__day--checklist"
-            v-if="calendar[index].checklist.due_date">
+            v-if="currentCalendar[index].checklist.due_date">
             <button class="button calendar__day--button"
-              :date="calendar[index].checklist.due_date"
-              @click="toggleChecklist(calendar[index].checklist.due_date)">
-                {{calendar[index].checklist.label}}
+              :date="currentCalendar[index].checklist.due_date"
+              @click="toggleChecklist(currentCalendar[index].checklist.due_date)">
+                {{currentCalendar[index].checklist.label}}
             </button>
           </div>
 
@@ -93,6 +93,7 @@ export default {
       meters: null,
       checklists: null,
       weekView: false,
+      currentCalendar: this.calendar
     }
   },
 
@@ -127,19 +128,19 @@ export default {
     next: function(event) {
       let state = this.$store.getters.calendarState;
       // default to current month
-      let next = this.getWeek(this.calendar[0].object, 7);
+      let next = this.getWeek(this.currentCalendar[0].object, 7);
       if(!state) {
-        next = this.getMonth(this.calendar[12].object, 1);
+        next = this.getMonth(this.currentCalendar[12].object, 1);
       }
-      this.calendar = this.$renderCalendar(next, state);
+      this.currentCalendar = this.$renderCalendar(next, state);
       this.getEvents(this.user, this.appointments, this.meters, this.checklists);
     },
     previous: function(event) {
       let state = this.$store.getters.calendarState;
       // default to current month
-      let previous = this.getWeek(this.calendar[0].object, -7);
-      if(!state) { previous = this.getMonth(this.calendar[12].object, -1); }
-      this.calendar = this.$renderCalendar(previous, this.$store.getters.calendarState);
+      let previous = this.getWeek(this.currentCalendar[0].object, -7);
+      if(!state) { previous = this.getMonth(this.currentCalendar[12].object, -1); }
+      this.currentCalendar = this.$renderCalendar(previous, this.$store.getters.calendarState);
       this.getEvents(this.user, this.appointments, this.meters, this.checklists);
     },
     /* End Previous Button Click Handlers */
@@ -149,7 +150,7 @@ export default {
       if(!this.weekView) {
         this.weekView = true;
         this.$store.dispatch("calendarState");
-        this.calendar = this.$renderCalendar(new Date(), true);
+        this.currentCalendar = this.$renderCalendar(new Date(), true);
         this.getEvents(this.user, this.appointments, this.meters, this.checklists);
 
         // get day elements from html add week height
@@ -165,7 +166,7 @@ export default {
       if(this.weekView) {
         this.weekView = false;
         this.$store.dispatch("calendarState");
-        this.calendar = this.$renderCalendar();
+        this.currentCalendar = this.$renderCalendar();
         this.getEvents(this.user, this.appointments, this.meters, this.checklists);
 
         // Get day elements from html remove week height
