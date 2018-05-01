@@ -155,7 +155,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../assets/sass/settings.scss";
 
 .mail {
   &__button {

@@ -90,7 +90,7 @@
 </script>
 
 <style lang= "scss" scoped>
-  /* @import "../../assets/sass/main.scss"; */
+  
    img {
     width: 25%;
   }
