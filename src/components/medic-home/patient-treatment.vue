@@ -185,7 +185,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../../assets/sass/settings.scss";
 
 .medic-calendar {
   width: auto;
