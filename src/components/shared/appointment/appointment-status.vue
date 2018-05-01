@@ -195,7 +195,6 @@
 
 
 <style scoped lang='scss'>
-@import '../../../assets/sass/settings.scss';
 
 #appointment {
   &-warning {

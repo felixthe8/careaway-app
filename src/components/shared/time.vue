@@ -82,7 +82,7 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-  @import "../../assets/sass/settings.scss";
+
   .dropDown {
     display: inline-block;
     flex: 1;

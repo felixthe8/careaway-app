@@ -46,7 +46,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../assets/sass/settings.scss";
 
 .checklist {
   padding: 1rem;

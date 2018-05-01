@@ -1,5 +1,5 @@
 <template>
-  
+
   <div class="column is-half is-offset-one-quarter centered">
     <div v-if="sendSuccessful" class="success-text">
       Thanks for sending your feedback to the Careaway team!
@@ -10,7 +10,7 @@
     <textarea v-model="feedbackText" class="textarea" placeholder="Enter text"></textarea>
     <div class="error-text">{{errorMessage}}</div>
     <br/>
-    <a class="button is-primary" @click="sendFeedbackCall">Send</a>
+    <a class="button button-default" @click="sendFeedbackCall">Send</a>
   </div>
 </template>
 

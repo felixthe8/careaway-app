@@ -20,7 +20,7 @@
           <label>Date Assigned:</label>
           <input class="input meter-modal--input" name="date" type="text" id="meter-date" :value="meter.due_date" readonly>
         </div>
-        <button id="meter" class="meter-edit-modal--create button is-fullwidth" @click="update">Update Meter</button>
+        <button id="meter" class="button button-default is-fullwidth" @click="update">Update Meter</button>
       </div>
 
       <button class='modal-close is-large' aria-label='close' @click='close'></button>
@@ -96,7 +96,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../../assets/sass/settings.scss";
 
 .meter-edit-modal {
   &--form {
@@ -110,17 +109,6 @@ export default {
     color: $green;
     font-weight: bold;
     text-align: center;
-  }
-
-  &--create {
-    margin: 1rem 0;
-    background: $green !important;
-    color: $white;
-
-    &:hover {
-      background: $green-dark !important;
-      color: $white;
-    }
   }
 
   input {

@@ -47,7 +47,7 @@
 
 <script>
 import axios from 'axios';
-import timeout from '../shared/timeout';
+
 export default {
     name: 'breach',
      data() {

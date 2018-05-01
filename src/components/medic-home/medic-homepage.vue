@@ -91,8 +91,6 @@ export default {
 
 <style lang="scss">
 
-@import '../../assets/sass/settings.scss';
-
 .wrapper {
   padding-top: 100px;
 }

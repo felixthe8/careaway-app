@@ -3,7 +3,7 @@
     <img class="nav-bar__logo" @click = "goHome" src="../../assets/images/careaway-logo.png">
 
     <div class="nav-bar__right">
-      <button class="button nav-bar__right--button is-link" @click="toggleCreate"> <i class="fas fa-sign-out-alt"></i>Create Appointment</button>
+      <button class="button button-default is-link" @click="toggleCreate"> <i class="fas fa-sign-out-alt"></i>Create Appointment</button>
 
       <div class="nav-bar__right--show-menu" @click="toggleMenu"><i class="fas fa-bars"></i>
         <ul class="nav-bar__right__submenu" :class="{'show-sub' : toggle}">
@@ -60,7 +60,6 @@ export default {
 
 
 <style lang= "scss" scoped>
-@import "../../assets/sass/settings.scss";
 
 .nav-bar {
   width: 100%;
@@ -83,6 +82,7 @@ export default {
     &--button {
       margin-left: .5rem;
       background-color: $green;
+      color: $white;
       border-radius: 10px;
 
       i {
@@ -118,7 +118,7 @@ export default {
       right: 0;
 
       &--button {
-        color: #fff;
+        color: $white !important;
 
         &:hover {
           color: $purple-light;

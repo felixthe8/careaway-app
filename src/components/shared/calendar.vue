@@ -286,7 +286,6 @@ export default {
 
 <style lang="scss">
 
-@import '../../assets/sass/settings.scss';
 
 .calendar-wrapper {
   position: relative;

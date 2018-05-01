@@ -13,7 +13,7 @@
         </div>
         <br/>
         <div class="centered">
-          <a class="button is-primary" @click="save">Save</a>
+          <a class="button button-default is-fullwidth" @click="save">Save</a>
         </div>
     </div>
     <button class="modal-close is-large" aria-label="close" @click="close"></button>
@@ -73,7 +73,6 @@ export default {
 
 
 <style lang="scss">
-@import '../../assets/sass/settings.scss';
 
 .white-background {
   background-color: $white;
@@ -89,6 +88,3 @@ export default {
 }
 
 </style>
-
-
-  

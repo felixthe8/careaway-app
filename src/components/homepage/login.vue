@@ -14,7 +14,7 @@
               <input class="input" type="password" id="password" :class="validPassword" @keyup="validPassword = checkEmpty(getPassword())" placeholder="Password" @keyup.enter="userSignIn">
             </div>
             <div class="control">
-              <button class="button sign-in__button" @click = "userSignIn()">
+              <button class="button button-default is-fullwidth" @click = "userSignIn()">
                 Sign In <i class="fas fa-sign-in-alt" id="sign-in-icon"></i>
               </button>
             </div>
@@ -147,7 +147,6 @@ axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
 </script>
 
 <style lang = "scss">
-  @import "../../assets/sass/settings.scss";
 
   #form-title {
       font-size: 2em;
@@ -168,12 +167,6 @@ axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
 
   .sign-in {
     width: 70%;
-
-    &__button {
-      background: $green !important;
-      width: 100%;
-      color: #fff;
-    }
   }
 
   #reset {

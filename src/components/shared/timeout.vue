@@ -3,20 +3,20 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class = "modal-card-head">
-        <img src = "../../assets/images/careaway-full1.png">
+        <img src="../../assets/images/careaway-full1.png">
       </header>
-      <section class = "modal-card-body">
+      <section class="modal-card-body">
          <p id = "warning-text"> <i class="fas fa-exclamation-triangle fa-2x"></i>
-            You have been inactive for 15 minutes. Click 'Resume' below to remain logged in 
+            You have been inactive for 15 minutes. Click 'Resume' below to remain logged in
         </p>
 
         <br>
-        <div id = "countdown-text"> 
-          The session will terminate in <p id = "countdown"> {{count}} </p> unless you click 'Resume'
+        <div id = "countdown-text">
+          The session will terminate in <p id="countdown">{{count}}</p>unless you click 'Resume'
         </div>
       </section>
-      <footer class = "modal-card-foot">
-        <button class = "button is-link" @click="resumeSession"> Resume </button>
+      <footer class="modal-card-foot">
+        <button class="button is-link" @click="resumeSession">Resume</button>
       </footer>
     </div>
   </div>
@@ -90,7 +90,7 @@
 </script>
 
 <style lang= "scss" scoped>
-  @import "../../assets/sass/main.scss";
+
    img {
     width: 25%;
   }

@@ -14,8 +14,8 @@
       <div class="field">
         <label>Date Assigned: {{meter.due_date}}</label>
       </div>
-      <button id="meter-edit" class="meter-status-modal--create button is-fullwidth" @click="edit">Edit Meter</button>
-      <button id="meter-delete" class="meter-status-modal--create button is-fullwidth" @click="deleteMeter">Delete Meter</button>
+      <button id="meter-edit" class="button button-default is-fullwidth" @click="edit">Edit Meter</button>
+      <button id="meter-delete" class="button button-default meter-status-modal--create is-fullwidth" @click="deleteMeter">Delete Meter</button>
     </div>
 
     <button class='modal-close is-large' aria-label='close' @click='close'></button>
@@ -85,7 +85,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../../assets/sass/settings.scss";
 
 .meter-status-modal {
   &__title {
@@ -103,13 +102,6 @@ export default {
 
   &--create {
     margin: 1rem 0;
-    background: $green !important;
-    color: $white;
-
-    &:hover {
-      background: $green-dark !important;
-      color: $white;
-    }
   }
 }
 

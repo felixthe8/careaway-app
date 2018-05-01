@@ -130,7 +130,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../../assets/sass/settings.scss";
 
 .checklist-modal {
   text-align: left;

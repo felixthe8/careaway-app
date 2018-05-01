@@ -266,7 +266,6 @@
 
 
 <style lang="scss" scoped>
-  @import "../../assets/sass/settings.scss";
 
   .registration{
     padding: 35px 10px 10px 10px;

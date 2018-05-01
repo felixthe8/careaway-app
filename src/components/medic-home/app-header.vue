@@ -4,7 +4,7 @@
 
     <div class="nav-bar__right">
       <p class="nav-bar__right--medical-code">MC:&nbsp;{{medicalcode}} </p>
-      <button class="nav-bar__right--button button is-link" @click="viewReport">
+      <button class="button button-default is-link" @click="viewReport">
         View Reports<i class="fas fa-chart-line"></i>
       </button>
 
