@@ -337,7 +337,6 @@ export default {
 
 <style lang="scss" scoped>
 
-@import "../../../assets/sass/settings.scss";
 
  h2 {
    font-size: 2em;
