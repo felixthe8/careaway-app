@@ -1,8 +1,8 @@
 <template>
 
   <div class="appointment">
-    <label class="appointment__label">Appointment</label>
-    <button class="appointment__button" @click="openCreateAppointment">
+    <label class="appointment__label" v-if="!patientview">Appointment</label>
+    <button class="appointment__button" @click="openCreateAppointment" v-if="!patientview">
       <i class="fas fa-plus-circle"></i>
     </button>
 
@@ -40,7 +40,7 @@ import moment from 'moment';
 export default {
   name: 'appointment',
   components: {create, modify, edit},
-  props: ['calendar', 'isMed'],
+  props: ['calendar', 'isMed', 'patientview'],
 
   data() {
     return {

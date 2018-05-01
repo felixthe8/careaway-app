@@ -14,6 +14,8 @@
 
     <meter-widget :widget="this.$store.getters.currentMeter" v-on:close="close" v-on:save="save" />
     <checklist-widget :widget="this.$store.getters.currentChecklist" v-on:close="close" v-on:save="save" />
+    <appointment :calendar="calendar" :isMed="isMed" patientview="true"/>
+ 
     <create
       :appointeeType="appointeeType"
       :appointee="appointee"

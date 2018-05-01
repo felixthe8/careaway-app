@@ -46,7 +46,7 @@ export default {
       this.$router.push('/PatientHome');
     },
     toggleCreate() {
-      this.$store.dispatch('alternateAppointmentCreation')
+      this.$store.dispatch('alternateAppointmentCreation');
     },
     toggleTransfer() {
       this.$emit('toggleTransfer');
