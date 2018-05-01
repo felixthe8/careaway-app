@@ -35,7 +35,7 @@
 
           <div class="calendar__day--date"
             :class="{
-                'today' : getCurrent.date === currentCalendar[index].day
+                'today' : current.date === currentCalendar[index].day
           }">{{currentCalendar[index].day}}</div>
 
           <div class="calendar__day--label" v-if="index < 5">{{currentCalendar[index].name}}</div>
@@ -86,8 +86,8 @@ export default {
 
   data() {
     return {
-      months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      week: ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"],
+      months: this.$months(),
+      week: this.$weekDays(),
       user: "",
       appointments: null,
       meters: null,
@@ -277,21 +277,8 @@ export default {
   },
 
   computed: {
-    getCurrent: function() {
-      // get today's date object
-      let current = new Date();
-      // get current monday
-      let monday = new Date(current.getFullYear(), current.getMonth(), current.getDate() + (current.getDay() == 0?-6:1) - current.getDay());
-      //get current friday
-      let friday = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + 4);
-      return {
-        "date": current.getDate(),
-        "day": current.getDay(),
-        "month": current.getMonth(),
-        "year": current.getFullYear(),
-        "monday": monday.getDate(),
-        "friday": friday.getDate()
-      };
+    current: function() {
+      return this.$current();
     }
   }
 }

@@ -2,13 +2,41 @@
 const Calendar = {}
 
 Calendar.install = function (Vue, options) {
-    // TODO: add new prototype methods global constants
+
+  // Calendar contstants
+  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  Vue.prototype.$weekDays = function() {
+    return weekDays;
+  }
+
+  Vue.prototype.$months = function() {
+    return months;
+  }
+
+  // Instance Method to get information from current date.
+  Vue.prototype.$current = function () {
+    // get today's date object
+    let current = new Date();
+    // get current monday
+    let monday = new Date(current.getFullYear(), current.getMonth(), current.getDate() + (current.getDay() == 0?-6:1) - current.getDay());
+    //get current friday
+    let friday = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + 4);
+    return {
+      "date": current.getDate(),
+      "day": current.getDay(),
+      "month": current.getMonth(),
+      "year": current.getFullYear(),
+      "monday": monday.getDate(),
+      "friday": friday.getDate()
+    };
+  }
+
   // Instance Method
   Vue.prototype.$renderCalendar = function (initial, state) {
       let moment = require("moment");
 
-      // week day array
-      let week = ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"];
       // get today's date object
       let today = new Date();
 
@@ -53,12 +81,11 @@ Calendar.install = function (Vue, options) {
           "day": start.getDate(),
           "code": start.getDay(),
           "month": start.getMonth(),
-          "name": week[start.getDay()],
+          "name": weekDays[start.getDay()],
           "appointment": {},
           "meter": {},
           "checklist": {}
         }
-        // TODO: change object to null
 
         // update count & set next after first itr
         count++;
@@ -70,10 +97,6 @@ Calendar.install = function (Vue, options) {
 
       // return array of day objects
       return calendar;
-  }
-
-  Vue.prototype.$current = function (initial, state) {
-
   }
 
 }
