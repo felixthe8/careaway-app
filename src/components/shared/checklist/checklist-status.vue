@@ -78,7 +78,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../../assets/sass/settings.scss";
 
 .checklist-status-modal {
   &--form {
