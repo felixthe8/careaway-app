@@ -6,10 +6,10 @@
       <div class="columns is-mobile calendar__menu">
         <div class="item"><div class="calendar__menu--arrow-left" @click="previous"></div></div>
         <div class="item calendar__menu--label current-month">
-          <h1 v-if="!this.$store.getters.calendarState">{{months[calendar[12].month]}}</h1>
+          <h1 v-if="!this.$store.getters.calendarState">{{months[currentCalendar[12].month]}}</h1>
         </div>
         <div class="item calendar__menu--label current-week">
-          <h1 v-if="this.$store.getters.calendarState">Week of {{months[calendar[0].month]}} {{calendar[0].day}}</h1>
+          <h1 v-if="this.$store.getters.calendarState">Week of {{months[currentCalendar[0].month]}} {{currentCalendar[0].day}}</h1>
         </div>
         <div class="item"><div class="calendar__menu--arrow-right" @click="next"></div></div>
 
@@ -26,8 +26,8 @@
         <div class="column is-one-fifth calendar__day"
           @dragover="dragOver"
           @drop="drop"
-          v-for="day, index in calendar.length"
-          :date="calendar[index].date"
+          v-for="day, index in currentCalendar.length"
+          :date="currentCalendar[index].date"
           :class="{
             'no-right' : (index+1)%5 === 0,
             'no-bottom': (index > 19)
@@ -35,35 +35,35 @@
 
           <div class="calendar__day--date"
             :class="{
-                'today' : getCurrent.date === calendar[index].day
-          }">{{calendar[index].day}}</div>
+                'today' : current.date === currentCalendar[index].day
+          }">{{currentCalendar[index].day}}</div>
 
-          <div class="calendar__day--label" v-if="index < 5">{{calendar[index].name}}</div>
+          <div class="calendar__day--label" v-if="index < 5">{{currentCalendar[index].name}}</div>
 
           <div class="calendar__day--appointment"
-            v-if="calendar[index].appointment.created">
+            v-if="currentCalendar[index].appointment.created">
               <button class="button calendar__day--button"
-                @click="toggleAppointment(calendar[index].appointment.date)"
-                :id="calendar[index].appointment.date">
-                {{calendar[index].appointment.date}}
+                @click="toggleAppointment(currentCalendar[index].appointment.date)"
+                :id="currentCalendar[index].appointment.date">
+                {{currentCalendar[index].appointment.date}}
               </button>
           </div>
 
           <div class="calendar__day--meter"
-            v-if="calendar[index].meter.due_date">
+            v-if="currentCalendar[index].meter.due_date">
             <button class="button calendar__day--button"
-              :date="calendar[index].meter.due_date"
-              @click="toggleMeter(calendar[index].meter.due_date)">
-                {{calendar[index].meter.label}}
+              :date="currentCalendar[index].meter.due_date"
+              @click="toggleMeter(currentCalendar[index].meter.due_date)">
+                {{currentCalendar[index].meter.label}}
             </button>
           </div>
 
           <div class="calendar__day--checklist"
-            v-if="calendar[index].checklist.due_date">
+            v-if="currentCalendar[index].checklist.due_date">
             <button class="button calendar__day--button"
-              :date="calendar[index].checklist.due_date"
-              @click="toggleChecklist(calendar[index].checklist.due_date)">
-                {{calendar[index].checklist.label}}
+              :date="currentCalendar[index].checklist.due_date"
+              @click="toggleChecklist(currentCalendar[index].checklist.due_date)">
+                {{currentCalendar[index].checklist.label}}
             </button>
           </div>
 
@@ -86,13 +86,14 @@ export default {
 
   data() {
     return {
-      months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      week: ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"],
+      months: this.$months(),
+      week: this.$weekDays(),
       user: "",
       appointments: null,
       meters: null,
       checklists: null,
       weekView: false,
+      currentCalendar: this.calendar
     }
   },
 
@@ -127,19 +128,19 @@ export default {
     next: function(event) {
       let state = this.$store.getters.calendarState;
       // default to current month
-      let next = this.getWeek(this.calendar[0].object, 7);
+      let next = this.getWeek(this.currentCalendar[0].object, 7);
       if(!state) {
-        next = this.getMonth(this.calendar[12].object, 1);
+        next = this.getMonth(this.currentCalendar[12].object, 1);
       }
-      this.calendar = this.$renderCalendar(next, state);
+      this.currentCalendar = this.$renderCalendar(next, state);
       this.getEvents(this.user, this.appointments, this.meters, this.checklists);
     },
     previous: function(event) {
       let state = this.$store.getters.calendarState;
       // default to current month
-      let previous = this.getWeek(this.calendar[0].object, -7);
-      if(!state) { previous = this.getMonth(this.calendar[12].object, -1); }
-      this.calendar = this.$renderCalendar(previous, this.$store.getters.calendarState);
+      let previous = this.getWeek(this.currentCalendar[0].object, -7);
+      if(!state) { previous = this.getMonth(this.currentCalendar[12].object, -1); }
+      this.currentCalendar = this.$renderCalendar(previous, this.$store.getters.calendarState);
       this.getEvents(this.user, this.appointments, this.meters, this.checklists);
     },
     /* End Previous Button Click Handlers */
@@ -149,7 +150,7 @@ export default {
       if(!this.weekView) {
         this.weekView = true;
         this.$store.dispatch("calendarState");
-        this.calendar = this.$renderCalendar(new Date(), true);
+        this.currentCalendar = this.$renderCalendar(new Date(), true);
         this.getEvents(this.user, this.appointments, this.meters, this.checklists);
 
         // get day elements from html add week height
@@ -165,7 +166,7 @@ export default {
       if(this.weekView) {
         this.weekView = false;
         this.$store.dispatch("calendarState");
-        this.calendar = this.$renderCalendar();
+        this.currentCalendar = this.$renderCalendar();
         this.getEvents(this.user, this.appointments, this.meters, this.checklists);
 
         // Get day elements from html remove week height
@@ -191,14 +192,14 @@ export default {
     },
     getEvents: function(user, appointments, meters, checklists) {
         // load current events on the calendar
-        for(var i=0; i < this.calendar.length; i++) {
+        for(var i=0; i < this.currentCalendar.length; i++) {
           // get current appointments based on calendar date
           // --> find appointments where the current date iteration
           //     matches appointment in vue store
-          let appointmentMatch = appointments.find(appointment  => (moment(appointment.date).isSame(moment(this.calendar[i].date))) && (appointment.appointee === user || appointment.initiator === user));
+          let appointmentMatch = appointments.find(appointment  => (moment(appointment.date).isSame(moment(this.currentCalendar[i].date))) && (appointment.appointee === user || appointment.initiator === user));
           // if there is a match update the calendar
           if(appointmentMatch) {
-              this.calendar[i].appointment = appointmentMatch;
+              this.currentCalendar[i].appointment = appointmentMatch;
           }
 
           // if on patient treatment view
@@ -206,19 +207,19 @@ export default {
             // get current meters based on calendar date
             // --> find meters where the current date iteration
             //     matches meter in vue store
-            let meterMatch = meters.find(meter  => meter.due_date === this.calendar[i].date);
+            let meterMatch = meters.find(meter  => meter.due_date === this.currentCalendar[i].date);
             // if there is a match update the calendar
             if(meterMatch) {
-              this.calendar[i].meter = meterMatch;
+              this.currentCalendar[i].meter = meterMatch;
             }
 
             // get current checklists based on calendar date
             // --> find checklists where the current date iteration
             //     matches checklist in vue store
-            let checklistMatch = checklists.find(checklist  => checklist.due_date === this.calendar[i].date);
+            let checklistMatch = checklists.find(checklist  => checklist.due_date === this.currentCalendar[i].date);
             // if there is a match update the calendar
             if(checklistMatch) {
-              this.calendar[i].checklist = checklistMatch;
+              this.currentCalendar[i].checklist = checklistMatch;
             }
           }
         }
@@ -234,7 +235,7 @@ export default {
       // show meter status modal
       document.getElementsByClassName("meter-status-modal")[0].classList.add("is-active");
       // find current meter based on day
-      let current = this.calendar.filter(day => day.date === date)[0];
+      let current = this.currentCalendar.filter(day => day.date === date)[0];
       // update vuex
       this.$store.dispatch("currentMeter", current.meter);
     },
@@ -242,7 +243,7 @@ export default {
       // show checklist status modal
       document.getElementsByClassName("checklist-status-modal")[0].classList.add("is-active");
       // find current checklist based on day
-      let current = this.calendar.filter(day => day.date === date)[0];
+      let current = this.currentCalendar.filter(day => day.date === date)[0];
       // update vuex
       this.$store.dispatch("currentChecklist", current.checklist);
     },
@@ -276,21 +277,8 @@ export default {
   },
 
   computed: {
-    getCurrent: function() {
-      // get today's date object
-      let current = new Date();
-      // get current monday
-      let monday = new Date(current.getFullYear(), current.getMonth(), current.getDate() + (current.getDay() == 0?-6:1) - current.getDay());
-      //get current friday
-      let friday = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + 4);
-      return {
-        "date": current.getDate(),
-        "day": current.getDay(),
-        "month": current.getMonth(),
-        "year": current.getFullYear(),
-        "monday": monday.getDate(),
-        "friday": friday.getDate()
-      };
+    current: function() {
+      return this.$current();
     }
   }
 }
