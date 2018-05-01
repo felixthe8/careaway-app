@@ -21,12 +21,12 @@ Calendar.install = function (Vue, options) {
 
       if(!state) {
         // get month start ~ first day of calendar month + days to monday
-        start = new Date(today.getFullYear(), initial.getMonth(), 1);
+        start = new Date(initial.getFullYear(), initial.getMonth(), 1);
       }
       else {
         SIZE = 5;
         // get week start ~ first day of calendar month + days to monday
-        start = new Date(today.getFullYear(), today.getMonth(), initial.getDate());
+        start = new Date(initial.getFullYear(), initial.getMonth(), initial.getDate());
       }
 
       // set start to current monday
@@ -70,6 +70,10 @@ Calendar.install = function (Vue, options) {
 
       // return array of day objects
       return calendar;
+  }
+
+  Vue.prototype.$current = function (initial, state) {
+
   }
 
 }
