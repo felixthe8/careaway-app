@@ -48,12 +48,24 @@ module.exports = {
             'scss': [
               'vue-style-loader',
               'css-loader',
-              'sass-loader'
+              'sass-loader',
+              {
+                loader: 'sass-resources-loader',
+                options: {
+                  resources: path.resolve(__dirname, './src/assets/sass/settings.scss')
+                }
+              },
             ],
             'sass': [
               'vue-style-loader',
               'css-loader',
-              'sass-loader?indentedSyntax'
+              'sass-loader?indentedSyntax',
+              {
+                loader: 'sass-resources-loader',
+                options: {
+                  resources: path.resolve(__dirname, './src/assets/sass/settings.scss')
+                }
+              },
             ]
           }
           // other vue-loader options go here

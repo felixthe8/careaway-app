@@ -356,7 +356,6 @@
 
 
 <style lang='scss' scoped>
-  @import '../../assets/sass/settings.scss';
 
   .form {
     &__title {

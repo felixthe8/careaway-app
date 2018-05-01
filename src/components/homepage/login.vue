@@ -147,7 +147,6 @@ axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
 </script>
 
 <style lang = "scss">
-  @import "../../assets/sass/settings.scss";
 
   #form-title {
       font-size: 2em;
