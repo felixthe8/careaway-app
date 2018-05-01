@@ -321,7 +321,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../assets/sass/settings.scss";
 
 .widget-box {
   padding-bottom: 6px;

@@ -77,8 +77,8 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-  @import '../../assets/sass/settings.scss';
-  .card-content {
+
+.card-content {
     background: white;
     border: 1px black solid;
     text-align: center;

@@ -197,7 +197,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../assets/sass/settings.scss';
 
 .nav-bar {
   width: 100%;

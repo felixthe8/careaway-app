@@ -53,7 +53,6 @@ export default {
 
 
 <style lang="scss">
-@import '../../assets/sass/settings.scss';
 
 .white-background {
   background-color: $white;

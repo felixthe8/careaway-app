@@ -60,7 +60,6 @@ export default {
 
 
 <style lang= "scss" scoped>
-@import "../../assets/sass/settings.scss";
 
 .nav-bar {
   width: 100%;
