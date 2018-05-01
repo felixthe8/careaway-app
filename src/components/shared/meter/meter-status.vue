@@ -85,7 +85,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../../assets/sass/settings.scss";
 
 .meter-status-modal {
   &__title {
