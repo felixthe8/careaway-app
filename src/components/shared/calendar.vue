@@ -44,7 +44,7 @@
             v-if="currentCalendar[index].appointment.created">
               <button class="button calendar__day--button"
                 @click="toggleAppointment(currentCalendar[index].appointment.date)"
-                :id=" currentCalendar[index].appointment.date">
+                :id="currentCalendar[index].appointment.date">
                 {{currentCalendar[index].appointment.date}}
               </button>
           </div>

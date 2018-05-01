@@ -75,7 +75,6 @@ export default {
             current = appointments[i];
         }
       }
-      console.log("Gett appointment " + JSON.stringify(current));
       return current;
     },
     openCreateAppointment() {
