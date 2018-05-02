@@ -38,66 +38,66 @@ export const store = new Vuex.Store({
     /* URL Variables */
 
     // Breach URLs
-    checkBreachURL: 'http://localhost:8080/isBreached',
-    breachURL: 'http://localhost:8080/breach',
+    checkBreachURL: 'https://careaway.me/api/isBreached',
+    breachURL: 'https://careaway.me/api/breach',
 
     // Login URLs
-    loginURL: 'http://localhost:8080/login',
-    LoginInfoURL: 'http://localhost:8080/getLoginInfo?token=',
-    logoutURL: 'http://localhost:8080/logout',
+    loginURL: 'https://careaway.me/api/login',
+    LoginInfoURL: 'https://careaway.me/api/getLoginInfo?token=',
+    logoutURL: 'https://careaway.me/api/logout',
 
     // Registration URLs
-    registerURL: 'http://localhost:8080/register',
-    resetCredURL: 'http://localhost:8080/reset-creds',
-    getSecurityQURL:'http://localhost:8080/security-questions?username=',
-    validateAnswerURL: 'http://localhost:8080/validate-answers',
-    validateUsernameURL: 'http://localhost:8080/validate-username',
-    ssoRegisterPatientURL: 'http://localhost:8080/ssoRegisterPatient',
-    ssoRegisterMedicalURL: 'http://localhost:8080/ssoRegisterMed',
-    returnCodeURL : 'http://localhost:8080/returnCode?username=',
+    registerURL: 'https://careaway.me/api/register',
+    resetCredURL: 'https://careaway.me/api/reset-creds',
+    getSecurityQURL:'https://careaway.me/api/security-questions?username=',
+    validateAnswerURL: 'https://careaway.me/api/validate-answers',
+    validateUsernameURL: 'https://careaway.me/api/validate-username',
+    ssoRegisterPatientURL: 'https://careaway.me/api/ssoRegisterPatient',
+    ssoRegisterMedicalURL: 'https://careaway.me/api/ssoRegisterMed',
+    returnCodeURL : 'https://careaway.me/api/returnCode?username=',
 
     // User Info URLs
-    userInfoURL: 'http://localhost:8080/get-user?username=',
-    patientBreakdownURL: 'http://localhost:8080/getDiagnoses?medicalcode=',
-    getPatientUserNamesURL: 'http://localhost:8080/getPatientUserNames',
-    patientInfoURL: 'http://localhost:8080/get-patients?code=',
-    getMedicalProfessional: 'http://localhost:8080/getMedicalProfessional?username=',
+    userInfoURL: 'https://careaway.me/api/get-user?username=',
+    patientBreakdownURL: 'https://careaway.me/api/getDiagnoses?medicalcode=',
+    getPatientUserNamesURL: 'https://careaway.me/api/getPatientUserNames',
+    patientInfoURL: 'https://careaway.me/api/get-patients?code=',
+    getMedicalProfessional: 'https://careaway.me/api/getMedicalProfessional?username=',
 
     // Diagnosis URLs
-    getSingleDiagnosisURL: 'http://localhost:8080/getSingleDiagnosis',
-    getDiagnosisListURL: 'http://localhost:8080/getDiagnosisList',
-    saveDiagnosisURL : 'http://localhost:8080/saveDiagnosis',
-    feedbackURL : 'http://localhost:8080/feedback',
+    getSingleDiagnosisURL: 'https://careaway.me/api/getSingleDiagnosis',
+    getDiagnosisListURL: 'https://careaway.me/api/getDiagnosisList',
+    saveDiagnosisURL : 'https://careaway.me/api/saveDiagnosis',
+    feedbackURL : 'https://careaway.me/api/feedback',
 
     // Appointment URLs
-    appointmentURL: 'http://localhost:8080/getAppt?username=',
-    patientApptURL: 'http://localhost:8080/patient-appointment-info?username=',
-    createAppointmentURL: 'http://localhost:8080/createAppointment',
-    modifyAppointmentURL: 'http://localhost:8080/updateAppointment',
-    deleteAppt: 'http://localhost:8080/deleteAppt',
+    appointmentURL: 'https://careaway.me/api/getAppt?username=',
+    patientApptURL: 'https://careaway.me/api/patient-appointment-info?username=',
+    createAppointmentURL: 'https://careaway.me/api/createAppointment',
+    modifyAppointmentURL: 'https://careaway.me/api/updateAppointment',
+    deleteAppt: 'https://careaway.me/api/deleteAppt',
 
     // Treatment URLs
-    getTreatment: 'http://localhost:8080/getTreatment?username=',
-    getPatientTreatmentURL: 'http://localhost:8080/getPatientTreatment?username=',
-    updatePatientTreatmentURL: 'http://localhost:8080/updatePatientTreatment',
-    deleteTreatment: 'http://localhost:8080/deleteTreatment?username=',
+    getTreatment: 'https://careaway.me/api/getTreatment?username=',
+    getPatientTreatmentURL: 'https://careaway.me/api/getPatientTreatment?username=',
+    updatePatientTreatmentURL: 'https://careaway.me/api/updatePatientTreatment',
+    deleteTreatment: 'https://careaway.me/api/deleteTreatment?username=',
 
     // Treatment Meter URLs
-    createMeterURL: 'http://localhost:8080/createTreatmentMeter?username=',
-    updateTreatmentMeterURL: 'http://localhost:8080/updateTreatmentMeter?username=',
-    getTreatmentMeterURL: 'http://localhost:8080/getTreatmentMeter',
-    getSingleTreatmentMeterURL: 'http://localhost:8080/getSingleTreatmentMeter',
+    createMeterURL: 'https://careaway.me/api/createTreatmentMeter?username=',
+    updateTreatmentMeterURL: 'https://careaway.me/api/updateTreatmentMeter?username=',
+    getTreatmentMeterURL: 'https://careaway.me/api/getTreatmentMeter',
+    getSingleTreatmentMeterURL: 'https://careaway.me/api/getSingleTreatmentMeter',
 
     // Treatment Checklist URLs
-    createChecklistURL: 'http://localhost:8080/createTreatmentChecklist?username=',
-    updateTreatmentChecklistURL: 'http://localhost:8080/updateTreatmentChecklist?username=',
-    getTreatmentChecklistURL: 'http://localhost:8080/getTreatmentChecklist',
-    getSingleTreatmentChecklistURL: 'http://localhost:8080/getSingleTreatmentChecklist',
+    createChecklistURL: 'https://careaway.me/api/createTreatmentChecklist?username=',
+    updateTreatmentChecklistURL: 'https://careaway.me/api/updateTreatmentChecklist?username=',
+    getTreatmentChecklistURL: 'https://careaway.me/api/getTreatmentChecklist',
+    getSingleTreatmentChecklistURL: 'https://careaway.me/api/getSingleTreatmentChecklist',
 
     // Mail URLs
-    createMailURL: 'http://localhost:8080/createMail?username=',
-    getMailURL: 'http://localhost:8080/getMail?username=',
-    deleteMailURL: 'http://localhost:8080/deleteMail?username=',
+    createMailURL: 'https://careaway.me/api/createMail?username=',
+    getMailURL: 'https://careaway.me/api/getMail?username=',
+    deleteMailURL: 'https://careaway.me/api/deleteMail?username=',
 
     /* End URL Variables */
 
@@ -132,8 +132,8 @@ export const store = new Vuex.Store({
     appointments: [],
 
     // Transfer URLs
-    makeTransferURL: 'http://localhost:8080/mpTransfer',
-    removeTransferURL: 'http://localhost:8080/removeTransfer',
+    makeTransferURL: 'https://careaway.me/api/mpTransfer',
+    removeTransferURL: 'https://careaway.me/api/removeTransfer',
 
     isTutorial: false,
     mpTutorialOnly: 'NOTE: This feature is only available under the Medical Professional Account',
