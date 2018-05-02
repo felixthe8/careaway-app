@@ -28,7 +28,7 @@ export default {
   },
   beforeMount() {
     // Gets if this patient's transfer information.
-    axios.get("http://careaway.me/api/getTransferInfo?patient=" + this.$store.getters.authenticatedUsername).then(result => {
+    axios.get("https://careaway.me/api/getTransferInfo?patient=" + this.$store.getters.authenticatedUsername).then(result => {
       if(result.data.success) {
         this.update(result);
       } else {
@@ -41,7 +41,7 @@ export default {
     accept() {
       const accepting = {patient: this.$store.getters.authenticatedUsername, transfer: this.transfer};
       // Send request to accept transfer.
-      axios.post("http://careaway.me/api/acceptTransfer", accepting).then(result => {
+      axios.post("https://careaway.me/api/acceptTransfer", accepting).then(result => {
         if(result.data.success) {
           console.log("Successful accept.");
           this.update(result);
@@ -53,7 +53,7 @@ export default {
     },
     deny() {
       // Send request to remove transfer.
-      axios.post("http://careaway.me/api/removeTransfer", {patient: this.$store.getters.authenticatedUsername}).then(result => {
+      axios.post("https://careaway.me/api/removeTransfer", {patient: this.$store.getters.authenticatedUsername}).then(result => {
         if(result.data.success) {
           console.log("Successful deny.");
           this.update(result);
