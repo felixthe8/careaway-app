@@ -51,20 +51,20 @@ const router = new Router ({
        }
     },
 
-    {  path : '/profile',
+    {  path : '/profile/:jwt',
        name: 'Profile',
        component: profile,
        beforeEnter: (to, from , next) => {
-        if(store.getters.authStatus == null || store.getters.authStatus.length == 0) {
+        if((store.getters.authStatus === null || store.getters.authStatus.length === 0) && to.query.jwt===undefined) {
           next({path: '/'});
         }
         else {
-          next()
+          next();
         }
        },
        children: [
           // Medical Professional Homepage (:jwt is stating it's expecting a query)
-          {  path: '/MedicHome/:jwt',
+          {  path: '/MedicHome',
              name: 'MedicHome',
              beforeEnter: (to, from, next) => {
               // Check if there is a jwt query string attached use third party request handler to log user into the client
