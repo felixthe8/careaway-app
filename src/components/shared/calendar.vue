@@ -52,6 +52,7 @@
           <div class="calendar__day--meter"
             v-if="currentCalendar[index].meter.due_date">
             <button class="button calendar__day--button"
+              v-bind:class="{ completed: isCompletedMeter(currentCalendar[index].meter) }"
               :date="currentCalendar[index].meter.due_date"
               @click="toggleMeter(currentCalendar[index].meter.due_date)">
                 {{currentCalendar[index].meter.label}}
@@ -61,6 +62,7 @@
           <div class="calendar__day--checklist"
             v-if="currentCalendar[index].checklist.due_date">
             <button class="button calendar__day--button"
+              v-bind:class="{ completed: isCompletedChecklist(currentCalendar[index].checklist) }"
               :date="currentCalendar[index].checklist.due_date"
               @click="toggleChecklist(currentCalendar[index].checklist.due_date)">
                 {{currentCalendar[index].checklist.label}}
@@ -273,6 +275,19 @@ export default {
         document.getElementsByClassName("checklist-modal")[0].classList.add("is-active");
         this.$store.dispatch("toggleChecklist");
       }
+    },
+    isCompletedMeter(obj) {
+      return obj.patient_input !== null && obj.patient_input !== '';
+    },
+    isCompletedChecklist(obj) {
+      var completed = true;
+      for (var i=0;i<obj.list.length;i++) {
+        if (obj.list[i].check === false) {
+          completed = false;
+          break;
+        }
+      }
+      return completed;
     }
   },
 
@@ -456,6 +471,10 @@ export default {
     height: 500px;
     width: auto;
   }
+}
+
+.completed {
+  background-color: $blue-dark !important;
 }
 
 </style>

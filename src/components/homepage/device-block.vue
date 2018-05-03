@@ -40,7 +40,7 @@
           },
           {
             device: require('../../assets/images/phone.svg'),
-            description: `Mobile support comming soon.`,
+            description: `Mobile support coming soon.`,
             default: true
           },
           {

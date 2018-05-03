@@ -1,74 +1,92 @@
 <template>
-  <div class = "breakdown control">
+  <div class = "breakdown">
     <h1 class = "title is-3 is-spaced"> Patient Breakdown by Diagnosis </h1>
     <h2 class="subtitle"> {{breakdownWarning}} </h2>
-    <spinner v-if = 'loading'/>
-    <chart v-if = 'showChart' 
-      :elemID = 'chartID' 
-      :type = 'chartType' 
-      :chartLabels = 'chartLabels' 
-      :chartValues = 'chartValues'
-      :maxValue = 'maxValue' 
-      :xLabel = 'xLabel' 
-      :yLabel = 'yLabel'/>
+    <canvas id = "patient-breakdown" width = "450" height = "300"> </canvas>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import * as chromatism from 'chromatism';
 import Chart from 'chart.js';
-import spinner from 'vue-simple-spinner';
-import chart from './chart';
+import pieceLabel from 'chart.piecelabel.js';
 export default {
-  name: 'aggregate-breakdown',
+  name: 'breakdown',
   data() {
       return {
-        loading: true,
-        conditionCount: {},
         breakdownWarning: '',
-        chartID: this.$options.name,
-        chartLabels: [],
-        chartValues: [],
-        chartType: 'bar',
-        showChart: false,
-        maxValue: 0,
-        xLabel: 'Patient Diagnoses',
-        yLabel: '# of Patients'
       }
   },
-  components: {chart, spinner},
   methods: {
       getInfo() {
-        // STEP 1 - Gather the information necessary to create the chart
         var self = this;
         // Return patients who are associated with the medical professional
         axios.get(this.$store.getters.patientBreakdownURL+this.$store.getters.medicalCode)
         .then(function(response) {
           // If there are no diagnoses returned
           if(response.data === undefined || response.data.length == 0) {
-            self.breakdownWarning = 'Sorry, you need to add patients before you can view this report';
+            self.breakdownWarning = 'Sorry, you need to add patients before you can view reports';
           } else {
+          // Object that will hold the diagnosis count
+          var conditionCount = {};
           // Loop through the patient diagnoses that was returned. In the conditionCount object, use the diagnoses as keys
           for (var d of response.data) {
-            if(!(d in self.conditionCount)) {
+            if(!(d in conditionCount)) {
               // If the diagnosis does not exist as a key, add it and set the initial value to 1
-              self.conditionCount[d] = 1;
+              conditionCount[d] = 1;
             } else {
-              self.conditionCount[d]++;
+              // Increment an value of a condition
+              conditionCount[d]+=1;
             }
-          }
+          } 
+         new Chart (document.getElementById("patient-breakdown").getContext('2d'), {
+            type: 'doughnut',
+            data: {
+              // Use the names of the conditions as the labels
+              labels: Object.keys(conditionCount),
+              datasets: [{
+                // Use the number of patients with that condition as the data values
+                data: Object.values(conditionCount),
+                backgroundColor: chromatism.adjacent(30, Object.keys(conditionCount).length, '#e52525').hex
+              }]
+            },
+            options: {
+              responsive: false,
+              maintainAspectRatio: true,
+              animation: {
+                duration: 1000
+              },
+              pieceLabel: {
+                render: 'percentage',
+                precision: 2,
+                position: 'border',
+                fontSize: 14,
+                fontStyle: 'bold',
+                fontColor: '#fff',
+              },
+              legend: {
+                display: true,
+                position: "left",
+                labels: {fontSize: 14},
+                // By default Chart JS removes data when you click it on the legend. Override the default action so it does nothing. 
+                onClick: null
+              },
+              tooltips: {
+                callbacks: {
+                  label: function(tooltipItems, data) {
+                    return data.labels[tooltipItems.index]+': '+data.datasets[0].data[tooltipItems.index] + ' patient(s)'
+                  }
+                }
+              }
+            }
+          })
         }
-        self.chartLabels = Object.keys(self.conditionCount)
-        self.chartValues = Object.values(self.conditionCount)
-        // Max value for this graph will be the greatest number of the conditions 
-        self.maxValue = Math.max.apply(Math, self.chartValues)
-        self.showChart = true;
+       
         })
         .catch(function (err) {
           self.breakdownWarning = 'Sorry. Information for this report cannot be displayed at this time. Try again later.';
         })
-        // Remove the is-loading class
-        this.loading = false
       }
   },
   mounted() {
@@ -82,5 +100,4 @@ export default {
       margin-left: 2%;
   }
 </style>
-
 
